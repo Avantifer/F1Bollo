@@ -1,1 +1,15 @@
 @import "settings/fonts.scss";
+@import "settings/global.scss";
+@import "settings/colors.scss";
+
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+
+@import "components/teams.scss";
+@import "components/navbar.scss";
+
+@import "responsive/header.scss";
+@import "responsive/teams.scss";
+
+@import "generic/scrollbar.scss";
