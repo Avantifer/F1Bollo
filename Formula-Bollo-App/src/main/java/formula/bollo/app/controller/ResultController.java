@@ -40,7 +40,7 @@ public class ResultController {
         @ApiResponse(code = 200, message = "Results successfully obtained"),
         @ApiResponse(code = 404, message = "Results cannot be found")
     })
-    @GetMapping("/total")
+    @GetMapping("/totalPerDriver")
     public List<DriverPointsDTO> getTotalResultsPerDriver() {
         List<Result> results = resultRepository.findAll();
         Map<DriverDTO, Integer> totalPointsByDriver = new HashMap<>();

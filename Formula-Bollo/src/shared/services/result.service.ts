@@ -15,6 +15,6 @@ export class ResultService {
   constructor(private httpClient: HttpClient) { }
 
   getAllDriverPoints(): Observable<DriverPoints[]> {
-    return this.httpClient.get<DriverPoints[]>(environment.apiUrl + this.endpoint + "/all");
+    return this.httpClient.get<DriverPoints[]>(environment.apiUrl + this.endpoint + "/totalPerDriver");
   }
 }
