@@ -38,7 +38,8 @@ public class ResultController {
     @Operation(summary = "Get results total per driver")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Results successfully obtained"),
-        @ApiResponse(code = 404, message = "Results cannot be found")
+        @ApiResponse(code = 404, message = "Results cannot be found"),
+        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @GetMapping("/totalPerDriver")
     public List<DriverPointsDTO> getTotalResultsPerDriver() {

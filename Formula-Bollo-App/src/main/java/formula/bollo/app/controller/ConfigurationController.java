@@ -36,7 +36,8 @@ public class ConfigurationController {
     @Operation(summary = "Get all configurations")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Configurations successfully obtained"),
-        @ApiResponse(code = 404, message = "Configurations cannot be found")
+        @ApiResponse(code = 404, message = "Configurations cannot be found"),
+        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @GetMapping("/all")
     public List<ConfigurationDTO> getAllConfigurations() {

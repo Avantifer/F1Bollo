@@ -8,7 +8,7 @@
       <div *ngFor="let driver of top3; let i = index" class="position-relative m-0" [ngClass]="i === 1 ? 'driver-card-pos1 d-none d-sm-inline-block mx-md-3 mx-lg-4' : 'driver-card d-none d-md-inline-block'">
         <div class="position-relative" [ngClass]="i === 1 ? 'driver-card-top-pos1' : 'driver-card-top'">
           <div class="driver-card-top-number position-absolute" [class]="'driver-card-top-number-' + driver.driver.team.name">{{ driver.driver.number }}</div>
-          <img [src]="'data:image/jpg;base64,' + driver.driver.driverImage" alt="" class="position-absolute">
+          <img [src]="'data:image/jpg;base64,' + driver.driver.driverImage" alt="Imagen del piloto" class="position-absolute">
           <div class="driver-card-top-team-border position-absolute w-100 bottom-0" [class]="'driver-card-top-team-border-' + driver.driver.team.name"></div>
         </div>
         <div class="driver-card-bottom">
@@ -40,7 +40,7 @@
   </div>
   <div class="teams-schema d-grid">
     <div class="teams-schema-container shadow-lg d-flex rounded-4" [class]="'teams-schema-container-' + team.name" *ngFor="let team of teams">
-      <img [src]="'data:image/jpg;base64,' + team.teamImage" [alt]="'Image of ' + team.name" class="teams-schema-container-image m-auto">
+      <img [src]="'data:image/jpg;base64,' + team.teamImage" [alt]="'Imagen de ' + team.name" class="teams-schema-container-image m-auto">
     </div>
   </div>
 </div>

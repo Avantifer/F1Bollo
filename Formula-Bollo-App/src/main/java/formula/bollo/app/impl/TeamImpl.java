@@ -63,4 +63,17 @@ public class TeamImpl implements TeamMapper{
         return teamDTO;
     }
 
+    /**
+     * Map Team to return an object type TeamDTO without teamImage
+     * @param team
+     * @return class TeamDTO with almost all Team's properties (no carImage)
+    */
+    @Override
+    public TeamDTO teamToTeamDTOnoTeamImage(Team team) {
+        TeamDTO teamDTO = new TeamDTO();
+        BeanUtils.copyProperties(team, teamDTO, "carImage");
+        teamDTO.setCarImage(team.getCarImage());
+        return teamDTO;
+    }
+
 }

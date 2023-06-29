@@ -14,4 +14,6 @@ public interface TeamMapper {
     Team teamDTOToTeam(TeamDTO teamDTO);
 
     TeamDTO teamToTeamDTO(Team team);
+
+    TeamDTO teamToTeamDTOnoTeamImage(Team team);
 }

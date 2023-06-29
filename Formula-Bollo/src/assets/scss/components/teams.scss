@@ -1,67 +1,175 @@
-.teams {
+.clasification-teams {
 
-  &-title {
-    font-family: 'F1-Regular';
-    letter-spacing: 2px;
-    color: $red;
-    margin: 3.75rem 0 0 3.75rem;
+  &-text {
+    border-top: 10px solid black;
+    border-right: 10px solid black;
+    border-top-right-radius: 25px;
+
+    h1 {
+      font-family: 'F1-Bold';
+    }
   }
 
   &-schema {
-    grid-template-columns: repeat(10, 1fr);
-    grid-gap: 1rem;
-    margin: 3.75rem 3.75rem 0 3.75rem;
-    padding-bottom: 6.25rem;
+    margin-top: 5rem;
+    margin-right: auto !important;
+    margin-left: auto !important;
 
-    &-container {
-      height: 8.75rem;
-
-      &-image {
-        width: 6.25rem;
-        height: auto;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      &-Mercedes:hover {
-        background-color: $colorMercedes;
-      }
+    &-card {
+      border-top: solid 1px #000;
+      border-right: solid 1px #000;
+      border-top-right-radius: 10px;
+      margin-top: 40px;
+      padding-top: 10px;
 
       &-Red:hover {
-        background-color: $colorRedBull;
+        border-color: $colorRedBull;
+      }
+
+      &-AlphaTauri:hover {
+        border-color: $colorAlphaTauri;
       }
 
       &-Ferrari:hover {
-        background-color: $colorFerrari;
+        border-color: $colorFerrari;
+      }
+
+      &-Mercedes:hover {
+        border-color: $colorMercedes;
+      }
+
+      &-Aston:hover {
+        border-color: $colorAston;
+      }
+
+      &-Williams:hover {
+        border-color: $colorWilliams;
+      }
+
+      &-Haas:hover {
+        border-color: $colorHaas;
       }
 
       &-McLaren:hover {
         background-color: $colorMcLaren;
       }
 
-      &-Alpine:hover {
-        background-color: $colorAlpine;
-      }
-
-      &-AlphaTauri:hover {
-        background-color: $colorAlphaTauri;
-      }
-
-      &-Aston:hover {
-        background-color: $colorAston;
-      }
       &-Alfa:hover {
-        background-color: $colorAlfa;
+        border-color: $colorAlfa;
       }
 
-      &-Haas:hover {
-        background-color: $colorHaas;
+      &:hover {
+        margin-top: 30px;
+        padding-top: 20px;
+        transition: .1s all ease;
+        cursor: pointer;
       }
 
-      &-Williams:hover {
-        background-color: $colorWilliams;
+      &-top {
+        &-number {
+          h3 {
+            font-family: 'F1-Bold';
+            font-size: 2.5rem;
+          }
+        }
+
+        &-points {
+          h4 {
+            font-family: 'F1-Bold';
+            letter-spacing: 2px;
+          }
+
+          span {
+            font-family: 'F1-Regular';
+            letter-spacing: 1px;
+          }
+        }
+      }
+
+      &-mid {
+
+        &-team {
+          border-bottom: 1px solid black;
+
+          &-start {
+
+            &-line {
+              width: 5px;
+              height: 2rem;
+
+              &-Red {
+                background-color: $colorRedBull;
+              }
+
+              &-AlphaTauri {
+                background-color: $colorAlphaTauri;
+              }
+
+              &-Ferrari {
+                background-color: $colorFerrari;
+              }
+
+              &-Mercedes {
+                background-color: $colorMercedes;
+              }
+
+              &-Aston {
+                background-color: $colorAston;
+              }
+
+              &-Williams {
+                background-color: $colorWilliams;
+              }
+
+              &-Haas {
+                background-color: $colorHaas;
+              }
+
+              &-McLaren {
+                background-color: $colorMcLaren;
+              }
+
+              &-Alfa {
+                background-color: $colorAlfa;
+              }
+            }
+
+            h4 {
+              font-family: 'F1-Bold';
+              letter-spacing: 1px;
+            }
+          }
+
+          &-end {
+            height: 50px;
+            width: 50px;
+          }
+        }
+
+        &-drivers {
+          &-driver1, &-driver2 {
+            height: 50px;
+            width: 48%;
+            border-bottom-right-radius: 10px;
+
+            h5 {
+              font-family: 'F1-Regular';
+            }
+
+            img {
+              width: 50px;
+              height: 50px;
+            }
+          }
+        }
+      }
+
+      &-bottom {
+        background-image: url('../../../assets/images/teams/background-carImage.png');
+
+        img {
+          display: inherit;
+        }
       }
     }
   }

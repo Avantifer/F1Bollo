@@ -42,4 +42,8 @@ public class Team {
     @Column(name = "team_image")
     @NotNull
     private Blob teamImage;
+
+    @Column(name = "logo_image")
+    @NotNull
+    private String logoImage;
 }

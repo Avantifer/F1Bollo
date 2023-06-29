@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import HeaderLinks from 'src/shared/models/HeaderLinks';
+import HeaderLinks from 'src/shared/models/headerLinks';
 
 @Component({
   selector: 'app-header',

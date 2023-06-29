@@ -1,0 +1,48 @@
+<div class="clasification-teams-text mt-5 container-fluid container-lg">
+  <h1 class="mt-3 fw-bold">Escuderías</h1>
+</div>
+<div class="clasification-teams-schema row container-fluid container-lg">
+  <div class="col-12 col-md-6" *ngFor="let team of teamWithDrivers; let i = index">
+    <div class="clasification-teams-schema-card mb-5" [class]="'clasification-teams-schema-card-' + team.teamDTO.name">
+      <div class="clasification-teams-schema-card-top d-flex justify-content-between align-items-center px-3 py-2">
+        <div class="clasification-teams-schema-card-top-number">
+          <h3 class="m-0">{{ i + 1 }}</h3>
+        </div>
+        <div class="clasification-teams-schema-card-top-points d-flex flex-column align-items-center">
+          <div class="clasification-teams-schema-card-top-points-number">
+            <h4 class="m-0 fst-italic"> {{ team.totalPoints }}</h4>
+          </div>
+          <div class="clasification-teams-schema-card-top-points-badge">
+            <span class="badge bg-dark">Puntos</span>
+          </div>
+        </div>
+      </div>
+      <div class="clasification-teams-schema-card-mid border-top border-black d-flex flex-column me-2">
+        <div class="clasification-teams-schema-card-mid-team d-flex justify-content-between align-items-center px-3 py-2">
+          <div class="clasification-teams-schema-card-mid-team-start d-flex align-items-center">
+            <div class="clasification-teams-schema-card-mid-team-start-line me-3" [class]="'clasification-teams-schema-card-mid-team-start-line-' + team.teamDTO.name"></div>
+            <h4 class="m-0">{{ team.teamDTO.name }}</h4>
+          </div>
+          <div class="clasification-teams-schema-card-mid-team-end">
+            <img [src]="team.teamDTO.logoImage" [alt]="'Imagen de ' + team.teamDTO.name" class="w-100">
+          </div>
+        </div>
+        <div class="clasification-teams-schema-card-mid-drivers d-flex justify-content-between py-2">
+          <div class="clasification-teams-schema-card-mid-drivers-driver1 d-flex justify-content-between align-items-center border-end border-bottom border-black overflow-hidden">
+            <h5 class="m-0 ms-3">{{ team.driver1.name }}</h5>
+            <img [src]="'data:image/jpg;base64,' + team.driver1.driverImage" [alt]="'Imagen de ' + team.driver1.driverImage" class="d-none d-xl-block">
+          </div>
+          <div class="clasification-teams-schema-card-mid-drivers-driver2 d-flex justify-content-between align-items-center border-end border-bottom border-black overflow-hidden">
+            <h5 class="m-0 ms-3">{{ team.driver2.name }}</h5>
+            <img [src]="'data:image/jpg;base64,' + team.driver2.driverImage" [alt]="'Imagen de ' + team.driver2.driverImage" class="d-none d-xl-block">
+          </div>
+        </div>
+      </div>
+      <div class="clasification-teams-schema-card-bottom">
+        <img [src]="team.teamDTO.carImage" [alt]="'Imagen de ' + team.teamDTO.name" class="mx-auto">
+      </div>
+
+
+    </div>
+  </div>
+</div>

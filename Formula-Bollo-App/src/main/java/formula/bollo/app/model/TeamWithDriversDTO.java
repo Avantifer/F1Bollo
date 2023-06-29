@@ -13,10 +13,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeamDTO {
-    private Long id;
-    private String name;
-    private String carImage;
-    private String teamImage;
-    private String logoImage;
+public class TeamWithDriversDTO {
+    private TeamDTO teamDTO;
+    private DriverDTO driver1;
+    private DriverDTO driver2;
+    private Integer totalPoints;
 }
