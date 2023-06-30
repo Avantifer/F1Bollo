@@ -1,0 +1,23 @@
+.configurations {
+  background: url("../../../assets/images/intro/introConfigurations.png");
+  background-size: cover;
+
+  &-title {
+    color: white;
+
+    h2 {
+      padding: 3.75rem 0 0 3.75rem;
+      font-family: 'F1-Regular';
+    }
+  }
+
+  &-schema {
+    hr {
+      border-top: 3px solid;
+    }
+
+    p {
+      font-size: 2rem;
+    }
+  }
+}
