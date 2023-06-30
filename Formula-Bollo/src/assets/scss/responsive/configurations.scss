@@ -1,0 +1,26 @@
+@include media-breakpoint-down(md) {
+  .configurations {
+
+    &-title {
+      color: white;
+
+      h2 {
+        padding: 3.75rem 0 0 0 !important;
+        font-family: 'F1-Regular';
+        text-align: center;
+      }
+    }
+
+    &-schema {
+      hr {
+        border-top: 3px solid;
+      }
+
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 5px !important;
+      }
+    }
+
+  }
+}
