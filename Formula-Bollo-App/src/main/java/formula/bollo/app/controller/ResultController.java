@@ -1,7 +1,9 @@
 package formula.bollo.app.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import formula.bollo.app.entity.Result;
@@ -24,7 +26,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-
+@CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/results"}, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ResultController {
@@ -42,7 +44,7 @@ public class ResultController {
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @GetMapping("/totalPerDriver")
-    public List<DriverPointsDTO> getTotalResultsPerDriver() {
+    public List<DriverPointsDTO> getTotalResultsPerDriver(@RequestParam(value = "numResults", required = false) Integer numResults) {
         List<Result> results = resultRepository.findAll();
         Map<DriverDTO, Integer> totalPointsByDriver = new HashMap<>();
 
@@ -69,11 +71,19 @@ public class ResultController {
             driverPointsDTOList.add(driverPointsDTO);
         }
 
+        // Compare all points and sorted DESC 
         Comparator<DriverPointsDTO> pointsComparator = Comparator.comparingInt(DriverPointsDTO::getTotalPoints);
         Collections.sort(driverPointsDTOList, pointsComparator.reversed());
+        
+        // Select how many results to return
+        int numResultsToReturn = 0;
 
-        int numResults = Math.min(driverPointsDTOList.size(), 10);
+        if (numResults == null || numResults > driverPointsDTOList.size()) {
+            numResultsToReturn = driverPointsDTOList.size();
+        } else {
+            numResultsToReturn  = Math.min(driverPointsDTOList.size(), numResults);
+        }
 
-        return  driverPointsDTOList.subList(0, numResults);
+        return  driverPointsDTOList.subList(0, numResultsToReturn);
     }
 }
