@@ -4,5 +4,5 @@ public class Constants {
     
     private Constants() {}
     
-    public static final String URL_FRONTED = "http://localhost:4200/";
+    public static final String URL_FRONTED = "https://formulabollo.es/";
 }

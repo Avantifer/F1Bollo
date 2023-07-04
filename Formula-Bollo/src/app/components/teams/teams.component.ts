@@ -14,6 +14,14 @@ export class TeamsComponent {
   constructor(private teamService: TeamService) { }
 
   ngOnInit(): void {
+    this.obtainAllTeamsWithDrivers();
+  }
+
+  /**
+   * Get all Teams with their drivers from Backend.
+   * @memberof TeamsComponent
+  */
+  obtainAllTeamsWithDrivers() : void {
     this.teamService.getAllTeamsWithDrivers().subscribe((teamWithDrivers: TeamWithDrivers[]) => {
       this.teamWithDrivers = teamWithDrivers;
     });
