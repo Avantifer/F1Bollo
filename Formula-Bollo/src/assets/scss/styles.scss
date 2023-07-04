@@ -1,1 +1,23 @@
 @import "settings/fonts.scss";
+@import "settings/global.scss";
+@import "settings/colors.scss";
+
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+
+@import "components/navbar.scss";
+@import "components/configurations.scss";
+@import "components/driversIntro.scss";
+@import "components/teamsHome.scss";
+@import "components/teams.scss";
+@import "components/drivers.scss";
+
+@import "responsive/header.scss";
+@import "responsive/teamsHome.scss";
+@import "responsive/driverCards.scss";
+@import "responsive/configurations.scss";
+@import "responsive/teams.scss";
+@import "responsive/drivers.scss";
+
+@import "generic/scrollbar.scss";
