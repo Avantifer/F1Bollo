@@ -52,7 +52,7 @@ export class HomeComponent {
    * @memberof HomeComponent
   */
   obtainAllPointsDriver(): void {
-    this.resultService.getAllDriverPoints().subscribe((driverPoints: DriverPoints[]) => {
+    this.resultService.getAllDriverPoints(10).subscribe((driverPoints: DriverPoints[]) => {
       this.driverPoints = driverPoints;
       this.top3 = driverPoints.slice(0, 3);
       [this.top3[0], this.top3[1]] = [this.top3[1], this.top3[0]];

@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { DriverPoints } from "../models/driverPoints";
@@ -14,7 +14,9 @@ export class ResultService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllDriverPoints(): Observable<DriverPoints[]> {
-    return this.httpClient.get<DriverPoints[]>(environment.apiUrl + this.endpoint + "/totalPerDriver");
+  getAllDriverPoints(numResults?: number): Observable<DriverPoints[]> {
+    const params = numResults ? new HttpParams().set('numResults', numResults.toString()) : undefined;
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.httpClient.get<DriverPoints[]>(environment.apiUrl + this.endpoint + "/totalPerDriver", {params, headers});
   }
 }

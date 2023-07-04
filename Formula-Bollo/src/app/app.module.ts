@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from 'src/shared/components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { TeamsComponent } from './components/teams/teams.component';
+import { DriversComponent } from './components/drivers/drivers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    TeamsComponent
+    TeamsComponent,
+    DriversComponent
   ],
   imports: [
     BrowserModule,

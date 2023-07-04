@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvEntry;
 
 public class EnvConfig {
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.configure().directory(".").ignoreIfMalformed().ignoreIfMissing().load();
 
     private EnvConfig() { }
 
