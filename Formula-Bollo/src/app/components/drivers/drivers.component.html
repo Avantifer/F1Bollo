@@ -1,0 +1,39 @@
+<div class="clasification-drivers-text mt-5 container-fluid container-lg">
+  <h1 class="mt-3 fw-bold">Pilotos</h1>
+</div>
+<div class="clasification-drivers-schema row container-fluid container-lg">
+  <div class="col-12 col-md-6 col-xl-4" *ngFor="let driver of driverPoints; let i = index">
+    <div class="clasification-drivers-schema-card mb-5" [class]="'clasification-drivers-schema-card-' + driver.driver.team.name">
+      <div class="clasification-drivers-schema-card-top d-flex justify-content-between align-items-center px-3 py-2">
+        <div class="clasification-drivers-schema-card-top-number">
+          <h3 class="m-0">{{ i + 1 }}</h3>
+        </div>
+        <div class="clasification-drivers-schema-card-top-points d-flex flex-column align-items-center">
+          <div class="clasification-drivers-schema-card-top-points-number">
+            <h4 class="m-0 fst-italic"> {{ driver.totalPoints }}</h4>
+          </div>
+          <div class="clasification-drivers-schema-card-top-points-badge">
+            <span class="badge bg-dark">Puntos</span>
+          </div>
+        </div>
+      </div>
+      <div class="clasification-drivers-schema-card-mid border-top border-black d-flex flex-column me-2">
+        <div class="clasification-drivers-schema-card-mid-driver d-flex align-items-center px-3 py-2">
+          <div class="clasification-drivers-schema-card-mid-driver-line me-3" [class]="'clasification-drivers-schema-card-mid-driver-line-' + driver.driver.team.name"></div>
+          <h4 class="m-0">{{ driver.driver.name }}</h4>
+        </div>
+      </div>
+      <div class="clasification-drivers-schema-card-bottom position-relative">
+        <div class="clasification-drivers-schema-card-bottom-team px-3 py-2">
+          <p class="m-0">{{ driver.driver.team.name }}</p>
+        </div>
+        <div class="clasification-drivers-schema-card-bottom-image d-flex justify-content-center">
+          <div class="clasification-drivers-schema-card-bottom-image-number d-flex align-items-end">
+            <h5 class="m-0 mb-3" [class]="'clasification-drivers-schema-card-bottom-image-number-' + driver.driver.team.name">{{ driver.driver.number }}</h5>
+          </div>
+            <img [src]="'data:image/jpg;base64,' + driver.driver.driverImage" [alt]="'Imagen de ' + driver.driver.driverImage" class="d-xl-block w-100">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

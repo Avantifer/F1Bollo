@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { TeamsComponent } from './components/teams/teams.component';
+import { DriversComponent } from './components/drivers/drivers.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'teams',
     component: TeamsComponent
+  },
+  {
+    path: 'drivers',
+    component: DriversComponent
   }
 ];
 
