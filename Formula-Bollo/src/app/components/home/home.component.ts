@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Configuration } from 'src/shared/models/configuration';
 import { DriverPoints } from 'src/shared/models/driverPoints';
 import { Team } from 'src/shared/models/team';
-import { ConfigurationService } from 'src/shared/services/configuration.service';
-import { ResultService } from 'src/shared/services/result.service';
-import { TeamService } from 'src/shared/services/team.service';
+import { ConfigurationService } from 'src/shared/services/configuration-api.service';
+import { ResultService } from 'src/shared/services/result.service-api';
+import { TeamService } from 'src/shared/services/team.service-api';
 
 @Component({
   selector: 'app-home',
