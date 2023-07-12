@@ -26,7 +26,6 @@ public class DriverImpl implements DriverMapper {
      * @exception IllegalArgumentException Cannot convert string to byte[]
      * @return class Driver with DriverDTO properties
     */
-
     @Override
     public Driver driverDTOToDriver(DriverDTO driverDTO) {
         Driver driver = new Driver();
@@ -49,7 +48,6 @@ public class DriverImpl implements DriverMapper {
      * @exception SQLException Cannot do something with the db
      * @return class DriverDTO with Driver properties
     */
-
     @Override
     public DriverDTO driverToDriverDTO(Driver driver) {
         DriverDTO driverDTO = new DriverDTO();

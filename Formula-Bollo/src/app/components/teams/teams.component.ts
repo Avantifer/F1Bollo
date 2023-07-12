@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TeamWithDrivers } from 'src/shared/models/teamWithDrivers';
-import { TeamService } from 'src/shared/services/team.service';
+import { TeamService } from 'src/shared/services/team.service-api';
 
 @Component({
   selector: 'app-teams',
