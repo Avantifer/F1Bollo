@@ -8,6 +8,14 @@ import HeaderLinks from 'src/shared/models/headerLinks';
 })
 export class HeaderComponent {
 
+  links: HeaderLinks[] = [
+    new HeaderLinks("Pilotos", "/drivers"),
+    new HeaderLinks("Escuderias", "/teams"),
+    new HeaderLinks("Calendario", "/schedule"),
+    new HeaderLinks("Resultados", "/results"),
+    new HeaderLinks("Estatuto", "/statute"),
+    new HeaderLinks("Admin", "/admin")
+  ];
   activeNavItem: string = '';
   isNavOpen: boolean = false;
 
@@ -17,9 +25,7 @@ export class HeaderComponent {
   */
   selectNavItem(navItem: string): void {
     this.activeNavItem = navItem;
-    if (document.getElementsByClassName("in")[0]) {
-      document.getElementsByClassName("in")[0].classList.remove("in");
-    };
+    this.collapseNavWhenSelectNavItem();
   }
 
   /**
@@ -28,14 +34,12 @@ export class HeaderComponent {
   */
   resetSelectedNavItem(): void {
     this.activeNavItem = '';
+    this.collapseNavWhenSelectNavItem();
   }
 
-  links: HeaderLinks[] = [
-    new HeaderLinks("Pilotos", "/drivers"),
-    new HeaderLinks("Escuderias", "/teams"),
-    new HeaderLinks("Calendario", "/schedule"),
-    new HeaderLinks("Resultados", "/results"),
-    new HeaderLinks("Estatuto", "/statute"),
-    new HeaderLinks("Admin", "/admin")
-  ]
+  collapseNavWhenSelectNavItem(): void {
+    if (document.getElementsByClassName("in")[0]) {
+      document.getElementsByClassName("in")[0].classList.remove("in");
+    };
+  }
 }
