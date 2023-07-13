@@ -12,7 +12,7 @@
           <a class="navlink text-white fw-normal text-decoration-none text-center"
             [ngClass] = "link.name != 'Pilotos' ? 'ms-lg-4 mt-md-3' : ''"
             [routerLink]="link.url"
-            (click)="selectNavItem(link.name)"
+            (click)="selectNavItem(link.name); link.name === 'Admin' ? resetNavItemAdmin() : ''"
             [class.active]="activeNavItem === link.name">{{link.name}}</a>
           <hr class="d-block d-lg-none text-light">
         </li>

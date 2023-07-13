@@ -6,6 +6,7 @@ import { DriversComponent } from './components/drivers/drivers.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdminGuard } from 'src/shared/guards/AdminGuard';
+import { ModifyResultsComponent } from './components/admin/modify-results/modify-results.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -24,12 +25,18 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
-    canActivate: [AdminGuard]
+    canActivate: [AdminGuard],
+    children: [
+      {
+        path: 'modify_results',
+        component: ModifyResultsComponent
+      }
+    ]
   },
   {
     path: 'login',
     component: LoginComponent
-  }
+  },
 ];
 
 @NgModule({
