@@ -1,0 +1,53 @@
+@import "../../../assets/scss/styles.scss";
+
+.admin {
+  height: calc(100vh - 75px);
+
+  &-leftSide {
+    &-title {
+      p {
+        color: white;
+        font-family: 'F1-Regular', sans-serif;
+        letter-spacing: 1px;
+        font-size: 1.75rem;
+      }
+    }
+
+    &-item {
+      width: 10rem;
+      color: white;
+
+      &:hover {
+        background-color: white;
+        cursor: pointer;
+        color: black;
+      }
+
+      &.active {
+        background-color: white;
+        color: black;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .admin {
+    height: calc(100vh - 92px) !important;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .admin {
+    &-leftSide {
+      &-item {
+        width: 4rem !important;
+        margin: auto;
+      }
+    }
+
+    &-rightSide {
+      margin-left: 129px !important;
+    }
+  }
+}
