@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DriverPoints } from 'src/shared/models/driverPoints';
-import { ResultService } from 'src/shared/services/result.service';
+import { ResultService } from 'src/shared/services/result.service-api';
 
 @Component({
   selector: 'app-drivers',
@@ -26,7 +26,6 @@ export class DriversComponent {
   obtainAllResults(): void {
     this.resultService.getAllDriverPoints().subscribe((driverPoints: DriverPoints[]) => {
       this.driverPoints = driverPoints;
-      console.log(this.driverPoints)
     });
   }
 }
