@@ -30,6 +30,11 @@
         width: 50%;
         color: white;
         font-family: 'F1-REGULAR';
+
+        &:hover {
+          background: $red;
+          transform: translate(-1px, -1px);
+        }
       }
     }
   }

@@ -52,9 +52,13 @@ export class HomeComponent {
    * @memberof HomeComponent
   */
   obtainAllPointsDriver(): void {
+    // Get all driver points from the result service
     this.resultService.getAllDriverPoints(10).subscribe((driverPoints: DriverPoints[]) => {
+      // Assign the retrieved driver points to the local variable
       this.driverPoints = driverPoints;
+      // Get the top 3 driver points
       this.top3 = driverPoints.slice(0, 3);
+      // Swap the positions of the first and second elements in the top 3 array
       [this.top3[0], this.top3[1]] = [this.top3[1], this.top3[0]];
     });
   }

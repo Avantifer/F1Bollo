@@ -4,7 +4,6 @@ import { AdminService } from 'src/shared/services/admin-api.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'src/shared/services/message.service';
 import { catchError } from 'rxjs/operators'
-import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,20 +26,27 @@ export class LoginComponent {
    * Login for admin
    * @memberof LoginComponent
   */
-  login(): void {
-    if (this.loginForm.get('password')!.value != '' && this.loginForm.get('username')!.value != '') {
-      let user : Admin = new Admin(0, this.loginForm.get('username')!.value, this.loginForm.get('password')!.value);
-
-      this.adminService.login(user)
+ login(): void {
+  // Check if both username and password are not empty
+  if (this.loginForm.get('password')!.value != '' && this.loginForm.get('username')!.value != '') {
+    // Create a new Admin object with the entered username and password
+    let user : Admin = new Admin(0, this.loginForm.get('username')!.value, this.loginForm.get('password')!.value);
+    // Call the login method from the adminService and handle any errors
+    this.adminService.login(user)
       .pipe(catchError((error) => {
+        // Show the error message using the messageService
         this.messageService.showInformation(error.error);
         return '';
-      })).subscribe(token =>{
+      }))
+      .subscribe(token =>{
+        // Store the token in the local storage
         localStorage.setItem('auth', token);
+        // Navigate to the admin page
         this.router.navigate(['/admin']);
       });
-    }else {
-      this.messageService.showInformation("Necesitas poner el usuario/contraseña");
-    }
+  } else {
+    // Show a message indicating that the username and password are required
+    this.messageService.showInformation("Necesitas poner el usuario/contraseña");
   }
+}
 }
