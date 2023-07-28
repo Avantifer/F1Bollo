@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import HeaderLinks from 'src/shared/models/headerLinks';
 
 @Component({
@@ -12,7 +11,6 @@ export class HeaderComponent {
   links: HeaderLinks[] = [
     new HeaderLinks("Pilotos", "/drivers"),
     new HeaderLinks("Escuderias", "/teams"),
-    new HeaderLinks("Calendario", "/schedule"),
     new HeaderLinks("Resultados", "/results"),
     new HeaderLinks("Estatuto", "/statute"),
     new HeaderLinks("Admin", "/admin")
@@ -72,15 +70,19 @@ export class HeaderComponent {
    * @memberof HomeComponent
   */
   searchNavItemSelected(): void {
-    let allurl: String =  window.location.href;
+    // Get the current URL
+    let allurl: string = window.location.href;
+    // Find the index of the first "/" after the domain name
     let startIndex: number = allurl.indexOf("/", 8);
+    // Find the index of the second "/" after the domain name
     let endIndex: number = allurl.indexOf("/", startIndex + 1);
-    let urlSelected: String = endIndex !== -1 ? allurl.substring(startIndex, endIndex) : allurl.substring(startIndex);
-
-    let actualNavItem: HeaderLinks | undefined = this.links.find((link : HeaderLinks) => link.url === urlSelected);
-
+    // Extract the selected URL from the full URL
+    let urlSelected: string = endIndex !== -1 ? allurl.substring(startIndex, endIndex) : allurl.substring(startIndex);
+    // Find the corresponding navigation item using the selected URL
+    let actualNavItem: HeaderLinks | undefined = this.links.find((link: HeaderLinks) => link.url === urlSelected);
+    // If no matching navigation item is found, return
     if (actualNavItem === undefined) return;
-
+    // Set the active navigation item
     this.activeNavItem = actualNavItem.name;
   }
 }
