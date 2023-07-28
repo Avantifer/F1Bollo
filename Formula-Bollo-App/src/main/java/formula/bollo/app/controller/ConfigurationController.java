@@ -30,7 +30,7 @@ public class ConfigurationController {
     private ConfigurationRepository convConfigurationRepository;
 
     @Autowired
-    ConfigurationMapper configurationMapper;
+    private ConfigurationMapper configurationMapper;
 
     private Map<Long, ConfigurationDTO> configurationsCache = new ConcurrentHashMap<>();
 

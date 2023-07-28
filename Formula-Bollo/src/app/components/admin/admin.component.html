@@ -1,0 +1,18 @@
+<mat-drawer-container class="admin">
+  <mat-drawer mode="side" opened class="admin-leftSide bg-dark px-3 pt-2">
+    <div class="admin-leftSide-title mb-4">
+      <p class="m-0 fw-bold w-100 text-center">Menu</p>
+    </div>
+    <div
+    class="admin-leftSide-item d-flex justify-content-center py-2 rounded"
+    [class.active]="activeNavItem === sideItem.text"
+    *ngFor="let sideItem of sideNavItems"
+    (click)="navigateByUrl(sideItem.url); selectNavItem($event.target)">
+      <mat-icon class="m-0 me-sm-2 pe-none">{{ sideItem.icon }}</mat-icon>
+      <p class="m-0 d-none d-sm-block pe-none">{{ sideItem.text }}</p>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content class="admin-rightSide">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -26,15 +26,17 @@ public class DriverImpl implements DriverMapper {
      * @exception IllegalArgumentException Cannot convert string to byte[]
      * @return class Driver with DriverDTO properties
     */
-
     @Override
     public Driver driverDTOToDriver(DriverDTO driverDTO) {
         Driver driver = new Driver();
 
         try {
+            BeanUtils.copyProperties(driverDTO, driver);
+
+            if (driverDTO.getDriverImage() == null) return driver;
+
             byte[] decodedByte = Base64.getDecoder().decode(driverDTO.getDriverImage());
             Blob driverImage = new SerialBlob(decodedByte);
-            BeanUtils.copyProperties(driverDTO, driver);
             driver.setDriverImage(driverImage);
         } catch (SQLException | IllegalArgumentException e) {
             Log.error("No se ha podido obtener el blob de base64: ", e);
@@ -49,7 +51,6 @@ public class DriverImpl implements DriverMapper {
      * @exception SQLException Cannot do something with the db
      * @return class DriverDTO with Driver properties
     */
-
     @Override
     public DriverDTO driverToDriverDTO(Driver driver) {
         DriverDTO driverDTO = new DriverDTO();
@@ -68,6 +69,24 @@ public class DriverImpl implements DriverMapper {
         } catch (SQLException e) {
             Log.error("No se ha podido obtener la base64 del blob: ", e);
         }
+
+        return driverDTO;
+    }
+
+    /**
+     * Map Driver to return an object type DriverDTO
+     * @param driver
+     * @exception SQLException Cannot do something with the db
+     * @return class DriverDTO with Driver properties
+    */
+    @Override
+    public DriverDTO driverToDriverDTONoImage(Driver driver) {
+        DriverDTO driverDTO = new DriverDTO();
+        BeanUtils.copyProperties(driver, driverDTO);
+        TeamDTO teamDTO = new TeamDTO();
+        teamDTO.setId(driver.getTeam().getId());
+        teamDTO.setName(driver.getTeam().getName());
+        driverDTO.setTeam(teamDTO);
 
         return driverDTO;
     }
