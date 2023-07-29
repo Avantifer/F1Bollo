@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import formula.bollo.app.entity.Position;
 import formula.bollo.app.entity.Race;
 import formula.bollo.app.entity.Result;
+import formula.bollo.app.entity.Sprint;
 import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.mapper.ResultMapper;
@@ -21,6 +22,7 @@ import formula.bollo.app.model.ResultDTO;
 import formula.bollo.app.repository.PositionRepository;
 import formula.bollo.app.repository.RaceRepository;
 import formula.bollo.app.repository.ResultRepository;
+import formula.bollo.app.repository.SprintRepository;
 import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -62,6 +64,9 @@ public class ResultController {
     @Autowired
     private PositionRepository positionRepository;
 
+    @Autowired
+    private SprintRepository sprintRepository;
+
     @Operation(summary = "Get results total per driver")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Results successfully obtained"),
@@ -73,43 +78,42 @@ public class ResultController {
         List<Result> results = resultRepository.findAll();
         Map<DriverDTO, Integer> totalPointsByDriver = new HashMap<>();
 
-        // We make the algorithm so that it takes all the results
-        // And go adding the points grouping by the driver
+        // Calculate total points for each driver based on results
         for (Result result : results) {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(result.getDriver());
             if (result.getPosition() != null) {
                 int points = result.getPosition().getPoints();
                 int fastlap = result.getFastlap();
-                if (totalPointsByDriver.containsKey(driverDTO)) {
-                    int currentPoints = totalPointsByDriver.get(driverDTO);
-                    totalPointsByDriver.put(driverDTO, currentPoints + points + fastlap);
-                } else {
-                    totalPointsByDriver.put(driverDTO, points + fastlap);
-                }
+                int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
+                totalPointsByDriver.put(driverDTO, currentPoints + points + fastlap);
             }
         }
 
-        // Convert the map to a list of DriverPointsDTO
+        // Update total points for each driver based on sprints
+        List<Sprint> sprints = sprintRepository.findAll();
+        for (Sprint sprint : sprints) {
+            DriverDTO driverDTO = driverMapper.driverToDriverDTO(sprint.getDriver());
+            if (sprint.getPosition() != null) {
+                int points = sprint.getPosition().getPoints();
+                int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
+                totalPointsByDriver.put(driverDTO, currentPoints + points);
+            }
+        }
+
+        // Create DriverPointsDTO objects for each driver with their total points
         List<DriverPointsDTO> driverPointsDTOList = new ArrayList<>();
         for (Map.Entry<DriverDTO, Integer> entry : totalPointsByDriver.entrySet()) {
             DriverPointsDTO driverPointsDTO = new DriverPointsDTO(entry.getKey(), entry.getValue());
             driverPointsDTOList.add(driverPointsDTO);
         }
 
-        // Compare all points and sorted DESC 
+        // Sort the driverPointsDTOList in descending order of total points
         Comparator<DriverPointsDTO> pointsComparator = Comparator.comparingInt(DriverPointsDTO::getTotalPoints);
         Collections.sort(driverPointsDTOList, pointsComparator.reversed());
-        
-        // Select how many results to return
-        int numResultsToReturn = 0;
+        // Determine the number of results to return
+        int numResultsToReturn = Math.min(driverPointsDTOList.size(), numResults != null ? numResults : Integer.MAX_VALUE);
 
-        if (numResults == null || numResults > driverPointsDTOList.size()) {
-            numResultsToReturn = driverPointsDTOList.size();
-        } else {
-            numResultsToReturn  = Math.min(driverPointsDTOList.size(), numResults);
-        }
-
-        return  driverPointsDTOList.subList(0, numResultsToReturn);
+        return driverPointsDTOList.subList(0, numResultsToReturn);
     }
 
     @Operation(summary = "Get results per circuit")
