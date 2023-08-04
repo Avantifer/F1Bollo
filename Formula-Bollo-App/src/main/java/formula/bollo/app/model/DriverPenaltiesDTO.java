@@ -1,6 +1,6 @@
 package formula.bollo.app.model;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,8 +15,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class RaceDTO {
-    private Long id;
-    private CircuitDTO circuit;
-    private LocalDateTime dateStart;
+public class DriverPenaltiesDTO {
+    private DriverDTO driver;
+    private List<PenaltyDTO> penalties;
 }

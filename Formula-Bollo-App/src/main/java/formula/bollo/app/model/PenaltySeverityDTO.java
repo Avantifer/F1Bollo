@@ -1,7 +1,5 @@
 package formula.bollo.app.model;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,8 +13,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class RaceDTO {
-    private Long id;
-    private CircuitDTO circuit;
-    private LocalDateTime dateStart;
+public class PenaltySeverityDTO {
+    private long id;
+    private String severity;
 }
