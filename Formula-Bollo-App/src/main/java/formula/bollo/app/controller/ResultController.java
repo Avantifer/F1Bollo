@@ -13,11 +13,9 @@ import formula.bollo.app.entity.Race;
 import formula.bollo.app.entity.Result;
 import formula.bollo.app.entity.Sprint;
 import formula.bollo.app.mapper.DriverMapper;
-import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.mapper.ResultMapper;
 import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.model.DriverPointsDTO;
-import formula.bollo.app.model.RaceDTO;
 import formula.bollo.app.model.ResultDTO;
 import formula.bollo.app.repository.PositionRepository;
 import formula.bollo.app.repository.RaceRepository;
@@ -59,9 +57,6 @@ public class ResultController {
     private RaceRepository raceRepository;
 
     @Autowired
-    private RaceMapper raceMapper;
-
-    @Autowired
     private PositionRepository positionRepository;
 
     @Autowired
@@ -81,23 +76,29 @@ public class ResultController {
         // Calculate total points for each driver based on results
         for (Result result : results) {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(result.getDriver());
+            int points = 0;
+
             if (result.getPosition() != null) {
-                int points = result.getPosition().getPoints();
-                int fastlap = result.getFastlap();
-                int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
-                totalPointsByDriver.put(driverDTO, currentPoints + points + fastlap);
+                points = result.getPosition().getPoints();
             }
+
+            int fastlap = result.getFastlap();
+            int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
+            totalPointsByDriver.put(driverDTO, currentPoints + points + fastlap);
         }
 
         // Update total points for each driver based on sprints
         List<Sprint> sprints = sprintRepository.findAll();
         for (Sprint sprint : sprints) {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(sprint.getDriver());
+            int points = 0;
+
             if (sprint.getPosition() != null) {
-                int points = sprint.getPosition().getPoints();
-                int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
-                totalPointsByDriver.put(driverDTO, currentPoints + points);
+                points = sprint.getPosition().getPoints();
             }
+            
+            int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
+            totalPointsByDriver.put(driverDTO, currentPoints + points);
         }
 
         // Create DriverPointsDTO objects for each driver with their total points
@@ -110,6 +111,7 @@ public class ResultController {
         // Sort the driverPointsDTOList in descending order of total points
         Comparator<DriverPointsDTO> pointsComparator = Comparator.comparingInt(DriverPointsDTO::getTotalPoints);
         Collections.sort(driverPointsDTOList, pointsComparator.reversed());
+        
         // Determine the number of results to return
         int numResultsToReturn = Math.min(driverPointsDTOList.size(), numResults != null ? numResults : Integer.MAX_VALUE);
 
@@ -122,7 +124,7 @@ public class ResultController {
         @ApiResponse(code = 404, message = "Results cannot be found"),
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
-    @GetMapping("/resultsPerCircuit")
+    @GetMapping("/circuit")
     public List<ResultDTO> getResultsPerCircuit(@RequestParam("circuitId") Integer circuitId) {
         List<ResultDTO> resultDTOs = new ArrayList<>();
 
@@ -132,8 +134,7 @@ public class ResultController {
             return resultDTOs;
         }
 
-        RaceDTO raceDTO = raceMapper.raceToRaceDTO(races.get(0));
-        List<Result> results = resultRepository.findByRaceId(raceDTO.getId());
+        List<Result> results = resultRepository.findByRaceId(races.get(0).getId());
 
         if (results.isEmpty()) {
             return resultDTOs;
@@ -157,7 +158,7 @@ public class ResultController {
         @ApiResponse(code = 404, message = "Races cannot be found"),
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
-    @PutMapping(path = "/saveResults", produces = MediaType.TEXT_PLAIN_VALUE)
+    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> saveCircuit(@RequestBody List<ResultDTO> resultDTOs) {
         try {
             Race race = raceRepository.findByCircuitId(resultDTOs.get(0).getRace().getCircuit().getId()).get(0);

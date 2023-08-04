@@ -1,7 +1,5 @@
 package formula.bollo.app.entity;
 
-import java.sql.Blob;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,29 +17,31 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "drivers")
+@Table(name = "penalties")
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Driver {
+public class Penalty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "name", unique = true)
-    private String name;
-
-    @Column(name = "number", unique = true)
-    private int number;
+    @Column(name = "id")
+    private long id;
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
-    private Team team;
+    @JoinColumn(name = "race_id", referencedColumnName = "id")
+    private Race race;
 
-    @JsonIgnore
-    @Column(name = "driver_image")
-    private Blob driverImage;
+    @ManyToOne
+    @JoinColumn(name = "driver_id", referencedColumnName = "id")
+    private Driver driver;
+
+    @Column(name = "reason", length = 250)
+    private String reason;
+
+    @ManyToOne
+    @JoinColumn(name = "severity_id", referencedColumnName = "id")
+    private PenaltySeverity severity;
 }

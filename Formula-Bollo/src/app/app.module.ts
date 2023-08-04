@@ -20,7 +20,7 @@ import { HomeComponent } from './components/home/home.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { DriversComponent } from './components/drivers/drivers.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { ModifyResultsComponent } from './components/admin/modify-results/modify-results.component';
+import { ResultsComponent } from './components/admin/results/results.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoaderComponent } from 'src/shared/components/loader/loader.component';
 import { AdminGuard } from 'src/shared/guards/AdminGuard';
@@ -28,6 +28,7 @@ import { AdminGuard } from 'src/shared/guards/AdminGuard';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoaderService } from './../shared/services/loader.service';
 import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
+import { PenaltiesComponent } from './components/admin/penalties/penalties.component';
 
 @NgModule({
   declarations: [
@@ -37,9 +38,10 @@ import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
     TeamsComponent,
     DriversComponent,
     AdminComponent,
-    ModifyResultsComponent,
+    ResultsComponent,
     LoginComponent,
-    LoaderComponent
+    LoaderComponent,
+    PenaltiesComponent
   ],
   imports: [
     BrowserModule,

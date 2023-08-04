@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DriverPoints } from 'src/shared/models/driverPoints';
-import { ResultService } from 'src/shared/services/result.service-api';
+import { ResultService } from 'src/shared/services/result-api.service';
 
 @Component({
   selector: 'app-drivers',

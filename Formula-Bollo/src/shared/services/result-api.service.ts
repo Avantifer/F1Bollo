@@ -21,17 +21,17 @@ export class ResultService {
     return this.httpClient.get<DriverPoints[]>(environment.apiUrl + this.endpoint + "/totalPerDriver", {params, headers});
   }
 
-  getAllResultsPerCircuit(circuitId: number) {
+  getAllResultsPerCircuit(circuitId: number): Observable<Result[]> {
     const params = new HttpParams().set('circuitId', circuitId.toString());
     const headers = new HttpHeaders().set('Content-type', 'application/json')
-    return this.httpClient.get<Result[]>(environment.apiUrl + this.endpoint + '/resultsPerCircuit', {params, headers});
+    return this.httpClient.get<Result[]>(environment.apiUrl + this.endpoint + '/circuit', {params, headers});
   }
 
-  saveResults(results: Result[]) {
+  saveResults(results: Result[]): Observable<string> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'text/plain'
     });
-    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/saveResults", results, {headers, responseType: 'text' as 'json'});
+    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", results, {headers, responseType: 'text' as 'json'});
   }
 }
