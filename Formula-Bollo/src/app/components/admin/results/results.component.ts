@@ -10,14 +10,14 @@ import { CircuitService } from 'src/shared/services/circuit-api.service';
 import { DriverService } from 'src/shared/services/driver-api.service';
 import { MessageService } from 'src/shared/services/message.service';
 import { RaceService } from 'src/shared/services/race-api.service';
-import { ResultService } from 'src/shared/services/result.service-api';
+import { ResultService } from 'src/shared/services/result-api.service';
 
 @Component({
   selector: 'app-modify-results',
-  templateUrl: './modify-results.component.html',
-  styleUrls: ['./modify-results.component.scss'],
+  templateUrl: './results.component.html',
+  styleUrls: ['./results.component.scss'],
 })
-export class ModifyResultsComponent {
+export class ResultsComponent {
 
   saveButtonActivated: boolean = false;
   drivers: Driver[] = [];
@@ -205,7 +205,7 @@ export class ModifyResultsComponent {
         return;
       }
 
-      race = new Race(0, this.circuitSelected, this.raceDate, null);
+      race = new Race(0, this.circuitSelected, this.raceDate);
       this.raceSelected = race;
     }
     // Check if a race is available
@@ -248,6 +248,9 @@ export class ModifyResultsComponent {
       }))
       .subscribe((success: string) => {
         this.messageService.showInformation(success);
+        this.circuitSelected = undefined;
+        this.circuitsForm.get('circuit')?.setValue('');
+        this.saveButtonActivated = false;
       });
   }
 
@@ -274,6 +277,15 @@ export class ModifyResultsComponent {
 
         resultsToSave.push(newResult);
         positionActual++;
+      }else if (controlValue) {
+        let fastlap: number = 0;
+        // Check if the current driver has the fastest lap
+        if (this.fastLapSelected?.driver.name == controlValue.driver?.name) {
+          fastlap = 1;
+        }
+
+        let newResult: Result = new Result(controlValue.id, controlValue.race, controlValue.driver, null, fastlap);
+        resultsToSave.push(newResult);
       }
     }
 
@@ -289,7 +301,7 @@ export class ModifyResultsComponent {
     if (!this.circuitSelected) return;
 
     let resultsToSave: Result[] = [];
-    let race: Race = new Race(0, this.circuitSelected, this.raceDate, null);
+    let race: Race = new Race(0, this.circuitSelected, this.raceDate);
 
     this.createEveryResult(resultsToSave, race);
     this.comprobateDriversToBeDisqualified(resultsToSave, race);
@@ -301,6 +313,9 @@ export class ModifyResultsComponent {
       return '';
     })).subscribe((success: string) => {
       this.messageService.showInformation(success);
+      this.circuitSelected = undefined;
+      this.circuitsForm.get('circuit')?.setValue('');
+      this.saveButtonActivated = false;
     });
   }
 
