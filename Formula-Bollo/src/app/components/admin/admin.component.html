@@ -4,7 +4,7 @@
       <p class="m-0 fw-bold w-100 text-center">Menu</p>
     </div>
     <div
-    class="admin-leftSide-item d-flex justify-content-center py-2 rounded"
+    class="admin-leftSide-item d-flex justify-content-center py-2 mb-1 rounded"
     [class.active]="activeNavItem === sideItem.text"
     *ngFor="let sideItem of sideNavItems"
     (click)="navigateByUrl(sideItem.url); selectNavItem($event.target)">

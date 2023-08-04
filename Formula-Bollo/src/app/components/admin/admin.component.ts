@@ -10,7 +10,8 @@ import { SideNavItem } from 'src/shared/models/sideNavItems';
 export class AdminComponent {
 
   sideNavItems: SideNavItem[] = [
-    new SideNavItem('emoji_events', 'Resultados', '/admin/modify_results')
+    new SideNavItem('emoji_events', 'Resultados', '/admin/results'),
+    new SideNavItem('gavel', 'Penalizaciones', '/admin/penalties')
   ];
   activeNavItem: string = '';
 
@@ -35,12 +36,20 @@ export class AdminComponent {
   selectNavItem(event: EventTarget | null): void {
     if (event === null) return;
 
+    let allSideNavItem: NodeListOf<Element> = document.querySelectorAll(".admin-leftSide-item");
+
+    allSideNavItem.forEach(element => {
+      if (element.classList.contains('active')) {
+        element.classList.remove('active');
+      }
+    });
+
     let divSelected: Element = event as Element;
 
     if (divSelected.classList.contains('active')) return;
 
     divSelected.classList.add('active');
-    console.log(divSelected.classList)
+
   }
 
   /**

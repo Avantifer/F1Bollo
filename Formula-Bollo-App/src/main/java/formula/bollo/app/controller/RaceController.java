@@ -42,7 +42,7 @@ public class RaceController {
         @ApiResponse(code = 404, message = "Races cannot be found"),
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
-    @GetMapping("/racesPerCircuit")
+    @GetMapping("/circuit")
     public List<RaceDTO> getRacesPerCircuit(@RequestParam("circuitId") Integer circuitId) {
         List<RaceDTO> raceDTOs = new ArrayList<>();
         List<Race> races = raceRepository.findByCircuitId((long) circuitId);
@@ -64,7 +64,7 @@ public class RaceController {
         @ApiResponse(code = 404, message = "Races cannot be found"),
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
-    @PutMapping(path = "/saveRace", produces = MediaType.TEXT_PLAIN_VALUE)
+    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> saveCircuit(@RequestBody RaceDTO raceDTO) {
         try {
             List<Race> existingRace = raceRepository.findByCircuitId(raceDTO.getCircuit().getId());
