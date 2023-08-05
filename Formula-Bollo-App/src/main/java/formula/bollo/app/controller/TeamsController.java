@@ -26,6 +26,7 @@ import formula.bollo.app.model.TeamWithDriversDTO;
 import formula.bollo.app.repository.DriverRepository;
 import formula.bollo.app.repository.ResultRepository;
 import formula.bollo.app.repository.TeamRepository;
+import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,6 +61,8 @@ public class TeamsController {
     })
     @GetMapping("/all")
     public List<TeamDTO> getAllTeams() {
+        Log.info("START - getAllTeams - START");
+        
         if (teamCache.isEmpty()) {
             List<Team> teams = teamRepository.findAll();
             
@@ -68,6 +71,9 @@ public class TeamsController {
                 teamCache.put(team.getId(), teamDTO);
             }
         }
+
+        Log.info("END - getAllTeams - END");
+        
         return new ArrayList<>(teamCache.values());
     }
 
@@ -79,6 +85,7 @@ public class TeamsController {
     })
     @GetMapping("/withDrivers")
     public List<TeamWithDriversDTO> getAllTeamWithDrivers() {
+        Log.info("START - getAllTeamWithDrivers - START");
 
         List<Driver> drivers = driverRepository.findAll(Sort.by("team.id"));
 
@@ -122,6 +129,8 @@ public class TeamsController {
 
         // Sort the list by totalPoints
         Collections.sort(teamsWithDriversDTOList, Comparator.comparingInt(TeamWithDriversDTO::getTotalPoints).reversed());
+
+        Log.info("END - getAllTeamWithDrivers - END");
 
         return teamsWithDriversDTOList;
     } 

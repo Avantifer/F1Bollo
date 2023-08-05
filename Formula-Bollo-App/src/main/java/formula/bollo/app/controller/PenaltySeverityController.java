@@ -5,7 +5,7 @@ import formula.bollo.app.entity.PenaltySeverity;
 import formula.bollo.app.mapper.PenaltySeverityMapper;
 import formula.bollo.app.model.PenaltySeverityDTO;
 import formula.bollo.app.repository.PenaltySeverityRepository;
-
+import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,13 +39,17 @@ public class PenaltySeverityController {
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @GetMapping("/all")
-    public List<PenaltySeverityDTO> getAll() {
+    public List<PenaltySeverityDTO> getAllPenaltiesSeverity() {
+        Log.info("START - getAllPenaltiesSeverity - START");
+        
         List<PenaltySeverity> penaltiesSeverities = penaltySeverityRepository.findAll();
         List<PenaltySeverityDTO> penaltySeveritiesDTOs = new ArrayList<>();
 
         for (PenaltySeverity penaltySeverity : penaltiesSeverities) {
             penaltySeveritiesDTOs.add(penaltySeverityMapper.penaltySeverityToPenaltySeverityDTO(penaltySeverity));
         }
+        
+        Log.info("END - getAllPenaltiesSeverity - END");
 
         return penaltySeveritiesDTOs;
     }

@@ -188,7 +188,7 @@ export class PenaltiesComponent {
         penalty = new Penalty(this.penaltySelected.id, this.raceSelected, this.driverSelected, this.penaltySeveritySelected, this.reasonSelected!);
       }
 
-      this.penaltyService.savePenalties([penalty]).pipe(catchError((error) => {
+      this.penaltyService.savePenalties(penalty).pipe(catchError((error) => {
         this.messageService.showInformation(error.error);
         return '';
       })).subscribe((success: string) => {
