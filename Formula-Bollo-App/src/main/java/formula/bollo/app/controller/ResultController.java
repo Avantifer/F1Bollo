@@ -70,9 +70,12 @@ public class ResultController {
     })
     @GetMapping("/totalPerDriver")
     public List<DriverPointsDTO> getTotalResultsPerDriver(@RequestParam(value = "numResults", required = false) Integer numResults) {
+        Log.info("START - getTotalResultsPerDriver - START");
+        Log.info("RequestParam getTotalResultsPerDriver (numResults) -> " + numResults);
+        
         List<Result> results = resultRepository.findAll();
         Map<DriverDTO, Integer> totalPointsByDriver = new HashMap<>();
-
+        
         // Calculate total points for each driver based on results
         for (Result result : results) {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(result.getDriver());
@@ -92,7 +95,7 @@ public class ResultController {
         for (Sprint sprint : sprints) {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(sprint.getDriver());
             int points = 0;
-
+            
             if (sprint.getPosition() != null) {
                 points = sprint.getPosition().getPoints();
             }
@@ -100,24 +103,26 @@ public class ResultController {
             int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
             totalPointsByDriver.put(driverDTO, currentPoints + points);
         }
-
+        
         // Create DriverPointsDTO objects for each driver with their total points
         List<DriverPointsDTO> driverPointsDTOList = new ArrayList<>();
         for (Map.Entry<DriverDTO, Integer> entry : totalPointsByDriver.entrySet()) {
             DriverPointsDTO driverPointsDTO = new DriverPointsDTO(entry.getKey(), entry.getValue());
             driverPointsDTOList.add(driverPointsDTO);
         }
-
+        
         // Sort the driverPointsDTOList in descending order of total points
         Comparator<DriverPointsDTO> pointsComparator = Comparator.comparingInt(DriverPointsDTO::getTotalPoints);
         Collections.sort(driverPointsDTOList, pointsComparator.reversed());
         
         // Determine the number of results to return
         int numResultsToReturn = Math.min(driverPointsDTOList.size(), numResults != null ? numResults : Integer.MAX_VALUE);
+        
+        Log.info("END - getTotalResultsPerDriver - END");
 
         return driverPointsDTOList.subList(0, numResultsToReturn);
     }
-
+    
     @Operation(summary = "Get results per circuit")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Results successfully obtained"),
@@ -126,6 +131,9 @@ public class ResultController {
     })
     @GetMapping("/circuit")
     public List<ResultDTO> getResultsPerCircuit(@RequestParam("circuitId") Integer circuitId) {
+        Log.info("START - getResultsPerCircuit - START");
+        Log.info("RequestParam getResultsPerCircuit (circuitId) -> " + circuitId);
+
         List<ResultDTO> resultDTOs = new ArrayList<>();
 
         List<Race> races = raceRepository.findByCircuitId((long)circuitId);
@@ -149,6 +157,8 @@ public class ResultController {
                Comparator.nullsLast(Integer::compareTo));
         Collections.sort(resultDTOs, pointsComparator);
 
+        Log.info("END - getResultsPerCircuit - END");
+
         return resultDTOs;
     }
 
@@ -160,6 +170,9 @@ public class ResultController {
     })
     @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> saveCircuit(@RequestBody List<ResultDTO> resultDTOs) {
+        Log.info("START - saveCircuit - START");
+        Log.info("RequestBody getResultsPerCircuit -> " + resultDTOs.toString());
+
         try {
             Race race = raceRepository.findByCircuitId(resultDTOs.get(0).getRace().getCircuit().getId()).get(0);
 
@@ -194,6 +207,8 @@ public class ResultController {
             Log.error("Error inesperado", e);
             return new ResponseEntity<>("Error inesperado. Contacta con el administrados", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        Log.info("END - saveCircuit - END");
 
         return new ResponseEntity<>("Carrera guardada correctamente", HttpStatus.OK);
     }

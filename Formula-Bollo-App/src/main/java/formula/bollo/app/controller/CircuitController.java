@@ -9,6 +9,7 @@ import formula.bollo.app.entity.Circuit;
 import formula.bollo.app.mapper.CircuitMapper;
 import formula.bollo.app.model.CircuitDTO;
 import formula.bollo.app.repository.CircuitRepository;
+import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,14 +35,16 @@ public class CircuitController {
 
     private Map<Long, CircuitDTO> circuitsCache = new ConcurrentHashMap<>();
 
-    @Operation(summary = "Get all configurations")
+    @Operation(summary = "Get all circuits")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Configurations successfully obtained"),
-        @ApiResponse(code = 404, message = "Configurations cannot be found"),
+        @ApiResponse(code = 200, message = "Circuits successfully obtained"),
+        @ApiResponse(code = 404, message = "Circuits cannot be found"),
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @GetMapping("/all")
-    public List<CircuitDTO> getAllConfigurations() {
+    public List<CircuitDTO> getAllCircuits() {
+        Log.info("START - getAllCircuits - START");
+        
         if (circuitsCache.isEmpty()) {
             List<Circuit> circuits = circuitRepository.findAll();
             
@@ -50,6 +53,8 @@ public class CircuitController {
                 circuitsCache.put(circuit.getId(), circuitDTO);
             }
         }
+        
+        Log.info("END - getAllCircuits - END");
 
         return new ArrayList<>(circuitsCache.values());
     }
