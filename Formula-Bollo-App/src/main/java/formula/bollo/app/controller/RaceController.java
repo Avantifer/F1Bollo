@@ -4,6 +4,7 @@ import formula.bollo.app.entity.Race;
 import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.model.RaceDTO;
 import formula.bollo.app.repository.RaceRepository;
+import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,16 +45,21 @@ public class RaceController {
     })
     @GetMapping("/circuit")
     public List<RaceDTO> getRacesPerCircuit(@RequestParam("circuitId") Integer circuitId) {
+        Log.info("START - getRacesPerCircuit - START");
+        Log.info("RequestParam getRacesPerCircuit (circuitId) -> " + circuitId);
+
         List<RaceDTO> raceDTOs = new ArrayList<>();
         List<Race> races = raceRepository.findByCircuitId((long) circuitId);
-
+        
         if (races.isEmpty()) {
             return raceDTOs;
         }
-
+        
         for(Race race : races) {
             raceDTOs.add(raceMapper.raceToRaceDTO(race));
         }
+        
+        Log.info("END - getRacesPerCircuit - END");
 
         return raceDTOs;
     }
@@ -66,6 +72,9 @@ public class RaceController {
     })
     @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> saveCircuit(@RequestBody RaceDTO raceDTO) {
+        Log.info("START - saveCircuit - START");
+        Log.info("RequestBody saveCircuit -> " + raceDTO);
+        
         try {
             List<Race> existingRace = raceRepository.findByCircuitId(raceDTO.getCircuit().getId());
             if (existingRace.isEmpty()) {
@@ -81,6 +90,8 @@ public class RaceController {
         } catch (Exception e) {
             return new ResponseEntity<>("Error inesperado. Contacta con el administrados", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        
+        Log.info("END - saveCircuit - END");
 
         return new ResponseEntity<>("Carrera guardada correctamente", HttpStatus.OK);
     }

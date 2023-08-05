@@ -35,11 +35,11 @@ export class PenaltyService {
     return this.httpClient.get<Penalty>(environment.apiUrl + this.endpoint + '/perDriverPerRace', {params, headers});
   }
 
-  savePenalties(penalties: Penalty[]): Observable<string> {
+  savePenalties(penalty: Penalty): Observable<string> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
-    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", penalties, {headers, responseType: 'text' as 'json'});
+    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", penalty, {headers, responseType: 'text' as 'json'});
   }
 }
