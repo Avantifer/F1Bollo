@@ -5,9 +5,11 @@ import formula.bollo.app.entity.Penalty;
 import formula.bollo.app.entity.Race;
 import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.PenaltyMapper;
+import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.model.DriverPenaltiesDTO;
 import formula.bollo.app.model.PenaltyDTO;
+import formula.bollo.app.model.RacePenaltiesDTO;
 import formula.bollo.app.repository.PenaltyRepository;
 import formula.bollo.app.repository.RaceRepository;
 import formula.bollo.app.utils.Log;
@@ -51,6 +53,9 @@ public class PenaltyController {
 
     @Autowired
     private DriverMapper driverMapper;
+
+    @Autowired
+    private RaceMapper raceMapper;
 
 
     @Operation(summary = "Get all penalties")
@@ -111,46 +116,62 @@ public class PenaltyController {
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @GetMapping("/totalPerDriver")
-    public List<DriverPenaltiesDTO> getPenaltiesByDriver() {
-        Log.info("START - getPenaltiesByDriver - START");
-
+    public List<DriverPenaltiesDTO> getPenaltiesByDriverAndRace() {
+        Log.info("START - getPenaltiesByDriverAndRace - START");
+    
         List<DriverPenaltiesDTO> driversWithPenalties = new ArrayList<>();
         List<Penalty> penalties = penaltyRepository.findAll();
-        Map<Driver, List<Penalty>> driverPenaltiesMap = new HashMap<>();
-
-        // Create a map of drivers and their penalties
+        Map<Driver, Map<Race, List<Penalty>>> driverRacePenaltiesMap = new HashMap<>();
+    
+        // Create a map of drivers, races, and their penalties
         for (Penalty penalty : penalties) {
             Driver driver = penalty.getDriver();
-            List<Penalty> penaltiesList = driverPenaltiesMap.getOrDefault(driver, new ArrayList<>());
+            Race race = penalty.getRace();
+    
+            Map<Race, List<Penalty>> racePenaltiesMap = driverRacePenaltiesMap.getOrDefault(driver, new HashMap<>());
+            List<Penalty> penaltiesList = racePenaltiesMap.getOrDefault(race, new ArrayList<>());
             penaltiesList.add(penalty);
-            driverPenaltiesMap.put(driver, penaltiesList);
+            racePenaltiesMap.put(race, penaltiesList);
+            driverRacePenaltiesMap.put(driver, racePenaltiesMap);
         }
-
-        // Create a list of drivers with their penalties
-        for (Map.Entry<Driver, List<Penalty>> entry : driverPenaltiesMap.entrySet()) {
-            Driver driver = entry.getKey();
+    
+        // Create a list of drivers with their penalties for each race
+        for (Map.Entry<Driver, Map<Race, List<Penalty>>> driverEntry : driverRacePenaltiesMap.entrySet()) {
+            Driver driver = driverEntry.getKey();
             DriverDTO driverDTO = driverMapper.driverToDriverDTONoImage(driver);
-            List<Penalty> penaltiesList = entry.getValue();
-            List<PenaltyDTO> penaltyDTOs = new ArrayList<>();
-
-            // Convert penalties to DTOs
-            for (Penalty penalty : penaltiesList) {
-                PenaltyDTO penaltyDTO = penaltyMapper.penaltyToPenaltyDTO(penalty);
-                penaltyDTOs.add(penaltyDTO);
+            List<RacePenaltiesDTO> racePenaltiesDTOs = new ArrayList<>();
+    
+            for (Map.Entry<Race, List<Penalty>> raceEntry : driverEntry.getValue().entrySet()) {
+                Race race = raceEntry.getKey();
+                List<Penalty> penaltiesList = raceEntry.getValue();
+                List<PenaltyDTO> penaltyDTOs = new ArrayList<>();
+    
+                // Convert penalties to DTOs
+                for (Penalty penalty : penaltiesList) {
+                    PenaltyDTO penaltyDTO = penaltyMapper.penaltyToPenaltyDTO(penalty);
+                    penaltyDTOs.add(penaltyDTO);
+                }
+    
+                // Create a DTO object for each race with its penalties
+                RacePenaltiesDTO racePenaltiesDTO = new RacePenaltiesDTO();
+                racePenaltiesDTO.setRace(raceMapper.raceToRaceDTO(race));
+                racePenaltiesDTO.setPenalties(penaltyDTOs);
+                racePenaltiesDTOs.add(racePenaltiesDTO);
             }
-
-            // Create a DTO object for driver with their penalties
+    
+            // Create a DTO object for driver with their penalties for each race
             DriverPenaltiesDTO driverPenaltiesDTO = new DriverPenaltiesDTO();
             driverPenaltiesDTO.setDriver(driverDTO);
-            driverPenaltiesDTO.setPenalties(penaltyDTOs);
+            driverPenaltiesDTO.setRacePenalties(racePenaltiesDTOs);
+    
             driversWithPenalties.add(driverPenaltiesDTO);
         }
-
-        Comparator<DriverPenaltiesDTO> letterComparator = Comparator.comparingLong(dto -> dto.getDriver().getId());
-        Collections.sort(driversWithPenalties, letterComparator);
-
-        Log.info("END - getPenaltiesByDriver - END");
-
+    
+        Comparator<DriverPenaltiesDTO> driverComparator = Comparator.comparingLong(dto -> dto.getDriver().getId());
+        Collections.sort(driversWithPenalties, driverComparator);
+    
+        Log.info("END - getPenaltiesByDriverAndRace - END");
+    
         return driversWithPenalties;
     }
 
@@ -161,21 +182,23 @@ public class PenaltyController {
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @PutMapping("/save")
-    public ResponseEntity<String> savePenaly(@RequestBody PenaltyDTO penaltyDTO) {
-        Log.info("START - penaltySave - START");        
-        Log.info("RequestBody penaltySave " + penaltyDTO.toString());
+    public ResponseEntity<String> savePenalty(@RequestBody List<PenaltyDTO> penaltyDTOs) {
+        Log.info("START - savePenalty - START");        
+        Log.info("RequestBody savePenalty " + penaltyDTOs.toString());
 
         try {
-            Race race = raceRepository.findByCircuitId(penaltyDTO.getRace().getCircuit().getId()).get(0);
+            Penalty firstPenalty = penaltyMapper.penaltyDTOToPenalty(penaltyDTOs.get(0));
+            List<Penalty> existingPenalties = penaltyRepository.findByDriverAndRaceAndSeverity(firstPenalty.getDriver().getId(), firstPenalty.getRace().getId(), firstPenalty.getSeverity().getId());
+            
+            penaltyRepository.deleteAll(existingPenalties);
 
-            List<Penalty> existingPenalties = penaltyRepository.findByRaceId(penaltyDTO.getRace().getId());
-            Penalty newPenalty = penaltyMapper.penaltyDTOToPenalty(penaltyDTO);
-
-            if (existingPenalties.isEmpty()) {    
-                newPenalty.setRace(race);
+            for(PenaltyDTO penaltyDTO : penaltyDTOs) {
+                Penalty penalty = penaltyMapper.penaltyDTOToPenalty(penaltyDTO);
+                if (!penalty.getReason().isEmpty()) {
+                    penaltyRepository.save(penalty);
+                }
             }
 
-            penaltyRepository.saveAndFlush(newPenalty);
         } catch (DataAccessException e) {
             Log.error("Error inesperado", e);
             return new ResponseEntity<>("Hubo un problema con la base de datos", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -196,21 +219,24 @@ public class PenaltyController {
         @ApiResponse(code = 500, message = "There was an error, contact with administrator")
     })
     @GetMapping("/perDriverPerRace")
-    public PenaltyDTO getPenaltyByDriverAndRace(@RequestParam("driverId") Integer driverId, @RequestParam("raceId")  Integer raceId) {
+    public List<PenaltyDTO> getPenaltyByDriverAndRace(@RequestParam("driverId") Integer driverId, @RequestParam("raceId") Integer raceId, @RequestParam("severityId") Integer severityId) {
         Log.info("START - getPenaltyByDriverAndRace - START");
         Log.info("RequestParam getPenaltyByDriverAndRace (driverId) -> " + driverId);
         Log.info("RequestParam getPenaltyByDriverAndRace (raceId) -> " + raceId);
+        Log.info("RequestParam getPenaltyByDriverAndRace (severityId) -> " + severityId);
 
-        PenaltyDTO penaltyDTO = new PenaltyDTO();
+        List<PenaltyDTO> penaltyDTOs = new ArrayList<>();
 
-        List<Penalty> penaltyDriver = penaltyRepository.findByDriverAndRace((long) driverId, (long) raceId);
+        List<Penalty> penaltyDriver = penaltyRepository.findByDriverAndRaceAndSeverity((long) driverId, (long) raceId, (long) severityId);
 
         if (!penaltyDriver.isEmpty()) {
-            penaltyDTO = penaltyMapper.penaltyToPenaltyDTO(penaltyDriver.get(0));
+            for (Penalty penalty : penaltyDriver) {
+                penaltyDTOs.add(penaltyMapper.penaltyToPenaltyDTO(penalty));
+            }
         }
 
         Log.info("END - getPenaltyByDriverAndRace - END");
 
-        return penaltyDTO;
+        return penaltyDTOs;
     }
 }

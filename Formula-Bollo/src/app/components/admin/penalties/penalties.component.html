@@ -40,7 +40,7 @@
     </form>
   </div>
 
-  <div class="penalty-bottomSide mx-auto" *ngIf="driverSelected">
+  <div class="penalty-bottomSide mx-auto" *ngIf="penaltySeveritySelected">
     <form [formGroup]="reasonForm">
       <label class="mb-1">Razón de penalización:</label>
       <mat-form-field>
@@ -57,9 +57,16 @@
   <div class="penalty-list">
     <div class="penalty-list-item" *ngFor="let driverPenalty of penalties">
       <p>{{ driverPenalty.driver.name }}</p>
-      <ul class="ms-3">
-        <li *ngFor="let penalty of driverPenalty.penalties">{{penalty.race.circuit.name}}: {{ showReason(penalty.reason) }} ({{ penalty.severity.severity }}) </li>
-      </ul>
+      <div class="ms-4">
+        <div *ngFor="let racePenalty of driverPenalty.racePenalties">
+          {{ racePenalty.race.circuit.name }}:
+          <ul class="ms-5">
+            <li *ngFor="let penalty of racePenalty.penalties">
+              {{ showReason(penalty.reason) }} ({{ penalty.severity.severity }})
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>

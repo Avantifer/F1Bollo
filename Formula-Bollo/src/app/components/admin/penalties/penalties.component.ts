@@ -41,7 +41,7 @@ export class PenaltiesComponent {
 
   circuitSelected: Circuit | undefined;
   driverSelected: Driver | undefined;
-  penaltySelected: Penalty | undefined;
+  penaltiesSelected: Penalty[] | undefined;
   penaltySeveritySelected: PenaltySeverity | undefined;
   reasonSelected: string | undefined;
   raceSelected: Race | undefined;
@@ -63,8 +63,8 @@ export class PenaltiesComponent {
     this.getAllPenaltiesSeverity();
     this.getCircuitSelected();
     this.getDriverSelected();
+    this.getPenaltySeveritySelected();
   }
-
 
   /**
    * Get all circuits
@@ -96,8 +96,8 @@ export class PenaltiesComponent {
       this.circuitSelected = data.circuit;
       this.raceService.getRacePerCircuit(this.circuitSelected!.id).subscribe((race: Race[]) => {
         this.raceSelected = race[0];
-        if (this.driverForm.get('driver')?.value) {
-          this.getPenaltyPerDriverAndRace(this.driverForm.get('driver')?.value, race[0]);
+        if (this.driverSelected && this.penaltySeveritySelected) {
+          this.getPenaltyPerDriverAndRaceAndSeverity(this.driverSelected, race[0], this.penaltySeveritySelected);
         }
       })
     });
@@ -121,10 +121,25 @@ export class PenaltiesComponent {
   getDriverSelected(): void {
     this.driverForm.valueChanges.subscribe((data: any) => {
       this.driverSelected = data.driver;
-      if (this.driverSelected) {
+      if (this.driverSelected && this.circuitSelected && this.penaltySeveritySelected) {
+        this.raceService.getRacePerCircuit(this.circuitSelected.id).subscribe((race: Race[]) => {
+          this.getPenaltyPerDriverAndRaceAndSeverity(this.driverSelected!, race[0], this.penaltySeveritySelected!);
+        });
+      }
+    });
+  }
+
+  /**
+   * Get the penalty's severity selected
+   * @memberof PenaltiesComponent
+  */
+  getPenaltySeveritySelected(): void {
+    this.penaltySeverityForm.valueChanges.subscribe((data : any) => {
+      this.penaltySeveritySelected = data.penaltySeverity;
+      if (this.penaltySeveritySelected && this.driverSelected && this.circuitSelected) {
         this.saveButtonActivated = true;
-        this.raceService.getRacePerCircuit(this.circuitSelected!.id).subscribe((race: Race[]) => {
-          this.getPenaltyPerDriverAndRace(data.driver, race[0]);
+        this.raceService.getRacePerCircuit(this.circuitSelected.id).subscribe((race: Race[]) => {
+          this.getPenaltyPerDriverAndRaceAndSeverity(this.driverSelected!, race[0], this.penaltySeveritySelected!);
         });
       }
     });
@@ -144,24 +159,27 @@ export class PenaltiesComponent {
    * Get penalty of a driver and race
    * @memberof PenaltiesComponent
   */
-  getPenaltyPerDriverAndRace(driver: Driver, race: Race): void {
-    this.penaltyService.getPenaltyByDriverAndRace(driver.id, race.id).subscribe((penalty: Penalty) => {
-      if (penalty.driver != null) {
-        this.penaltySelected = penalty;
+  getPenaltyPerDriverAndRaceAndSeverity(driver: Driver, race: Race, penaltySeverity: PenaltySeverity): void {
+    this.penaltyService.getPenaltyByDriverAndRaceAndSeverity(driver.id, race.id, penaltySeverity.id).subscribe((penalties: Penalty[]) => {
+      this.reasonSelected = '';
+      this.reasonForm.get('reason')?.setValue('');
+      if (penalties.length === 0) return;
 
-        let selectedSeverity = this.penaltiesSeverity.find((penaltyseverity) => penaltyseverity.severity === penalty.severity.severity);
+      this.penaltiesSelected = penalties;
 
-        if (selectedSeverity) {
-          this.penaltySeveritySelected = selectedSeverity;
-          this.penaltySeverityForm.get('penaltySeverity')?.setValue(selectedSeverity);
-
-          this.reasonSelected = penalty.reason;
-          this.reasonForm.get('reason')?.setValue(this.reasonSelected);
+      for (let i = 0; i < this.penaltiesSelected.length; i++) {
+        if (i === this.penaltiesSelected.length - 1) {
+          this.reasonSelected += this.penaltiesSelected[i].reason;
+        }else {
+          this.reasonSelected += this.penaltiesSelected[i].reason + '\r\n\r';
         }
-      }else {
-        this.penaltySeverityForm.get('penaltySeverity')?.setValue('');
-        this.reasonForm.get('reason')?.setValue('');
       }
+
+      if (this.reasonSelected?.includes('undefined')) {
+        this.reasonSelected = this.reasonSelected.replace('undefined', '');
+      }
+
+      this.reasonForm.get('reason')?.setValue(this.reasonSelected);
     });
   }
 
@@ -171,35 +189,51 @@ export class PenaltiesComponent {
   */
   savePenalty(): void {
     this.reasonSelected = this.reasonForm.get('reason')?.value;
+    let penaltiesToSave: Penalty[] = [];
 
-    if (!this.penaltySeveritySelected) {
-      this.messageService.showInformation("Necesitas poner la gravedad");
-      return;
-    }
-
-    if (this.reasonSelected === '' || this.reasonSelected === null) {
-      this.messageService.showInformation("Necesitas poner la razón");
-      return;
-    }
-
-    if (this.raceSelected && this.driverSelected) {
-      let penalty: Penalty = new Penalty(0, this.raceSelected, this.driverSelected, this.penaltySeveritySelected, this.reasonSelected!);
-       if (this.penaltySelected) {
-        penalty = new Penalty(this.penaltySelected.id, this.raceSelected, this.driverSelected, this.penaltySeveritySelected, this.reasonSelected!);
+    // Check if the reason selected is empty
+    if (this.reasonSelected === '') {
+      // This delete all penalties previously saved
+      let penaltyToSave: Penalty = new Penalty(0, this.raceSelected!, this.driverSelected!, this.penaltySeveritySelected!, '');
+      penaltiesToSave.push(penaltyToSave);
+    } else {
+      // Check if the reason selected contains line breaks and remove it
+      if (this.reasonSelected?.includes('\r')) {
+        this.reasonSelected = this.reasonSelected.replace(/\r/g, '');
       }
 
-      this.penaltyService.savePenalties(penalty).pipe(catchError((error) => {
-        this.messageService.showInformation(error.error);
-        return '';
-      })).subscribe((success: string) => {
-        this.messageService.showInformation(success);
-        this.driverSelected = undefined;
-        this.driverForm.get('driver')?.setValue('');
-        this.saveButtonActivated = false;
-      });
+      let reasonsArray: string[] = this.reasonSelected!.split('\n');
+
+      for(let reason of reasonsArray) {
+        let penaltyToSave: Penalty = new Penalty(0, this.raceSelected!, this.driverSelected!, this.penaltySeveritySelected!, reason);
+        penaltiesToSave.push(penaltyToSave);
+      }
     }
+
+    // Save the penalties using the penalty service
+    this.penaltyService.savePenalties(penaltiesToSave).pipe(catchError((error) => {
+      // Show an error message if there is an error saving the penalties
+      this.messageService.showInformation(error.error);
+      return '';
+    })).subscribe((success: string) => {
+      // Show a success message if the penalties are saved successfully
+      this.messageService.showInformation(success);
+
+      // Reset selected values and form fields
+      this.driverSelected = undefined;
+      this.driverForm.get('driver')?.setValue('');
+      this.penaltySeveritySelected = undefined;
+      this.penaltySeverityForm.get('penaltySeverity')?.setValue('');
+
+      // Deactivate the save button
+      this.saveButtonActivated = false;
+    });
   }
 
+  /**
+   * Show reason correctly to HTML
+   * @memberof PenaltiesComponent
+  */
   showReason(reason: string): string {
     if (reason) {
       let indexPoint: number = reason.indexOf('.');

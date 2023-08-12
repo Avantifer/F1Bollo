@@ -15,7 +15,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class DriverPenaltiesDTO {
-    private DriverDTO driver;
-    private List<RacePenaltiesDTO> racePenalties;
+public class RacePenaltiesDTO {
+    private RaceDTO race;
+    private List<PenaltyDTO> penalties;
 }
