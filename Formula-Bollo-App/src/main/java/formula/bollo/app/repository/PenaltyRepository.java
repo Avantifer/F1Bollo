@@ -13,6 +13,6 @@ public interface PenaltyRepository extends JpaRepository<Penalty, Long>{
     @Query(value = "SELECT p FROM Penalty p WHERE p.race.id = ?1")
     List<Penalty> findByRaceId(Long race);
 
-    @Query(value = "SELECT p FROM Penalty p WHERE p.driver.id = ?1 AND p.race.id = ?2")
-    List<Penalty> findByDriverAndRace(Long driverId, Long raceId);
+    @Query(value = "SELECT p FROM Penalty p WHERE p.driver.id = ?1 AND p.race.id = ?2 AND p.severity.id = ?3")
+    List<Penalty> findByDriverAndRaceAndSeverity(Long driverId, Long raceId, Long severityId);
 }

@@ -1,12 +1,12 @@
 import { Driver } from "./driver";
-import { Penalty } from "./penalty";
+import { RacePenalties } from "./racePenalty";
 
 export class DriverPenalties {
   driver: Driver;
-  penalties: Penalty[];
+  racePenalties: RacePenalties[];
 
-  constructor(driver: Driver, penalties: Penalty[]) {
+  constructor(driver: Driver, racePenalties: RacePenalties[]) {
     this.driver = driver;
-    this.penalties = penalties;
+    this.racePenalties = racePenalties;
   }
 }

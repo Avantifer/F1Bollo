@@ -29,17 +29,17 @@ export class PenaltyService {
     return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + '/circuit', {params, headers});
   }
 
-  getPenaltyByDriverAndRace(driverId: number, raceId: number): Observable<Penalty> {
-    const params = new HttpParams().set('driverId', driverId.toString()).set('raceId', raceId.toString());
+  getPenaltyByDriverAndRaceAndSeverity(driverId: number, raceId: number, severityId: number): Observable<Penalty[]> {
+    const params = new HttpParams().set('driverId', driverId.toString()).set('raceId', raceId.toString()).set('severityId', severityId.toString());
     const headers = new HttpHeaders().set('Content-type', 'application/json')
-    return this.httpClient.get<Penalty>(environment.apiUrl + this.endpoint + '/perDriverPerRace', {params, headers});
+    return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + '/perDriverPerRace', {params, headers});
   }
 
-  savePenalties(penalty: Penalty): Observable<string> {
+  savePenalties(penalties: Penalty[]): Observable<string> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
-    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", penalty, {headers, responseType: 'text' as 'json'});
+    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", penalties, {headers, responseType: 'text' as 'json'});
   }
 }
