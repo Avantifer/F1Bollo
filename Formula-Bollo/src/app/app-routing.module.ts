@@ -8,6 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AdminGuard } from 'src/shared/guards/AdminGuard';
 import { ResultsComponent } from './components/admin/results/results.component';
 import { PenaltiesComponent } from './components/admin/penalties/penalties.component';
+import { StatuteComponent } from './components/statute/statute.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'drivers',
     component: DriversComponent
+  },
+  {
+    path: 'statute',
+    component: StatuteComponent
   },
   {
     path: 'admin',
