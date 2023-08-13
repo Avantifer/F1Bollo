@@ -80,8 +80,54 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { NgModule } from &#x27;@angular/core&#x27;;
 import { RouterModule, Routes } from &#x27;@angular/router&#x27;;
+import { HomeComponent } from &#x27;./components/home/home.component&#x27;;
+import { TeamsComponent } from &#x27;./components/teams/teams.component&#x27;;
+import { DriversComponent } from &#x27;./components/drivers/drivers.component&#x27;;
+import { AdminComponent } from &#x27;./components/admin/admin.component&#x27;;
+import { LoginComponent } from &#x27;./components/login/login.component&#x27;;
+import { AdminGuard } from &#x27;src/shared/guards/AdminGuard&#x27;;
+import { ResultsComponent } from &#x27;./components/admin/results/results.component&#x27;;
+import { PenaltiesComponent } from &#x27;./components/admin/penalties/penalties.component&#x27;;
+import { StatuteComponent } from &#x27;./components/statute/statute.component&#x27;;
 
-const routes: Routes &#x3D; [];
+const routes: Routes &#x3D; [
+  { path: &#x27;&#x27;, redirectTo: &#x27;/home&#x27;, pathMatch: &#x27;full&#x27; },
+  {
+    path: &#x27;home&#x27;,
+    component: HomeComponent
+  },
+  {
+    path: &#x27;teams&#x27;,
+    component: TeamsComponent
+  },
+  {
+    path: &#x27;drivers&#x27;,
+    component: DriversComponent
+  },
+  {
+    path: &#x27;statue&#x27;,
+    component: StatuteComponent
+  },
+  {
+    path: &#x27;admin&#x27;,
+    component: AdminComponent,
+    canActivate: [AdminGuard],
+    children: [
+      {
+        path: &#x27;results&#x27;,
+        component: ResultsComponent
+      },
+      {
+        path: &#x27;penalties&#x27;,
+        component: PenaltiesComponent
+      }
+    ]
+  },
+  {
+    path: &#x27;login&#x27;,
+    component: LoginComponent
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
