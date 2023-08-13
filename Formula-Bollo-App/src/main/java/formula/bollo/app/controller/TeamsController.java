@@ -117,16 +117,11 @@ public class TeamsController {
                 }
             }
 
-            Log.info("Piloto -> " + driver.getName());
-            Log.info("Resultados -> " + pointsOfDriver);
-
             for(Sprint sprint : sprintOfDriver) {
                 if (sprint.getPosition() != null) {
                     pointsOfDriver += sprint.getPosition().getPoints();
                 }
             }
-
-            Log.info("Sprints -> " + pointsOfDriver);
             
             if (teamWithDrivers.getTotalPoints() != null) {
                 teamWithDrivers.setTotalPoints(teamWithDrivers.getTotalPoints() + pointsOfDriver);
