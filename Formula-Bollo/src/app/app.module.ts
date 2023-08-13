@@ -29,6 +29,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoaderService } from './../shared/services/loader.service';
 import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
 import { PenaltiesComponent } from './components/admin/penalties/penalties.component';
+import { StatuteComponent } from './components/statute/statute.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PenaltiesComponent } from './components/admin/penalties/penalties.compo
     ResultsComponent,
     LoginComponent,
     LoaderComponent,
-    PenaltiesComponent
+    PenaltiesComponent,
+    StatuteComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,7 @@ import { PenaltiesComponent } from './components/admin/penalties/penalties.compo
     MatProgressSpinnerModule,
     MatSidenavModule,
     CalendarModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   providers: [
     AdminGuard,

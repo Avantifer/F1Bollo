@@ -1,0 +1,11 @@
+@import "../../../assets/scss/styles.scss";
+
+div {
+  height: calc(100vh - 75px);
+}
+
+@include media-breakpoint-down(lg) {
+  div {
+    height: calc(100vh - 92px) !important;
+  }
+}
