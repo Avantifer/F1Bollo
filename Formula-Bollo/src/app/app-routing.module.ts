@@ -11,6 +11,7 @@ import { AdminPenaltiesComponent } from './components/admin/penalties/admin-pena
 import { StatuteComponent } from './components/statute/statute.component';
 import { ResultsComponent } from './components/results/results.component';
 
+
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
@@ -45,7 +46,7 @@ const routes: Routes = [
       {
         path: 'penalties',
         component: AdminPenaltiesComponent
-      }
+      },
     ]
   },
   {
