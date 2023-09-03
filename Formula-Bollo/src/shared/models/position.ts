@@ -1,5 +1,3 @@
-import { Result } from "./result";
-
 export class Position {
   id: number;
   positionNumber: number;

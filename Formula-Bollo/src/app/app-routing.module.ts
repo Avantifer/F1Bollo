@@ -6,9 +6,10 @@ import { DriversComponent } from './components/drivers/drivers.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdminGuard } from 'src/shared/guards/AdminGuard';
-import { ResultsComponent } from './components/admin/results/results.component';
-import { PenaltiesComponent } from './components/admin/penalties/penalties.component';
+import { AdminResultsComponent } from './components/admin/results/admin-results.component';
+import { AdminPenaltiesComponent } from './components/admin/penalties/admin-penalties.component';
 import { StatuteComponent } from './components/statute/statute.component';
+import { ResultsComponent } from './components/results/results.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -25,6 +26,10 @@ const routes: Routes = [
     component: DriversComponent
   },
   {
+    path: 'results',
+    component: ResultsComponent
+  },
+  {
     path: 'statute',
     component: StatuteComponent
   },
@@ -35,11 +40,11 @@ const routes: Routes = [
     children: [
       {
         path: 'results',
-        component: ResultsComponent
+        component: AdminResultsComponent
       },
       {
         path: 'penalties',
-        component: PenaltiesComponent
+        component: AdminPenaltiesComponent
       }
     ]
   },

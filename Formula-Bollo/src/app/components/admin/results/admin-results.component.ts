@@ -14,10 +14,10 @@ import { ResultService } from 'src/shared/services/result-api.service';
 
 @Component({
   selector: 'app-modify-results',
-  templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss'],
+  templateUrl: './admin-results.component.html',
+  styleUrls: ['./admin-results.component.scss'],
 })
-export class ResultsComponent {
+export class AdminResultsComponent {
 
   saveButtonActivated: boolean = false;
   drivers: Driver[] = [];
@@ -90,6 +90,7 @@ export class ResultsComponent {
   /**
    * Get all circuits
    * @memberof ModifyResultsComponent
+   * @memberof ResultsComponent
   */
   getAllCircuits(): void {
     this.circuitService.getAllCircuits().subscribe((circuits: Circuit[]) => {
@@ -100,6 +101,7 @@ export class ResultsComponent {
   /**
    * Get all results of the circuit selected
    * @memberof ModifyResultsComponent
+   * @memberof ResultsComponent
   */
   getResultsOfCircuitSelected(): void {
     this.circuitsForm.valueChanges.subscribe((data: any) => {
@@ -116,6 +118,7 @@ export class ResultsComponent {
   /**
    * Get all results by circuitId
    * @memberof ModifyResultsComponent
+   * @memberof ResultsComponent
   */
   getAllResultsPerCircuit(circuitId: number): void {
     this.resultService.getAllResultsPerCircuit(circuitId).subscribe((results: Result[]) => {

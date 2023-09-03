@@ -16,10 +16,10 @@ import { RaceService } from 'src/shared/services/race-api.service';
 
 @Component({
   selector: 'app-penalties',
-  templateUrl: './penalties.component.html',
-  styleUrls: ['./penalties.component.scss']
+  templateUrl: './admin-penalties.component.html',
+  styleUrls: ['./admin-penalties.component.scss']
 })
-export class PenaltiesComponent {
+export class AdminPenaltiesComponent {
 
   circuits: Circuit[] = [];
   drivers: Driver[] = [];
