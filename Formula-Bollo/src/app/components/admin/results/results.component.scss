@@ -1,0 +1,80 @@
+@import "../../../../assets/scss/styles.scss";
+
+::ng-deep p-calendar input {
+  width: 240px !important;
+  height: 42px !important;
+  padding: 0 0.75rem!important;
+  background-color: transparent!important;
+  box-shadow: #0000 0 0,#0000 0 0,#0000 0 0,#3c425729 0 0 0 1px,#0000 0 0,#0000 0 0,#0000 0 0!important;
+  border-radius: 4px!important;
+  outline-color: #5469d480!important;
+}
+
+.modifyResults {
+  &-topSide {
+    form {
+      width: 240px;
+      font-family: 'F1-Regular';
+    }
+
+    p-calendar {
+      margin-bottom: 1.4rem;
+    }
+  }
+
+  &-topSide,  &-bottomSide {
+    &-title {
+      font-family: "F1-Bold";
+      letter-spacing: 0.2px;
+    }
+  }
+
+  &-button {
+    border: none;
+    background: rgba($red, 0.8);
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+    width: 25%;
+    color: white;
+    font-family: 'F1-REGULAR';
+
+    &:hover {
+      background: $red;
+      transform: translate(-1px, -1px);
+    }
+  }
+}
+
+
+.resultsForm {
+  width: 40%;
+  font-family: 'F1-Regular';
+}
+
+
+@include media-breakpoint-down(xxl) {
+  .resultsForm {
+    width: 50% !important;
+  }
+}
+
+
+@include media-breakpoint-down(xl) {
+  .resultsForm {
+    width: 60% !important;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .resultsForm {
+    width: 85% !important;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .modifyResults {
+    &-button {
+      width: 50%;
+    }
+  }
+}

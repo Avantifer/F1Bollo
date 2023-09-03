@@ -3,6 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { DriversComponent } from './components/drivers/drivers.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { LoginComponent } from './components/login/login.component';
+import { AdminGuard } from 'src/shared/guards/AdminGuard';
+import { AdminResultsComponent } from './components/admin/results/admin-results.component';
+import { AdminPenaltiesComponent } from './components/admin/penalties/admin-penalties.component';
+import { StatuteComponent } from './components/statute/statute.component';
+import { ResultsComponent } from './components/results/results.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,7 +25,34 @@ const routes: Routes = [
   {
     path: 'drivers',
     component: DriversComponent
-  }
+  },
+  {
+    path: 'results',
+    component: ResultsComponent
+  },
+  {
+    path: 'statute',
+    component: StatuteComponent
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AdminGuard],
+    children: [
+      {
+        path: 'results',
+        component: AdminResultsComponent
+      },
+      {
+        path: 'penalties',
+        component: AdminPenaltiesComponent
+      },
+    ]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
 ];
 
 @NgModule({

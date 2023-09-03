@@ -10,7 +10,7 @@ import formula.bollo.app.model.ConfigurationDTO;
 @Component
 public class ConfigurationImpl implements ConfigurationMapper {
 
-     /**
+    /**
      * Map ConfigurationDTO to return an object type Configuration
      * @param configurationDTO
      * @return class Configuration with ConfigurationDTO properties
@@ -23,12 +23,11 @@ public class ConfigurationImpl implements ConfigurationMapper {
         return conf;
     }
 
-      /**
+    /**
      * Map Configuration to return an object type ConfigurationDTO
      * @param Configuration
      * @return class ConfigurationDTO with Configuration properties
     */
-
     @Override
     public ConfigurationDTO configurationToConfigurationDTO(Configuration configuration) {
         ConfigurationDTO conf = new ConfigurationDTO();

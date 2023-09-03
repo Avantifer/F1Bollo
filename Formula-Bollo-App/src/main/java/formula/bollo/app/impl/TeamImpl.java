@@ -24,7 +24,6 @@ public class TeamImpl implements TeamMapper{
      * @exception IllegalArgumentException Cannot convert string to byte[]
      * @return class Team with TeamDTO properties
     */
-
     @Override
     public Team teamDTOToTeam(TeamDTO teamDTO) {
         Team team = new Team();
@@ -47,7 +46,6 @@ public class TeamImpl implements TeamMapper{
      * @exception SQLException Cannot do something with the db
      * @return class TeamDTO with Team properties
     */
-
     @Override
     public TeamDTO teamToTeamDTO(Team team) {
         TeamDTO teamDTO = new TeamDTO();

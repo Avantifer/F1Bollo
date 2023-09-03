@@ -46,6 +46,4 @@ public class Driver {
     @JsonIgnore
     @Column(name = "driver_image")
     private Blob driverImage;
-
-    // Constructor, getters, and setters
 }

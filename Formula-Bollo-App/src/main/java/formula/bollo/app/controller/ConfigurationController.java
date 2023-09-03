@@ -9,6 +9,7 @@ import formula.bollo.app.entity.Configuration;
 import formula.bollo.app.mapper.ConfigurationMapper;
 import formula.bollo.app.model.ConfigurationDTO;
 import formula.bollo.app.repository.ConfigurationRepository;
+import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ public class ConfigurationController {
     private ConfigurationRepository convConfigurationRepository;
 
     @Autowired
-    ConfigurationMapper configurationMapper;
+    private ConfigurationMapper configurationMapper;
 
     private Map<Long, ConfigurationDTO> configurationsCache = new ConcurrentHashMap<>();
 
@@ -42,6 +43,8 @@ public class ConfigurationController {
     })
     @GetMapping("/all")
     public List<ConfigurationDTO> getAllConfigurations() {
+        Log.info("START - getAllConfigurations - START");
+        
         if (configurationsCache.isEmpty()) {
             List<Configuration> configurations = convConfigurationRepository.findAll();
             
@@ -50,6 +53,8 @@ public class ConfigurationController {
                 configurationsCache.put(conf.getId(), configurationDTO);
             }
         }
+
+        Log.info("END - getAllConfigurations - END");
         return new ArrayList<>(configurationsCache.values());
     }
     
