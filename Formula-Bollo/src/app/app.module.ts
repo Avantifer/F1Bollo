@@ -13,6 +13,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CalendarModule } from 'primeng/calendar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from 'src/shared/components/header/header.component';
@@ -20,16 +22,17 @@ import { HomeComponent } from './components/home/home.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { DriversComponent } from './components/drivers/drivers.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { ResultsComponent } from './components/admin/results/results.component';
+import { AdminResultsComponent } from './components/admin/results/admin-results.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoaderComponent } from 'src/shared/components/loader/loader.component';
-import { AdminGuard } from 'src/shared/guards/AdminGuard';
+import { AdminPenaltiesComponent } from './components/admin/penalties/admin-penalties.component';
+import { StatuteComponent } from './components/statute/statute.component';
+import { ResultsComponent } from './components/results/results.component';
 
+import { AdminGuard } from 'src/shared/guards/AdminGuard';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoaderService } from './../shared/services/loader.service';
 import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
-import { PenaltiesComponent } from './components/admin/penalties/penalties.component';
-import { StatuteComponent } from './components/statute/statute.component';
 
 @NgModule({
   declarations: [
@@ -39,11 +42,12 @@ import { StatuteComponent } from './components/statute/statute.component';
     TeamsComponent,
     DriversComponent,
     AdminComponent,
-    ResultsComponent,
+    AdminResultsComponent,
     LoginComponent,
     LoaderComponent,
-    PenaltiesComponent,
-    StatuteComponent
+    AdminPenaltiesComponent,
+    StatuteComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +64,7 @@ import { StatuteComponent } from './components/statute/statute.component';
     MatSidenavModule,
     CalendarModule,
     MatSelectModule,
+    MatTableModule
   ],
   providers: [
     AdminGuard,
