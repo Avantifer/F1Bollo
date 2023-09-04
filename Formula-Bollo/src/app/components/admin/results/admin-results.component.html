@@ -73,7 +73,7 @@
       <div class="modifyResults-bottomSide-resultsGood col-6 d-flex flex-column align-items-center" *ngFor="let driver of drivers.slice(1); let i = index">
         <p>Posición {{ i + 1 }}</p>
         <mat-form-field>
-          <mat-select [formControlName]="'result' + i">
+          <mat-select [formControlName]="'result' + i" (keydown.delete)="onMatSelectDelete(i)">
             <mat-option *ngFor="let driver of drivers" [value]="driver">
               {{ driver.name }}
             </mat-option>

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.Base64;
 
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -33,9 +32,7 @@ public class ArchiveImpl implements ArchiveMapper {
 
         try {
             BeanUtils.copyProperties(archiveDTO, archive);
-
-            byte[] decodedByte = Base64.getDecoder().decode(archiveDTO.getFile());
-            Blob file = new SerialBlob(decodedByte);
+            Blob file = new SerialBlob(archiveDTO.getFile());
             archive.setFile(file);
         } catch (SQLException | IllegalArgumentException e) {
             Log.error("No se ha podido obtener el blob de base64: ", e);
