@@ -66,7 +66,6 @@ export class ResultsComponent {
   getAllResultsPerCircuit(circuitId: number): void {
     this.resultService.getAllResultsPerCircuit(circuitId).subscribe((results: Result[]) => {
       this.results = results;
-      console.log(results)
     });
   }
 

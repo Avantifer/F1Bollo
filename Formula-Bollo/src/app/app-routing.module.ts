@@ -10,6 +10,7 @@ import { AdminResultsComponent } from './components/admin/results/admin-results.
 import { AdminPenaltiesComponent } from './components/admin/penalties/admin-penalties.component';
 import { StatuteComponent } from './components/statute/statute.component';
 import { ResultsComponent } from './components/results/results.component';
+import { AdminStatuteComponent } from './components/admin/admin-statute/admin-statute.component';
 
 
 const routes: Routes = [
@@ -47,6 +48,10 @@ const routes: Routes = [
         path: 'penalties',
         component: AdminPenaltiesComponent
       },
+      {
+        path: 'statute',
+        component: AdminStatuteComponent
+      }
     ]
   },
   {
