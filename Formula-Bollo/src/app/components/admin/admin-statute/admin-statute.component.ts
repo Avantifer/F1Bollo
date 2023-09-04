@@ -44,6 +44,10 @@ export class AdminStatuteComponent {
     }
   }
 
+  /**
+   * Read the pdf content to be uploaded
+   * @memberof AdminStatuteComponent
+  */
   readPDFContent() {
     if (this.selectedFile === null) return;
 
@@ -51,7 +55,7 @@ export class AdminStatuteComponent {
 
     reader.onload = (e: any) => {
       const fileContent: Uint8Array = new Uint8Array(e.target.result);
-      const fileContentArray: number[] = Array.from(fileContent); // Convierte Uint8Array a number[]
+      const fileContentArray: number[] = Array.from(fileContent);
       let archive: Archive = new Archive(0, fileContentArray, this.selectedFile!.type, 'Statute');
       this.saveFile(archive);
     };
