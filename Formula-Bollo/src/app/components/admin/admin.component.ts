@@ -11,7 +11,8 @@ export class AdminComponent {
 
   sideNavItems: SideNavItem[] = [
     new SideNavItem('emoji_events', 'Resultados', '/admin/results'),
-    new SideNavItem('gavel', 'Penalizaciones', '/admin/penalties')
+    new SideNavItem('gavel', 'Penalizaciones', '/admin/penalties'),
+    new SideNavItem('article', 'Estatuto', '/admin/statute')
   ];
   activeNavItem: string = '';
 

@@ -1,0 +1,62 @@
+@import "../../../../assets/scss/styles.scss";
+
+svg {
+  font-size: 3.5rem;
+  fill: #5f6982;
+}
+
+p, h3 {
+  font-family: 'F1-Regular';
+}
+
+h3 {
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+mat-progress-bar {
+  width: 80%;
+  border-radius: 1rem;
+}
+
+.circle {
+  height: 2rem;
+  width: 2rem;
+
+  &-correct {
+    background-color: lightgreen;
+  }
+
+  &-wrong {
+    background-color: lightcoral;
+  }
+
+  svg {
+    font-size: 1.65rem;
+    fill: white;
+  }
+}
+
+.statute-button {
+  border: none;
+  background: rgba($red, 0.8);
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  width: 25%;
+  color: white;
+  font-family: 'F1-REGULAR';
+
+  &:hover {
+    background: $red;
+    transform: translate(-1px, -1px);
+  }
+}

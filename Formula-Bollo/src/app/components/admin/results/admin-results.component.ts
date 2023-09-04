@@ -366,4 +366,12 @@ export class AdminResultsComponent {
       }
     }
   }
+
+  /**
+   * Remove the value of the formControl selected pressing SUPR
+   * @param index - the index of the formControl
+  */
+  onMatSelectDelete(index: number): void {
+    this.resultsForm.get('result' + index)?.setValue(null);
+  }
 }

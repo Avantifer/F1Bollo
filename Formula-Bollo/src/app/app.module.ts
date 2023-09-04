@@ -14,7 +14,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { CalendarModule } from 'primeng/calendar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-
+import { MatCardModule } from '@angular/material/card';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from 'src/shared/components/header/header.component';
@@ -28,6 +30,7 @@ import { LoaderComponent } from 'src/shared/components/loader/loader.component';
 import { AdminPenaltiesComponent } from './components/admin/penalties/admin-penalties.component';
 import { StatuteComponent } from './components/statute/statute.component';
 import { ResultsComponent } from './components/results/results.component';
+import { AdminStatuteComponent } from './components/admin/admin-statute/admin-statute.component';
 
 import { AdminGuard } from 'src/shared/guards/AdminGuard';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
@@ -47,7 +50,8 @@ import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
     LoaderComponent,
     AdminPenaltiesComponent,
     StatuteComponent,
-    ResultsComponent
+    ResultsComponent,
+    AdminStatuteComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +68,10 @@ import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
     MatSidenavModule,
     CalendarModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+    MatCardModule,
+    FontAwesomeModule,
+    MatProgressBarModule
   ],
   providers: [
     AdminGuard,
