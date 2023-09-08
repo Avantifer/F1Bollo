@@ -51,3 +51,15 @@
     }
   }
 }
+
+
+@include media-breakpoint-down(sm) {
+  .table {
+    overflow-x: auto;
+    display: block;
+
+    th, td {
+      white-space: nowrap;
+    }
+  }
+}

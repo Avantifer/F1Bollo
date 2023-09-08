@@ -54,3 +54,14 @@
 }
 
 
+@include media-breakpoint-down(md) {
+  .penalty {
+    &-button {
+      width: 50%;
+    }
+
+    &-bottomSide {
+      width: 100% !important;
+    }
+  }
+}
