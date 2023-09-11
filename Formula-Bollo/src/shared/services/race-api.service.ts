@@ -15,7 +15,7 @@ export class RaceService {
 
   getRacePerCircuit(circuitId: number): Observable<Race[]> {
     const params = new HttpParams().set('circuitId', circuitId.toString());
-    const headers = new HttpHeaders().set('Content-type', 'application/json')
+    const headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
     return this.httpClient.get<Race[]>(environment.apiUrl + this.endpoint + '/circuit', {params, headers});
   }
 

@@ -53,8 +53,8 @@
 }
 
 
-@include media-breakpoint-down(sm) {
-  .table {
+@include media-breakpoint-down(md) {
+  table {
     overflow-x: auto;
     display: block;
 
