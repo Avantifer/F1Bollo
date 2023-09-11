@@ -25,6 +25,7 @@ import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +43,7 @@ import org.springframework.http.ResponseEntity;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/results"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Results", description = "Operations related with results")
 public class ResultController {
     
     @Autowired
@@ -62,7 +64,7 @@ public class ResultController {
     @Autowired
     private SprintRepository sprintRepository;
 
-    @Operation(summary = "Get results total per driver")
+    @Operation(summary = "Get results total per driver", tags = "Results")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Results successfully obtained"),
         @ApiResponse(code = 404, message = "Results cannot be found"),
@@ -123,7 +125,7 @@ public class ResultController {
         return driverPointsDTOList.subList(0, numResultsToReturn);
     }
     
-    @Operation(summary = "Get results per circuit")
+    @Operation(summary = "Get results per circuit", tags = "Results")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Results successfully obtained"),
         @ApiResponse(code = 404, message = "Results cannot be found"),
@@ -162,7 +164,7 @@ public class ResultController {
         return resultDTOs;
     }
 
-    @Operation(summary = "Save a results")
+    @Operation(summary = "Save a results", tags = "Results")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Races successfully saved"),
         @ApiResponse(code = 404, message = "Races cannot be found"),

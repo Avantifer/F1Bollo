@@ -15,6 +15,7 @@ import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/admin"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Admin", description = "Operations related with admins")
 public class AdminController {
     
     @Autowired
@@ -39,7 +41,7 @@ public class AdminController {
     @Autowired
     private JwtConfig jwtConfig;
 
-    @Operation(summary = "Login user admin")
+    @Operation(summary = "Login user admin", tags = "Admin")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Admin successfully logued"),
         @ApiResponse(code = 404, message = "Admin cannot be logued"),

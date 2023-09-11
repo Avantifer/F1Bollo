@@ -8,6 +8,7 @@ import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/races"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Races", description = "Operations related with races")
 public class RaceController {
     
     @Autowired
@@ -37,7 +39,7 @@ public class RaceController {
     private RaceMapper raceMapper;
 
 
-    @Operation(summary = "Get races per circuit")
+    @Operation(summary = "Get races per circuit", tags = "Races")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Races successfully obtained"),
         @ApiResponse(code = 404, message = "Races cannot be found"),
@@ -64,7 +66,7 @@ public class RaceController {
         return raceDTOs;
     }
 
-    @Operation(summary = "Save a race")
+    @Operation(summary = "Save a race", tags = "Races")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Races successfully saved"),
         @ApiResponse(code = 404, message = "Races cannot be found"),

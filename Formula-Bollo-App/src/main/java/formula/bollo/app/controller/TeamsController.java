@@ -32,10 +32,12 @@ import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/teams"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Teams", description = "Operations related with teams")
 public class TeamsController {
     
     @Autowired
@@ -58,7 +60,7 @@ public class TeamsController {
 
     private Map<Long, TeamDTO> teamCache = new ConcurrentHashMap<>();
 
-    @Operation(summary = "Get all teams")
+    @Operation(summary = "Get all teams", tags = "Teams")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Teams successfully obtained"),
         @ApiResponse(code = 404, message = "Teams cannot be found"),
@@ -82,7 +84,7 @@ public class TeamsController {
         return new ArrayList<>(teamCache.values());
     }
 
-    @Operation(summary = "Get all teams with their drives")
+    @Operation(summary = "Get all teams with their drives", tags = "Teams")
     @ApiResponses(value =  {
         @ApiResponse(code = 200, message = "Teams successfully obtained"),
         @ApiResponse(code = 404, message = "Teams cannot be found"),

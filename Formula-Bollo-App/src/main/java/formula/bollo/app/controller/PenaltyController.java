@@ -16,6 +16,7 @@ import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/penalties"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Penalties", description = "Operations related with penalties")
 public class PenaltyController {
 
     @Autowired
@@ -58,7 +60,7 @@ public class PenaltyController {
     private RaceMapper raceMapper;
 
 
-    @Operation(summary = "Get all penalties")
+    @Operation(summary = "Get all penalties", tags = "Penalties")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Penalties successfully obtained"),
         @ApiResponse(code = 404, message = "Penalties cannot be found"),
@@ -80,7 +82,7 @@ public class PenaltyController {
         return penaltyDTOs;
     }
 
-    @Operation(summary = "Get penalties per circuit")
+    @Operation(summary = "Get penalties per circuit", tags = "Penalties")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Penalties successfully obtained"),
         @ApiResponse(code = 404, message = "Penalties cannot be found"),
@@ -109,7 +111,7 @@ public class PenaltyController {
         return penaltyDTOs;
     }
 
-    @Operation(summary = "Get penalties per driver")
+    @Operation(summary = "Get penalties per driver", tags = "Penalties")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Penalties successfully obtained"),
         @ApiResponse(code = 404, message = "Penalties cannot be found"),
@@ -175,7 +177,7 @@ public class PenaltyController {
         return driversWithPenalties;
     }
 
-    @Operation(summary = "Save penalties")
+    @Operation(summary = "Save penalties", tags = "Penalties")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Penalties successfully saved"),
         @ApiResponse(code = 404, message = "Penalties cannot be found"),
@@ -212,7 +214,7 @@ public class PenaltyController {
         return new ResponseEntity<>("Penalización guardada correctamente", HttpStatus.OK);
     }
 
-    @Operation(summary = "Get a penalty for a driver and circuit")
+    @Operation(summary = "Get a penalty for a driver and circuit", tags = "Penalties")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Penalty successfully obtained"),
         @ApiResponse(code = 404, message = "Penalty cannot be found"),

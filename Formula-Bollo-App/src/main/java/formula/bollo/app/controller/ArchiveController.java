@@ -16,6 +16,7 @@ import formula.bollo.app.utils.Log;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -27,15 +28,16 @@ import org.springframework.http.ResponseEntity;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/archives"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Archives", description = "Operations related with files")
 public class ArchiveController {
     
     @Autowired
     private ArchiveRepository archiveRepository;
-
+    
     @Autowired
     private ArchiveMapper archiveMapper;
-
-    @Operation(summary = "Get statute")
+    
+    @Operation(summary = "Get statute", tags = "Archives")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Statute successfully obtained"),
         @ApiResponse(code = 404, message = "Statute cannot be found"),
@@ -53,7 +55,7 @@ public class ArchiveController {
         return statuteDTO;
     }
 
-    @Operation(summary = "Save statute")
+    @Operation(summary = "Save statute", tags = "Archives")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Statute successfully saved"),
         @ApiResponse(code = 404, message = "Statute cannot be found"),
