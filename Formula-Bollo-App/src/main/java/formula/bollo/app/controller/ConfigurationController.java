@@ -10,8 +10,7 @@ import formula.bollo.app.mapper.ConfigurationMapper;
 import formula.bollo.app.model.ConfigurationDTO;
 import formula.bollo.app.repository.ConfigurationRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -38,11 +37,6 @@ public class ConfigurationController {
     private Map<Long, ConfigurationDTO> configurationsCache = new ConcurrentHashMap<>();
 
     @Operation(summary = "Get all configurations", tags = "Configurations")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Configurations successfully obtained"),
-        @ApiResponse(code = 404, message = "Configurations cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
     @GetMapping("/all")
     public List<ConfigurationDTO> getAllConfigurations() {
         Log.info("START - getAllConfigurations - START");

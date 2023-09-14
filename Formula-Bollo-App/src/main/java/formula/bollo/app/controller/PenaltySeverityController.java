@@ -6,8 +6,7 @@ import formula.bollo.app.mapper.PenaltySeverityMapper;
 import formula.bollo.app.model.PenaltySeverityDTO;
 import formula.bollo.app.repository.PenaltySeverityRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -35,11 +34,6 @@ public class PenaltySeverityController {
 
 
     @Operation(summary = "Get all penalties severities", tags = "PenaltiesSeverity")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Penalties severities successfully obtained"),
-        @ApiResponse(code = 404, message = "Penalties severities cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
     @GetMapping("/all")
     public List<PenaltySeverityDTO> getAllPenaltiesSeverity() {
         Log.info("START - getAllPenaltiesSeverity - START");

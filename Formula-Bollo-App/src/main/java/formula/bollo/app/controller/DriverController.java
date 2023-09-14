@@ -10,8 +10,7 @@ import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.repository.DriverRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -35,11 +34,6 @@ public class DriverController {
     private DriverMapper driverMapper;
 
     @Operation(summary = "Get all drivers", tags = "Drivers")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Drivers successfully obtained"),
-        @ApiResponse(code = 404, message = "Drivers cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
     @GetMapping("/all")
     public List<DriverDTO> getAllDrivers() {
         Log.info("START - getAllDrivers - START");

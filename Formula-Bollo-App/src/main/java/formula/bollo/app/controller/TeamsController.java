@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,7 @@ import formula.bollo.app.repository.ResultRepository;
 import formula.bollo.app.repository.SprintRepository;
 import formula.bollo.app.repository.TeamRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -41,31 +39,26 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class TeamsController {
     
     @Autowired
-    TeamRepository teamRepository;
+    private TeamRepository teamRepository;
 
     @Autowired
-    DriverRepository driverRepository;
+    private DriverRepository driverRepository;
 
     @Autowired
-    ResultRepository resultRepository;
+    private ResultRepository resultRepository;
 
     @Autowired
-    TeamMapper teamMapper;
+    private SprintRepository sprintRepository;
 
     @Autowired
-    DriverMapper driverMapper;
+    private TeamMapper teamMapper;
 
     @Autowired
-    SprintRepository sprintRepository;
+    private DriverMapper driverMapper;
 
     private Map<Long, TeamDTO> teamCache = new ConcurrentHashMap<>();
 
     @Operation(summary = "Get all teams", tags = "Teams")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Teams successfully obtained"),
-        @ApiResponse(code = 404, message = "Teams cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
     @GetMapping("/all")
     public List<TeamDTO> getAllTeams() {
         Log.info("START - getAllTeams - START");
@@ -85,16 +78,12 @@ public class TeamsController {
     }
 
     @Operation(summary = "Get all teams with their drives", tags = "Teams")
-    @ApiResponses(value =  {
-        @ApiResponse(code = 200, message = "Teams successfully obtained"),
-        @ApiResponse(code = 404, message = "Teams cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
     @GetMapping("/withDrivers")
     public List<TeamWithDriversDTO> getAllTeamWithDrivers() {
         Log.info("START - getAllTeamWithDrivers - START");
 
-        List<Driver> drivers = driverRepository.findAll(Sort.by("team.id"));
+        //! Mirar esto para que este ordenado
+        List<Driver> drivers = driverRepository.findAll();
 
         Map<Team, TeamWithDriversDTO> teamMap = new HashMap<>();
  

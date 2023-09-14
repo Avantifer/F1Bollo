@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import formula.bollo.app.entity.Penalty;
 
+@Repository
 public interface PenaltyRepository extends JpaRepository<Penalty, Long>{
     List<Penalty> findByDriverId(Long driverId);
 

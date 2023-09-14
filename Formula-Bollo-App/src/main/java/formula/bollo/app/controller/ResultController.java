@@ -22,8 +22,7 @@ import formula.bollo.app.repository.RaceRepository;
 import formula.bollo.app.repository.ResultRepository;
 import formula.bollo.app.repository.SprintRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -36,7 +35,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
@@ -50,12 +50,6 @@ public class ResultController {
     private ResultRepository resultRepository;
 
     @Autowired
-    private DriverMapper driverMapper;
-
-    @Autowired
-    private ResultMapper resultMapper;
-
-    @Autowired
     private RaceRepository raceRepository;
 
     @Autowired
@@ -63,13 +57,15 @@ public class ResultController {
 
     @Autowired
     private SprintRepository sprintRepository;
+    
+    @Autowired
+    private DriverMapper driverMapper;
+
+    @Autowired
+    private ResultMapper resultMapper;
+
 
     @Operation(summary = "Get results total per driver", tags = "Results")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Results successfully obtained"),
-        @ApiResponse(code = 404, message = "Results cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
     @GetMapping("/totalPerDriver")
     public List<DriverPointsDTO> getTotalResultsPerDriver(@RequestParam(value = "numResults", required = false) Integer numResults) {
         Log.info("START - getTotalResultsPerDriver - START");
@@ -126,11 +122,6 @@ public class ResultController {
     }
     
     @Operation(summary = "Get results per circuit", tags = "Results")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Results successfully obtained"),
-        @ApiResponse(code = 404, message = "Results cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
     @GetMapping("/circuit")
     public List<ResultDTO> getResultsPerCircuit(@RequestParam("circuitId") Integer circuitId) {
         Log.info("START - getResultsPerCircuit - START");
@@ -165,16 +156,13 @@ public class ResultController {
     }
 
     @Operation(summary = "Save a results", tags = "Results")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Races successfully saved"),
-        @ApiResponse(code = 404, message = "Races cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
-    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE)
+    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE, consumes = "application/json")
     public ResponseEntity<String> saveCircuit(@RequestBody List<ResultDTO> resultDTOs) {
         Log.info("START - saveCircuit - START");
         Log.info("RequestBody getResultsPerCircuit -> " + resultDTOs.toString());
-
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        
         try {
             Race race = raceRepository.findByCircuitId(resultDTOs.get(0).getRace().getCircuit().getId()).get(0);
 
@@ -199,19 +187,19 @@ public class ResultController {
                         resultToUpdate.setPosition(position);
                     }
                     
-                    resultRepository.saveAndFlush(resultToUpdate);
+                    resultRepository.save(resultToUpdate);
                 }
             }
         } catch (DataAccessException e) {
             Log.error("Error inesperado", e);
-            return new ResponseEntity<>("Hubo un problema con la base de datos", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Hubo un problema con la base de datos", headers, HttpStatusCode.valueOf(500));
         } catch (Exception e) {
             Log.error("Error inesperado", e);
-            return new ResponseEntity<>("Error inesperado. Contacta con el administrados", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error inesperado. Contacta con el administrados", headers, HttpStatusCode.valueOf(500));
         }
 
         Log.info("END - saveCircuit - END");
 
-        return new ResponseEntity<>("Carrera guardada correctamente", HttpStatus.OK);
+        return new ResponseEntity<>("Carrera guardada correctamente", headers, HttpStatusCode.valueOf(200));
     }
 }
