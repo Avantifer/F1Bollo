@@ -10,9 +10,9 @@ import formula.bollo.app.mapper.ConfigurationMapper;
 import formula.bollo.app.model.ConfigurationDTO;
 import formula.bollo.app.repository.ConfigurationRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/configurations"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Configurations", description = "Operations related with Configurations")
 public class ConfigurationController {
 
     @Autowired
@@ -35,12 +36,7 @@ public class ConfigurationController {
 
     private Map<Long, ConfigurationDTO> configurationsCache = new ConcurrentHashMap<>();
 
-    @Operation(summary = "Get all configurations")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Configurations successfully obtained"),
-        @ApiResponse(code = 404, message = "Configurations cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    @Operation(summary = "Get all configurations", tags = "Configurations")
     @GetMapping("/all")
     public List<ConfigurationDTO> getAllConfigurations() {
         Log.info("START - getAllConfigurations - START");

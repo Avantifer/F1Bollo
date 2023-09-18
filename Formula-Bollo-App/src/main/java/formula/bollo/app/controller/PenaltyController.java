@@ -13,9 +13,9 @@ import formula.bollo.app.model.RacePenaltiesDTO;
 import formula.bollo.app.repository.PenaltyRepository;
 import formula.bollo.app.repository.RaceRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +26,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,16 +41,17 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/penalties"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Penalties", description = "Operations related with penalties")
 public class PenaltyController {
 
     @Autowired
     private PenaltyRepository penaltyRepository;
 
     @Autowired
-    private PenaltyMapper penaltyMapper;
+    private RaceRepository raceRepository;
 
     @Autowired
-    private RaceRepository raceRepository;
+    private PenaltyMapper penaltyMapper;
 
     @Autowired
     private DriverMapper driverMapper;
@@ -58,12 +60,7 @@ public class PenaltyController {
     private RaceMapper raceMapper;
 
 
-    @Operation(summary = "Get all penalties")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Penalties successfully obtained"),
-        @ApiResponse(code = 404, message = "Penalties cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    @Operation(summary = "Get all penalties", tags = "Penalties")
     @GetMapping("/all")
     public List<PenaltyDTO> getAllPenalties() {
         Log.info("START - getAllPenalties - START");
@@ -80,12 +77,7 @@ public class PenaltyController {
         return penaltyDTOs;
     }
 
-    @Operation(summary = "Get penalties per circuit")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Penalties successfully obtained"),
-        @ApiResponse(code = 404, message = "Penalties cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    @Operation(summary = "Get penalties per circuit", tags = "Penalties")
     @GetMapping("/circuit")
     public List<PenaltyDTO> getPenaltiesByCircuit(@RequestParam("circuitId") Integer circuitId) {
         Log.info("START - getPenaltiesByCircuit - START");
@@ -109,12 +101,7 @@ public class PenaltyController {
         return penaltyDTOs;
     }
 
-    @Operation(summary = "Get penalties per driver")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Penalties successfully obtained"),
-        @ApiResponse(code = 404, message = "Penalties cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    @Operation(summary = "Get penalties per driver", tags = "Penalties")
     @GetMapping("/totalPerDriver")
     public List<DriverPenaltiesDTO> getPenaltiesByDriverAndRace() {
         Log.info("START - getPenaltiesByDriverAndRace - START");
@@ -175,16 +162,13 @@ public class PenaltyController {
         return driversWithPenalties;
     }
 
-    @Operation(summary = "Save penalties")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Penalties successfully saved"),
-        @ApiResponse(code = 404, message = "Penalties cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
-    @PutMapping("/save")
+    @Operation(summary = "Save penalties", tags = "Penalties")
+    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE, consumes = "application/json")
     public ResponseEntity<String> savePenalty(@RequestBody List<PenaltyDTO> penaltyDTOs) {
         Log.info("START - savePenalty - START");        
         Log.info("RequestBody savePenalty " + penaltyDTOs.toString());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
 
         try {
             Penalty firstPenalty = penaltyMapper.penaltyDTOToPenalty(penaltyDTOs.get(0));
@@ -201,23 +185,18 @@ public class PenaltyController {
 
         } catch (DataAccessException e) {
             Log.error("Error inesperado", e);
-            return new ResponseEntity<>("Hubo un problema con la base de datos", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Hubo un problema con la base de datos", headers, HttpStatusCode.valueOf(500));
         } catch (Exception e) {
             Log.error("Error inesperado", e);
-            return new ResponseEntity<>("Error inesperado. Contacta con el administrados", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error inesperado. Contacta con el administrados", headers, HttpStatusCode.valueOf(500));
         }
         
         Log.info("END - penaltySave - END");        
         
-        return new ResponseEntity<>("Penalización guardada correctamente", HttpStatus.OK);
+        return new ResponseEntity<>("Penalización guardada correctamente", headers, HttpStatusCode.valueOf(200));
     }
 
-    @Operation(summary = "Get a penalty for a driver and circuit")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Penalty successfully obtained"),
-        @ApiResponse(code = 404, message = "Penalty cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    @Operation(summary = "Get a penalty for a driver and circuit", tags = "Penalties")
     @GetMapping("/perDriverPerRace")
     public List<PenaltyDTO> getPenaltyByDriverAndRace(@RequestParam("driverId") Integer driverId, @RequestParam("raceId") Integer raceId, @RequestParam("severityId") Integer severityId) {
         Log.info("START - getPenaltyByDriverAndRace - START");

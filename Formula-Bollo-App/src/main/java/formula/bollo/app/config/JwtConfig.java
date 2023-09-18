@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.model.AdminDTO;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -39,6 +40,21 @@ public class JwtConfig implements Serializable {
                 .signWith(secretKey)
                 .compact();
 	}
+
+    /**
+     * Obtain the userId of token
+     *
+     * @param token JWT token
+     * @return the userId of the jwt or null if its cannot be extracted
+     */
+    public String getUserIdFromToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+            return claims.get("userId", String.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     /**
      * Know if the token its valid

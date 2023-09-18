@@ -60,3 +60,15 @@ mat-progress-bar {
     transform: translate(-1px, -1px);
   }
 }
+
+@include media-breakpoint-down(md) {
+  mat-card {
+    width: 100% !important;
+  }
+
+  .statute {
+    &-button {
+      width: 50%;
+    }
+  }
+}

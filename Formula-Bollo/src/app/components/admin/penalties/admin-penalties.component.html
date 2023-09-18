@@ -1,4 +1,4 @@
-<div class="penalty pt-5 px-5">
+<div class="penalty pt-5 px-2 px-md-5">
   <div class="penalty-topSide d-flex justify-content-evenly flex-wrap mx-auto mb-5">
     <form [formGroup]="circuitsForm">
       <div class="penalty-topSide-form d-flex flex-column">
@@ -40,7 +40,7 @@
     </form>
   </div>
 
-  <div class="penalty-bottomSide mx-auto" *ngIf="penaltySeveritySelected">
+  <div class="penalty-bottomSide m-0 mx-md-auto" *ngIf="penaltySeveritySelected">
     <form [formGroup]="reasonForm">
       <label class="mb-1">Razón de penalización:</label>
       <mat-form-field>
