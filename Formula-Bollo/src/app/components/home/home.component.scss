@@ -1,5 +1,23 @@
 @import "../../../assets/scss/styles.scss";
 
+.intro {
+  h1 {
+    z-index: 2;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -25%);
+    font-family: 'F1-Wide';
+    line-height: 8rem;
+    letter-spacing: 2px;
+    text-shadow: -4px 4px 20px black;
+    font-size: 4rem;
+  }
+
+  img {
+    filter: brightness(0.5);
+  }
+}
+
 .drivers {
   background-color: #f3f3f3;
 
@@ -10,7 +28,7 @@
     top: 0;
     width: 100%;
     height: 335px;
-    background-image: url(../../../assets/images/intro/introDrivers.png);
+    background-image: url(../../../assets/images/intro/introDrivers.avif);
     background-size: cover;
     z-index: 1;
   }
@@ -293,6 +311,13 @@
 }
 
 @include media-breakpoint-down(lg) {
+  .intro {
+    h1 {
+      line-height: 5rem;
+      font-size: 3rem;
+    }
+  }
+
   .driver-card {
 
     &-pos1 {
@@ -330,6 +355,13 @@
 }
 
 @include media-breakpoint-down(md){
+  .intro {
+    h1 {
+      line-height: 4rem;
+      font-size: 2rem;
+    }
+  }
+
   .drivers {
 
     &-text {
@@ -378,6 +410,12 @@
 }
 
 @include media-breakpoint-down(sm) {
+  .intro {
+    h1 {
+      line-height: 3rem;
+      font-size: 1.75rem;
+    }
+  }
 
   .drivers-text {
     margin-bottom: 10rem !important;
@@ -406,7 +444,7 @@
 }
 
 .configurations {
-  background: url("../../../assets/images/intro/introConfigurations.png");
+  background: url("../../../assets/images/intro/introConfigurations.avif");
   background-size: cover;
 
   &-title {

@@ -11,6 +11,7 @@ import { AdminPenaltiesComponent } from './components/admin/penalties/admin-pena
 import { StatuteComponent } from './components/statute/statute.component';
 import { ResultsComponent } from './components/results/results.component';
 import { AdminStatuteComponent } from './components/admin/admin-statute/admin-statute.component';
+import { PageNotFoundComponent } from 'src/shared/components/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -58,6 +59,10 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  }
 ];
 
 @NgModule({
