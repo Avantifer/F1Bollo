@@ -36,6 +36,7 @@ import { AdminGuard } from 'src/shared/guards/AdminGuard';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoaderService } from './../shared/services/loader.service';
 import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
+import { PageNotFoundComponent } from 'src/shared/components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
     AdminPenaltiesComponent,
     StatuteComponent,
     ResultsComponent,
-    AdminStatuteComponent
+    AdminStatuteComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

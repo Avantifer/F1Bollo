@@ -25,13 +25,13 @@ export class PenaltyService {
 
   getAllPenaltiesPerCircuit(circuitId: number): Observable<Penalty[]> {
     const params = new HttpParams().set('circuitId', circuitId.toString());
-    const headers = new HttpHeaders().set('Content-type', 'application/json')
+    const headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
     return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + '/circuit', {params, headers});
   }
 
   getPenaltyByDriverAndRaceAndSeverity(driverId: number, raceId: number, severityId: number): Observable<Penalty[]> {
     const params = new HttpParams().set('driverId', driverId.toString()).set('raceId', raceId.toString()).set('severityId', severityId.toString());
-    const headers = new HttpHeaders().set('Content-type', 'application/json')
+    const headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
     return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + '/perDriverPerRace', {params, headers});
   }
 

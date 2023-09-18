@@ -10,9 +10,9 @@ import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.repository.DriverRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/drivers"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Drivers", description = "Operations related with drivers")
 public class DriverController {
 
     @Autowired
@@ -32,12 +33,7 @@ public class DriverController {
     @Autowired
     private DriverMapper driverMapper;
 
-    @Operation(summary = "Get all drivers")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Drivers successfully obtained"),
-        @ApiResponse(code = 404, message = "Drivers cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    @Operation(summary = "Get all drivers", tags = "Drivers")
     @GetMapping("/all")
     public List<DriverDTO> getAllDrivers() {
         Log.info("START - getAllDrivers - START");

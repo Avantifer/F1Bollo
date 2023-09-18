@@ -13,13 +13,13 @@ import formula.bollo.app.model.ArchiveDTO;
 import formula.bollo.app.repository.ArchiveRepository;
 import formula.bollo.app.utils.Log;
 
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
@@ -27,20 +27,16 @@ import org.springframework.http.ResponseEntity;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/archives"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Archives", description = "Operations related with files")
 public class ArchiveController {
     
     @Autowired
     private ArchiveRepository archiveRepository;
-
+    
     @Autowired
     private ArchiveMapper archiveMapper;
-
-    @Operation(summary = "Get statute")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Statute successfully obtained"),
-        @ApiResponse(code = 404, message = "Statute cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    
+    @Operation(summary = "Get statute", tags = "Archives")
     @GetMapping("/statute")
     public ArchiveDTO getStatute() {
         Log.info("START - getStatute - START");
@@ -53,29 +49,26 @@ public class ArchiveController {
         return statuteDTO;
     }
 
-    @Operation(summary = "Save statute")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Statute successfully saved"),
-        @ApiResponse(code = 404, message = "Statute cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
-    @PutMapping("/statute/save")
+    @Operation(summary = "Save statute", tags = "Archives")
+    @PutMapping(path = "/statute/save", produces = MediaType.TEXT_PLAIN_VALUE, consumes = "application/json")
     public ResponseEntity<String> saveStatute(@RequestBody ArchiveDTO archiveDTO) {
         Log.info("START - saveStatute - START");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
 
         try {
             Archive statuteOld = archiveRepository.findByDefinition("Statute").get(0);
             Archive statuteNew = archiveMapper.archiveDTOToArchive(archiveDTO);
             statuteNew.setId(statuteOld.getId());
 
-            archiveRepository.saveAndFlush(statuteNew);
+            archiveRepository.save(statuteNew);
         } catch (DataAccessException e) {
             Log.error("Error inesperado", e);
-            return new ResponseEntity<>("Hubo un problema con la base de datos", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Hubo un problema con la base de datos", headers, HttpStatusCode.valueOf(500));
         }    
 
         Log.info("END - saveStatute - END");
 
-        return new ResponseEntity<>("Estatuto guardado correctamente", HttpStatus.OK);
+        return new ResponseEntity<>("Estatuto guardado correctamente", headers, HttpStatusCode.valueOf(200));
     }
 }

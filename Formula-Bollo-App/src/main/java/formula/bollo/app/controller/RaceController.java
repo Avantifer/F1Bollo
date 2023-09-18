@@ -5,16 +5,17 @@ import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.model.RaceDTO;
 import formula.bollo.app.repository.RaceRepository;
 import formula.bollo.app.utils.Log;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "https://formulabollo.es")
 @RestController
 @RequestMapping(path = {"/races"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Races", description = "Operations related with races")
 public class RaceController {
     
     @Autowired
@@ -37,12 +39,7 @@ public class RaceController {
     private RaceMapper raceMapper;
 
 
-    @Operation(summary = "Get races per circuit")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Races successfully obtained"),
-        @ApiResponse(code = 404, message = "Races cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
+    @Operation(summary = "Get races per circuit", tags = "Races")
     @GetMapping("/circuit")
     public List<RaceDTO> getRacesPerCircuit(@RequestParam("circuitId") Integer circuitId) {
         Log.info("START - getRacesPerCircuit - START");
@@ -64,16 +61,13 @@ public class RaceController {
         return raceDTOs;
     }
 
-    @Operation(summary = "Save a race")
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Races successfully saved"),
-        @ApiResponse(code = 404, message = "Races cannot be found"),
-        @ApiResponse(code = 500, message = "There was an error, contact with administrator")
-    })
-    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE)
+    @Operation(summary = "Save a race", tags = "Races")
+    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE, consumes = "application/json")
     public ResponseEntity<String> saveCircuit(@RequestBody RaceDTO raceDTO) {
         Log.info("START - saveCircuit - START");
         Log.info("RequestBody saveCircuit -> " + raceDTO);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
         
         try {
             List<Race> existingRace = raceRepository.findByCircuitId(raceDTO.getCircuit().getId());
@@ -83,16 +77,16 @@ public class RaceController {
             } else {
                 Race raceToUpdate = raceMapper.raceDTOToRace(raceDTO);
                 raceToUpdate.setId(existingRace.get(0).getId());
-                raceRepository.saveAndFlush(raceToUpdate);
+                raceRepository.save(raceToUpdate);
             }
         } catch (DataAccessException e) {
-            return new ResponseEntity<>("Hubo un problema con la base de datos", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Hubo un problema con la base de datos", headers, HttpStatusCode.valueOf(500));
         } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado. Contacta con el administrados", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error inesperado. Contacta con el administrados", headers, HttpStatusCode.valueOf(500));
         }
         
         Log.info("END - saveCircuit - END");
 
-        return new ResponseEntity<>("Carrera guardada correctamente", HttpStatus.OK);
+        return new ResponseEntity<>("Carrera guardada correctamente", headers, HttpStatusCode.valueOf(200));
     }
 }
