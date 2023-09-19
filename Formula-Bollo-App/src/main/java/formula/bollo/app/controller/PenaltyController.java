@@ -163,7 +163,7 @@ public class PenaltyController {
     }
 
     @Operation(summary = "Save penalties", tags = "Penalties")
-    @PutMapping(path = "/save", produces = MediaType.TEXT_PLAIN_VALUE, consumes = "application/json")
+    @PutMapping(path = "/save", produces = MediaType.APPLICATION_JSON_VALUE, consumes = "application/json")
     public ResponseEntity<String> savePenalty(@RequestBody List<PenaltyDTO> penaltyDTOs) {
         Log.info("START - savePenalty - START");        
         Log.info("RequestBody savePenalty " + penaltyDTOs.toString());
@@ -188,7 +188,7 @@ public class PenaltyController {
             return new ResponseEntity<>("Hubo un problema con la base de datos", headers, HttpStatusCode.valueOf(500));
         } catch (Exception e) {
             Log.error("Error inesperado", e);
-            return new ResponseEntity<>("Error inesperado. Contacta con el administrados", headers, HttpStatusCode.valueOf(500));
+            return new ResponseEntity<>("Error inesperado. Contacta con el administrador", headers, HttpStatusCode.valueOf(500));
         }
         
         Log.info("END - penaltySave - END");        

@@ -3,10 +3,10 @@
         <!-- Change the desired route for the file of logs  -->
         
         <!-- Develop -->
-        <file>../logs/logs.log</file> 
+        <!-- <file>../logs/logs.log</file>  -->
 
         <!-- Production -->
-        <!-- <file>/opt/logs/logs.log</file>  -->
+        <file>/opt/logs/logs.log</file> 
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
@@ -15,10 +15,10 @@
             <!-- hange the desired route for the file of daily logs  -->
 
             <!-- Develop -->
-            <fileNamePattern>../logs/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- <fileNamePattern>../logs/%d{yyyy-MM-dd}.log</fileNamePattern> -->
 
             <!-- Production -->
-            <!-- <fileNamePattern>/opt/logs/%d{yyyy-MM-dd}.log</fileNamePattern> -->
+            <fileNamePattern>/opt/logs/%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory> <!-- Max number of log files to maintain -->
         </rollingPolicy>
     </appender>
