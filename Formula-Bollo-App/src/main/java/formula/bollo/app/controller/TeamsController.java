@@ -1,9 +1,6 @@
 package formula.bollo.app.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,122 +13,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import formula.bollo.app.entity.Driver;
-import formula.bollo.app.entity.Result;
-import formula.bollo.app.entity.Sprint;
-import formula.bollo.app.entity.Team;
-import formula.bollo.app.mapper.DriverMapper;
-import formula.bollo.app.mapper.TeamMapper;
 import formula.bollo.app.model.TeamDTO;
 import formula.bollo.app.model.TeamWithDriversDTO;
 import formula.bollo.app.repository.DriverRepository;
-import formula.bollo.app.repository.ResultRepository;
-import formula.bollo.app.repository.SprintRepository;
-import formula.bollo.app.repository.TeamRepository;
+import formula.bollo.app.services.TeamService;
+import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@CrossOrigin(origins = "https://formulabollo.es")
+@CrossOrigin(origins = Constants.URL_FRONTED)
 @RestController
-@RequestMapping(path = {"/teams"}, produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Teams", description = "Operations related with teams")
+@RequestMapping(path = {Constants.ENDPOINT_TEAMS}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = Constants.TAG_TEAM, description = Constants.TAG_TEAM_SUMMARY)
 public class TeamsController {
     
     @Autowired
-    private TeamRepository teamRepository;
+    private TeamService teamService;
 
     @Autowired
     private DriverRepository driverRepository;
 
-    @Autowired
-    private ResultRepository resultRepository;
-
-    @Autowired
-    private SprintRepository sprintRepository;
-
-    @Autowired
-    private TeamMapper teamMapper;
-
-    @Autowired
-    private DriverMapper driverMapper;
-
     private Map<Long, TeamDTO> teamCache = new ConcurrentHashMap<>();
 
-    @Operation(summary = "Get all teams", tags = "Teams")
+    @Operation(summary = "Get all teams", tags = Constants.TAG_TEAM)
     @GetMapping("/all")
     public List<TeamDTO> getAllTeams() {
         Log.info("START - getAllTeams - START");
         
-        if (teamCache.isEmpty()) {
-            List<Team> teams = teamRepository.findAll();
-            
-            for(Team team : teams) {
-                TeamDTO teamDTO = teamMapper.teamToTeamDTO(team);
-                teamCache.put(team.getId(), teamDTO);
-            }
-        }
+        teamService.putTeamsOnCache(teamCache);
 
         Log.info("END - getAllTeams - END");
         
         return new ArrayList<>(teamCache.values());
     }
 
-    @Operation(summary = "Get all teams with their drives", tags = "Teams")
+    @Operation(summary = "Get all teams with their drives", tags = Constants.TAG_TEAM)
     @GetMapping("/withDrivers")
     public List<TeamWithDriversDTO> getAllTeamWithDrivers() {
         Log.info("START - getAllTeamWithDrivers - START");
 
-        //! Mirar esto para que este ordenado
         List<Driver> drivers = driverRepository.findAll();
+        List<TeamWithDriversDTO> teamsWithDriversDTOList = new ArrayList<>();
 
-        Map<Team, TeamWithDriversDTO> teamMap = new HashMap<>();
- 
-        for (Driver driver : drivers) {
-            Team team = driver.getTeam();
-            
-            //Create the hashMap to assign correctly the drivers to the team
-            TeamWithDriversDTO teamWithDrivers = teamMap.computeIfAbsent(team, f -> {
-                TeamWithDriversDTO dto = new TeamWithDriversDTO();
-                dto.setTeamDTO(teamMapper.teamToTeamDTOnoTeamImage(team));
-                return dto;
-            });
+        if(drivers.isEmpty()) return teamsWithDriversDTOList;
 
-            List<Result> resultOfDriver = this.resultRepository.findByDriverId(driver.getId());
-            List<Sprint> sprintOfDriver = this. sprintRepository.findByDriverId(driver.getId());
-            Integer pointsOfDriver = 0;
-
-            // Add all the points of the pilot and put it to the total of the team
-            for(Result result : resultOfDriver) {
-                if (result.getPosition() != null) {
-                    pointsOfDriver += result.getPosition().getPoints() + result.getFastlap();
-                }
-            }
-
-            for(Sprint sprint : sprintOfDriver) {
-                if (sprint.getPosition() != null) {
-                    pointsOfDriver += sprint.getPosition().getPoints();
-                }
-            }
-            
-            if (teamWithDrivers.getTotalPoints() != null) {
-                teamWithDrivers.setTotalPoints(teamWithDrivers.getTotalPoints() + pointsOfDriver);
-            }else {
-                teamWithDrivers.setTotalPoints(pointsOfDriver);
-            }
-
-            // Assign driver1 and driver2 to the team
-            if (teamWithDrivers.getDriver1() == null) {
-                teamWithDrivers.setDriver1(driverMapper.driverToDriverDTO(driver));
-            } else if (teamWithDrivers.getDriver2() == null) {
-                teamWithDrivers.setDriver2(driverMapper.driverToDriverDTO(driver));
-            }
-        }
-
-        List<TeamWithDriversDTO> teamsWithDriversDTOList = new ArrayList<>(teamMap.values());
-
-        // Sort the list by totalPoints
-        Collections.sort(teamsWithDriversDTOList, Comparator.comparingInt(TeamWithDriversDTO::getTotalPoints).reversed());
+        teamsWithDriversDTOList = teamService.getTeamWithDriversDTO(drivers);
 
         Log.info("END - getAllTeamWithDrivers - END");
 

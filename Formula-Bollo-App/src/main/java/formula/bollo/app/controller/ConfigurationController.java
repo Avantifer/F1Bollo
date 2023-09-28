@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import formula.bollo.app.entity.Configuration;
-import formula.bollo.app.mapper.ConfigurationMapper;
 import formula.bollo.app.model.ConfigurationDTO;
-import formula.bollo.app.repository.ConfigurationRepository;
+import formula.bollo.app.services.ConfigurationService;
+import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,33 +21,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-@CrossOrigin(origins = "https://formulabollo.es")
+@CrossOrigin(origins = Constants.URL_FRONTED)
 @RestController
-@RequestMapping(path = {"/configurations"}, produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Configurations", description = "Operations related with Configurations")
+@RequestMapping(path = {Constants.ENDPOINT_CONFIGURATION}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = Constants.TAG_CONFIGURATION, description = Constants.TAG_CONFIGURATION_SUMMARY)
 public class ConfigurationController {
 
     @Autowired
-    private ConfigurationRepository convConfigurationRepository;
-
-    @Autowired
-    private ConfigurationMapper configurationMapper;
+    public ConfigurationService configurationService;
 
     private Map<Long, ConfigurationDTO> configurationsCache = new ConcurrentHashMap<>();
 
-    @Operation(summary = "Get all configurations", tags = "Configurations")
+    @Operation(summary = "Get all configurations", tags = Constants.TAG_CONFIGURATION)
     @GetMapping("/all")
     public List<ConfigurationDTO> getAllConfigurations() {
         Log.info("START - getAllConfigurations - START");
         
-        if (configurationsCache.isEmpty()) {
-            List<Configuration> configurations = convConfigurationRepository.findAll();
-            
-            for(Configuration conf : configurations) {
-                ConfigurationDTO configurationDTO = configurationMapper.configurationToConfigurationDTO(conf);
-                configurationsCache.put(conf.getId(), configurationDTO);
-            }
-        }
+        this.configurationService.putCircuitsOnCache(configurationsCache);
 
         Log.info("END - getAllConfigurations - END");
         return new ArrayList<>(configurationsCache.values());

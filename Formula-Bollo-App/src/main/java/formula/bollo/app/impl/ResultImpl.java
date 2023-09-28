@@ -1,5 +1,8 @@
 package formula.bollo.app.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,9 +27,10 @@ public class ResultImpl implements ResultMapper {
     private PositionMapper positionMapper;
 
     /**
-     * Map ResultDTO to return an object type Result
-     * @param ResultDTO
-     * @return class Result with ResultDTO properties
+     * Converts a ResultDTO object to a Result object.
+     *
+     * @param resultDTO The ResultDTO object to be converted.
+     * @return          A Result object with properties copied from the ResultDTO.
     */
     @Override
     public Result resultDTOToResult(ResultDTO resultDTO) {
@@ -44,9 +48,10 @@ public class ResultImpl implements ResultMapper {
     }
 
     /**
-     * Map Result to return an object type ResultDTO
-     * @param result
-     * @return class ResultDTO with Result properties
+     * Converts a Result object to a ResultDTO object.
+     *
+     * @param result The Result object to be converted.
+     * @return       A ResultDTO object with properties copied from the Result.
     */
     @Override
     public ResultDTO resultToResultDTO(Result result) {
@@ -61,5 +66,18 @@ public class ResultImpl implements ResultMapper {
 
         resultDTO.setFastlap(result.getFastlap());
         return resultDTO;
+    }
+
+    /**
+     * Converts a list of Result objects to a list of ResultDTO objects.
+     *
+     * @param results The list of Result objects to be converted.
+     * @return        A list of ResultDTO objects with properties copied from the Results.
+    */
+    @Override
+    public List<ResultDTO> convertResultsToResultsDTO(List<Result> results) {
+        return results.parallelStream()
+                .map(this::resultToResultDTO)
+                .collect(Collectors.toList());
     }
 }

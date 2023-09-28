@@ -11,6 +11,8 @@ import formula.bollo.app.entity.Admin;
 import formula.bollo.app.mapper.AdminMapper;
 import formula.bollo.app.model.AdminDTO;
 import formula.bollo.app.repository.AdminRepository;
+import formula.bollo.app.services.AdminService;
+import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,16 +21,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@CrossOrigin(origins = "https://formulabollo.es")
+@CrossOrigin(origins = Constants.URL_FRONTED)
 @RestController
-@RequestMapping(path = {"/admin"}, produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Admin", description = "Operations related with admins")
+@RequestMapping(path = {Constants.ENDPOINT_ADMIN}, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = Constants.TAG_ADMIN, description = Constants.TAG_ADMIN_SUMMARY)
 public class AdminController {
     
     @Autowired
@@ -40,28 +40,25 @@ public class AdminController {
     @Autowired
     private JwtConfig jwtConfig;
 
-    @Operation(summary = "Login user admin", tags = "Admin")
-    @PostMapping(path = "/login", produces = MediaType.TEXT_PLAIN_VALUE, consumes = "application/json")
+    @Autowired
+    private AdminService adminService;
+
+    @Operation(summary = "Login user admin", tags = Constants.TAG_ADMIN)
+    @PostMapping(path = "/login", produces = MediaType.TEXT_PLAIN_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> login(@RequestBody AdminDTO adminUser) {
         Log.info("START - login - START");
         Log.info("RequestBody login -> " + adminUser.toString());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
 
         List<Admin> admin = adminRepository.findByUsername(adminUser.getUsername());
-        
-        if (admin.isEmpty() || !new BCryptPasswordEncoder().matches(adminUser.getPassword(), admin.get(0).getPassword())) {
-            return new ResponseEntity<>("No hay usuario con esas credenciales", headers, HttpStatusCode.valueOf(500));
-        }
+        Boolean goodCredentials = this.adminService.checkUserCredentials(adminUser, admin);
+
+        if (!goodCredentials) return new ResponseEntity<>(Constants.ERROR_INVALID_CREDENTIALS, HttpStatusCode.valueOf(500));
 
         AdminDTO adminDTO = adminMapper.adminToAdminDTO(admin.get(0));
-        adminDTO.setPassword("");
-        
         String token = jwtConfig.generateToken(adminDTO);
         
-
         Log.info("END - login - END");
         
-        return new ResponseEntity<>(token, headers, HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(token, HttpStatusCode.valueOf(200));
     }
 }

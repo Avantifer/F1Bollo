@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,10 @@ public class RaceImpl implements RaceMapper{
     private CircuitMapper circuitMapper;
 
     /**
-     * Map RaceDTO to return an object type Race
-     * @param raceDTO
-     * @return class Race with RaceDTO properties
+     * Converts a RaceDTO object to a Race object.
+     *
+     * @param raceDTO The RaceDTO object to be converted.
+     * @return        A Race object with properties copied from the RaceDTO.
     */
     public Race raceDTOToRace(RaceDTO raceDTO) {
         Race race = new Race();
@@ -37,9 +40,10 @@ public class RaceImpl implements RaceMapper{
     }
 
     /**
-     * Map RaceDTO to return an object type Race
-     * @param raceDTO
-     * @return class Race with RaceDTO properties
+     * Converts a Race object to a RaceDTO object.
+     *
+     * @param race The Race object to be converted.
+     * @return     A RaceDTO object with properties copied from the Race.
     */
     public RaceDTO raceToRaceDTO(Race race) {
         RaceDTO raceDTO = new RaceDTO();
@@ -52,5 +56,17 @@ public class RaceImpl implements RaceMapper{
         raceDTO.setDateStart(localDateTime);        
         return raceDTO;
     }
-    
+
+    /**
+     * Converts a list of Race objects to a list of RaceDTO objects.
+     *
+     * @param races The list of Race objects to be converted.
+     * @return      A list of RaceDTO objects with properties copied from the Races.
+    */
+    @Override
+    public List<RaceDTO> convertRacesToRacesDTO(List<Race> races) {
+        return races.parallelStream()
+                .map(this::raceToRaceDTO)
+                .collect(Collectors.toList());
+    }
 }

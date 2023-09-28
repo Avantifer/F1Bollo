@@ -1,5 +1,7 @@
 package formula.bollo.app.mapper;
 
+import java.util.List;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
@@ -14,4 +16,6 @@ public interface ResultMapper {
     Result resultDTOToResult(ResultDTO resultDTO);
 
     ResultDTO resultToResultDTO(Result result);
+
+    List<ResultDTO> convertResultsToResultsDTO(List<Result> results);
 }

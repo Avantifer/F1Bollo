@@ -35,6 +35,7 @@ export class LoginComponent {
     this.adminService.login(user)
       .pipe(catchError((error) => {
         // Show the error message using the messageService
+        console.log(error);
         this.messageService.showInformation(error.error);
         return '';
       }))
