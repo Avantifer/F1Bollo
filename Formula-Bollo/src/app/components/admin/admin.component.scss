@@ -1,7 +1,7 @@
 @import "../../../assets/scss/styles.scss";
 
 .admin {
-  height: calc(100vh - 75px);
+  min-height: calc(100vh - 75px);
 
   &-leftSide {
     &-title {
@@ -33,7 +33,7 @@
 
 @include media-breakpoint-down(lg) {
   .admin {
-    height: calc(100vh - 92px) !important;
+    min-height: calc(100vh - 92px) !important;
   }
 }
 

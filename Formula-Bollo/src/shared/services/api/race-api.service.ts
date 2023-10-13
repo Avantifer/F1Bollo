@@ -1,13 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/enviroments/enviroment';
-import { Race } from '../models/race';
+import { Race } from '../../models/race';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RaceService {
+export class RaceApiService {
 
   private endpoint: string = "/races";
 

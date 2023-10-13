@@ -2,12 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/enviroments/enviroment';
-import { Admin } from '../models/admin';
+import { Admin } from '../../models/admin';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AdminService {
+export class AdminApiService {
 
   private endpoint: string = "/admin";
 

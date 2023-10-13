@@ -19,12 +19,12 @@ import formula.bollo.app.utils.Log;
 @Component
 public class ArchiveImpl implements ArchiveMapper {
 
+
     /**
-     * Map archiveDTO to return an object type Archive
-     * @param archiveDTO
-     * @exception SQLException Cannot do something with the db
-     * @exception IllegalArgumentException Cannot convert string to byte[]
-     * @return class Archive with ArchiveDTO properties
+     * Converts an ArchiveDTO object to an Archive object.
+     *
+     * @param archiveDTO The ArchiveDTO object to be converted.
+     * @return           An Archive object with properties copied from the ArchiveDTO.
     */
     @Override
     public Archive archiveDTOToArchive(ArchiveDTO archiveDTO) {
@@ -42,10 +42,10 @@ public class ArchiveImpl implements ArchiveMapper {
     }
 
     /**
-     * Map Archive to return an object type ArchiveDTO
-     * @param archive
-     * @exception SQLException Cannot do something with the db
-     * @return class ArchiverDTO with Archive properties
+     * Converts an Archive object to an ArchiveDTO object.
+     *
+     * @param archive The Archive object to be converted.
+     * @return        An ArchiveDTO object with properties copied from the Archive.
     */
     @Override
     public ArchiveDTO archiveToArchiveDTO(Archive archive) {
@@ -67,5 +67,4 @@ public class ArchiveImpl implements ArchiveMapper {
 
         return archiveDTO;
     }
-    
 }

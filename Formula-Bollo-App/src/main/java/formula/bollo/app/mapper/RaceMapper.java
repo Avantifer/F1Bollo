@@ -1,5 +1,7 @@
 package formula.bollo.app.mapper;
 
+import java.util.List;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
@@ -14,4 +16,6 @@ public interface RaceMapper {
     Race raceDTOToRace(RaceDTO raceDTO);
 
     RaceDTO raceToRaceDTO(Race race);
+
+    List<RaceDTO> convertRacesToRacesDTO(List<Race> races);
 }

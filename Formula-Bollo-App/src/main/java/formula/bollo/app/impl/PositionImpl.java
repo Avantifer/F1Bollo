@@ -10,10 +10,12 @@ import formula.bollo.app.model.PositionDTO;
 @Configuration
 public class PositionImpl implements PositionMapper {
 
+
     /**
-     * Map PositionDTO to return an object type Position
-     * @param positionDTO
-     * @return class Position with PositionDTO properties
+     * Converts a PositionDTO object to a Position object.
+     *
+     * @param positionDTO The PositionDTO object to be converted.
+     * @return            A Position object with properties copied from the PositionDTO.
     */
     @Override
     public Position positionDTOToPosition(PositionDTO positionDTO) {
@@ -23,9 +25,10 @@ public class PositionImpl implements PositionMapper {
     }
 
     /**
-     * Map PositionDTO to return an object type Position
-     * @param positionDTO
-     * @return class Position with PositionDTO properties
+     * Converts a Position object to a PositionDTO object.
+     *
+     * @param position The Position object to be converted.
+     * @return         A PositionDTO object with properties copied from the Position.
     */
     @Override
     public PositionDTO positionToPositionDTO(Position position) {
@@ -34,5 +37,4 @@ public class PositionImpl implements PositionMapper {
         
         return positionDTO;
     }
-    
 }

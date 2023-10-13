@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { catchError } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Archive } from 'src/shared/models/archive';
-import { ArchiveService } from 'src/shared/services/archive-api.service';
+import { ArchiveApiService } from 'src/shared/services/api/archive-api.service';
 import { MessageService } from 'src/shared/services/message.service';
 
 @Component({
@@ -14,58 +14,86 @@ export class AdminStatuteComponent {
   progressValue: number = 0;
   correct: boolean = false;
 
-  constructor(private messageService: MessageService, private archiveService: ArchiveService){ }
+  private _unsubscribe = new Subject<void>();
+
+  constructor(private messageService: MessageService, private archiveApiService: ArchiveApiService){ }
+
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
 
   /**
-   * Select the file and comprobate if its correct or not
-   * @memberof AdminStatuteComponent
+   * Handles the selection of a file from an input element.
+   * @param event - The event object containing the selected file information.
   */
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    this.correct = this.selectedFile?.type === 'application/pdf';
+  onFileSelected(event: Event) {
+    let fileInput: HTMLInputElement = event.target as HTMLInputElement;
+    this.selectedFile = fileInput.files![0];
 
-    if (!this.correct) this.messageService.showInformation('Tiene que ser un archivo pdf');
+    if (this.selectedFile) {
+      this.correct = this.selectedFile?.type === 'application/pdf';
+
+      if (!this.correct) this.messageService.showInformation('Tiene que ser un archivo pdf');
+    }
 
     this.animateProgressBar();
   }
 
   /**
-   * Save the file in db
-   * @memberof AdminStatuteComponent
+   * Saves an 'archive' object to a db.
+   * @param archive - The 'archive' object to be saved.
   */
   saveFile (archive: Archive) {
-    if (this.correct && this.selectedFile) {
-      this.archiveService.saveStatute(archive).pipe(catchError((error) => {
-        this.messageService.showInformation(error.error);
-        return '';
-      })).subscribe((success: string) => {
-        this.messageService.showInformation('Se ha guardado correctamente');
+    if (this.correct && this.selectedFile) return;
+    this.archiveApiService.saveStatute(archive)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (success: string) => {
+          this.messageService.showInformation('Se ha guardado correctamente');
+        },
+        error: (error) => {
+          this.messageService.showInformation('No se ha podido guardar correctamente el fichero');
+          console.log(error);
+          throw error;
+        }
       });
-    }
   }
 
   /**
-   * Read the pdf content to be uploaded
-   * @memberof AdminStatuteComponent
+   * Reads the content of the selected PDF file and saves it as an 'Archive' object.
   */
   readPDFContent() {
-    if (this.selectedFile === null) return;
+    if (this.selectedFile === null) {
+      this.messageService.showInformation('No se ha seleccionado ningún archivo');
+      return;
+    }
 
     const reader = new FileReader();
 
-    reader.onload = (e: any) => {
-      const fileContent: Uint8Array = new Uint8Array(e.target.result);
-      const fileContentArray: number[] = Array.from(fileContent);
-      let archive: Archive = new Archive(0, fileContentArray, this.selectedFile!.type, 'Statute');
-      this.saveFile(archive);
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      try {
+        if (e.target?.result) {
+          const fileContent: Uint8Array = new Uint8Array(e.target.result as ArrayBuffer);
+          const fileContentArray: number[] = Array.from(fileContent);
+          let archive: Archive = new Archive(0, fileContentArray, this.selectedFile!.type, 'Statute');
+          this.saveFile(archive);
+        } else {
+          this.messageService.showInformation('No se pudo leer el contenido del archivo.');
+        }
+      } catch (error) {
+        console.error(error);
+        this.messageService.showInformation('Ocurrió un error al procesar el archivo.');
+      }
     };
 
     reader.readAsArrayBuffer(this.selectedFile);
   }
 
   /**
-   * Animation of the progress bar
-   * @memberof AdminStatuteComponent
+   * Animates a progress bar by incrementing the 'progressValue' property.
   */
   animateProgressBar(): void {
     this.progressValue = 0;

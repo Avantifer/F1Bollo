@@ -18,9 +18,10 @@ import formula.bollo.app.utils.Log;
 public class CircuitImpl implements CircuitMapper{
 
     /**
-     * Map CircuitDTO to return an object type Circuit
-     * @param circuitDTO
-     * @return class Circuit with CircuitDTO properties
+     * Converts a CircuitDTO object to a Circuit object.
+     *
+     * @param circuitDTO The CircuitDTO object to be converted.
+     * @return           A Circuit object with properties copied from the CircuitDTO.
     */
     @Override
     public Circuit circuitDTOToCircuit(CircuitDTO circuitDTO) {
@@ -44,10 +45,11 @@ public class CircuitImpl implements CircuitMapper{
     }
 
     /**
-     * Map CircuitDTO to return an object type Circuit
-     * @param circuitDTO
-     * @return class Circuit with CircuitDTO properties
-    */
+     * Converts a Circuit object to a CircuitDTO object.
+     *
+     * @param circuit The Circuit object to be converted.
+     * @return        A CircuitDTO object with properties copied from the Circuit.
+    */ 
     @Override
     public CircuitDTO circuitToCircuitDTO(Circuit circuit) {
         CircuitDTO circuitDTO = new CircuitDTO();
@@ -73,5 +75,4 @@ public class CircuitImpl implements CircuitMapper{
 
         return circuitDTO;
     }
-    
 }

@@ -18,11 +18,10 @@ import formula.bollo.app.utils.Log;
 public class TeamImpl implements TeamMapper{
     
     /**
-     * Map TeamDTO to return an object type Team
-     * @param teamDTO
-     * @exception SQLException Cannot do something with the db
-     * @exception IllegalArgumentException Cannot convert string to byte[]
-     * @return class Team with TeamDTO properties
+     * Converts a TeamDTO object to a Team object.
+     *
+     * @param teamDTO The TeamDTO object to be converted.
+     * @return        A Team object with properties copied from the TeamDTO.
     */
     @Override
     public Team teamDTOToTeam(TeamDTO teamDTO) {
@@ -41,10 +40,10 @@ public class TeamImpl implements TeamMapper{
     }
 
     /**
-     * Map Team to return an object type TeamDTO
-     * @param team
-     * @exception SQLException Cannot do something with the db
-     * @return class TeamDTO with Team properties
+     * Converts a Team object to a TeamDTO object.
+     *
+     * @param team The Team object to be converted.
+     * @return     A TeamDTO object with properties copied from the Team.
     */
     @Override
     public TeamDTO teamToTeamDTO(Team team) {
@@ -62,9 +61,10 @@ public class TeamImpl implements TeamMapper{
     }
 
     /**
-     * Map Team to return an object type TeamDTO without teamImage
-     * @param team
-     * @return class TeamDTO with almost all Team's properties (no carImage)
+     * Converts a Team object to a TeamDTO object excluding the team image.
+     *
+     * @param team The Team object to be converted.
+     * @return     A TeamDTO object with properties copied from the Team excluding the team image.
     */
     @Override
     public TeamDTO teamToTeamDTOnoTeamImage(Team team) {
@@ -73,5 +73,4 @@ public class TeamImpl implements TeamMapper{
         teamDTO.setCarImage(team.getCarImage());
         return teamDTO;
     }
-
 }

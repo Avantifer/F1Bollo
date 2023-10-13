@@ -2,13 +2,13 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/enviroments/enviroment";
-import { Archive } from "../models/archive";
+import { Archive } from "../../models/archive";
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ArchiveService {
+export class ArchiveApiService {
 
   private endpoint: string = "/archives";
 

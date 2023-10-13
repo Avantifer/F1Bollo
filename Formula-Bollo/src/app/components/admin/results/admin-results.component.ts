@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { catchError } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Circuit } from 'src/shared/models/circuit';
 import { Driver } from 'src/shared/models/driver';
 import { Position } from 'src/shared/models/position';
 import { Race } from 'src/shared/models/race';
 import { Result } from 'src/shared/models/result';
-import { CircuitService } from 'src/shared/services/circuit-api.service';
-import { DriverService } from 'src/shared/services/driver-api.service';
+import { CircuitApiService } from 'src/shared/services/api/circuit-api.service';
+import { DriverApiService } from 'src/shared/services/api/driver-api.service';
 import { MessageService } from 'src/shared/services/message.service';
-import { RaceService } from 'src/shared/services/race-api.service';
-import { ResultService } from 'src/shared/services/result-api.service';
+import { RaceApiService } from 'src/shared/services/api/race-api.service';
+import { ResultApiService } from 'src/shared/services/api/result-api.service';
 
 @Component({
   selector: 'app-modify-results',
@@ -40,11 +40,13 @@ export class AdminResultsComponent {
   raceSelected: Race | undefined;
   raceDate: Date = new Date();
 
+  private _unsubscribe = new Subject<void>();
+
   constructor(
-    private resultService: ResultService,
-    private circuitService: CircuitService,
-    private driverService: DriverService,
-    private raceService: RaceService,
+    private resultApiService: ResultApiService,
+    private circuitApiService: CircuitApiService,
+    private driverApiService: DriverApiService,
+    private raceApiService: RaceApiService,
     private messageService: MessageService
   ) {}
 
@@ -55,31 +57,35 @@ export class AdminResultsComponent {
     this.getResultsOfCircuitSelected();
   }
 
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
+
   /**
-   * creates a result form by adding form controls to the resultsForm
-   * @memberof ModifyResultsComponent
+   * Create form controls for result entries.
   */
   createResultForm(): void {
-    for (let i = 0; i <= 20; i++) {
+    const maxResultFormControl: number = 20;
+
+    for (let i = 0; i <= maxResultFormControl; i++) {
       this.resultsForm.addControl('result' + i, new FormControl(''));
     }
   }
 
   /**
-   * return the first index of the first driver qualified
-   * @memberof ModifyResultsComponent
+   * Find the index of the first disqualified result in the 'results' array.
+   *
+   * @returns The index of the first disqualified result or the length of the array if no disqualifications are found.
   */
   findFirstDisqualifiedIndex(): number {
-    // Find the index of the first disqualified result
-    const index = this.results.findIndex((result) => !result.position);
-    // If a disqualified result is found, return its index
-    // Otherwise, return the length of the results array
-    return index >= 0 ? index : this.results.length;
+    return this.results.findIndex((result) => !result.position) || this.results.length;
   }
 
   /**
-   * Put the results in the resultsForm
-   * @memberof ModifyResultsComponent
+   * Complete the result form with result data.
+   *
+   * @param results - An array of result data.
   */
   putResultsInResultForm(results: Result[]): void {
     for (let i = 0; i <= 19; i++) {
@@ -88,31 +94,53 @@ export class AdminResultsComponent {
   }
 
   /**
-   * Get all circuits
-   * @memberof ModifyResultsComponent
-   * @memberof ResultsComponent
+   * Fetch and set the list of circuits.
   */
   getAllCircuits(): void {
-    this.circuitService.getAllCircuits().subscribe((circuits: Circuit[]) => {
-      this.circuits = circuits;
-    });
+    this.circuitApiService.getAllCircuits()
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (circuits: Circuit[]) => {
+          this.circuits = circuits;
+        },
+        error: (error) => {
+          this.messageService.showInformation('Hubo un error al recoger los circuitos');
+          console.error('Error al obtener circuitos:', error);
+          throw error;
+        }
+      });
   }
 
   /**
-   * Get all results of the circuit selected
-   * @memberof ModifyResultsComponent
-   * @memberof ResultsComponent
+   * Subscribe to changes in the circuitsForm and perform actions based on the selected circuit.
   */
   getResultsOfCircuitSelected(): void {
-    this.circuitsForm.valueChanges.subscribe((data: any) => {
-      this.circuitSelected = data.circuit;
-      // Check if a circuit is selected
-      if (this.circuitSelected != undefined) {
-        this.getAllDrivers();
-        this.getAllResultsPerCircuit(this.circuitSelected.id);
-        this.getRacePerCircuit(this.circuitSelected.id);
-      }
-    });
+    this.circuitsForm.valueChanges
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.circuitSelected = data.circuit;
+
+          if (this.circuitSelected) {
+            this.fetchDriversResultsAndRace(this.circuitSelected.id);
+          }
+        }
+      });
+  }
+
+  /**
+   * Fetch drivers, results, and race data for the selected circuit.
+   *
+   * @param circuitId - The ID of the selected circuit.
+  */
+  private fetchDriversResultsAndRace(circuitId: number): void {
+    this.getAllDrivers();
+    this.getAllResultsPerCircuit(circuitId);
+    this.getRacePerCircuit(circuitId);
   }
 
   /**
@@ -121,111 +149,157 @@ export class AdminResultsComponent {
    * @memberof ResultsComponent
   */
   getAllResultsPerCircuit(circuitId: number): void {
-    this.resultService.getAllResultsPerCircuit(circuitId).subscribe((results: Result[]) => {
-      this.results = results;
-      // Reset the value of the fast lap and race date form field
-      this.fastLapForm.get('fastlap')?.setValue('');
-      this.raceForm.get('raceDate')?.setValue('');
-      // Activate the save button
-      this.saveButtonActivated = true;
+    this.resultApiService.getAllResultsPerCircuit(circuitId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (results: Result[]) => {
+          this.results = results;
 
-      this.getFastLapDriver(results);
-      this.getRacePerCircuit(circuitId);
-      this.putResultsInResultForm(results);
-    });
+          // Reset the values of the fast lap and race date form fields.
+          this.fastLapForm.get('fastlap')?.setValue('');
+          this.raceForm.get('raceDate')?.setValue('');
+
+          this.saveButtonActivated = true;
+          this.processResults(results, circuitId);
+        },
+        error: (error) => {
+          this.messageService.showInformation('No se han podido recoger los resultados del circuito');
+          console.log(error);
+          throw error;
+        }
+      });
   }
 
   /**
-   * Get fastLapDriver
-   * @param results - Results Array
-   * @memberof ModifyResultsComponent
+   * Process results data, including getting the fast lap driver and race data.
+   *
+   * @param results - An array of results data.
+   * @param circuitId - The ID of the selected circuit.
+  */
+  private processResults(results: Result[], circuitId: number): void {
+    this.getFastLapDriver(results);
+    this.getRacePerCircuit(circuitId);
+    this.putResultsInResultForm(results);
+  }
+
+  /**
+   * Find and set the result with the fastest lap in the fastLapForm.
+   *
+   * @param results - An array of results.
   */
   getFastLapDriver(results: Result[]): void {
-    results.forEach((result: Result) => {
-      // Check if the result has a fast lap
-      if (result.fastlap) {
-        // Set the fast lap value in the fastLapForm
-        this.fastLapForm.get('fastlap')?.setValue(result);
-        this.fastLapSelected = result;
-      }
-    });
+    const fastestResult: Result | undefined = results.find((result) => result.fastlap);
+    if (!fastestResult) return;
+
+    this.fastLapForm.get('fastlap')?.setValue(fastestResult);
+    this.fastLapSelected = fastestResult;
   }
 
   /**
-   * Get all drivers
-   * @memberof ModifyResultsComponent
+   * Fetch and set the list of drivers.
   */
   getAllDrivers(): void {
-    this.driverService.getAllDrivers().subscribe((drivers: Driver[]) => {
-      this.drivers = drivers;
-    });
+    this.driverApiService.getAllDrivers()
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (drivers: Driver[]) => {
+          this.drivers = drivers;
+        },
+        error: (error) => {
+          this.messageService.showInformation('No se ha podido recoger los pilotos correctamente');
+          console.log(error);
+          throw error;
+        }
+      });
   }
 
   /**
-   * Get the race of the circuitId
-   * @param circuitId - Id of the circuit Selected.
-   * @memberof ModifyResultsComponent
+   * Fetch and set the selected race and race date for the specified circuit.
+   *
+   * @param circuitId - The ID of the selected circuit.
   */
   getRacePerCircuit(circuitId: number): void {
-    this.raceService.getRacePerCircuit(circuitId).subscribe((races: Race[]) => {
-      // Check if there are any races
-      if (races.length > 0) {
-        // Set the first race as the selected race and set the race date
-        this.raceSelected = races[0];
-        this.raceDate = new Date(races[0].dateStart);
-      } else {
-        // If there are no races, set the selected race to undefined
-        this.raceSelected = undefined;
-      }
-    });
+    this.raceApiService.getRacePerCircuit(circuitId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (races: Race[]) => {
+          if (races.length > 0) {
+            // Set the first race as the selected race and set the race date
+            this.raceSelected = races[0];
+            this.raceDate = new Date(races[0].dateStart);
+          } else {
+            this.raceSelected = undefined;
+          }
+        },
+        error: (error) => {
+          this.messageService.showInformation('No se ha podido recoger la carrera correctamente');
+          console.log(error);
+          throw error;
+        }
+      });
   }
 
   /**
-   * Save AllForm in bbdd
-   * @memberof ModifyResultsComponent
+   * Save data from race and results forms.
   */
   saveAllForms(): void {
     this.saveRace();
+
     setTimeout(() => {
       this.saveResults();
     }, 1000);
   }
 
   /**
-   * Save Race in bbdd
-   * @memberof ModifyResultsComponent
+   * Save race data based on selected race or create a new race if necessary.
   */
   saveRace(): void {
-    let race: Race;
-     // Check if a race is selected
-    if (this.raceSelected) {
-      race = this.raceSelected;
-    } else {
-      // Check if a circuit and race date is selected
-      if (!this.circuitSelected) return;
-      if (!this.raceDate) {
-        this.messageService.showInformation("Tienes que seleccionar una fecha de inicio");
-        return;
-      }
+    let race = this.raceSelected ?? this.createRace();
 
-      race = new Race(0, this.circuitSelected, this.raceDate);
-      this.raceSelected = race;
-    }
     // Check if a race is available
     if (!race) return;
 
-    // Save the race
-    this.raceService.saveRace(race)
-      .pipe(catchError((error) => {
-        this.messageService.showInformation(error.error);
-        return '';
-      }))
-      .subscribe();
+    this.raceApiService.saveRace(race)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        error: (error) => {
+          this.messageService.showInformation(error.error);
+          console.log(error);
+          throw error;
+        }
+      })
   }
 
   /**
-   * Save Results in bbdd
-   * @memberof ModifyResultsComponent
+   * Create a new race with circuit and race date.
+   *
+   * @returns The newly created race.
+  */
+  private createRace(): Race | undefined {
+    if (!this.circuitSelected) {
+      return undefined;
+    }
+
+    if (!this.raceDate) {
+      this.messageService.showInformation('Tienes que seleccionar una fecha de inicio');
+      return undefined;
+    }
+
+    const newRace = new Race(0, this.circuitSelected, this.raceDate);
+    this.raceSelected = newRace;
+    return newRace;
+  }
+
+  /**
+   * Save results by either updating existing results or creating new results.
   */
   saveResults(): void {
     if (this.results.length > 0) {
@@ -236,30 +310,40 @@ export class AdminResultsComponent {
   }
 
   /**
-   * Update results to be saved in bbdd
-   * @memberof ModifyResultsComponent
+   * Update existing results and save them.
   */
   updateResult(): void {
     // Get updated results
     let resultsToSave: Result[] = this.updateEveryResult();
 
-    // Save the results
-    this.resultService.saveResults(resultsToSave)
-      .pipe(catchError((error) => {
-        this.messageService.showInformation(error.error);
-        return '';
-      }))
-      .subscribe((success: string) => {
-        this.messageService.showInformation(success);
-        this.circuitSelected = undefined;
-        this.circuitsForm.get('circuit')?.setValue('');
-        this.saveButtonActivated = false;
+    if (this.comprobateIfDuplicatedDriver(resultsToSave)) {
+      this.messageService.showInformation('Hay un piloto duplicado en los resultados.');
+      return;
+    }
+
+    this.resultApiService.saveResults(resultsToSave)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (success: string) => {
+          this.messageService.showInformation(success);
+          this.circuitSelected = undefined;
+          this.circuitsForm.get('circuit')?.setValue('');
+          this.saveButtonActivated = false;
+        },
+        error: (error) => {
+          this.messageService.showInformation(error.error);
+          console.log(error);
+          throw error;
+        }
       });
   }
 
   /**
-   * Update every result one for one
-   * @memberof ModifyResultsComponent
+   * Update and prepare results based on the values in the results form.
+   *
+   * @returns An array of updated results.
   */
   updateEveryResult(): Result[] {
     let resultsToSave: Result[] = [];
@@ -280,15 +364,6 @@ export class AdminResultsComponent {
 
         resultsToSave.push(newResult);
         positionActual++;
-      }else if (controlValue) {
-        let fastlap: number = 0;
-        // Check if the current driver has the fastest lap
-        if (this.fastLapSelected?.driver.name == controlValue.driver?.name) {
-          fastlap = 1;
-        }
-
-        let newResult: Result = new Result(controlValue.id, controlValue.race, controlValue.driver, null, fastlap);
-        resultsToSave.push(newResult);
       }
     }
 
@@ -296,11 +371,9 @@ export class AdminResultsComponent {
   }
 
   /**
-   * Create results to be saved in bbdd
-   * @memberof ModifyResultsComponent
+   * Create and save results based on selected circuit and date.
   */
   createResult(): void {
-    // Check if a circuit is selected, if not, exit the function
     if (!this.circuitSelected) return;
 
     let resultsToSave: Result[] = [];
@@ -309,43 +382,55 @@ export class AdminResultsComponent {
     this.createEveryResult(resultsToSave, race);
     this.comprobateDriversToBeDisqualified(resultsToSave, race);
 
-    // Save the results
-    this.resultService.saveResults(resultsToSave)
-    .pipe(catchError((error) => {
-      this.messageService.showInformation(error.error);
-      return '';
-    })).subscribe((success: string) => {
-      this.messageService.showInformation(success);
-      this.circuitSelected = undefined;
-      this.circuitsForm.get('circuit')?.setValue('');
-      this.saveButtonActivated = false;
-    });
+    if (this.comprobateIfDuplicatedDriver(resultsToSave)) {
+      this.messageService.showInformation('Hay un piloto duplicado en los resultados.');
+      return;
+    }
+
+    this.resultApiService.saveResults(resultsToSave)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (success: string) => {
+          this.messageService.showInformation(success);
+          this.circuitSelected = undefined;
+          this.circuitsForm.get('circuit')?.setValue('');
+          this.saveButtonActivated = false;
+        },
+        error: (error) => {
+          this.messageService.showInformation(error.error);
+          console.log(error);
+          throw error;
+        }
+      })
   }
 
   /**
-   * Check drivers to know whose that need to be disqualified
-   * @param resultsToSave - The array to save the results to.
-   * @param race - The race object.
-   * @memberof ModifyResultsComponent
+   * Identify disqualified drivers and create results for them.
+   *
+   * @param resultsToSave - Array of results to be saved.
+   * @param race - The race for which results are being prepared.
   */
-  comprobateDriversToBeDisqualified(resultsToSave: Result[], race : Race): void {
+  private comprobateDriversToBeDisqualified(resultsToSave: Result[], race: Race): void {
     // Create a Set of disqualified driver names from the results to save
-    let disqualifiedDriverNames = new Set(resultsToSave.map((result: Result) => result.driver.name));
-    // Filter out the disqualified drivers from the drivers array
-    let driversDisqualified: Driver[] = this.drivers.filter((driver: Driver) => !disqualifiedDriverNames.has(driver.name));
-    // Create new results to save for the disqualified drivers
-    let newResultsToSave = driversDisqualified.map((driver: Driver) => new Result(0, race, driver, null, 0));
-    // Append the new results to the existing results to save array
+    const disqualifiedDriverNames = new Set(resultsToSave.map((result) => result.driver.name));
+
+    // Find drivers who are not disqualified
+    const driversNotDisqualified: Driver[] = this.drivers.filter((driver) => !disqualifiedDriverNames.has(driver.name));
+
+    // Create new results for disqualified drivers and append them to the existing results
+    const newResultsToSave = driversNotDisqualified.map((driver) => new Result(0, race, driver, null, 0));
     resultsToSave.push(...newResultsToSave);
   }
 
-
   /**
-   * Creates a result for each driver in the resultsForm and adds it to the resultsToSave array.
-   * @param resultsToSave - The array to save the results to.
-   * @param race - The race object.
+   * Create results for each driver based on the form data and fastest lap driver.
+   *
+   * @param resultsToSave - Array of results to be saved.
+   * @param race - The race for which results are being prepared.
   */
-  createEveryResult(resultsToSave: Result[], race : Race): void {
+  private createEveryResult(resultsToSave: Result[], race : Race): void {
     let positionActual: number = 1;
     const fastLapValue: Driver | undefined = this.fastLapForm.get('fastlap')?.value;
 
@@ -353,12 +438,7 @@ export class AdminResultsComponent {
       let controlValue: Driver | undefined = this.resultsForm.controls[controlName].value;
 
       if (controlValue) {
-        let fastlap: number = 0;
-        // Check if the current driver has the fastest lap
-        if (fastLapValue && fastLapValue.name === controlValue.name) {
-          fastlap = 1;
-        }
-
+        let fastlap: number = fastLapValue?.name === controlValue.name ? 1 : 0;
         let position: Position = new Position(0, positionActual, 0);
         let result: Result = new Result(0, race, controlValue, position, fastlap);
         resultsToSave.push(result);
@@ -368,8 +448,35 @@ export class AdminResultsComponent {
   }
 
   /**
-   * Remove the value of the formControl selected pressing SUPR
-   * @param index - the index of the formControl
+   * Check if there are duplicated drivers in the results array.
+   *
+   * @param results - Array of results to check for duplicates.
+   * @returns true if duplicates exist, false otherwise.
+  */
+  private comprobateIfDuplicatedDriver(results: Result[]): boolean {
+    const driverNames = new Set<string>();
+    let duplicated = false;
+
+    for (const result of results) {
+      if (result.position) {
+        const driverName = result.driver.name;
+
+        if (driverNames.has(driverName)) {
+          duplicated = true;
+          break;
+        }
+
+        driverNames.add(driverName);
+      }
+    }
+
+    return duplicated;
+  }
+
+  /**
+   * Clear the value of a specific result in the results form.
+   *
+   * @param index - The index of the result to be cleared.
   */
   onMatSelectDelete(index: number): void {
     this.resultsForm.get('result' + index)?.setValue(null);
