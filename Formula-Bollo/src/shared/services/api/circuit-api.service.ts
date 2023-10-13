@@ -2,18 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/enviroments/enviroment';
-import { Driver } from '../models/driver';
+import { Circuit } from '../../models/circuit';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DriverService {
+export class CircuitApiService {
 
-  private endpoint: string = "/drivers";
+  private endpoint: string = "/circuits";
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllDrivers(): Observable<Driver[]> {
-    return this.httpClient.get<Driver[]>(environment.apiUrl + this.endpoint + "/all");
+  getAllCircuits(): Observable<Circuit[]> {
+    return this.httpClient.get<Circuit[]>(environment.apiUrl + this.endpoint + "/all");
   }
 }

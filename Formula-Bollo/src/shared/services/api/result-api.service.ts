@@ -1,15 +1,15 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { DriverPoints } from "../models/driverPoints";
+import { DriverPoints } from "../../models/driverPoints";
 import { environment } from "src/enviroments/enviroment";
-import { Result } from "../models/result";
+import { Result } from "../../models/result";
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ResultService {
+export class ResultApiService {
 
   private endpoint: string = "/results";
 

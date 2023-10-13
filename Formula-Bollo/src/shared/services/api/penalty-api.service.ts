@@ -2,14 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/enviroments/enviroment";
-import { Penalty } from "../models/penalty";
-import { DriverPenalties } from "../models/driverPenalty";
+import { Penalty } from "../../models/penalty";
+import { DriverPenalties } from "../../models/driverPenalty";
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class PenaltyService {
+export class PenaltyApiService {
 
   private endpoint: string = "/penalties";
 

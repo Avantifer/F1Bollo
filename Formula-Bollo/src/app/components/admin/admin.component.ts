@@ -23,16 +23,18 @@ export class AdminComponent {
   }
 
   /**
-   * Navigate to show the component selected
-   * @memberof AdminComponent
+   * Navigate to the specified URL using the Angular router.
+   *
+   * @param url - The URL to navigate to.
   */
   navigateByUrl(url: string) : void {
     this.router.navigate([url]);
   }
 
   /**
-   * Show what navItem is selected
-   * @memberof AdminComponent
+   * Select a navigation item and mark it as active while deactivating others.
+   *
+   * @param event - The target element that triggered the selection.
   */
   selectNavItem(event: EventTarget | null): void {
     if (event === null) return;
@@ -46,16 +48,12 @@ export class AdminComponent {
     });
 
     let divSelected: Element = event as Element;
-
     if (divSelected.classList.contains('active')) return;
-
     divSelected.classList.add('active');
-
   }
 
   /**
-   * Know in what component he is when refresh application
-   * @memberof AdminComponent
+   * Find the active navigation item based on the current URL and set it as the active item.
   */
   searchNavItemSelected(): void {
     let actualNavItem: SideNavItem | undefined = this.sideNavItems.find((sideNavItem : SideNavItem) => sideNavItem.url === this.router.url);

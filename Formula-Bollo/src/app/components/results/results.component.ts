@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MessageService } from 'src/shared/services/message.service';
+import { Subject, takeUntil } from 'rxjs';
 import { Circuit } from 'src/shared/models/circuit';
 import { Result } from 'src/shared/models/result';
-import { CircuitService } from 'src/shared/services/circuit-api.service';
-import { ResultService } from 'src/shared/services/result-api.service';
+import { CircuitApiService } from 'src/shared/services/api/circuit-api.service';
+import { ResultApiService } from 'src/shared/services/api/result-api.service';
 
 @Component({
   selector: 'app-results',
@@ -22,61 +24,84 @@ export class ResultsComponent {
 
   circuitSelected: Circuit | undefined;
 
-  constructor(private circuitService: CircuitService, private resultService: ResultService) { }
+  private _unsubscribe = new Subject<void>();
+
+  constructor(
+    private circuitApiService: CircuitApiService,
+    private resultApiService: ResultApiService,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit(): void {
     this.getAllCircuits();
     this.getResultsOfCircuitSelected();
   }
 
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
+
   /**
-   * Get all circuits
-   * @memberof ModifyResultsComponent
-   * @memberof ResultsComponent
+   * Fetch all circuits from the circuit API service and handle the response.
   */
   getAllCircuits(): void {
-    this.circuitService.getAllCircuits().subscribe((circuits: Circuit[]) => {
-      this.circuits = circuits;
-      this.circuitSelected = this.circuits[0];
-      this.circuitsForm.get('circuit')?.setValue(this.circuitSelected);
-      this.getResultsDefault(this.circuitSelected);
-    });
+    this.circuitApiService.getAllCircuits()
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (circuits: Circuit[]) => {
+          this.circuits = circuits;
+          this.circuitSelected = this.circuits[0];
+          this.circuitsForm.get('circuit')?.setValue(this.circuitSelected);
+          this.getAllResultsPerCircuit(this.circuitSelected.id);
+        },
+        error: (error) => {
+          this.messageService.showInformation('Hubo un problema al recoger los circuitos');
+          console.log(error);
+          throw error
+        }
+      });
   }
 
   /**
-   * Get all results of the circuit selected
-   * @memberof ModifyResultsComponent
-   * @memberof ResultsComponent
+   * Subscribe to changes in the 'circuit' value of the circuits form and fetch results accordingly.
   */
   getResultsOfCircuitSelected(): void {
-    this.circuitsForm.valueChanges.subscribe((data: any) => {
-      this.circuitSelected = data.circuit;
-      // Check if a circuit is selected
-      if (this.circuitSelected != undefined) {
-        this.getAllResultsPerCircuit(this.circuitSelected.id);
-      }
-    });
+    this.circuitsForm.valueChanges
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.circuitSelected = data.circuit;
+          if (this.circuitSelected != undefined) {
+            this.getAllResultsPerCircuit(this.circuitSelected.id);
+          }
+        }
+      });
   }
 
   /**
-   * Get all results by circuitId
-   * @memberof ModifyResultsComponent
-   * @memberof ResultsComponent
+   * Fetch results for a specific circuit and update the component's results property.
+   *
+   * @param circuitId - The ID of the circuit for which to fetch results.
   */
   getAllResultsPerCircuit(circuitId: number): void {
-    this.resultService.getAllResultsPerCircuit(circuitId).subscribe((results: Result[]) => {
-      this.results = results;
-    });
+    this.resultApiService.getAllResultsPerCircuit(circuitId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (results: Result[]) => {
+          this.results = results;
+        },
+        error: (error) => {
+          this.messageService.showInformation('No se ha podido recoger los resultados');
+          console.log(error);
+          throw error;
+        }
+      });
   }
-
-  /**
-   * Get results default (Bahrein)
-   * @memberof ResultsComponent
-   */
-  getResultsDefault(circuit: Circuit): void {
-    this.resultService.getAllResultsPerCircuit(circuit.id).subscribe((results: Result[]) => {
-      this.results = results;
-    });
-  }
-
 }
