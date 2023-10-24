@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Driver;
 import formula.bollo.app.mapper.DriverMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.model.TeamDTO;
 import formula.bollo.app.utils.Log;
@@ -20,6 +22,8 @@ import formula.bollo.app.utils.Log;
 @Component
 public class DriverImpl implements DriverMapper {
 
+    @Autowired
+    private SeasonMapper seasonMapper;
 
     /**
      * Converts a DriverDTO object to a Driver object.
@@ -43,6 +47,7 @@ public class DriverImpl implements DriverMapper {
             Log.error("No se ha podido obtener el blob de base64: ", e);
         }
 
+        driver.setSeason(this.seasonMapper.seasonDTOToSeason(driverDTO.getSeason()));
         return driver;
     }
 
@@ -62,14 +67,16 @@ public class DriverImpl implements DriverMapper {
                 driverImage = Base64.getEncoder().encodeToString(driver.getDriverImage().getBytes(1, (int) driver.getDriverImage().length()));
             }
             BeanUtils.copyProperties(driver, driverDTO);
-            TeamDTO teamDTO = new TeamDTO();
-            teamDTO.setId(driver.getTeam().getId());
-            teamDTO.setName(driver.getTeam().getName());
-            driverDTO.setTeam(teamDTO);
             driverDTO.setDriverImage(driverImage);
         } catch (SQLException e) {
             Log.error("No se ha podido obtener la base64 del blob: ", e);
         }
+        
+        TeamDTO teamDTO = new TeamDTO();
+        teamDTO.setId(driver.getTeam().getId());
+        teamDTO.setName(driver.getTeam().getName());
+        driverDTO.setTeam(teamDTO);
+        driverDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(driver.getSeason()));
 
         return driverDTO;
     }
@@ -88,7 +95,8 @@ public class DriverImpl implements DriverMapper {
         teamDTO.setId(driver.getTeam().getId());
         teamDTO.setName(driver.getTeam().getName());
         driverDTO.setTeam(teamDTO);
-
+        driverDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(driver.getSeason()));
+        
         return driverDTO;
     }
 

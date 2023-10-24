@@ -13,4 +13,7 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     @Query(value = "SELECT r FROM Result r WHERE r.race.id = ?1")
     List<Result> findByRaceId(Long race);
+
+    @Query(value = "SELECT r FROM Result r WHERE r.season.number = ?1")
+    List<Result> findBySeason(int seasonNumber);
 }

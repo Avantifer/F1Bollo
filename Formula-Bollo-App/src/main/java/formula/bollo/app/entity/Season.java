@@ -6,18 +6,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 import lombok.Data;
 
 @Entity
-@Table(name = "penalty_severity")
+@Table(name = "season")
 @Data
-public class PenaltySeverity {
+public class Season {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    private Long id;
 
-    @Column(name = "severity", nullable = false, length = 100)
-    private String severity;
+    @Column(name = "name", nullable = false, length = 50)
+    @NotNull
+    private String name;
+
+    @Column(name = "number", unique = true, nullable = false, length = 2)
+    @NotNull
+    private int number;
 }

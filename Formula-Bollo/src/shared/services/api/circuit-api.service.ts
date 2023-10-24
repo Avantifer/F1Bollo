@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/enviroments/enviroment';
@@ -13,7 +13,8 @@ export class CircuitApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllCircuits(): Observable<Circuit[]> {
-    return this.httpClient.get<Circuit[]>(environment.apiUrl + this.endpoint + "/all");
+  getAllCircuits(seasonNumber?: number): Observable<Circuit[]> {
+    const params = seasonNumber ? new HttpParams().set('season', seasonNumber) : undefined;
+    return this.httpClient.get<Circuit[]>(environment.apiUrl + this.endpoint + "/all", {params});
   }
 }

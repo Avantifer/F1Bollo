@@ -19,4 +19,5 @@ public class DriverDTO {
     private int number;
     private TeamDTO team;
     private String driverImage;
+    private SeasonDTO season;
 }

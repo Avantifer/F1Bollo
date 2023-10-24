@@ -7,31 +7,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 @Entity
-@Table(name = "positions")
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "position")
+@Data
 public class Position {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-    @Column(name = "position_number")
+    @Column(name = "position_number", unique = true, nullable = false, length = 6)
     private int positionNumber;
 
-    @Column(name = "points")
+    @Column(name = "points", nullable = false, length = 6)
     private int points;
 }

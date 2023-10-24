@@ -1,14 +1,19 @@
 package formula.bollo.app.impl;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Configuration;
 import formula.bollo.app.mapper.ConfigurationMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.ConfigurationDTO;
 
 @Component
 public class ConfigurationImpl implements ConfigurationMapper {
+
+    @Autowired
+    private SeasonMapper seasonMapper;
 
     /**
      * Converts a ConfigurationDTO object to a Configuration object.
@@ -20,7 +25,8 @@ public class ConfigurationImpl implements ConfigurationMapper {
     public Configuration configurationDTOToconfiguration(ConfigurationDTO configurationDTO) {
         Configuration conf = new Configuration();
         BeanUtils.copyProperties(configurationDTO, conf);
-
+        conf.setSeason(this.seasonMapper.seasonDTOToSeason(configurationDTO.getSeason()));
+        
         return conf;
     }
 
@@ -34,6 +40,7 @@ public class ConfigurationImpl implements ConfigurationMapper {
     public ConfigurationDTO configurationToConfigurationDTO(Configuration configuration) {
         ConfigurationDTO conf = new ConfigurationDTO();
         BeanUtils.copyProperties(configuration, conf);
+        conf.setSeason(this.seasonMapper.seasonToSeasonDTO(configuration.getSeason()));
 
         return conf;
     } 

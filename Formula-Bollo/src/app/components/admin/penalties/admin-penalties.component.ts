@@ -46,6 +46,7 @@ export class AdminPenaltiesComponent {
   penaltySeveritySelected: PenaltySeverity | undefined;
   reasonSelected: string | undefined;
   raceSelected: Race | undefined;
+
   saveButtonActivated: boolean = false;
 
   private _unsubscribe = new Subject<void>();
@@ -56,7 +57,7 @@ export class AdminPenaltiesComponent {
     private penaltyApiService: PenaltyApiService,
     private penaltySeverityApiService: PenaltySeverityApiService,
     private raceApiService: RaceApiService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
@@ -104,7 +105,7 @@ export class AdminPenaltiesComponent {
           this.penaltiesSeverity = penaltiesSeverity;
         },
         error: (error) => {
-          this.messageService.showInformation('No se han podido coger los tipos de penalización');
+          this.messageService.showInformation('No se han podido recoger los tipos de penalización');
           console.log(error);
           throw error;
         }
@@ -348,7 +349,14 @@ export class AdminPenaltiesComponent {
 
         // Filter and add new clean penalties.
         let cleanPenaltiesToSave: Penalty[] = penaltiesToSave.filter((penalty) => penalty.reason !== '');
-        racePenalty.penalties.push(...cleanPenaltiesToSave);
+        if (penaltiesToSave[0].reason === "") {
+          driverPenalty.racePenalties = driverPenalty.racePenalties.filter((racePenalty: RacePenalties) => racePenalty.race.id != this.raceSelected!.id);
+        } else {
+          racePenalty.penalties.push(...cleanPenaltiesToSave);
+        }
+      } else {
+        let racePenalty: RacePenalties = new RacePenalties(this.raceSelected!, penaltiesToSave);
+        driverPenalty.racePenalties.push(racePenalty);
       }
     }
   }

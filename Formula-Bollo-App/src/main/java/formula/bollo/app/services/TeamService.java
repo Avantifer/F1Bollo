@@ -20,6 +20,7 @@ import formula.bollo.app.model.TeamWithDriversDTO;
 import formula.bollo.app.repository.ResultRepository;
 import formula.bollo.app.repository.SprintRepository;
 import formula.bollo.app.repository.TeamRepository;
+import formula.bollo.app.utils.Constants;
 
 @Service
 public class TeamService {
@@ -47,7 +48,7 @@ public class TeamService {
     public void putTeamsOnCache(Map<Long, TeamDTO> cache) {
         if (!cache.isEmpty()) return;
 
-        List<Team> teams = teamRepository.findAll();
+        List<Team> teams = teamRepository.findBySeason(Constants.ACTUAL_SEASON);
 
         Map<Long, TeamDTO> teamsDTOMap = teams.parallelStream()
                 .collect(Collectors.toMap(Team::getId, teamMapper::teamToTeamDTO));
@@ -142,5 +143,14 @@ public class TeamService {
         }
 
         return teamWithDrivers;
+    }
+
+
+    public List<TeamDTO> getTeamsBySeason(int season) {
+        List<Team> teams = teamRepository.findBySeason(season);
+
+        return teams.parallelStream()
+            .map(teamMapper::teamToTeamDTO)
+            .collect(Collectors.toList());
     }
 }

@@ -47,7 +47,7 @@ export class AdminResultsComponent {
     private circuitApiService: CircuitApiService,
     private driverApiService: DriverApiService,
     private raceApiService: RaceApiService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -112,6 +112,10 @@ export class AdminResultsComponent {
         }
       });
   }
+
+  /**
+   * Fetches all seasons from the season API service and updates the seasons property.
+  */
 
   /**
    * Subscribe to changes in the circuitsForm and perform actions based on the selected circuit.

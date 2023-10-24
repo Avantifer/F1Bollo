@@ -9,25 +9,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 @Entity
-@Table(name = "results")
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "result")
+@Data
 public class Result {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
@@ -42,7 +32,10 @@ public class Result {
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @Column(name = "fastlap")
+    @Column(name = "fastlap", nullable = false, length = 4)
     private int fastlap;
 
+    @ManyToOne
+    @JoinColumn(name = "season_id")
+    private Season season;
 }

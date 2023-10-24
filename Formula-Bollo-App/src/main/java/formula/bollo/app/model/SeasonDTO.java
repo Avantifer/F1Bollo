@@ -13,11 +13,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class CircuitDTO {
-    private Long id;
+public class SeasonDTO {
+    private long id;
     private String name;
-    private String country;
-    private String flagImage;
-    private String circuitImage;
-    private SeasonDTO season;
+    private int number;
 }

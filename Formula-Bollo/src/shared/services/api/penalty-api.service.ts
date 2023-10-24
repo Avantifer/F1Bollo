@@ -15,31 +15,42 @@ export class PenaltyApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllPenalties(): Observable<Penalty[]> {
-    return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + "/all");
+  getAllPenalties(seasonNumber?: number): Observable<Penalty[]> {
+    const params = seasonNumber ? new HttpParams().set('season', seasonNumber) : undefined;
+    return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + "/all", {params});
   }
 
-  getAllPenaltiesPerDriver(): Observable<DriverPenalties[]> {
-    return this.httpClient.get<DriverPenalties[]>(environment.apiUrl + this.endpoint + '/totalPerDriver');
+  getAllPenaltiesPerDriver(seasonNumber?: number): Observable<DriverPenalties[]> {
+    const params = seasonNumber ? new HttpParams().set('season', seasonNumber) : undefined;
+    return this.httpClient.get<DriverPenalties[]>(environment.apiUrl + this.endpoint + '/totalPerDriver', {params});
   }
 
-  getAllPenaltiesPerCircuit(circuitId: number): Observable<Penalty[]> {
-    const params = new HttpParams().set('circuitId', circuitId.toString());
+  getAllPenaltiesPerCircuit(circuitId: number, seasonNumber?: number): Observable<Penalty[]> {
+    let params = new HttpParams().set('circuitId', circuitId);
+    if (seasonNumber) params = params.set('season', seasonNumber);
     const headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
     return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + '/circuit', {params, headers});
   }
 
-  getPenaltyByDriverAndRaceAndSeverity(driverId: number, raceId: number, severityId: number): Observable<Penalty[]> {
-    const params = new HttpParams().set('driverId', driverId.toString()).set('raceId', raceId.toString()).set('severityId', severityId.toString());
+  getPenaltyByDriverAndRaceAndSeverity(driverId: number, raceId: number, severityId: number, seasonNumber?: number): Observable<Penalty[]> {
+    let params =
+      new HttpParams()
+        .set('driverId', driverId)
+        .set('raceId', raceId)
+        .set('severityId', severityId);
+
+    if (seasonNumber) params = params.set('season', seasonNumber);
     const headers = new HttpHeaders().set('Content-type', 'application/json; charset=utf-8')
     return this.httpClient.get<Penalty[]>(environment.apiUrl + this.endpoint + '/perDriverPerRace', {params, headers});
   }
 
-  savePenalties(penalties: Penalty[]): Observable<string> {
+  savePenalties(penalties: Penalty[], seasonNumber?: number): Observable<string> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
-    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", penalties, {headers, responseType: 'text' as 'json'});
+
+    const params = seasonNumber ? new HttpParams().set('season', seasonNumber) : undefined;
+    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", penalties, {headers, params, responseType: 'text' as 'json'});
   }
 }

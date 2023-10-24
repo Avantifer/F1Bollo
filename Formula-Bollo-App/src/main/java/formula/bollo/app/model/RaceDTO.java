@@ -19,4 +19,5 @@ public class RaceDTO {
     private Long id;
     private CircuitDTO circuit;
     private LocalDateTime dateStart;
+    private SeasonDTO season;
 }

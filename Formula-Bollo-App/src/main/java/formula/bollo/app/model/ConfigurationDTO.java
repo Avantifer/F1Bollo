@@ -17,4 +17,5 @@ public class ConfigurationDTO {
     private Long id;
     private String setting;
     private String value;
+    private SeasonDTO season;
 }

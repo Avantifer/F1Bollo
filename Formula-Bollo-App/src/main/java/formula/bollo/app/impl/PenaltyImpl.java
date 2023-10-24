@@ -12,6 +12,7 @@ import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.PenaltyMapper;
 import formula.bollo.app.mapper.PenaltySeverityMapper;
 import formula.bollo.app.mapper.RaceMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.PenaltyDTO;
 
 @Component
@@ -26,6 +27,9 @@ public class PenaltyImpl implements PenaltyMapper {
     @Autowired
     private PenaltySeverityMapper penaltySeverityMapper;
 
+    @Autowired
+    private SeasonMapper seasonMapper;
+
     /**
      * Converts a PenaltyDTO object to a Penalty object.
      *
@@ -39,6 +43,8 @@ public class PenaltyImpl implements PenaltyMapper {
         penalty.setRace(raceMapper.raceDTOToRace(penaltyDTO.getRace()));
         penalty.setDriver(driverMapper.driverDTOToDriver(penaltyDTO.getDriver()));
         penalty.setSeverity(this.penaltySeverityMapper.penaltySeverityDTOToPenaltySeverity(penaltyDTO.getSeverity()));
+        penalty.setSeason(this.seasonMapper.seasonDTOToSeason(penaltyDTO.getSeason()));
+        
         return penalty;
     }
 
@@ -55,6 +61,8 @@ public class PenaltyImpl implements PenaltyMapper {
         penaltyDTO.setRace(raceMapper.raceToRaceDTO(penalty.getRace()));
         penaltyDTO.setDriver(driverMapper.driverToDriverDTONoImage(penalty.getDriver()));
         penaltyDTO.setSeverity(this.penaltySeverityMapper.penaltySeverityToPenaltySeverityDTO(penalty.getSeverity()));
+        penaltyDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(penalty.getSeason()));
+
         return penaltyDTO;
     }
 
