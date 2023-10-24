@@ -32,10 +32,13 @@ public class Result {
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @Column(name = "fastlap", nullable = false, length = 4)
+    @Column(name = "fastlap", nullable = false, length = 1)
     private int fastlap;
 
     @ManyToOne
     @JoinColumn(name = "season_id")
     private Season season;
+
+    @Column(name = "pole", nullable =  false, length = 1)
+    private int pole;
 }

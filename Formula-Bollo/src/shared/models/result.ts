@@ -9,14 +9,24 @@ export class Result {
   driver: Driver;
   position: Position | null;
   fastlap: number;
+  pole: number;
   season: Season | undefined;
 
-  constructor(id: number, race: Race | null, driver: Driver, position: Position | null, fastlap: number, season?: Season) {
+  constructor(
+    id: number,
+    race: Race | null,
+    driver: Driver,
+    position: Position | null,
+    fastlap: number,
+    pole: number,
+    season?: Season
+  ) {
     this.id = id
     this.race = race;
     this.driver = driver;
     this.position = position;
     this.fastlap = fastlap;
+    this.pole = pole;
     this.season = season;
   }
 }

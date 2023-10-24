@@ -40,7 +40,6 @@ public class ResultImpl implements ResultMapper {
     public Result resultDTOToResult(ResultDTO resultDTO) {
         Result result = new Result();
         BeanUtils.copyProperties(resultDTO, result);
-        result.setId(resultDTO.getId());      
         result.setRace(raceMapper.raceDTOToRace(resultDTO.getRace()));
         result.setDriver(driverMapper.driverDTOToDriver(resultDTO.getDriver()));
 
@@ -62,15 +61,14 @@ public class ResultImpl implements ResultMapper {
     @Override
     public ResultDTO resultToResultDTO(Result result) {
         ResultDTO resultDTO = new ResultDTO();
-
-        resultDTO.setId(result.getId());      
+        BeanUtils.copyProperties(result, resultDTO);
         resultDTO.setRace(raceMapper.raceToRaceDTO(result.getRace()));
         resultDTO.setDriver(driverMapper.driverToDriverDTONoImage(result.getDriver()));
+        
         if (result.getPosition() != null) {
             resultDTO.setPosition(positionMapper.positionToPositionDTO(result.getPosition()));
         }
 
-        resultDTO.setFastlap(result.getFastlap());
         resultDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(result.getSeason()));
 
         return resultDTO;

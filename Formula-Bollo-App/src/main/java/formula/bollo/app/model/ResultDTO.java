@@ -20,4 +20,5 @@ public class ResultDTO {
     private PositionDTO position;
     private int fastlap;
     private SeasonDTO season;
+    private int pole;
 }
