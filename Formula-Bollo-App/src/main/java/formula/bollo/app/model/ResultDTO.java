@@ -19,4 +19,6 @@ public class ResultDTO {
     private DriverDTO driver;
     private PositionDTO position;
     private int fastlap;
+    private SeasonDTO season;
+    private int pole;
 }

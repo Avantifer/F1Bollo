@@ -1,0 +1,39 @@
+@import "../../../assets/scss/styles.scss";
+
+* {
+  font-family: 'F1-Regular';
+  letter-spacing: 0.1px;
+}
+
+.table {
+
+  &-header {
+    th {
+      font-weight: bold;
+      text-decoration: underline;
+      text-decoration-style: dashed;
+    }
+  }
+
+  &-row {
+
+    &-color {
+      background-color: rgb(203 203 203 / 20%);
+
+      &:hover {
+        background-color: rgb(203 203 203 / 20%) !important;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  table {
+    overflow-x: auto;
+    display: block;
+
+    th, td {
+      white-space: nowrap;
+    }
+  }
+}

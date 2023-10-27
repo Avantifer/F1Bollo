@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Admin } from 'src/shared/models/admin';
-import { AdminService } from 'src/shared/services/admin-api.service';
+import { AdminApiService } from 'src/shared/services/api/admin-api.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from 'src/shared/services/message.service';
-import { catchError } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators'
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -20,33 +21,42 @@ export class LoginComponent {
     password: new FormControl(''),
   });
 
-  constructor(private adminService: AdminService, private messageService: MessageService, private router: Router) { }
+  private _unsubscribe = new Subject<void>();
+
+  constructor(private adminApiService: AdminApiService, private messageService: MessageService, private router: Router) { }
+
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
 
   /**
-   * Login for admin
-   * @memberof LoginComponent
+   * Handle user login.
   */
- login(): void {
-  // Check if both username and password are not empty
-  if (this.loginForm.get('password')!.value != '' && this.loginForm.get('username')!.value != '') {
-    // Create a new Admin object with the entered username and password
-    let user : Admin = new Admin(0, this.loginForm.get('username')!.value, this.loginForm.get('password')!.value);
-    // Call the login method from the adminService and handle any errors
-    this.adminService.login(user)
-      .pipe(catchError((error) => {
-        // Show the error message using the messageService
-        this.messageService.showInformation(error.error);
-        return '';
-      }))
-      .subscribe(token =>{
-        // Store the token in the local storage
-        localStorage.setItem('auth', token);
-        // Navigate to the admin page
-        this.router.navigate(['/admin']);
-      });
-  } else {
-    // Show a message indicating that the username and password are required
-    this.messageService.showInformation("Necesitas poner el usuario/contraseña");
+  login(): void {
+    let username: string = this.loginForm.get('username')!.value;
+    let password: string = this.loginForm.get('password')!.value;
+
+    if (username && password) {
+      let user : Admin = new Admin(0, username, password);
+
+      this.adminApiService.login(user)
+        .pipe(
+          takeUntil(this._unsubscribe)
+        )
+        .subscribe({
+          next: (token: string) => {
+            localStorage.setItem('auth', token);
+            this.router.navigate(['/admin']);
+          },
+          error: (error) => {
+            this.messageService.showInformation(error.error);
+            console.log(error);
+            throw error;
+          }
+        });
+    } else {
+      this.messageService.showInformation("Necesitas poner el usuario/contraseña");
+    }
   }
-}
 }

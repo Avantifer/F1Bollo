@@ -1,0 +1,20 @@
+<table mat-table [dataSource]="data">
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef> Pos </th>
+    <td mat-cell *matCellDef="let result"> {{ result.position != null ? result.position.positionNumber : "DNF"}}</td>
+  </ng-container>
+  <ng-container matColumnDef="driverName">
+    <th mat-header-cell *matHeaderCellDef> Piloto </th>
+    <td mat-cell *matCellDef="let result"> {{ result.driver.name }}</td>
+  </ng-container>
+  <ng-container matColumnDef="teamName">
+    <th mat-header-cell *matHeaderCellDef> Escuderia </th>
+    <td mat-cell *matCellDef="let result"> {{ result.driver.team.name }}</td>
+  </ng-container>
+  <ng-container matColumnDef="points">
+    <th mat-header-cell *matHeaderCellDef> Puntos </th>
+    <td mat-cell *matCellDef="let result"> {{ (result.position != null ? result.position.points : 0) + result.fastlap }}</td>
+  </ng-container>
+  <tr class="table-header" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr class="table-row" mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [ngClass]="i % 2 === 0 ? 'table-row-color' : ''"></tr>
+</table>

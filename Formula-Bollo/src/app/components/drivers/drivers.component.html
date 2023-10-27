@@ -1,7 +1,16 @@
 <div class="clasification-drivers-text mt-5 container-fluid container-lg">
   <h1 class="mt-3 fw-bold">Pilotos</h1>
 </div>
-<div class="clasification-drivers-schema row container-fluid container-lg">
+<form [formGroup]="seasonForm" class="container-fluid container-lg d-flex align-items-center justify-content-end mt-3 pe-5">
+  <mat-form-field *ngIf="seasonSelected">
+    <mat-select formControlName="season" [(value)]="seasonSelected">
+      <mat-option *ngFor="let season of seasons" [value]="season">
+        {{ season.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
+<div class="clasification-drivers-schema row container-fluid container-lg mt-5 mx-auto">
   <div class="col-12 col-md-6 col-xl-4" *ngFor="let driver of driverPoints; let i = index">
     <div class="clasification-drivers-schema-card mb-5" [class]="'clasification-drivers-schema-card-' + driver.driver.team.name">
       <div class="clasification-drivers-schema-card-top d-flex justify-content-between align-items-center px-3 py-2">

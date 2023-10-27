@@ -11,9 +11,10 @@ import formula.bollo.app.model.AdminDTO;
 public class AdminImpl implements AdminMapper {
 
     /**
-     * Map AdminDTO to return an object type Admin
-     * @param AdminDTO
-     * @return class Admin with AdminDTO properties
+     * Converts an AdminDTO object to an Admin object.
+     *
+     * @param adminDTO The AdminDTO object to be converted.
+     * @return         An Admin object with properties copied from the AdminDTO.
     */
     @Override
     public Admin adminDTOToAdmin(AdminDTO adminDTO) {
@@ -24,9 +25,10 @@ public class AdminImpl implements AdminMapper {
     }
 
     /**
-     * Map AdminDTO to return an object type Admin
-     * @param AdminDTO
-     * @return class Admin with AdminDTO properties
+     * Converts an Admin object to an AdminDTO object.
+     *
+     * @param admin The Admin object to be converted.
+     * @return      An AdminDTO object with properties copied from the Admin.
     */
     @Override
     public AdminDTO adminToAdminDTO(Admin admin) {
@@ -35,5 +37,4 @@ public class AdminImpl implements AdminMapper {
 
         return adminDTO;
     }
-    
 }

@@ -1,6 +1,9 @@
 package formula.bollo.app.impl;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +15,10 @@ import formula.bollo.app.model.PenaltySeverityDTO;
 public class PenaltySeverityImpl implements PenaltySeverityMapper{
 
     /**
-     * Map PenaltySeverityDTO to return an object type PenaltySeverity
-     * @param penaltySeverityDTO
-     * @return class PenaltySeverity with PenaltySeverityDTO properties
+     * Converts a PenaltySeverityDTO object to a PenaltySeverity object.
+     *
+     * @param penaltySeverityDTO The PenaltySeverityDTO object to be converted.
+     * @return                   A PenaltySeverity object with properties copied from the PenaltySeverityDTO.
     */
     @Override
     public PenaltySeverity penaltySeverityDTOToPenaltySeverity(PenaltySeverityDTO penaltySeverityDTO) {
@@ -22,11 +26,11 @@ public class PenaltySeverityImpl implements PenaltySeverityMapper{
         BeanUtils.copyProperties(penaltySeverityDTO, penaltySeverity);
         return penaltySeverity;
     }
-
     /**
-     * Map PenaltySeverity to return an object type penaltySeverityDTO
-     * @param penaltySeverity
-     * @return class penaltySeverityDTO with PenaltySeverity properties
+     * Converts a PenaltySeverity object to a PenaltySeverityDTO object.
+     *
+     * @param penaltySeverity The PenaltySeverity object to be converted.
+     * @return                A PenaltySeverityDTO object with properties copied from the PenaltySeverity.
     */
     @Override
     public PenaltySeverityDTO penaltySeverityToPenaltySeverityDTO(PenaltySeverity penaltySeverity) {
@@ -34,5 +38,17 @@ public class PenaltySeverityImpl implements PenaltySeverityMapper{
        BeanUtils.copyProperties(penaltySeverity, penaltySeverityDTO);
        return penaltySeverityDTO;
     }
-    
+
+    /**
+     * Converts a list of PenaltySeverity objects to a list of PenaltySeverityDTO objects.
+     *
+     * @param penaltiesSeverities The list of PenaltySeverity objects to be converted.
+     * @return                    A list of PenaltySeverityDTO objects with properties copied from the PenaltySeverities.
+    */
+    @Override
+    public List<PenaltySeverityDTO> convertPenaltiesSeverityToPenaltiesSeverityDTO(List<PenaltySeverity> penaltiesSeverities) {
+        return penaltiesSeverities.parallelStream()
+                .map(this::penaltySeverityToPenaltySeverityDTO)
+                .collect(Collectors.toList());
+    }
 }

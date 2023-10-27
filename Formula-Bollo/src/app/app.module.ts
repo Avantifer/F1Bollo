@@ -31,6 +31,7 @@ import { AdminPenaltiesComponent } from './components/admin/penalties/admin-pena
 import { StatuteComponent } from './components/statute/statute.component';
 import { ResultsComponent } from './components/results/results.component';
 import { AdminStatuteComponent } from './components/admin/admin-statute/admin-statute.component';
+import { FormulaTableComponent } from 'src/shared/components/formula-table/formula-table.component';
 
 import { AdminGuard } from 'src/shared/guards/AdminGuard';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
@@ -53,7 +54,8 @@ import { PageNotFoundComponent } from 'src/shared/components/page-not-found/page
     StatuteComponent,
     ResultsComponent,
     AdminStatuteComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FormulaTableComponent
   ],
   imports: [
     BrowserModule,

@@ -2,13 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/enviroments/enviroment";
-import { PenaltySeverity } from "../models/penaltySeverity";
+import { PenaltySeverity } from "../../models/penaltySeverity";
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class PenaltySeverityService {
+export class PenaltySeverityApiService {
 
   private endpoint: string = "/penaltiesSeverity";
 

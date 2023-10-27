@@ -1,6 +1,7 @@
 package formula.bollo.app.impl;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.PenaltyMapper;
 import formula.bollo.app.mapper.PenaltySeverityMapper;
 import formula.bollo.app.mapper.RaceMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.PenaltyDTO;
 
 @Component
@@ -25,12 +27,14 @@ public class PenaltyImpl implements PenaltyMapper {
     @Autowired
     private PenaltySeverityMapper penaltySeverityMapper;
 
+    @Autowired
+    private SeasonMapper seasonMapper;
+
     /**
-     * Map PenaltyDTO to return an object type Penalty
-     * @param penaltyDTO
-     * @exception SQLException Cannot do something with the db
-     * @exception IllegalArgumentException Cannot convert string to byte[]
-     * @return class Penalty with PenaltyDTO properties
+     * Converts a PenaltyDTO object to a Penalty object.
+     *
+     * @param penaltyDTO The PenaltyDTO object to be converted.
+     * @return           A Penalty object with properties copied from the PenaltyDTO.
     */
     @Override
     public Penalty penaltyDTOToPenalty(PenaltyDTO penaltyDTO) {
@@ -39,15 +43,16 @@ public class PenaltyImpl implements PenaltyMapper {
         penalty.setRace(raceMapper.raceDTOToRace(penaltyDTO.getRace()));
         penalty.setDriver(driverMapper.driverDTOToDriver(penaltyDTO.getDriver()));
         penalty.setSeverity(this.penaltySeverityMapper.penaltySeverityDTOToPenaltySeverity(penaltyDTO.getSeverity()));
+        penalty.setSeason(this.seasonMapper.seasonDTOToSeason(penaltyDTO.getSeason()));
+        
         return penalty;
     }
 
     /**
-     * Map Penalty to return an object type PenaltyDTO
-     * @param penalty
-     * @exception SQLException Cannot do something with the db
-     * @exception IllegalArgumentException Cannot convert string to byte[]
-     * @return class PenaltyDTO with Penalty properties
+     * Converts a Penalty object to a PenaltyDTO object.
+     *
+     * @param penalty The Penalty object to be converted.
+     * @return        A PenaltyDTO object with properties copied from the Penalty.
     */
     @Override
     public PenaltyDTO penaltyToPenaltyDTO(Penalty penalty) {
@@ -56,7 +61,21 @@ public class PenaltyImpl implements PenaltyMapper {
         penaltyDTO.setRace(raceMapper.raceToRaceDTO(penalty.getRace()));
         penaltyDTO.setDriver(driverMapper.driverToDriverDTONoImage(penalty.getDriver()));
         penaltyDTO.setSeverity(this.penaltySeverityMapper.penaltySeverityToPenaltySeverityDTO(penalty.getSeverity()));
+        penaltyDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(penalty.getSeason()));
+
         return penaltyDTO;
     }
-    
+
+    /**
+     * Converts a list of Penalty objects to a list of PenaltyDTO objects.
+     *
+     * @param penalties The list of Penalty objects to be converted.
+     * @return          A list of PenaltyDTO objects with properties copied from the Penalties.
+    */
+    @Override
+    public List<PenaltyDTO> convertPenaltiesToPenaltiesDTO(List<Penalty> penalties) {
+        return penalties.parallelStream()
+                .map(this::penaltyToPenaltyDTO)
+                .collect(Collectors.toList());
+    }
 }

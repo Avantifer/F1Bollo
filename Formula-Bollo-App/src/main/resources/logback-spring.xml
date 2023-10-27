@@ -1,30 +1,35 @@
+<!-- DESARROLLO -->
 <configuration>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- Change the desired route for the file of logs  -->
-        
-        <!-- Develop -->
         <file>../logs/logs.log</file> 
-
-        <!-- Production -->
-        <!-- <file>/opt/logs/logs.log</file>  -->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
-        <!-- Configure the rollover each day -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- hange the desired route for the file of daily logs  -->
-
-            <!-- Develop -->
             <fileNamePattern>../logs/%d{yyyy-MM-dd}.log</fileNamePattern>
-
-            <!-- Production -->
-            <!-- <fileNamePattern>/opt/logs/%d{yyyy-MM-dd}.log</fileNamePattern> -->
-            <maxHistory>7</maxHistory> <!-- Max number of log files to maintain -->
+            <maxHistory>7</maxHistory> 
         </rollingPolicy>
     </appender>
 
-    <!-- Configure of the level of log -->
     <root level="INFO">
         <appender-ref ref="FILE" />
     </root>
 </configuration>
+
+<!-- PRODUCCION -->
+<!-- <configuration>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/opt/logs/logs.log</file> 
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/opt/logs/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+    </root>
+</configuration> -->

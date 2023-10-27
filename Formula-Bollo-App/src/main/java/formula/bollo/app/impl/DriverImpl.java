@@ -3,14 +3,18 @@ package formula.bollo.app.impl;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Driver;
 import formula.bollo.app.mapper.DriverMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.model.TeamDTO;
 import formula.bollo.app.utils.Log;
@@ -18,13 +22,14 @@ import formula.bollo.app.utils.Log;
 @Component
 public class DriverImpl implements DriverMapper {
 
+    @Autowired
+    private SeasonMapper seasonMapper;
 
     /**
-     * Map DriverDTO to return an object type Driver
-     * @param driverDTO
-     * @exception SQLException Cannot do something with the db
-     * @exception IllegalArgumentException Cannot convert string to byte[]
-     * @return class Driver with DriverDTO properties
+     * Converts a DriverDTO object to a Driver object.
+     *
+     * @param driverDTO The DriverDTO object to be converted.
+     * @return          A Driver object with properties copied from the DriverDTO.
     */
     @Override
     public Driver driverDTOToDriver(DriverDTO driverDTO) {
@@ -42,14 +47,15 @@ public class DriverImpl implements DriverMapper {
             Log.error("No se ha podido obtener el blob de base64: ", e);
         }
 
+        driver.setSeason(this.seasonMapper.seasonDTOToSeason(driverDTO.getSeason()));
         return driver;
     }
 
     /**
-     * Map Driver to return an object type DriverDTO
-     * @param driver
-     * @exception SQLException Cannot do something with the db
-     * @return class DriverDTO with Driver properties
+     * Converts a Driver object to a DriverDTO object.
+     *
+     * @param driver The Driver object to be converted.
+     * @return       A DriverDTO object with properties copied from the Driver.
     */
     @Override
     public DriverDTO driverToDriverDTO(Driver driver) {
@@ -61,23 +67,25 @@ public class DriverImpl implements DriverMapper {
                 driverImage = Base64.getEncoder().encodeToString(driver.getDriverImage().getBytes(1, (int) driver.getDriverImage().length()));
             }
             BeanUtils.copyProperties(driver, driverDTO);
-            TeamDTO teamDTO = new TeamDTO();
-            teamDTO.setId(driver.getTeam().getId());
-            teamDTO.setName(driver.getTeam().getName());
-            driverDTO.setTeam(teamDTO);
             driverDTO.setDriverImage(driverImage);
         } catch (SQLException e) {
             Log.error("No se ha podido obtener la base64 del blob: ", e);
         }
+        
+        TeamDTO teamDTO = new TeamDTO();
+        teamDTO.setId(driver.getTeam().getId());
+        teamDTO.setName(driver.getTeam().getName());
+        driverDTO.setTeam(teamDTO);
+        driverDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(driver.getSeason()));
 
         return driverDTO;
     }
 
     /**
-     * Map Driver to return an object type DriverDTO
-     * @param driver
-     * @exception SQLException Cannot do something with the db
-     * @return class DriverDTO with Driver properties
+     * Converts a Driver object to a DriverDTO object without including the driver image.
+     *
+     * @param driver The Driver object to be converted.
+     * @return       A DriverDTO object with properties copied from the Driver (excluding driver image).
     */
     @Override
     public DriverDTO driverToDriverDTONoImage(Driver driver) {
@@ -87,7 +95,21 @@ public class DriverImpl implements DriverMapper {
         teamDTO.setId(driver.getTeam().getId());
         teamDTO.setName(driver.getTeam().getName());
         driverDTO.setTeam(teamDTO);
-
+        driverDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(driver.getSeason()));
+        
         return driverDTO;
+    }
+
+    /**
+     * Converts a list of Driver objects to a list of DriverDTO objects without including driver images.
+     *
+     * @param drivers The list of Driver objects to be converted.
+     * @return        A list of DriverDTO objects with properties copied from the Drivers (excluding driver images).
+    */
+    @Override
+    public List<DriverDTO> convertDriversToDriverDTONoImage(List<Driver> drivers) {
+        return drivers.parallelStream()
+                .map(this::driverToDriverDTONoImage)
+                .collect(Collectors.toList());
     }
 }

@@ -19,4 +19,5 @@ public class PenaltyDTO {
     private DriverDTO driver;
     private String reason;
     private PenaltySeverityDTO severity;
+    private SeasonDTO season;
 }

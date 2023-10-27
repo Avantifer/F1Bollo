@@ -1,6 +1,15 @@
 <div class="clasification-teams-text mt-5 container-fluid container-lg">
   <h1 class="mt-3 fw-bold">Escuderías</h1>
 </div>
+<form [formGroup]="seasonForm" class="container-fluid container-lg d-flex align-items-center justify-content-end mt-3 pe-5">
+  <mat-form-field *ngIf="seasonSelected">
+    <mat-select formControlName="season" [(value)]="seasonSelected">
+      <mat-option *ngFor="let season of seasons" [value]="season">
+        {{ season.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
 <div class="clasification-teams-schema row container-fluid container-lg">
   <div class="col-12 col-md-6" *ngFor="let team of teamWithDrivers; let i = index">
     <div class="clasification-teams-schema-card mb-5" [class]="'clasification-teams-schema-card-' + team.teamDTO.name">

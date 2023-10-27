@@ -7,20 +7,26 @@ import java.util.Base64;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Circuit;
 import formula.bollo.app.mapper.CircuitMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.CircuitDTO;
 import formula.bollo.app.utils.Log;
 
 @Component
 public class CircuitImpl implements CircuitMapper{
 
+    @Autowired
+    private SeasonMapper seasonMapper;
+
     /**
-     * Map CircuitDTO to return an object type Circuit
-     * @param circuitDTO
-     * @return class Circuit with CircuitDTO properties
+     * Converts a CircuitDTO object to a Circuit object.
+     *
+     * @param circuitDTO The CircuitDTO object to be converted.
+     * @return           A Circuit object with properties copied from the CircuitDTO.
     */
     @Override
     public Circuit circuitDTOToCircuit(CircuitDTO circuitDTO) {
@@ -40,14 +46,17 @@ public class CircuitImpl implements CircuitMapper{
             Log.error("No se ha podido obtener el blob de base64: ", e);
         }
 
+        circuit.setSeason(this.seasonMapper.seasonDTOToSeason(circuitDTO.getSeason()));
+
         return circuit;
     }
 
     /**
-     * Map CircuitDTO to return an object type Circuit
-     * @param circuitDTO
-     * @return class Circuit with CircuitDTO properties
-    */
+     * Converts a Circuit object to a CircuitDTO object.
+     *
+     * @param circuit The Circuit object to be converted.
+     * @return        A CircuitDTO object with properties copied from the Circuit.
+    */ 
     @Override
     public CircuitDTO circuitToCircuitDTO(Circuit circuit) {
         CircuitDTO circuitDTO = new CircuitDTO();
@@ -70,8 +79,9 @@ public class CircuitImpl implements CircuitMapper{
         } catch (SQLException e) {
             Log.error("No se ha podido obtener la base64 del blob: ", e);
         }
-
+        
+        circuitDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(circuit.getSeason()));
+        
         return circuitDTO;
     }
-    
 }
