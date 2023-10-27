@@ -24,8 +24,8 @@ public class RaceService {
      *
      * @param raceDTO The RaceDTO containing race information to be saved or updated.
     */
-    public void saveRace(RaceDTO raceDTO) {
-        List<Race> existingRace = raceRepository.findByCircuitId(raceDTO.getCircuit().getId());
+    public void saveRace(RaceDTO raceDTO, int numberSeason) {
+        List<Race> existingRace = raceRepository.findByCircuitId(raceDTO.getCircuit().getId(), numberSeason);
         Race race = new Race();
 
         if (existingRace.isEmpty()) {

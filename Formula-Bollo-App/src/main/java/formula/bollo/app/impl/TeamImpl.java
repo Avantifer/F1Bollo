@@ -7,9 +7,11 @@ import java.util.Base64;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Team;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.mapper.TeamMapper;
 import formula.bollo.app.model.TeamDTO;
 import formula.bollo.app.utils.Log;
@@ -17,6 +19,9 @@ import formula.bollo.app.utils.Log;
 @Component
 public class TeamImpl implements TeamMapper{
     
+    @Autowired
+    private SeasonMapper seasonMapper;
+
     /**
      * Converts a TeamDTO object to a Team object.
      *
@@ -35,6 +40,8 @@ public class TeamImpl implements TeamMapper{
         } catch (SQLException | IllegalArgumentException e) {
             Log.error("No se ha podido obtener el blob de base64: ", e);
         }
+        
+        team.setSeason(this.seasonMapper.seasonDTOToSeason(teamDTO.getSeason()));
 
         return team;
     }
@@ -57,6 +64,8 @@ public class TeamImpl implements TeamMapper{
             Log.error("No se ha podido obtener la base64 del blob: ", e);
         }
         
+        teamDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(team.getSeason()));
+        
         return teamDTO;
     }
 
@@ -71,6 +80,8 @@ public class TeamImpl implements TeamMapper{
         TeamDTO teamDTO = new TeamDTO();
         BeanUtils.copyProperties(team, teamDTO, "carImage");
         teamDTO.setCarImage(team.getCarImage());
+        teamDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(team.getSeason()));
+
         return teamDTO;
     }
 }

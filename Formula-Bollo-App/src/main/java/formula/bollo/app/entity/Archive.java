@@ -7,38 +7,28 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 @Entity
-@Table(name = "archives")
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "archive")
+@Data
 public class Archive {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "file")
-    @NotNull
+    @Column(name = "file", columnDefinition = "LONGBLOB", nullable = false)
     private Blob file;
 
-    @Column(name = "extension")
-    @NotNull
+    @Column(name = "extension", nullable = false, length = 100)
+    @NotBlank(message = "La extensión del fichero es obligatoria")
     private String extension;
 
-    @Column(name = "definition")
-    @NotNull
+    @Column(name = "definition", unique = true, nullable = false, length = 100)
+    @NotBlank(message = "La definición es obligatoria")
     private String definition;
 }

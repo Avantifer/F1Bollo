@@ -40,6 +40,27 @@
         </mat-form-field>
       </div>
     </form>
+
+    <form [formGroup]="poleForm" *ngIf="circuitSelected">
+      <div class="modifyResults-topSide d-flex flex-column">
+        <label class="mb-1">Seleccione la Pole:</label>
+        <mat-form-field *ngIf="results.length > 0">
+          <mat-select formControlName="pole" [(value)]="poleSelected">
+            <mat-option *ngFor="let result of results" [value]="result">
+              {{ result.driver.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="results.length == 0">
+          <mat-select formControlName="pole" [(value)]="poleSelected">
+            <mat-option *ngFor="let driver of drivers" [value]="driver">
+              {{ driver.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
   </div>
 
   <h5 class="modifyResults-bottomSide-title w-100 text-center mt-4 mb-5" *ngIf="circuitSelected">Resultados</h5>

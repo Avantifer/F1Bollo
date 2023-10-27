@@ -19,4 +19,5 @@ public class TeamDTO {
     private String carImage;
     private String teamImage;
     private String logoImage;
+    private SeasonDTO season;
 }

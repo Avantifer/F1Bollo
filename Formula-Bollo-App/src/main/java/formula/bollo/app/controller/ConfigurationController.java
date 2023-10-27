@@ -3,6 +3,7 @@ package formula.bollo.app.controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import formula.bollo.app.model.ConfigurationDTO;
@@ -17,11 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-@CrossOrigin(origins = Constants.URL_FRONTED)
+@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_CONFIGURATION}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_CONFIGURATION, description = Constants.TAG_CONFIGURATION_SUMMARY)
@@ -34,13 +36,20 @@ public class ConfigurationController {
 
     @Operation(summary = "Get all configurations", tags = Constants.TAG_CONFIGURATION)
     @GetMapping("/all")
-    public List<ConfigurationDTO> getAllConfigurations() {
+    public List<ConfigurationDTO> getAllConfigurations(@RequestParam(value = "season", required = false) Integer season) {
         Log.info("START - getAllConfigurations - START");
+        Log.info("RequestParam getAllConfigurations (season) -> " + season);
         
-        this.configurationService.putCircuitsOnCache(configurationsCache);
+        List<ConfigurationDTO> configurationDTOs = new ArrayList<>();
+
+        if (season == null || season == Constants.ACTUAL_SEASON) {
+            this.configurationService.putCircuitsOnCache(configurationsCache);
+            configurationDTOs = configurationsCache.values().stream().collect(Collectors.toList());
+        } else {
+            configurationDTOs = this.configurationService.getCircuitsSeason(season);
+        }
 
         Log.info("END - getAllConfigurations - END");
-        return new ArrayList<>(configurationsCache.values());
+        return configurationDTOs;
     }
-    
 }

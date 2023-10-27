@@ -9,26 +9,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 @Entity
-@Table(name = "penalties")
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "penalty")
+@Data
 public class Penalty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "race_id", referencedColumnName = "id")
@@ -44,4 +34,8 @@ public class Penalty {
     @ManyToOne
     @JoinColumn(name = "severity_id", referencedColumnName = "id")
     private PenaltySeverity severity;
+
+    @ManyToOne
+    @JoinColumn(name = "season_id", referencedColumnName = "id")
+    private Season season;
 }

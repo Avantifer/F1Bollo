@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = Constants.URL_FRONTED)
+@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_PENALTY_SEVERITY}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_PENALTY_SEVERITY, description = Constants.TAG_PENALTY_SEVERITY_SUMMARY)

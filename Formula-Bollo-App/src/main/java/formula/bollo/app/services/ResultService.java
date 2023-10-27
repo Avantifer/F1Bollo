@@ -52,9 +52,11 @@ public class ResultService {
     */
     public List<DriverPointsDTO> setTotalPointsByDriver(List<Result> results, List<Sprint> sprints, Map<DriverDTO, Integer> totalPointsByDriver) {
         setTotalResultPointsByDriver(results, totalPointsByDriver);
+
         if (!sprints.isEmpty()) {
             setTotalSprintsPointsByDriver(sprints, totalPointsByDriver);
         }
+
         return totalPointsByDriver.entrySet()
             .stream()
             .map(entry -> new DriverPointsDTO(entry.getKey(), entry.getValue()))
@@ -69,7 +71,7 @@ public class ResultService {
      * @param totalPointsByDriver A map to store total points by driver.
     */
     private void setTotalResultPointsByDriver(List<Result> results, Map<DriverDTO, Integer> totalPointsByDriver ) {
-        results.parallelStream().forEach((Result result) -> {
+        results.stream().forEach((Result result) -> {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(result.getDriver());
             int points = 0;
 
@@ -91,7 +93,7 @@ public class ResultService {
      * @param totalPointsByDriver A map to store total points by driver.
     */
     private void setTotalSprintsPointsByDriver(List<Sprint> sprints, Map<DriverDTO, Integer> totalPointsByDriver) {
-        sprints.parallelStream().forEach((Sprint sprint) -> {
+        sprints.stream().forEach((Sprint sprint) -> {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(sprint.getDriver());
             int points = 0;
             
@@ -122,10 +124,10 @@ public class ResultService {
      *
      * @param resultDTOs The list of ResultDTO objects to be saved.
     */
-    public void saveResults(List<ResultDTO> resultDTOs) {
-        Race race = raceRepository.findByCircuitId(resultDTOs.get(0).getRace().getCircuit().getId()).get(0);
+    public void saveResults(List<ResultDTO> resultDTOs, int numberSeason) {
+        Race race = raceRepository.findByCircuitId(resultDTOs.get(0).getRace().getCircuit().getId(), numberSeason).get(0);
 
-        resultDTOs.parallelStream().forEach((ResultDTO resultDTO) -> {
+        resultDTOs.stream().forEach((ResultDTO resultDTO) -> {
             List<Result> existingResult = resultRepository.findByRaceId(resultDTO.getRace().getId());
             Result resultToUpdate = resultMapper.resultDTOToResult(resultDTO);
 

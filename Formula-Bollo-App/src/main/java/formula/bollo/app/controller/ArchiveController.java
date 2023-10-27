@@ -26,7 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 
-@CrossOrigin(origins = Constants.URL_FRONTED)
+@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_ARCHIVES}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_ARCHIVE, description = Constants.TAG_ARCHIVE_SUMMARY)

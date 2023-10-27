@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { environment } from 'src/enviroments/enviroment';
 import { Configuration } from 'src/shared/models/configuration';
 import { DriverPoints } from 'src/shared/models/driverPoints';
 import { Team } from 'src/shared/models/team';
@@ -26,7 +27,7 @@ export class HomeComponent {
     private teamApiService: TeamApiService,
     private configurationApiService: ConfigurationApiService,
     private resultApiService: ResultApiService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +45,7 @@ export class HomeComponent {
    * Fetch all team data and update the component's teams property.
   */
   obtainAllTeams(): void {
-    this.teamApiService.getAllTeams()
+    this.teamApiService.getAllTeams(environment.seasonActual)
       .pipe(
         takeUntil(this._unsubscribe)
       )
@@ -84,7 +85,7 @@ export class HomeComponent {
    * Fetch driver points data and process it, including obtaining the top 3 drivers.
   */
   obtainAllPointsDriver(): void {
-    this.resultApiService.getAllDriverPoints(10)
+    this.resultApiService.getAllDriverPoints(environment.seasonActual, 10)
       .pipe(
         takeUntil(this._unsubscribe)
       )

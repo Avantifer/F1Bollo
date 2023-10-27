@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Team } from '../../models/team';
 import { environment } from 'src/enviroments/enviroment';
@@ -14,11 +14,13 @@ export class TeamApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllTeams(): Observable<Team[]> {
-    return this.httpClient.get<Team[]>(environment.apiUrl + this.endpoint  + '/all');
+  getAllTeams(numberSeason?: number): Observable<Team[]> {
+    const params = numberSeason ? new HttpParams().set('season', numberSeason) : undefined;
+    return this.httpClient.get<Team[]>(environment.apiUrl + this.endpoint  + '/all', {params});
   }
 
-  getAllTeamsWithDrivers(): Observable<TeamWithDrivers[]> {
-    return this.httpClient.get<TeamWithDrivers[]>(environment.apiUrl + this.endpoint + '/withDrivers');
+  getAllTeamsWithDrivers(numberSeason?: number): Observable<TeamWithDrivers[]> {
+    const params = numberSeason ? new HttpParams().set('season', numberSeason) : undefined;
+    return this.httpClient.get<TeamWithDrivers[]>(environment.apiUrl + this.endpoint + '/withDrivers', {params});
   }
 }

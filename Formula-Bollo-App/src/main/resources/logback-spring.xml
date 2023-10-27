@@ -17,7 +17,6 @@
 </configuration>
 
 <!-- PRODUCCION -->
-
 <!-- <configuration>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/opt/logs/logs.log</file> 

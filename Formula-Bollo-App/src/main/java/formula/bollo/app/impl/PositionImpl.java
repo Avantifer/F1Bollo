@@ -10,7 +10,6 @@ import formula.bollo.app.model.PositionDTO;
 @Configuration
 public class PositionImpl implements PositionMapper {
 
-
     /**
      * Converts a PositionDTO object to a Position object.
      *
@@ -21,6 +20,7 @@ public class PositionImpl implements PositionMapper {
     public Position positionDTOToPosition(PositionDTO positionDTO) {
         Position position = new Position();
         BeanUtils.copyProperties(positionDTO, position);
+        
         return position;
     }
 

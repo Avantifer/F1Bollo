@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import formula.bollo.app.entity.Race;
 import formula.bollo.app.mapper.CircuitMapper;
 import formula.bollo.app.mapper.RaceMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.RaceDTO;
 
 @Component
@@ -21,6 +22,9 @@ public class RaceImpl implements RaceMapper{
 
     @Autowired
     private CircuitMapper circuitMapper;
+
+    @Autowired
+    private SeasonMapper seasonMapper;
 
     /**
      * Converts a RaceDTO object to a Race object.
@@ -36,6 +40,8 @@ public class RaceImpl implements RaceMapper{
         LocalDateTime localDateTime = raceDTO.getDateStart();
         Date dateStart = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         race.setDateStart(dateStart);
+        race.setSeason(this.seasonMapper.seasonDTOToSeason(raceDTO.getSeason()));
+        
         return race;
     }
 
@@ -53,7 +59,9 @@ public class RaceImpl implements RaceMapper{
         Instant instant = race.getDateStart().toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
         LocalDateTime localDateTime = instant.atZone(zoneId).toLocalDateTime();
-        raceDTO.setDateStart(localDateTime);        
+        raceDTO.setDateStart(localDateTime);
+        raceDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(race.getSeason())); 
+
         return raceDTO;
     }
 

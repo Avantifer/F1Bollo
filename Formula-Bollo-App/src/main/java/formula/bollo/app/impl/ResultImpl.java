@@ -12,6 +12,7 @@ import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.PositionMapper;
 import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.mapper.ResultMapper;
+import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.ResultDTO;
 
 @Component
@@ -26,6 +27,9 @@ public class ResultImpl implements ResultMapper {
     @Autowired
     private PositionMapper positionMapper;
 
+    @Autowired
+    private SeasonMapper seasonMapper;
+
     /**
      * Converts a ResultDTO object to a Result object.
      *
@@ -36,7 +40,6 @@ public class ResultImpl implements ResultMapper {
     public Result resultDTOToResult(ResultDTO resultDTO) {
         Result result = new Result();
         BeanUtils.copyProperties(resultDTO, result);
-        result.setId(resultDTO.getId());      
         result.setRace(raceMapper.raceDTOToRace(resultDTO.getRace()));
         result.setDriver(driverMapper.driverDTOToDriver(resultDTO.getDriver()));
 
@@ -44,6 +47,8 @@ public class ResultImpl implements ResultMapper {
             result.setPosition(positionMapper.positionDTOToPosition(resultDTO.getPosition()));
         }
 
+        result.setSeason(this.seasonMapper.seasonDTOToSeason(resultDTO.getSeason()));
+        
         return result;
     }
 
@@ -56,15 +61,16 @@ public class ResultImpl implements ResultMapper {
     @Override
     public ResultDTO resultToResultDTO(Result result) {
         ResultDTO resultDTO = new ResultDTO();
-
-        resultDTO.setId(result.getId());      
+        BeanUtils.copyProperties(result, resultDTO);
         resultDTO.setRace(raceMapper.raceToRaceDTO(result.getRace()));
         resultDTO.setDriver(driverMapper.driverToDriverDTONoImage(result.getDriver()));
+        
         if (result.getPosition() != null) {
             resultDTO.setPosition(positionMapper.positionToPositionDTO(result.getPosition()));
         }
 
-        resultDTO.setFastlap(result.getFastlap());
+        resultDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(result.getSeason()));
+
         return resultDTO;
     }
 

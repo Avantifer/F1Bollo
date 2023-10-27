@@ -7,20 +7,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "sprints")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "sprint")
+@Data
 public class Sprint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +31,7 @@ public class Sprint {
     @JoinColumn(name = "position_id")
     private SprintPosition position;
 
+    @ManyToOne
+    @JoinColumn(name = "season_id")
+    private Season season;
 }

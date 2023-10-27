@@ -30,6 +30,9 @@ export class AdminResultsComponent {
   fastLapForm: FormGroup = new FormGroup({
     fastlap: new FormControl(''),
   });
+  poleForm: FormGroup = new FormGroup({
+    pole: new FormControl('')
+  });
   raceForm: FormGroup = new FormGroup({
     raceDate: new FormControl('')
   });
@@ -38,6 +41,8 @@ export class AdminResultsComponent {
   circuitSelected: Circuit | undefined;
   fastLapSelected: Result | undefined;
   raceSelected: Race | undefined;
+  poleSelected: Result | undefined;
+
   raceDate: Date = new Date();
 
   private _unsubscribe = new Subject<void>();
@@ -47,7 +52,7 @@ export class AdminResultsComponent {
     private circuitApiService: CircuitApiService,
     private driverApiService: DriverApiService,
     private raceApiService: RaceApiService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -114,6 +119,10 @@ export class AdminResultsComponent {
   }
 
   /**
+   * Fetches all seasons from the season API service and updates the seasons property.
+  */
+
+  /**
    * Subscribe to changes in the circuitsForm and perform actions based on the selected circuit.
   */
   getResultsOfCircuitSelected(): void {
@@ -157,8 +166,9 @@ export class AdminResultsComponent {
         next: (results: Result[]) => {
           this.results = results;
 
-          // Reset the values of the fast lap and race date form fields.
+          // Reset the values of the fast lap, pole and race date form fields.
           this.fastLapForm.get('fastlap')?.setValue('');
+          this.poleForm.get('pole')?.setValue('');
           this.raceForm.get('raceDate')?.setValue('');
 
           this.saveButtonActivated = true;
@@ -180,6 +190,7 @@ export class AdminResultsComponent {
   */
   private processResults(results: Result[], circuitId: number): void {
     this.getFastLapDriver(results);
+    this.getPoleDriver(results);
     this.getRacePerCircuit(circuitId);
     this.putResultsInResultForm(results);
   }
@@ -195,6 +206,19 @@ export class AdminResultsComponent {
 
     this.fastLapForm.get('fastlap')?.setValue(fastestResult);
     this.fastLapSelected = fastestResult;
+  }
+
+  /**
+   * Find and set the result with the pole position in the poleForm.
+   *
+   * @param results - An array of results.
+  */
+  getPoleDriver(results: Result[]): void {
+    const poleResult: Result | undefined = results.find((result) => result.pole);
+    if (!poleResult) return;
+
+    this.poleForm.get('pole')?.setValue(poleResult);
+    this.poleSelected = poleResult;
   }
 
   /**
@@ -355,12 +379,18 @@ export class AdminResultsComponent {
       if (controlValue?.position) {
         let fastlap: number = 0;
         // Check if the current driver has the fastest lap
-        if (this.fastLapSelected?.driver.name == controlValue.driver.name) {
+        if (this.fastLapSelected?.driver.name === controlValue.driver.name) {
           fastlap = 1;
         }
 
+        let pole: number = 0;
+        // Check if the current driver has the pole position
+        if (this.poleSelected?.driver.name === controlValue.driver.name) {
+          pole = 1;
+        }
+
         let newPosition: Position = new Position(controlValue.position.id, positionActual, controlValue.position.points);
-        let newResult: Result = new Result(controlValue.id, controlValue.race, controlValue.driver, newPosition, fastlap);
+        let newResult: Result = new Result(controlValue.id, controlValue.race, controlValue.driver, newPosition, fastlap, pole);
 
         resultsToSave.push(newResult);
         positionActual++;
@@ -420,7 +450,7 @@ export class AdminResultsComponent {
     const driversNotDisqualified: Driver[] = this.drivers.filter((driver) => !disqualifiedDriverNames.has(driver.name));
 
     // Create new results for disqualified drivers and append them to the existing results
-    const newResultsToSave = driversNotDisqualified.map((driver) => new Result(0, race, driver, null, 0));
+    const newResultsToSave = driversNotDisqualified.map((driver) => new Result(0, race, driver, null, 0, 0));
     resultsToSave.push(...newResultsToSave);
   }
 
@@ -433,14 +463,16 @@ export class AdminResultsComponent {
   private createEveryResult(resultsToSave: Result[], race : Race): void {
     let positionActual: number = 1;
     const fastLapValue: Driver | undefined = this.fastLapForm.get('fastlap')?.value;
+    const poleValue: Driver | undefined =  this.poleForm.get('pole')?.value;
 
     for (let controlName of Object.keys(this.resultsForm.controls)) {
       let controlValue: Driver | undefined = this.resultsForm.controls[controlName].value;
 
       if (controlValue) {
         let fastlap: number = fastLapValue?.name === controlValue.name ? 1 : 0;
+        let pole: number = poleValue?.name === controlValue.name ? 1 : 0;
         let position: Position = new Position(0, positionActual, 0);
-        let result: Result = new Result(0, race, controlValue, position, fastlap);
+        let result: Result = new Result(0, race, controlValue, position, fastlap, pole);
         resultsToSave.push(result);
         positionActual++;
       }

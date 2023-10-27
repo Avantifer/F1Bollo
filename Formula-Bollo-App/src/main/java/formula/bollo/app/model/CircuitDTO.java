@@ -19,4 +19,5 @@ public class CircuitDTO {
     private String country;
     private String flagImage;
     private String circuitImage;
+    private SeasonDTO season;
 }
