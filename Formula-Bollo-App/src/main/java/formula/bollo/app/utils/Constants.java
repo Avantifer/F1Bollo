@@ -41,6 +41,9 @@ public class Constants {
     public static final String TAG_SEASON = "Seasons";
     public static final String TAG_SEASON_SUMMARY = "Operations related with seasons";
 
+    public static final String TAG_FANTASY = "Fantasy";
+    public static final String TAG_FANTASY_SUMMARY = "Operations related with fantasy section";
+
     // Endpoints
     public static final String ENDPOINT_ADMIN = "/admin";
     public static final String ENDPOINT_ARCHIVES = "/archives";
@@ -53,7 +56,8 @@ public class Constants {
     public static final String ENDPOINT_RESULT = "/results";
     public static final String ENDPOINT_TEAMS = "/teams";
     public static final String ENDPOINT_SEASONS = "/seasons";
-
+    public static final String ENDPOINT_FANTASY = "/fantasy";
+    
     // Errors
     public static final String ERROR_UNEXPECTED = "Error inesperado";
     public static final String ERROR_BBDD_GENERIC = "Hubo un problema con la base de datos";
