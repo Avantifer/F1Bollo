@@ -3,7 +3,7 @@
     <div class="login-card bg-white py-5">
       <div class="login-card-title fst-italic">Iniciar Sesión</div>
       <div class="login-card-form">
-        <form [formGroup]="loginForm" class="form text-center w-75 m-auto">
+        <form [formGroup]="loginForm" class="form text-center w-75 m-auto d-flex flex-column align-items-start">
           <p class="login-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">
             Usuario
           </p>
@@ -41,7 +41,10 @@
             </span>
             <mat-error *ngIf="loginForm.get('password')?.invalid">Necesitas poner la contraseña</mat-error>
           </mat-form-field>
-          <button mat-button class="login-card-form-button mt-4 py-1 w-65" (click)="login()">Iniciar Sesión</button>
+          <span class="fst-italic">¿Eres nuevo? <a routerLink="/fantasy/register" class="text-start">Create una cuenta.</a></span>
+          <div class="w-100">
+            <button mat-button class="login-card-form-button mt-4 py-1 w-65" (click)="login()">Iniciar Sesión</button>
+          </div>
         </form>
       </div>
     </div>

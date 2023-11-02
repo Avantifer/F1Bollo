@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,13 +30,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = Constants.TAG_TEAM, description = Constants.TAG_TEAM_SUMMARY)
 public class TeamsController {
     
-    @Autowired
     private TeamService teamService;
-
-    @Autowired
     private DriverRepository driverRepository;
-
     private Map<Long, TeamDTO> teamCache = new ConcurrentHashMap<>();
+
+    public TeamsController(TeamService teamService, DriverRepository driverRepository) {
+        this.teamService = teamService;
+        this.driverRepository = driverRepository;
+    }
 
     @Operation(summary = "Get all teams", tags = Constants.TAG_TEAM)
     @GetMapping("/all")

@@ -38,6 +38,11 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoaderService } from './../shared/services/loader.service';
 import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
 import { PageNotFoundComponent } from 'src/shared/components/page-not-found/page-not-found.component';
+import { FantasyComponent } from './components/fantasy/fantasy.component';
+import { FantasyHomeComponent } from './components/fantasy/fantasy-home/fantasy-home.component';
+import { FantasyLoginComponent } from './components/fantasy/fantasy-login/fantasy-login.component';
+import { FantasyRegisterComponent } from './components/fantasy/fantasy-register/fantasy-register.component';
+import { LoginGuard } from 'src/shared/guards/LoginGuard';
 
 @NgModule({
   declarations: [
@@ -55,7 +60,11 @@ import { PageNotFoundComponent } from 'src/shared/components/page-not-found/page
     ResultsComponent,
     AdminStatuteComponent,
     PageNotFoundComponent,
-    FormulaTableComponent
+    FormulaTableComponent,
+    FantasyComponent,
+    FantasyHomeComponent,
+    FantasyLoginComponent,
+    FantasyRegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +88,7 @@ import { PageNotFoundComponent } from 'src/shared/components/page-not-found/page
   ],
   providers: [
     AdminGuard,
+    LoginGuard,
     JwtHelperService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     LoaderService,

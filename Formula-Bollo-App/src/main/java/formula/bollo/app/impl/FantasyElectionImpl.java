@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import formula.bollo.app.entity.FantasyElection;
 import formula.bollo.app.mapper.DriverMapper;
@@ -12,21 +11,30 @@ import formula.bollo.app.mapper.FantasyElectionMapper;
 import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.mapper.TeamMapper;
+import formula.bollo.app.mapper.UserMapper;
 import formula.bollo.app.model.FantasyElectionDTO;
 
 public class FantasyElectionImpl implements FantasyElectionMapper {
 
-    @Autowired
     private DriverMapper driverMapper;
-
-    @Autowired
     private RaceMapper raceMapper;
-
-    @Autowired
     private TeamMapper teamMapper;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+    private UserMapper userMapper;
+
+    public FantasyElectionImpl(
+        DriverMapper driverMapper,
+        RaceMapper raceMapper,
+        TeamMapper teamMapper,
+        SeasonMapper seasonMapper,
+        UserMapper userMapper
+    ) {
+        this.driverMapper = driverMapper;
+        this.raceMapper = raceMapper;
+        this.teamMapper = teamMapper;
+        this.seasonMapper = seasonMapper;
+        this.userMapper = userMapper;
+    }
 
     /**
      * Converts a FantasyElectoinDTO object to a FantasyElection object.
@@ -38,12 +46,12 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
     public FantasyElection fantasyElectionDTOToFantasyElection(FantasyElectionDTO fantasyElectionDTO) {
         FantasyElection fantasyElection = new FantasyElection();
         BeanUtils.copyProperties(fantasyElectionDTO, fantasyElection);
+        fantasyElection.setUser(userMapper.userDTOToUser(fantasyElectionDTO.getUser()));
 
         // Drivers mapping
-        fantasyElection.setDriverHost(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverHost()));
-        fantasyElection.setDriverSelectedOne(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverSelectedOne()));
-        fantasyElection.setDriverSelectedTwo(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverSelectedTwo()));
-        fantasyElection.setDriverSelectedThree(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverSelectedThree()));
+        fantasyElection.setDriverOne(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverOne()));
+        fantasyElection.setDriverTwo(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverTwo()));
+        fantasyElection.setDriverThree(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverThree()));
         
         // Race, season and team mapping
         fantasyElection.setRace(raceMapper.raceDTOToRace(fantasyElectionDTO.getRace()));
@@ -63,12 +71,12 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
     public FantasyElectionDTO fantasyElectionToFantasyElectionDTO(FantasyElection fantasyElection) {
         FantasyElectionDTO fantasyElectionDTO = new FantasyElectionDTO();
         BeanUtils.copyProperties(fantasyElection, fantasyElectionDTO);
+        fantasyElectionDTO.setUser(userMapper.userToUserDTO(fantasyElection.getUser()));
 
         // Drivers Mapping
-        fantasyElectionDTO.setDriverHost(driverMapper.driverToDriverDTO(fantasyElection.getDriverHost()));
-        fantasyElectionDTO.setDriverSelectedOne(driverMapper.driverToDriverDTO(fantasyElection.getDriverHost()));
-        fantasyElectionDTO.setDriverSelectedTwo(driverMapper.driverToDriverDTO(fantasyElection.getDriverSelectedOne()));
-        fantasyElectionDTO.setDriverSelectedThree(driverMapper.driverToDriverDTO(fantasyElection.getDriverSelectedThree()));
+        fantasyElectionDTO.setDriverOne(driverMapper.driverToDriverDTO(fantasyElection.getDriverOne()));
+        fantasyElectionDTO.setDriverTwo(driverMapper.driverToDriverDTO(fantasyElection.getDriverTwo()));
+        fantasyElectionDTO.setDriverThree(driverMapper.driverToDriverDTO(fantasyElection.getDriverThree()));
 
         // Race, season and team mapping
         fantasyElectionDTO.setRace(raceMapper.raceToRaceDTO(fantasyElection.getRace()));

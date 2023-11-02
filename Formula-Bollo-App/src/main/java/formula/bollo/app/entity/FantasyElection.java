@@ -20,20 +20,20 @@ public class FantasyElection {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "driver_host_id", referencedColumnName = "id")
-    private Driver driverHost;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "driver_selected_one_id", referencedColumnName = "id")
-    private Driver driverSelectedOne;
+    @JoinColumn(name = "driver_one_id", referencedColumnName = "id")
+    private Driver driverOne;
 
     @ManyToOne
-    @JoinColumn(name = "driver_selected_two_id", referencedColumnName = "id")
-    private Driver driverSelectedTwo;
+    @JoinColumn(name = "driver_two_id", referencedColumnName = "id")
+    private Driver driverTwo;
 
     @ManyToOne
-    @JoinColumn(name = "driver_selected_three_id", referencedColumnName = "id")
-    private Driver driverSelectedThree;
+    @JoinColumn(name = "driver_three_id", referencedColumnName = "id")
+    private Driver driverThree;
 
     @ManyToOne
     @JoinColumn(name = "team_id", referencedColumnName = "id")

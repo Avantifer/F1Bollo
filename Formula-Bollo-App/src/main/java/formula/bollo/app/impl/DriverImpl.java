@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Driver;
@@ -22,8 +21,11 @@ import formula.bollo.app.utils.Log;
 @Component
 public class DriverImpl implements DriverMapper {
 
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public DriverImpl(SeasonMapper seasonMapper) {
+        this.seasonMapper = seasonMapper;
+    }
 
     /**
      * Converts a DriverDTO object to a Driver object.

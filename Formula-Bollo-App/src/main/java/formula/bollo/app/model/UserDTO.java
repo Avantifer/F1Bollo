@@ -13,8 +13,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminDTO {
+public class UserDTO {
     private Long id;
     private String username;
     private String password;
+    private int admin;
+    private DriverDTO driver;
 }

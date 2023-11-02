@@ -1,7 +1,6 @@
 package formula.bollo.app.impl;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Configuration;
@@ -12,8 +11,11 @@ import formula.bollo.app.model.ConfigurationDTO;
 @Component
 public class ConfigurationImpl implements ConfigurationMapper {
 
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public ConfigurationImpl(SeasonMapper seasonMapper) {
+        this.seasonMapper = seasonMapper;
+    }
 
     /**
      * Converts a ConfigurationDTO object to a Configuration object.

@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -46,26 +45,31 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = Constants.TAG_RESULT, description = Constants.TAG_RESULT_SUMMARY)
 public class ResultController {
     
-    @Autowired
     private ResultRepository resultRepository;
-
-    @Autowired
     private RaceRepository raceRepository;
-
-    @Autowired
     private SprintRepository sprintRepository;
-
-    @Autowired
     private ResultMapper resultMapper;
-
-    @Autowired
     private ResultService resultService;
-
-    @Autowired
     private SeasonRepository seasonRepository;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public ResultController(
+        ResultRepository resultRepository,
+        RaceRepository raceRepository,
+        SprintRepository sprintRepository,
+        ResultMapper resultMapper,
+        ResultService resultService,
+        SeasonRepository seasonRepository,
+        SeasonMapper seasonMapper
+    ) {
+        this.resultRepository = resultRepository;
+        this.raceRepository = raceRepository;
+        this.sprintRepository = sprintRepository;
+        this.resultMapper = resultMapper;
+        this.resultService = resultService;
+        this.seasonRepository = seasonRepository;
+        this.seasonMapper = seasonMapper;
+    }
 
     @Operation(summary = "Get results total per driver", tags = Constants.TAG_RESULT)
     @GetMapping("/totalPerDriver")

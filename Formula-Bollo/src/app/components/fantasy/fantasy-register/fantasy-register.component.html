@@ -1,0 +1,84 @@
+<div class="register bg-dark">
+  <div class="container d-flex align-items-center justify-content-center h-100">
+    <div class="register-card bg-white py-5">
+      <div class="register-card-title fst-italic">Registro</div>
+      <div class="register-card-form">
+        <form [formGroup]="registerForm" class="form text-center w-75 m-auto d-flex flex-column align-items-start">
+          <p class="register-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">
+            Usuario
+          </p>
+          <mat-form-field appearance="fill">
+            <input
+              matInput
+              type="text"
+              formControlName="username"
+              placeholder="Nombre de Usuario"
+              autocomplete="off"
+            />
+            <mat-error *ngIf="registerForm.get('username')?.invalid">Necesitas poner el nombre de usuario</mat-error>
+          </mat-form-field>
+          <p class="register-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">Contraseña</p>
+          <mat-form-field appearance="fill">
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Contraseña"
+              autocomplete="off"
+            />
+            <span
+              class="btn-password"
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+            >
+              <mat-icon
+                class="position-absolute"
+                disableRipple="true"
+                role="button"
+                >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
+              >
+            </span>
+            <mat-error *ngIf="registerForm.get('password')?.invalid">Necesitas poner la contraseña</mat-error>
+          </mat-form-field>
+          <p class="register-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">Repite la contraseña</p>
+          <mat-form-field appearance="fill">
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="passwordRepeated"
+              placeholder="Contraseña"
+              autocomplete="off"
+            />
+            <span
+              class="btn-password"
+              mat-icon-button
+              matSuffix
+              (click)="hidePasswordRepeated = !hidePasswordRepeated"
+            >
+              <mat-icon
+                class="position-absolute"
+                disableRipple="true"
+                role="button"
+                >{{ hidePasswordRepeated ? "visibility_off" : "visibility" }}</mat-icon
+              >
+            </span>
+            <mat-error *ngIf="registerForm.get('passwordRepeated')?.invalid">La contraseña debe ser igual a la anterior</mat-error>
+          </mat-form-field>
+          <p class="register-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">Selecciona que piloto eres</p>
+          <mat-form-field>
+            <mat-select formControlName="driver">
+              <mat-option *ngFor="let driver of drivers" [value]="driver">
+                {{ driver.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="registerForm.get('driver')?.invalid">Debes seleccionar el piloto</mat-error>
+          </mat-form-field>
+          <div class="w-100">
+            <button mat-button class="register-card-form-button mt-4 py-1 w-65" (click)="register()">Registrarme</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

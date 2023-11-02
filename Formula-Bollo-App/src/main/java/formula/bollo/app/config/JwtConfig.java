@@ -9,7 +9,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import formula.bollo.app.model.AdminDTO;
+import formula.bollo.app.model.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -28,15 +28,16 @@ public class JwtConfig implements Serializable {
     /**
      * Generate a JWT token for the user.
      *
-     * @param adminDTO User DTO
+     * @param userDTO UserDTO
      * @return JWT token generated for the user
      */
-    public String generateToken(AdminDTO adminDTO) {
+    public String generateToken(UserDTO userDTO) {
         Date expiration = Date.from(LocalDateTime.now().plusMinutes(JWT_TOKEN_VALIDITY).atZone(ZoneId.systemDefault()).toInstant());
 
         return Jwts.builder()
-                .setSubject(adminDTO.getUsername())
-                .claim("userId", adminDTO.getUsername())
+                .setSubject(userDTO.getUsername())
+                .claim("userId", userDTO.getUsername())
+                .claim("admin", userDTO.getAdmin())
                 .setIssuedAt(new Date())
                 .setExpiration(expiration)
                 .signWith(secretKey)

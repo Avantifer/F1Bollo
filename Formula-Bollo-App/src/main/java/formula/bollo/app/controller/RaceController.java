@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -37,20 +36,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = Constants.TAG_RACE, description = Constants.TAG_RACE_SUMMARY)
 public class RaceController {
     
-    @Autowired
     private RaceRepository raceRepository;
-
-    @Autowired
     private RaceMapper raceMapper;
-
-    @Autowired
     private RaceService raceService;
-
-    @Autowired
     private SeasonRepository seasonRepository;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public RaceController(
+        RaceRepository raceRepository,
+        RaceMapper raceMapper,
+        RaceService raceService,
+        SeasonRepository seasonRepository,
+        SeasonMapper seasonMapper
+    ) {
+        this.raceRepository = raceRepository;
+        this.raceMapper = raceMapper;
+        this.raceService = raceService;
+        this.seasonRepository = seasonRepository;
+        this.seasonMapper = seasonMapper;
+    }
 
     @Operation(summary = "Get races per circuit", tags = Constants.TAG_RACE)
     @GetMapping("/circuit")

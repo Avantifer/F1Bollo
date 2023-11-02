@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 @CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
@@ -29,10 +28,12 @@ import org.springframework.http.MediaType;
 @Tag(name = Constants.TAG_CONFIGURATION, description = Constants.TAG_CONFIGURATION_SUMMARY)
 public class ConfigurationController {
 
-    @Autowired
-    public ConfigurationService configurationService;
-
+    private ConfigurationService configurationService;
     private Map<Long, ConfigurationDTO> configurationsCache = new ConcurrentHashMap<>();
+
+    public ConfigurationController(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 
     @Operation(summary = "Get all configurations", tags = Constants.TAG_CONFIGURATION)
     @GetMapping("/all")

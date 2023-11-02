@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Result;
@@ -18,17 +17,22 @@ import formula.bollo.app.model.ResultDTO;
 @Component
 public class ResultImpl implements ResultMapper {
     
-    @Autowired
     private RaceMapper raceMapper;
-
-    @Autowired
     private DriverMapper driverMapper;
-
-    @Autowired
     private PositionMapper positionMapper;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public ResultImpl(
+        RaceMapper raceMapper,
+        DriverMapper driverMapper,
+        PositionMapper positionMapper,
+        SeasonMapper seasonMapper
+    ) {
+        this.raceMapper = raceMapper;
+        this.driverMapper = driverMapper;
+        this.positionMapper = positionMapper;
+        this.seasonMapper = seasonMapper;
+    }
 
     /**
      * Converts a ResultDTO object to a Result object.

@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
-import { User } from 'src/shared/models/user';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'src/shared/services/message.service';
-import { takeUntil } from 'rxjs/operators'
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { User } from 'src/shared/models/user';
 import { UserApiService } from 'src/shared/services/api/user-api.service';
-import { AuthJWTService } from 'src/shared/services/authJWT.service';
+import { MessageService } from 'src/shared/services/message.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './fantasy-login.component.html',
+  styleUrls: ['./fantasy-login.component.scss']
 })
-export class LoginComponent {
-
+export class FantasyLoginComponent {
   hidePassword: boolean = true;
 
   loginForm: FormGroup = new FormGroup({
@@ -27,8 +24,7 @@ export class LoginComponent {
   constructor(
     private userApiService: UserApiService,
     private messageService: MessageService,
-    private router: Router,
-    private authJWTService: AuthJWTService
+    private router: Router
   ) { }
 
   ngOnDestroy(): void {
@@ -52,12 +48,10 @@ export class LoginComponent {
         )
         .subscribe({
           next: (token: string) => {
-            if (this.authJWTService.checkAdmin(token)) {
-              localStorage.setItem('auth', token);
-              this.router.navigate(['/admin']);
-            } else {
-              this.messageService.showInformation("No tienes permisos de administrador");
-            }
+            localStorage.setItem('auth', token);
+            this.router.navigate(['/fantasy/home']);
+            this.resetNavItemsFantasy();
+            this.messageService.showInformation("Has iniciado sesión correctamente");
           },
           error: (error) => {
             this.messageService.showInformation(error.error);
@@ -68,5 +62,18 @@ export class LoginComponent {
     } else {
       this.messageService.showInformation("Necesitas poner el usuario/contraseña");
     }
+  }
+
+  /**
+   * Resets the 'active' class from elements with the class 'active'.
+  */
+  resetNavItemsFantasy(): void {
+    let navItemSelected: NodeListOf<Element> = document.querySelectorAll('.active');
+
+    if (navItemSelected.length === 0) return;
+
+    navItemSelected.forEach((navItemSelected: Element) => {
+      navItemSelected.classList.remove('active');
+    });
   }
 }

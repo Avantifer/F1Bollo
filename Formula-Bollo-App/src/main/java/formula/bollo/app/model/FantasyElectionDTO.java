@@ -15,10 +15,10 @@ import lombok.ToString;
 @NoArgsConstructor
 public class FantasyElectionDTO {
     private Long id;
-    private DriverDTO driverHost;
-    private DriverDTO driverSelectedOne;
-    private DriverDTO driverSelectedTwo;
-    private DriverDTO driverSelectedThree;
+    private UserDTO user;
+    private DriverDTO driverOne;
+    private DriverDTO driverTwo;
+    private DriverDTO driverThree;
     private TeamDTO team;
     private RaceDTO race;
     private SeasonDTO season;

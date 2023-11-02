@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -43,23 +42,28 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = Constants.TAG_PENALTY, description = Constants.TAG_PENALTY_SUMMARY)
 public class PenaltyController {
 
-    @Autowired
     private PenaltyRepository penaltyRepository;
-
-    @Autowired
     private RaceRepository raceRepository;
-
-    @Autowired
     private PenaltyMapper penaltyMapper;
-
-    @Autowired
     private PenaltyService penaltyService;
-
-    @Autowired
     private SeasonRepository seasonRepository;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public PenaltyController(
+        PenaltyRepository penaltyRepository,
+        RaceRepository raceRepository,
+        PenaltyMapper penaltyMapper,
+        PenaltyService penaltyService,
+        SeasonRepository seasonRepository,
+        SeasonMapper seasonMapper
+    ) {
+        this.penaltyRepository = penaltyRepository;
+        this.raceRepository = raceRepository;
+        this.penaltyMapper = penaltyMapper;
+        this.penaltyService = penaltyService;
+        this.seasonRepository = seasonRepository;
+        this.seasonMapper = seasonMapper;
+    }
 
     @Operation(summary = "Get all penalties", tags = Constants.TAG_PENALTY)
     @GetMapping("/all")

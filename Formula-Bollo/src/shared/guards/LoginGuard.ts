@@ -4,22 +4,16 @@ import { Observable } from "rxjs";
 import { AuthJWTService } from "../services/authJWT.service";
 
 @Injectable()
-export class AdminGuard {
+export class LoginGuard {
 
   constructor(private router: Router, private authJWTService: AuthJWTService) {}
 
   canActivate():Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (localStorage.getItem('auth')) {
-      if (this.authJWTService.checkAdmin(localStorage.getItem('auth')!)) {
-
-        return true;
-      } else {
-        this.router.navigate(['/home']);
-        return false;
-      }
-    } else {
-      this.router.navigate(['/login']);
+    if (this.authJWTService.isLogged()) {
+      this.router.navigate(['/home']);
       return false;
+    } else {
+      return true;
     }
   }
 }
