@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import formula.bollo.app.entity.Position;
@@ -25,20 +24,29 @@ import formula.bollo.app.repository.ResultRepository;
 @Service
 public class ResultService {
 
-    @Autowired
-    private DriverMapper driverMapper;
+    private final DriverMapper driverMapper;
 
-    @Autowired
-    private RaceRepository raceRepository;
-    
-    @Autowired
-    private ResultRepository resultRepository;
+    private final RaceRepository raceRepository;
 
-    @Autowired
-    private ResultMapper resultMapper;
+    private final ResultRepository resultRepository;
 
-    @Autowired
-    private PositionRepository positionRepository;
+    private final ResultMapper resultMapper;
+
+    private final PositionRepository positionRepository;
+
+    public ResultService(
+        DriverMapper driverMapper,
+        RaceRepository raceRepository,
+        ResultRepository resultRepository,
+        ResultMapper resultMapper,
+        PositionRepository positionRepository
+    ) {
+        this.driverMapper = driverMapper;
+        this.raceRepository = raceRepository;
+        this.resultRepository = resultRepository;
+        this.resultMapper = resultMapper;
+        this.positionRepository = positionRepository;
+    }
 
     /**
      * Calculates and sets total points by driver based on race results and sprint results.

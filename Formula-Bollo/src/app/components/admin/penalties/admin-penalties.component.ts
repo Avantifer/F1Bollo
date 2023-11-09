@@ -49,7 +49,7 @@ export class AdminPenaltiesComponent {
 
   saveButtonActivated: boolean = false;
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private circuitApiService: CircuitApiService,

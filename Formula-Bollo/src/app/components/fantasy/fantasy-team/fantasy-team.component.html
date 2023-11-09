@@ -1,0 +1,13 @@
+<div class="bg-secondary-subtle py-5 px-3">
+  <form [formGroup]="raceForm" class="bg-white">
+    <div class="modifyResults-topSide d-flex align-items-center py-4 px-5">
+      <mat-form-field *ngIf="raceSelected">
+        <mat-select formControlName="race" [(value)]="raceSelected">
+          <mat-option *ngFor="let race of races" [value]="race">
+            {{ race.circuit.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+  </form>
+</div>

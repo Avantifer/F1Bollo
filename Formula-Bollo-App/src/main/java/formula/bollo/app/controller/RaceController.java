@@ -16,7 +16,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
@@ -79,7 +81,7 @@ public class RaceController {
     public ResponseEntity<String> saveCircuit(@RequestBody RaceDTO raceDTO, @RequestParam(value = "season", required = false) Integer season) {
         Log.info("START - saveCircuit - START");
         Log.info("RequestBody saveCircuit -> " + raceDTO);
-        Log.info("RequestParam saveCircuit (seaon) -> " + season);
+        Log.info("RequestParam saveCircuit (season) -> " + season);
         
         int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
 
@@ -99,5 +101,28 @@ public class RaceController {
         Log.info("END - saveCircuit - END");
 
         return new ResponseEntity<>("Carrera guardada correctamente", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(200));
+    }
+
+    @Operation(summary = "Get all races finished and the next one", tags = Constants.TAG_RACE)
+    @GetMapping(path = "/allPreviousAndNextOne")
+    public List<RaceDTO> getAllPreviousAndNextOne(@RequestParam(value = "season", required = false) Integer season) {
+        Log.info("START - allPreviousAndNextOne - START");
+        Log.info("RequestParam allPreviousAndNextOne (season) -> " + season);
+        int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
+
+        List<Race> races = this.raceRepository.findBySeason(numberSeason);
+        List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
+        raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
+
+        List<RaceDTO> raceDTOsNotFinishedAndNextOne = raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
+        
+        for(RaceDTO raceDTO: raceDTOs) {
+            if (raceDTO.getFinished() == 0) {
+                raceDTOsNotFinishedAndNextOne.add(raceDTO);
+                break;
+            }
+        }
+
+        return raceDTOsNotFinishedAndNextOne;
     }
 }

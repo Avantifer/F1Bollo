@@ -22,7 +22,7 @@ export class LoginComponent {
     password: new FormControl('', Validators.required),
   });
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private userApiService: UserApiService,

@@ -14,7 +14,7 @@ export class AdminStatuteComponent {
   progressValue: number = 0;
   correct: boolean = false;
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private messageService: MessageService, private archiveApiService: ArchiveApiService){ }
 

@@ -64,7 +64,9 @@ public class Constants {
     public static final String ERROR_GENERIC = "Hubo un error. Contacta con el administrador";
     public static final String ERROR_INVALID_CREDENTIALS = "Las credenciales no son válidas";
     public static final String ERROR_SEASON = "Hubo un problema con las temporadas";
-    public static final String ERROR_USER_ALREADY_EXISTS = "El usuario ya existe";
+    public static final String ERROR_USERNAME_ALREADY_EXISTS = "El usuario ya existe con ese nombre";
+    public static final String ERROR_EMAIL_ALREADY_EXISTS = "El correo ya ha sido utilizado";
+    public static final String ERROR_USER_NOT_EXISTS = "El usuario no existe";
     
     //Urls
     public static final String PRODUCTION_FRONTEND = "https://formulabollo.es/";

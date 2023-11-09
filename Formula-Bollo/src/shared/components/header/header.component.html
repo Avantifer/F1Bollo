@@ -17,8 +17,18 @@
             (click)="authJWTService.isLogged() && link.name === 'Iniciar Sesión' ? authJWTService.logOut() : null">
             {{authJWTService.isLogged() && link.name === 'Iniciar Sesión' ? 'Cerrar Sesión' : link.name}}
           </a>
-          </li>
+        </li>
+        <li class="nav-item mt-3 mt-lg-0 d-md-inline d-lg-none">
+          <button mat-button [routerLink]="isFantasy ? '/' : '/fantasy'" [ngClass]="isFantasy ? 'navbar-text-button-formula' : 'navbar-text-button-fantasy'">
+            {{ isFantasy ? 'Formula' : 'Fantasy' }}
+          </button>
+        </li>
       </ul>
+    </div>
+    <div class="navbar-text d-sm-none d-lg-inline">
+      <button mat-button [routerLink]="isFantasy ? '/' : '/fantasy'" [ngClass]="isFantasy ? 'navbar-text-button-formula' : 'navbar-text-button-fantasy'">
+        {{ isFantasy ? 'Formula' : 'Fantasy' }}
+      </button>
     </div>
   </div>
 </nav>

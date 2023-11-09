@@ -19,13 +19,13 @@ export class FantasyRegisterComponent {
 
   registerForm: FormGroup = new FormGroup({
     username: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
     passwordRepeated: new FormControl('', [Validators.required, this.passwordMatchValidator()]),
-    driver: new FormControl('', Validators.required),
   });
 
   drivers: Driver[] = [];
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private userApiService: UserApiService,
@@ -61,7 +61,7 @@ export class FantasyRegisterComponent {
   */
   register(): void {
     if (this.registerForm.valid) {
-      let user : User = new User(0, this.registerForm.get('username')!.value, this.registerForm.get('password')!.value, 0, this.registerForm.get('driver')!.value);
+      let user : User = new User(0, this.registerForm.get('username')!.value, this.registerForm.get('password')!.value, this.registerForm.get('email')!.value, 0);
       this.userApiService.register(user)
         .pipe(
           takeUntil(this._unsubscribe)
@@ -69,11 +69,11 @@ export class FantasyRegisterComponent {
         .subscribe({
           next: (token: string) => {
             localStorage.setItem('auth', token);
-            this.router.navigate(['/fantasy/home'])
+            this.router.navigate(['/fantasy'])
             this.messageService.showInformation("Te has registrado correctamente");
           },
           error: (error) => {
-            this.messageService.showInformation('No se ha podido registrar correctamente');
+            this.messageService.showInformation(error.error);
             console.log(error);
             throw error;
           }
@@ -83,6 +83,9 @@ export class FantasyRegisterComponent {
     }
   }
 
+  /**
+   * Fetches all drivers from the driver API service and assigns them to the `drivers` property.
+   */
   getAllDrivers(): void {
     this.driverApiService.getAllDrivers()
       .pipe(

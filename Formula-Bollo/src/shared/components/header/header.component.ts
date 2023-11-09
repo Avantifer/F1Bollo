@@ -21,12 +21,12 @@ export class HeaderComponent {
   ];
   fantasyLinks: HeaderLinks[] = [
     new HeaderLinks("Equipo", "/fantasy/team"),
-    new HeaderLinks("Clasificación", "/fantasy/team"),
+    new HeaderLinks("Clasificación", "/fantasy/clasification"),
     new HeaderLinks("Iniciar Sesión", "/fantasy/login"),
   ];
 
   routerLink: string = '';
-  routerBolloLink: string = '/home';
+  routerBolloLink: string = '/';
   routerFantasyLink: string = '/fantasy';
 
   activeNavItem: string = '';

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import formula.bollo.app.entity.Driver;
@@ -25,20 +24,29 @@ import formula.bollo.app.utils.Constants;
 @Service
 public class TeamService {
  
-    @Autowired
-    private TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
 
-    @Autowired
-    private TeamMapper teamMapper;
+    private final TeamMapper teamMapper;
 
-    @Autowired
-    private ResultRepository resultRepository;
+    private final ResultRepository resultRepository;
 
-    @Autowired
-    private SprintRepository sprintRepository;
+    private final SprintRepository sprintRepository;
 
-    @Autowired
-    private DriverMapper driverMapper;
+    private final DriverMapper driverMapper;
+
+    public TeamService(
+        TeamRepository teamRepository, 
+        TeamMapper teamMapper, 
+        ResultRepository resultRepository, 
+        SprintRepository sprintRepository, 
+        DriverMapper driverMapper
+    ) {
+        this.teamRepository = teamRepository;
+        this.teamMapper = teamMapper;
+        this.resultRepository = resultRepository;
+        this.sprintRepository = sprintRepository;
+        this.driverMapper = driverMapper;
+    }
 
     /**
      * Puts teams into a cache if the cache is empty.
@@ -146,6 +154,12 @@ public class TeamService {
     }
 
 
+    /**
+     * Returns a list of TeamDTO objects for a given season.
+     *
+     * @param season the season for which to retrieve teams
+     * @return a list of TeamDTO objects
+     */
     public List<TeamDTO> getTeamsBySeason(int season) {
         List<Team> teams = teamRepository.findBySeason(season);
 

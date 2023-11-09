@@ -1,17 +1,15 @@
-import { Driver } from "./driver";
-
 export class User {
   id: number;
   username: string;
   password: string;
+  email?: string;
   admin?: number;
-  driver: Driver | undefined;
 
-  constructor(id: number, username: string, password: string, admin?: number, driver?: Driver) {
+  constructor(id: number, username: string, password: string, email?: string, admin?: number) {
     this.id = id;
     this.username = username;
     this.password = password;
+    this.email = email;
     this.admin = admin;
-    this.driver = driver;
   }
 }

@@ -18,5 +18,5 @@ public class UserDTO {
     private String username;
     private String password;
     private int admin;
-    private DriverDTO driver;
+    private String email;
 }

@@ -16,12 +16,16 @@ import { FantasyHomeComponent } from './components/fantasy/fantasy-home/fantasy-
 import { FantasyLoginComponent } from './components/fantasy/fantasy-login/fantasy-login.component';
 import { FantasyRegisterComponent } from './components/fantasy/fantasy-register/fantasy-register.component';
 import { LoginGuard } from 'src/shared/guards/LoginGuard';
+import { FantasyTeamComponent } from './components/fantasy/fantasy-team/fantasy-team.component';
+import { FantasyTeamGuard } from 'src/shared/guards/FantasyTeamGuard';
+import { FantasyClasificationComponent } from './components/fantasy/fantasy-clasification/fantasy-clasification.component';
+import { FantasyRecoverPasswordComponent } from './components/fantasy/fantasy-recover-password/fantasy-recover-password.component';
+import { RecoverPasswordGuard } from 'src/shared/guards/RecoverPasswordGuard';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
-    path: 'home',
+    path: '',
     component: HomeComponent
   },
   {
@@ -66,11 +70,6 @@ const routes: Routes = [
   },
   {
     path: 'fantasy',
-    redirectTo: 'fantasy/home',
-    pathMatch: 'full'
-  },
-  {
-    path: 'fantasy/home',
     component: FantasyHomeComponent
   },
   {
@@ -79,9 +78,23 @@ const routes: Routes = [
     canActivate: [LoginGuard]
   },
   {
+    path: 'fantasy/team',
+    component: FantasyTeamComponent,
+    canActivate: [FantasyTeamGuard]
+  },
+  {
+    path: 'fantasy/clasification',
+    component: FantasyClasificationComponent,
+  },
+  {
     path: 'fantasy/register',
     component: FantasyRegisterComponent,
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'fantasy/recoverPassword/:token',
+    component: FantasyRecoverPasswordComponent,
+    canActivate: [RecoverPasswordGuard]
   },
   {
     path: '**',

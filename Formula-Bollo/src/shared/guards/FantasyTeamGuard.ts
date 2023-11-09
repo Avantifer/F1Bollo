@@ -5,7 +5,7 @@ import { AuthJWTService } from "../services/authJWT.service";
 import { MessageService } from "../services/message.service";
 
 @Injectable()
-export class AdminGuard {
+export class FantasyTeamGuard {
 
   constructor(
     private router: Router,
@@ -14,17 +14,12 @@ export class AdminGuard {
   ) {}
 
   canActivate():Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (localStorage.getItem('auth')) {
-      if (this.authJWTService.checkAdmin(localStorage.getItem('auth')!)) {
-        return true;
-      } else {
-        this.router.navigate(['/']);
-        this.messageService.showInformation('No tienes permisos para acceder a esta página');
-        return false;
-      }
-    } else {
-      this.router.navigate(['/login']);
+    if (!this.authJWTService.isLogged()) {
+      this.messageService.showInformation('Debes estar logueado para acceder a esta página');
+      this.router.navigate(['/fantasy/login']);
       return false;
+    } else {
+      return true;
     }
   }
 }

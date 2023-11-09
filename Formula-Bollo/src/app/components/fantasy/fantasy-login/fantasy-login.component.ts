@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { User } from 'src/shared/models/user';
 import { UserApiService } from 'src/shared/services/api/user-api.service';
 import { MessageService } from 'src/shared/services/message.service';
+import { FantasyDialogMailComponent } from '../fantasy-dialog-mail/fantasy-dialog-mail.component';
 
 @Component({
   selector: 'app-login',
@@ -19,12 +21,13 @@ export class FantasyLoginComponent {
     password: new FormControl('', Validators.required),
   });
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private userApiService: UserApiService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) { }
 
   ngOnDestroy(): void {
@@ -49,7 +52,7 @@ export class FantasyLoginComponent {
         .subscribe({
           next: (token: string) => {
             localStorage.setItem('auth', token);
-            this.router.navigate(['/fantasy/home']);
+            this.router.navigate(['/fantasy']);
             this.resetNavItemsFantasy();
             this.messageService.showInformation("Has iniciado sesión correctamente");
           },
@@ -74,6 +77,18 @@ export class FantasyLoginComponent {
 
     navItemSelected.forEach((navItemSelected: Element) => {
       navItemSelected.classList.remove('active');
+    });
+  }
+
+  /**
+   * Opens the recovery password dialog.
+  */
+  openRecoveryPasswordDialog(): void {
+    this.dialog.open(FantasyDialogMailComponent, {
+      width: '700px',
+      height: '300px',
+      enterAnimationDuration: 200,
+      exitAnimationDuration: 200,
     });
   }
 }

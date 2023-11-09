@@ -17,34 +17,37 @@
             />
             <mat-error *ngIf="loginForm.get('username')?.invalid">Necesitas poner el nombre de usuario</mat-error>
           </mat-form-field>
-          <p class="login-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">Contraseña</p>
+          <label class="login-card-form-label d-flex justify-content-between align-items-end">
+            <p class="mt-3 mb-1 ms-3 text-start fw-bold">Contraseña</p>
+          </label>
           <mat-form-field appearance="fill">
             <input
-              matInput
-              [type]="hidePassword ? 'password' : 'text'"
-              formControlName="password"
-              placeholder="Contraseña"
-              autocomplete="off"
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Contraseña"
+            autocomplete="off"
             />
             <span
-              class="btn-password"
-              mat-icon-button
-              matSuffix
-              (click)="hidePassword = !hidePassword"
+            class="btn-password"
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
             >
-              <mat-icon
-                class="position-absolute"
-                disableRipple="true"
-                role="button"
-                >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
-              >
+            <mat-icon
+            class="position-absolute"
+            disableRipple="true"
+            role="button"
+            >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
+            >
             </span>
             <mat-error *ngIf="loginForm.get('password')?.invalid">Necesitas poner la contraseña</mat-error>
           </mat-form-field>
-          <span class="fst-italic">¿Eres nuevo? <a routerLink="/fantasy/register" class="text-start">Create una cuenta.</a></span>
+          <a role="button" class="text-end fw-normal mb-4" (click)="openRecoveryPasswordDialog()">Recuperar contraseña</a>
           <div class="w-100">
-            <button mat-button class="login-card-form-button mt-4 py-1 w-65" (click)="login()">Iniciar Sesión</button>
+            <button mat-button class="login-card-form-button py-1 w-65" (click)="login()">Iniciar Sesión</button>
           </div>
+          <span class="fst-italic align-self-center mt-3">¿Eres nuevo? <a routerLink="/fantasy/register" class="text-start">Create una cuenta.</a></span>
         </form>
       </div>
     </div>

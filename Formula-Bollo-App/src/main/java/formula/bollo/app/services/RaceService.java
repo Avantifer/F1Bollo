@@ -2,7 +2,6 @@ package formula.bollo.app.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import formula.bollo.app.entity.Race;
@@ -13,11 +12,14 @@ import formula.bollo.app.repository.RaceRepository;
 @Service
 public class RaceService {
     
-    @Autowired
-    private RaceMapper raceMapper;
+    private final RaceMapper raceMapper;
 
-    @Autowired
-    private RaceRepository raceRepository;
+    private final RaceRepository raceRepository;
+
+    public RaceService(RaceMapper raceMapper, RaceRepository raceRepository) {
+        this.raceMapper = raceMapper;
+        this.raceRepository = raceRepository;
+    }
 
     /**
      * Saves or updates a race based on the provided RaceDTO.

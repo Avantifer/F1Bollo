@@ -20,4 +20,5 @@ public class RaceDTO {
     private CircuitDTO circuit;
     private LocalDateTime dateStart;
     private SeasonDTO season;
+    private int finished;
 }

@@ -45,7 +45,7 @@ export class AdminResultsComponent {
 
   raceDate: Date = new Date();
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private resultApiService: ResultApiService,
@@ -317,7 +317,7 @@ export class AdminResultsComponent {
       return undefined;
     }
 
-    const newRace = new Race(0, this.circuitSelected, this.raceDate);
+    const newRace = new Race(0, this.circuitSelected, this.raceDate, 1);
     this.raceSelected = newRace;
     return newRace;
   }
@@ -407,7 +407,7 @@ export class AdminResultsComponent {
     if (!this.circuitSelected) return;
 
     let resultsToSave: Result[] = [];
-    let race: Race = new Race(0, this.circuitSelected, this.raceDate);
+    let race: Race = new Race(0, this.circuitSelected, this.raceDate, 1);
 
     this.createEveryResult(resultsToSave, race);
     this.comprobateDriversToBeDisqualified(resultsToSave, race);

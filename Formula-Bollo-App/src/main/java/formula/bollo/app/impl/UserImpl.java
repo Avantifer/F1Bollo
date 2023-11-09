@@ -5,18 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import formula.bollo.app.entity.User;
-import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.UserMapper;
 import formula.bollo.app.model.UserDTO;
 
 @Configuration
 public class UserImpl implements UserMapper {
-    private DriverMapper driverMapper;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-    public UserImpl(DriverMapper driverMapper) {
-        this.driverMapper = driverMapper;
-    }
 
     /**
      * Converts an UserDTO object to an User object.
@@ -29,7 +23,6 @@ public class UserImpl implements UserMapper {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
         user.setPassword(this.passwordEncoder.encode(userDTO.getPassword()));
-        user.setDriver(this.driverMapper.driverDTOToDriver(userDTO.getDriver()));
         return user;
     }
 
@@ -43,7 +36,6 @@ public class UserImpl implements UserMapper {
     public UserDTO userToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
-        userDTO.setDriver(this.driverMapper.driverToDriverDTO(user.getDriver()));
         return userDTO;
     }
 }

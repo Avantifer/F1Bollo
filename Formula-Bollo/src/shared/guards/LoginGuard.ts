@@ -10,7 +10,7 @@ export class LoginGuard {
 
   canActivate():Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.authJWTService.isLogged()) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
       return false;
     } else {
       return true;

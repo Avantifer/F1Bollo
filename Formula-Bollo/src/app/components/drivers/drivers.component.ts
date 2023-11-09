@@ -24,7 +24,7 @@ export class DriversComponent {
 
   seasonSelected: Season | undefined;
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private resultApiService: ResultApiService,
