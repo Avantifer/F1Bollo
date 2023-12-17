@@ -32,10 +32,10 @@ public class Race {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateStart;
 
+    @Column(name = "finished", nullable = false, length = 1)
+    private int finished;
+    
     @ManyToOne
     @JoinColumn(name = "season_id")
     private Season season;
-
-    @Column(name = "finished", nullable = false, length = 1)
-    private int finished;
 }

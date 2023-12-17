@@ -20,7 +20,7 @@ export class HeaderComponent {
     new HeaderLinks("Admin", "/admin")
   ];
   fantasyLinks: HeaderLinks[] = [
-    new HeaderLinks("Equipo", "/fantasy/team"),
+    new HeaderLinks("Mi Equipo", "/fantasy/team"),
     new HeaderLinks("Clasificación", "/fantasy/clasification"),
     new HeaderLinks("Iniciar Sesión", "/fantasy/login"),
   ];

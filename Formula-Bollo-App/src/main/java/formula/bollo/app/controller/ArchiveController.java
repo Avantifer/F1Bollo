@@ -32,7 +32,6 @@ import org.springframework.http.ResponseEntity;
 public class ArchiveController {
     
     private ArchiveRepository archiveRepository;
-    
     private ArchiveMapper archiveMapper;
 
     public ArchiveController(ArchiveRepository archiveRepository, ArchiveMapper archiveMapper) {

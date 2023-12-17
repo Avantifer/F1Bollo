@@ -6,8 +6,8 @@ import { DriversComponent } from './components/drivers/drivers.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdminGuard } from 'src/shared/guards/AdminGuard';
-import { AdminResultsComponent } from './components/admin/results/admin-results.component';
-import { AdminPenaltiesComponent } from './components/admin/penalties/admin-penalties.component';
+import { AdminResultsComponent } from './components/admin/admin-results/admin-results.component';
+import { AdminPenaltiesComponent } from './components/admin/admin-penalties/admin-penalties.component';
 import { StatuteComponent } from './components/statute/statute.component';
 import { ResultsComponent } from './components/results/results.component';
 import { AdminStatuteComponent } from './components/admin/admin-statute/admin-statute.component';
@@ -24,6 +24,11 @@ import { RecoverPasswordGuard } from 'src/shared/guards/RecoverPasswordGuard';
 
 
 const routes: Routes = [
+  {
+    path: 'home',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
   {
     path: '',
     component: HomeComponent

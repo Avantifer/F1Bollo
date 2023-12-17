@@ -20,4 +20,6 @@ public interface DriverMapper {
     DriverDTO driverToDriverDTONoImage(Driver driver);
 
     List<DriverDTO> convertDriversToDriverDTONoImage(List<Driver> drivers);
+
+    List<DriverDTO> convertDriversToDriverDTO(List<Driver> drivers);
 }

@@ -13,15 +13,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class FantasyElectionDTO {
+public class FantasyPriceTeamDTO {
     private Long id;
-    private UserDTO user;
-    private DriverDTO driverOne;
-    private DriverDTO driverTwo;
-    private DriverDTO driverThree;
-    private TeamDTO teamOne;
-    private TeamDTO teamTwo;
+    private TeamDTO team;
     private RaceDTO race;
+    private int price;
     private SeasonDTO season;
 }
-

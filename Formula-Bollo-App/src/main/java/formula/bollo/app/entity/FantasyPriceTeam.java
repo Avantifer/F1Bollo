@@ -8,37 +8,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
 import lombok.Data;
 
 @Entity
-@Table(name = "result")
+@Table(name = "fantasy_price_team")
 @Data
-public class Result {
+public class FantasyPriceTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "race_id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private Team team;
+
+    @ManyToOne
+    @JoinColumn(name = "race_id", referencedColumnName = "id")
     private Race race;
 
-    @ManyToOne
-    @JoinColumn(name = "driver_id")
-    private Driver driver;
+    @Column(name = "price", nullable = false)
+    private int price;
 
     @ManyToOne
-    @JoinColumn(name = "position_id")
-    private Position position;
-
-    @Column(name = "fastlap", nullable = false, length = 1)
-    private int fastlap;
-
-    @Column(name = "pole", nullable =  false, length = 1)
-    private int pole;
-
-    @ManyToOne
-    @JoinColumn(name = "season_id")
+    @JoinColumn(name = "season_id", referencedColumnName = "id")
     private Season season;
 }

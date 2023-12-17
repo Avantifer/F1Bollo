@@ -1,6 +1,6 @@
-<div class="bg-secondary-subtle py-5 px-3">
-  <form [formGroup]="raceForm" class="bg-white">
-    <div class="modifyResults-topSide d-flex align-items-center py-4 px-5">
+<div class="fantasySelection bg-secondary-subtle py-5 px-3">
+  <form [formGroup]="raceForm" class="bg-white rounded-2">
+    <div class="fantasySelection-top d-flex align-items-center py-4 px-5">
       <mat-form-field *ngIf="raceSelected">
         <mat-select formControlName="race" [(value)]="raceSelected">
           <mat-option *ngFor="let race of races" [value]="race">
@@ -8,6 +8,128 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      </div>
+    </div>
   </form>
+  <div class="fantasySelection-mid py-5 px-3 row gap-2 justify-content-between flex-column flex-xxl-row">
+    <form [formGroup]="fantasyForm" class="fantasySelection-mid-form bg-white py-4 px-5 rounded-2" [ngClass]="raceSelected?.finished ? 'col-12' : 'col-12 col-xxl-6'">
+      <div class="fantasySelection-mid-form-drivers row col-12 justify-content-between">
+        <div class="fantasySelection-mid-form-drivers-container mb-3 p-0">
+          <input readonly role="button" formControlName="driver1" class="driver1 selected">
+        </div>
+        <div class="fantasySelection-mid-form-drivers-container mb-3 p-0 col-4">
+          <input readonly role="button" formControlName="driver2" class="driver2">
+        </div>
+        <div class="fantasySelection-mid-form-drivers-container mb-3 p-0 col-4">
+          <input readonly role="button" formControlName="driver3" class="driver3">
+        </div>
+      </div>
+      <div class="fantasySelection-mid-form-teams mt-5 row col-12 justify-content-between">
+        <div class="fantasySelection-mid-form-teams-container p-0 col-6">
+          <input readonly role="button" formControlName="team1" class="team1">
+        </div>
+        <div class="fantasySelection-mid-form-teams-container p-0 col-6">
+          <input readonly role="button" formControlName="team2" class="team2">
+        </div>
+      </div>
+    </form>
+
+    <div class="fantasySelection-mid-table bg-white col-12 col-xxl-5 rounded-2 mt-4 mt-xxl-0" *ngIf="!raceSelected?.finished">
+      <div class="fantasySelection-mid-table-top row mb-2">
+        <div class="fantasySelection-mid-table-top-option col-6 selected d-flex justify-content-center my-2" role="button" (click)="changeOptionSelected($event.target)">
+          <span>Pilotos</span>
+        </div>
+        <div class="fantasySelection-mid-table-top-option col-6 d-flex justify-content-center my-2" role="button" (click)="changeOptionSelected($event.target)">
+          <span>Equipos</span>
+        </div>
+      </div>
+      <div class="fantasySelection-mid-table-finder">
+        <form [formGroup]="driverFinderForm" *ngIf="optionSelected === 'Pilotos'">
+          <input
+            formControlName="finder"
+            mat-input
+            type="text"
+            placeholder="Busca a un piloto..."
+            class="w-100 mb-2 rounded-2"
+            spellcheck="false">
+        </form>
+        <form [formGroup]="teamFinderForm" *ngIf="optionSelected === 'Equipos'">
+          <input
+            formControlName="finder"
+            mat-input
+            type="text"
+            placeholder="Busca a un equipo..."
+            class="w-100 mb-2 rounded-2"
+            spellcheck="false">
+        </form>
+      </div>
+      <div class="fantasySelection-mid-table-order d-flex justify-content-evenly align-items-center mb-2 rounded-2 py-2">
+        <p class="m-0 text-uppercase fw-bold">Ordenar por: </p>
+        <div class="fantasySelection-mid-table-order-item d-flex align-items-center" role="button" *ngFor="let order of orders" (click)="changeOrder(order)">
+          <p class="m-0">{{ order.name }}</p>
+          <mat-icon fontIcon="expand_less" *ngIf="order.value === 'ASC'"></mat-icon>
+          <mat-icon fontIcon="expand_more" class="ms-0" *ngIf="order.value === 'DESC'"></mat-icon>
+        </div>
+      </div>
+      <div class="fantasySelection-mid-table-bottom rounded-2" *ngIf="optionSelected === 'Pilotos'">
+        <div class="fantasySelection-mid-table-bottom-drivers d-flex mb-2 me-1 rounded-2 overflow-hidden" *ngFor="let driver of driversList">
+          <img
+            [src]="'data:image/jpg;base64,' + driver.driver.driverImage"
+            [alt]="'Imagen de ' + driver.driver.name"
+            class="fantasySelection-mid-table-bottom-drivers-image"
+            [class]="'fantasySelection-mid-table-bottom-drivers-image-' + driver.driver.team.name">
+          <div class="fantasySelection-mid-table-bottom-drivers-info d-flex py-2">
+            <div class="fantasySelection-mid-table-bottom-drivers-info-driver d-flex flex-column justify-content-between">
+              <div class="fantasySelection-mid-table-bottom-drivers-info-driver-visual d-flex align-items-baseline">
+                <div
+                  class="fantasySelection-mid-table-bottom-drivers-info-driver-visual-team d-flex justify-content-center align-items-center"
+                  [class]="'fantasySelection-mid-table-bottom-drivers-info-driver-visual-team-' + driver.driver.team.name">
+                  <img [src]="'data:image/jpg;base64,' + driver.driver.team.teamImage" [alt]="'Imagen del equipo ' + driver.driver.team.name">
+                </div>
+                <span class="ms-2">{{ driver.driver.name }}</span>
+              </div>
+              <div class="fantasySelection-mid-table-bottom-drivers-info-driver-price d-flex ms-1">
+                <div class="fantasySelection-mid-table-bottom-drivers-info-driver-price-info d-flex">
+                  <div>
+                    <mat-icon fontIcon="attach_money"></mat-icon>
+                  </div>
+                  <span class="me-1">{{ driver.price | pricePipe }}</span>
+                  <span *ngIf="driver.differencePrice! > 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-goodDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_less"></mat-icon>
+                    {{ driver.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                  <span *ngIf="driver.differencePrice! === 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-equalDifference d-flex align-items-center ms-1 mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path d="M48 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48zm0 192c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48z"/>
+                    </svg>
+                    {{ driver.differencePrice! }}%
+                  </span>
+                  <span *ngIf="driver.differencePrice! < 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-badDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_more"></mat-icon>
+                    {{ driver.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="fantasySelection-mid-table-bottom-drivers-info-points row align-items-center mt-1">
+              <span class="col-5">Total {{ driver.totalPoints }}</span>
+              <span class="col-6">Media {{ driver.averagePoints }}</span>
+            </div>
+          </div>
+          <div class="fantasySelection-mid-table-bottom-drivers-button d-flex flex-column justify-content-between ms-auto">
+            <button class="h-100 ms-auto d-flex align-items-center justify-content-center rounded-1">
+              <mat-icon fontIcon="add"></mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fantasySelection-mid-table-bottom row" *ngIf="optionSelected === 'Equipos'">
+        <div class="fantasySelection-mid-table-bottom-teams" *ngFor="let team of teamsList">
+          <span>{{ team.team.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fantasySelection-bottom d-flex justify-content-center">
+    <button mat-button class="fantasySelection-bottom-button py-2 px-5 shadow">Guardar</button>
+  </div>
 </div>

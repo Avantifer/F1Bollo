@@ -11,6 +11,7 @@ import { DriverApiService } from 'src/shared/services/api/driver-api.service';
 import { MessageService } from 'src/shared/services/message.service';
 import { RaceApiService } from 'src/shared/services/api/race-api.service';
 import { ResultApiService } from 'src/shared/services/api/result-api.service';
+import { FantasyApiService } from 'src/shared/services/api/fantasy-api.service';
 
 @Component({
   selector: 'app-modify-results',
@@ -23,6 +24,7 @@ export class AdminResultsComponent {
   drivers: Driver[] = [];
   circuits: Circuit[] = [];
   results: Result[] = [];
+  positions: number[] = Array.from(Array(20).keys());
 
   circuitsForm: FormGroup = new FormGroup({
     circuit: new FormControl(''),
@@ -46,6 +48,7 @@ export class AdminResultsComponent {
   raceDate: Date = new Date();
 
   private _unsubscribe: Subject<void> = new Subject<void>();
+  loading: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private resultApiService: ResultApiService,
@@ -53,6 +56,7 @@ export class AdminResultsComponent {
     private driverApiService: DriverApiService,
     private raceApiService: RaceApiService,
     private messageService: MessageService,
+    private fantasyApiService: FantasyApiService,
   ) {}
 
   ngOnInit(): void {
@@ -117,10 +121,6 @@ export class AdminResultsComponent {
         }
       });
   }
-
-  /**
-   * Fetches all seasons from the season API service and updates the seasons property.
-  */
 
   /**
    * Subscribe to changes in the circuitsForm and perform actions based on the selected circuit.
@@ -288,7 +288,8 @@ export class AdminResultsComponent {
 
     // Check if a race is available
     if (!race) return;
-
+    // Set finished race
+    race.finished = 1;
     this.raceApiService.saveRace(race)
       .pipe(
         takeUntil(this._unsubscribe)
@@ -326,10 +327,19 @@ export class AdminResultsComponent {
    * Save results by either updating existing results or creating new results.
   */
   saveResults(): void {
+    this.loading.next(true);
+
     if (this.results.length > 0) {
       this.updateResult();
+      this.loading.next(false);
     }else {
       this.createResult();
+      this.getRacePerCircuit(this.circuitSelected!.id);
+
+      setTimeout(() => {
+        this.saveAllFantasy(this.raceSelected!.id);
+        this.loading.next(false);
+      }, 1500);
     }
   }
 
@@ -512,5 +522,48 @@ export class AdminResultsComponent {
   */
   onMatSelectDelete(index: number): void {
     this.resultsForm.get('result' + index)?.setValue(null);
+  }
+
+  /**
+   * Save points and prices of drivers and teams.
+   *
+   * @param raceId - The number of the race.
+  */
+  saveAllFantasy(raceId: number): void {
+    this.fantasyApiService.saveAllPoints(raceId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (success: string) => {
+          this.messageService.showInformation(success);
+        },
+        error:(error) => {
+          this.messageService.showInformation(error.error);
+        },
+        complete: () => {
+          this.saveFantasyPrices(raceId);
+        }
+      });
+  }
+
+  /**
+   * Save prices of drivers and teams.
+   *
+   * @param raceId - The number of the race.
+  */
+  saveFantasyPrices(raceId: number): void {
+    this.fantasyApiService.saveAllPrices(raceId)
+    .pipe(
+      takeUntil(this._unsubscribe)
+    )
+    .subscribe({
+      next: (success: string) => {
+        this.messageService.showInformation(success);
+      },
+      error:(error) => {
+        this.messageService.showInformation(error.error);
+      }
+    });
   }
 }

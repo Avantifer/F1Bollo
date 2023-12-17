@@ -36,8 +36,12 @@ public class FantasyElection {
     private Driver driverThree;
 
     @ManyToOne
-    @JoinColumn(name = "team_id", referencedColumnName = "id")
-    private Team team;
+    @JoinColumn(name = "team_one_id", referencedColumnName = "id")
+    private Team teamOne;
+
+    @ManyToOne
+    @JoinColumn(name = "team_two_id", referencedColumnName = "id")
+    private Team teamTwo;
 
     @ManyToOne
     @JoinColumn(name = "race_id", referencedColumnName = "id")

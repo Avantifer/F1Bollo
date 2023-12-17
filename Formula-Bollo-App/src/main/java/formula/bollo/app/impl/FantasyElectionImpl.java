@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.FantasyElection;
 import formula.bollo.app.mapper.DriverMapper;
@@ -14,6 +15,7 @@ import formula.bollo.app.mapper.TeamMapper;
 import formula.bollo.app.mapper.UserMapper;
 import formula.bollo.app.model.FantasyElectionDTO;
 
+@Component
 public class FantasyElectionImpl implements FantasyElectionMapper {
 
     private DriverMapper driverMapper;
@@ -37,7 +39,7 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
     }
 
     /**
-     * Converts a FantasyElectoinDTO object to a FantasyElection object.
+     * Converts a FantasyElectionDTO object to a FantasyElection object.
      *
      * @param fantasyElectionDTO The FantasyElectionDTO object to be converted.
      * @return          A FantasyElection object with properties copied from the FantasyElectionDTO.
@@ -53,10 +55,13 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
         fantasyElection.setDriverTwo(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverTwo()));
         fantasyElection.setDriverThree(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverThree()));
         
-        // Race, season and team mapping
+        // Teams mapping
+        fantasyElection.setTeamOne(teamMapper.teamDTOToTeam(fantasyElectionDTO.getTeamOne()));
+        fantasyElection.setTeamTwo(teamMapper.teamDTOToTeam(fantasyElectionDTO.getTeamTwo()));
+
+        // Race and season mapping
         fantasyElection.setRace(raceMapper.raceDTOToRace(fantasyElectionDTO.getRace()));
         fantasyElection.setSeason(seasonMapper.seasonDTOToSeason(fantasyElectionDTO.getSeason()));
-        fantasyElection.setTeam(teamMapper.teamDTOToTeam(fantasyElectionDTO.getTeam()));
 
         return fantasyElection;
     }
@@ -73,15 +78,18 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
         BeanUtils.copyProperties(fantasyElection, fantasyElectionDTO);
         fantasyElectionDTO.setUser(userMapper.userToUserDTO(fantasyElection.getUser()));
 
-        // Drivers Mapping
+        // Drivers mapping
         fantasyElectionDTO.setDriverOne(driverMapper.driverToDriverDTO(fantasyElection.getDriverOne()));
         fantasyElectionDTO.setDriverTwo(driverMapper.driverToDriverDTO(fantasyElection.getDriverTwo()));
         fantasyElectionDTO.setDriverThree(driverMapper.driverToDriverDTO(fantasyElection.getDriverThree()));
 
-        // Race, season and team mapping
+        // Teams mapping
+        fantasyElectionDTO.setTeamOne(teamMapper.teamToTeamDTO(fantasyElection.getTeamOne()));
+        fantasyElectionDTO.setTeamTwo(teamMapper.teamToTeamDTO(fantasyElection.getTeamTwo()));
+
+        // Race and season mapping
         fantasyElectionDTO.setRace(raceMapper.raceToRaceDTO(fantasyElection.getRace()));
         fantasyElectionDTO.setSeason(seasonMapper.seasonToSeasonDTO(fantasyElection.getSeason()));
-        fantasyElectionDTO.setTeam(teamMapper.teamToTeamDTO(fantasyElection.getTeam()));
 
         return fantasyElectionDTO;
     }

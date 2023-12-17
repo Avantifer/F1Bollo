@@ -34,13 +34,9 @@ import org.springframework.http.ResponseEntity;
 public class UserController {
     
     private UserRepository userRepository;
-
     private UserMapper userMapper;
-
     private JwtConfig jwtConfig;
-
     private UserService userService;
-
     private EmailService emailService;
 
     public UserController(

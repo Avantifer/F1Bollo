@@ -91,7 +91,7 @@
 
   <form [formGroup]="resultsForm" *ngIf="circuitSelected && results.length == 0" class="resultsForm m-auto">
     <div class="modifyResults-bottomSide row">
-      <div class="modifyResults-bottomSide-resultsGood col-6 d-flex flex-column align-items-center" *ngFor="let driver of drivers.slice(1); let i = index">
+      <div class="modifyResults-bottomSide-resultsGood col-6 d-flex flex-column align-items-center" *ngFor="let position of positions; let i = index">
         <p>Posición {{ i + 1 }}</p>
         <mat-form-field>
           <mat-select [formControlName]="'result' + i" (keydown.delete)="onMatSelectDelete(i)">
@@ -108,3 +108,14 @@
     <button mat-button class="mx-auto my-5 modifyResults-button p-2 shadow" *ngIf="saveButtonActivated" (click)="saveAllForms()">Guardar</button>
   </div>
 </div>
+
+<div *ngIf="loading | async" class="overlay">
+  <mat-progress-spinner
+    class="spinner"
+    color="primary"
+    mode="indeterminate"
+    value="50"
+  >
+  </mat-progress-spinner>
+</div>
+

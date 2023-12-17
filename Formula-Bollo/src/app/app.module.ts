@@ -24,10 +24,10 @@ import { HomeComponent } from './components/home/home.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { DriversComponent } from './components/drivers/drivers.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { AdminResultsComponent } from './components/admin/results/admin-results.component';
+import { AdminResultsComponent } from './components/admin/admin-results/admin-results.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoaderComponent } from 'src/shared/components/loader/loader.component';
-import { AdminPenaltiesComponent } from './components/admin/penalties/admin-penalties.component';
+import { AdminPenaltiesComponent } from './components/admin/admin-penalties/admin-penalties.component';
 import { StatuteComponent } from './components/statute/statute.component';
 import { ResultsComponent } from './components/results/results.component';
 import { AdminStatuteComponent } from './components/admin/admin-statute/admin-statute.component';
@@ -50,6 +50,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { LoaderService } from './../shared/services/loader.service';
 import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
 import { FantasyDialogMailComponent } from './components/fantasy/fantasy-dialog-mail/fantasy-dialog-mail.component';
+import { PricePipe } from 'src/shared/pipes/price.pipe';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { FantasyDialogMailComponent } from './components/fantasy/fantasy-dialog-
     FantasyTeamComponent,
     FantasyClasificationComponent,
     FantasyRecoverPasswordComponent,
-    FantasyDialogMailComponent
+    FantasyDialogMailComponent,
+    PricePipe
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,320 @@
-::ng-deep .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
-  height: 0 !important;
-}
+@import "../../../../assets/scss/styles.scss";
 
-form {
-  box-shadow: 0px 0px 5px 0px darkgray;
+.fantasySelection {
+  min-height: calc(100vh - 75px) !important;
+
+  &-top {
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+      height: 0 !important;
+    }
+
+    form {
+      box-shadow: 0px 0px 5px 0px darkgray;
+    }
+  }
+
+  &-mid {
+
+    &-form {
+      min-width: 52vw;
+
+      &-drivers {
+        &-container {
+          height: 8rem;
+          width: 7rem;
+        }
+      }
+
+      &-teams {
+        &-container {
+          width: 40%;
+          height: 5rem;
+
+        }
+      }
+
+      &-drivers, &-teams {
+        &-container {
+          border: 1px solid black;
+          background: transparent;
+        }
+
+        input {
+          width: 100%;
+          height: 100%;
+          border: none;
+
+          &.selected {
+            background: darkgray;
+          }
+        }
+      }
+    }
+
+    &-table {
+      box-shadow: 0px 0px 5px 0px darkgray;
+      height: 32rem;
+
+      &-top {
+        height: 3rem;
+
+        &-option {
+          color: #7b7b8c;
+
+          &:first-child {
+            border-right: 3px solid #7b7b8c;
+          }
+
+          span {
+            font-family: 'F1-Fantasy-Bold', 'F1-Regular', sans-serif;
+            user-select: none;
+          }
+
+          &.selected {
+            position: relative;
+            color: black;
+
+            &::after {
+              content: "";
+              position: absolute;
+              height: 4px;
+              width: 80px;
+              bottom: 0px;
+              background-color: $red;
+            }
+          }
+        }
+      }
+
+      &-finder {
+        form {
+          box-shadow: none;
+        }
+
+        input {
+          border: none !important;
+          background-color: rgb(224, 224, 224) !important;
+          padding: 0.5rem;
+          outline: none !important;
+          font-family: 'F1-Fantasy-Regular', 'Formula1-Regular', sans-serif;
+        }
+      }
+
+      &-order {
+        color: rgb(232, 232, 232);
+        background-color: rgb(113, 113, 113);
+
+        p {
+          font-family: 'F1-Fantasy-Bold', 'Formula1-Regular', sans-serif;
+          font-size: 0.8rem;
+        }
+
+        &-item {
+          p {
+            font-family: 'F1-Fantasy-Regular', 'Formula1-Regular', sans-serif;
+            font-size: 0.9rem;
+          }
+        }
+      }
+
+      &-bottom {
+        height: 22rem;
+        overflow-x: auto;
+
+        &-drivers {
+          &-image {
+            height: 80px;
+            background-color: rgba(16, 16, 30, 0.69)
+          }
+
+          &-name {
+            font-size: 1.25rem;
+          }
+
+          &-info {
+            flex: 1 1;
+            background-color: rgb(242, 242, 242);
+            font-family: 'Formula1-Regular', 'F1-Fantasy-Regular', sans-serif;
+            font-weight: bold;
+
+            &-driver {
+              width: 50%;
+
+              &-visual {
+                margin-left: 0.7rem;
+
+                &-team {
+                  width: 60px;
+                  height: 20px;
+
+                  &-Red {
+                    img {
+                      background-color: $colorRedBull;
+                    }
+                  }
+
+                  &-AlphaTauri {
+                    img {
+                      background-color: $colorAlphaTauri;
+                    }
+                  }
+
+                  &-Ferrari {
+                    img {
+                      background-color: $colorFerrari;
+                    }
+                  }
+
+                  &-Mercedes {
+                    img {
+                      background-color: $colorMercedes;
+                    }
+                  }
+
+                  &-Aston {
+                    img {
+                      background-color: $colorAston;
+                    }
+                  }
+
+                  &-Williams {
+                    img {
+                      background-color: $colorWilliams;
+                    }
+                  }
+
+                  &-Haas {
+                    img {
+                      background-color: $colorHaas;
+                    }
+                  }
+
+                  &-McLaren {
+                    img {
+                      background-color: $colorMcLaren;
+                    }
+                  }
+
+                  &-Alfa {
+                    img {
+                      background-color: $colorAlfa;
+                    }
+                  }
+
+                  &-Alpine {
+                    img {
+                      background-color: $colorAlpine;
+                    }
+                  }
+
+                  img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                    object-position: center center;
+                  }
+                }
+
+                span {
+                  font-size: 1.25rem;
+                }
+              }
+
+              &-price {
+
+                &-info {
+                  width: 100%;
+                }
+
+                mat-icon {
+                  font-size: 1.4rem;
+                  width: 18px !important;
+                  margin-right: 2px;
+                  color: rgb(49, 215, 0);
+                }
+
+                &-goodDifference {
+                  color: green;
+
+                  mat-icon {
+                    height: 1.4rem;
+                    color: green !important;
+                  }
+                }
+
+                &-badDifference {
+                  color: red;
+
+                  mat-icon {
+                    height: 1.4rem;
+                    color: red !important;
+                  }
+                }
+
+                &-equalDifference {
+                  color: orange;
+
+                  svg {
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 2px;
+                    fill: orange;
+                  }
+                }
+              }
+            }
+
+            &-points {
+              flex: 1;
+              font-size: 1.1rem;
+              color: rgb(87, 87, 87);
+            }
+          }
+
+          &-button {
+            width: 14%;
+            background-color: rgb(242, 242, 242);
+
+            button {
+              background: rgb(53, 53, 53);
+              width: 100%;
+              border: none;
+              border-top-left-radius: 0px !important;
+              border-bottom-left-radius: 0px !important;
+
+              mat-icon {
+                color: white;
+                font-size: 2rem;
+                height: 2rem !important;
+                width: 2rem !important;
+              }
+
+              &:hover {
+                background-color: rgb(44, 44, 44);
+                transform: scale(1.1);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-bottom {
+    &-button {
+      border: none;
+      background: rgba($fantasyblue, 0.9);
+      font-size: 1.25rem;
+      border-radius: 0.5rem;
+      padding: 0rem 2rem;
+      color: white;
+      text-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
+      font-family: 'F1-REGULAR';
+
+      &:hover {
+        background: $fantasyblue;
+        transform: translate(-1px, -1px);
+      }
+    }
+  }
 }
