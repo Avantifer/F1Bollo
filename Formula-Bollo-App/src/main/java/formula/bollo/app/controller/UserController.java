@@ -27,7 +27,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
+@CrossOrigin(origins = "http://192.168.1.135:4200")
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_USER}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_USER, description = Constants.TAG_USER_SUMMARY)

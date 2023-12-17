@@ -25,7 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 
-@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
+@CrossOrigin(origins = "http://192.168.1.135:4200")
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_ARCHIVES}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_ARCHIVE, description = Constants.TAG_ARCHIVE_SUMMARY)

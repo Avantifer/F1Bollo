@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
+@CrossOrigin(origins = "http://192.168.1.135:4200")
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_PENALTY}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_PENALTY, description = Constants.TAG_PENALTY_SUMMARY)

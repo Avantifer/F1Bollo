@@ -318,3 +318,68 @@
     }
   }
 }
+
+
+
+@include media-breakpoint-down(sm) {
+
+  .fantasySelection-mid-table{
+    &-order {
+
+      &-item {
+        p {
+          font-size: 0.7rem !important
+        }
+
+        mat-icon {
+          height: auto !important;
+          width: 15px !important;
+          font-size: 1.1rem !important;
+        }
+      }
+    }
+
+    &-bottom-drivers-info {
+
+      span {
+        font-size: 0.7rem !important;
+      }
+
+      &-driver {
+        width: 60% !important;
+
+
+        &-visual {
+          margin-left: 0rem !important;
+
+          span {
+            margin-left: 0.2rem !important;
+          }
+
+        }
+
+        span {
+          font-size: 0.7rem !important;
+        }
+
+        mat-icon {
+          font-size: 0.9rem !important;
+        }
+
+
+        &-price {
+          margin-bottom: 0.5rem !important;
+
+          mat-icon {
+            width: 11px !important;
+            height: 1rem !important;
+          }
+
+          span:last-child {
+            font-size: 0.5rem !important;
+          }
+        }
+      }
+    }
+  }
+}

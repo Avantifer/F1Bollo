@@ -39,7 +39,7 @@ import formula.bollo.app.services.FantasyService;
 import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
 
-@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
+@CrossOrigin(origins = "http://192.168.1.135:4200")
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_FANTASY}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_FANTASY, description = Constants.TAG_FANTASY_SUMMARY)

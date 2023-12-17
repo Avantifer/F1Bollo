@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.MediaType;
 
-@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
+@CrossOrigin(origins = "http://192.168.1.135:4200")
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_CONFIGURATION}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_CONFIGURATION, description = Constants.TAG_CONFIGURATION_SUMMARY)
