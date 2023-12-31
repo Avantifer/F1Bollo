@@ -12,4 +12,7 @@ import formula.bollo.app.entity.FantasyPriceTeam;
 public interface FantasyPriceTeamRepository  extends JpaRepository<FantasyPriceTeam, Long> {
     @Query("SELECT fp FROM FantasyPriceTeam fp WHERE fp.race.id = ?1")
     List<FantasyPriceTeam> findByRaceId(Long raceId);
+
+    @Query("SELECT fp FROM FantasyPriceTeam fp WHERE fp.team.id = ?1 ORDER BY fp.race.id DESC LIMIT 2")
+    List<FantasyPriceTeam> findTwoLastPrices(Long teamId);
 }

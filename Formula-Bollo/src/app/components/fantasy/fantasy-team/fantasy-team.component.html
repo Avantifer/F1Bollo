@@ -97,7 +97,7 @@
                     <mat-icon fontIcon="expand_less"></mat-icon>
                     {{ driver.differencePrice! | number:'0.0-2'}}%
                   </span>
-                  <span *ngIf="driver.differencePrice! === 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-equalDifference d-flex align-items-center ms-1 mb-1">
+                  <span *ngIf="driver.differencePrice! === 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-equalDifference d-flex align-items-center ms-1 mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                       <path d="M48 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48zm0 192c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48z"/>
                     </svg>
@@ -122,13 +122,53 @@
           </div>
         </div>
       </div>
-      <div class="fantasySelection-mid-table-bottom row" *ngIf="optionSelected === 'Equipos'">
-        <div class="fantasySelection-mid-table-bottom-teams" *ngFor="let team of teamsList">
-          <span>{{ team.team.name }}</span>
+      <div class="fantasySelection-mid-table-bottom rounded-2" *ngIf="optionSelected === 'Equipos'">
+        <div class="fantasySelection-mid-table-bottom-teams d-flex mb-2 me-1 rounded-2 overflow-hidden " *ngFor="let team of teamsList">
+          <div class="fantasySelection-mid-table-bottom-teams-image position-relative" [class]="'fantasySelection-mid-table-bottom-teams-image-' + team.team.name">
+            <img [src]="team.team.carImage" [alt]="'Imagen coche de ' + team.team.name" class="fantasySelection-mid-table-bottom-teams-image-car position-absolute h-100">
+            <img [src]="'data:image/jpg;base64,' + team.team.logoImage" [alt]="'Imagen logo de ' + team.team.name" class="fantasySelection-mid-table-bottom-teams-image-logo position-absolute">
+          </div>
+          <div class="fantasySelection-mid-table-bottom-teams-info d-flex py-2">
+            <div class="fantasySelection-mid-table-bottom-teams-info-team d-flex flex-column justify-content-between">
+              <div class="fantasySelection-mid-table-bottom-teams-info-team-visual d-flex align-items-baseline">
+                <span class="ms-2">{{ team.team.name }}</span>
+              </div>
+              <div class="fantasySelection-mid-table-bottom-teams-info-team-price d-flex ms-1">
+                <div class="fantasySelection-mid-table-bottom-teams-info-team-price-info d-flex">
+                  <div>
+                    <mat-icon fontIcon="attach_money"></mat-icon>
+                  </div>
+                  <span class="me-1">{{ team.price | pricePipe }}</span>
+                  <span *ngIf="team.differencePrice! > 0" class="fantasySelection-mid-table-bottom-teams-info-team-price-goodDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_less"></mat-icon>
+                    {{ team.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                  <span *ngIf="team.differencePrice! === 0" class="fantasySelection-mid-table-bottom-teams-info-team-price-equalDifference d-flex align-items-center ms-1 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path d="M48 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48zm0 192c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48z"/>
+                    </svg>
+                    {{ team.differencePrice! }}%
+                  </span>
+                  <span *ngIf="team.differencePrice! < 0" class="fantasySelection-mid-table-bottom-teams-info-team-price-badDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_more"></mat-icon>
+                    {{ team.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="fantasySelection-mid-table-bottom-teams-info-points row align-items-center ms-0 ms-sm-5 ms-md-0 mt-1">
+              <span class="col-12 col-md-5">Total {{ team.totalPoints }}</span>
+              <span class="col-12 col-md-6">Media {{ team.averagePoints }}</span>
+            </div>
+          </div>
+          <div class="fantasySelection-mid-table-bottom-teams-button d-flex flex-column justify-content-between ms-auto">
+            <button class="h-100 ms-auto d-flex align-items-center justify-content-center rounded-1">
+              <mat-icon fontIcon="add"></mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   <div class="fantasySelection-bottom d-flex justify-content-center">
     <button mat-button class="fantasySelection-bottom-button py-2 px-5 shadow">Guardar</button>
   </div>

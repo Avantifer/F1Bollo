@@ -24,7 +24,7 @@ import formula.bollo.app.utils.Log;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@CrossOrigin(origins = "http://192.168.1.135:4200")
+@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_TEAMS}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_TEAM, description = Constants.TAG_TEAM_SUMMARY)

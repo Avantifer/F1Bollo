@@ -8,6 +8,9 @@ export class FantasyPriceTeam {
   race: Race;
   price: number;
   season: Season;
+  totalPoints: number = 0;
+  averagePoints: number = 0;
+  differencePrice?: number;
 
   constructor(id: number, team: Team, race: Race, price: number, season: Season) {
     this.id = id;

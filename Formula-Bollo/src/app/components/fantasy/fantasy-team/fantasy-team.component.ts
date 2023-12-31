@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { FantasyDriverInfo } from 'src/shared/models/fantasyDriverInfo';
+import { FantasyInfo } from 'src/shared/models/fantasyInfo';
 import { FantasyPriceDriver } from 'src/shared/models/fantasyPriceDriver';
 import { FantasyPriceTeam } from 'src/shared/models/fantasyPriceTeam';
 import { OrderBy } from 'src/shared/models/orderBy';
@@ -133,11 +133,31 @@ export class FantasyTeamComponent {
         takeUntil(this._unsubscribe)
       )
       .subscribe({
-        next: (fantasyDriverInfo: FantasyDriverInfo) => {
+        next: (fantasyDriverInfo: FantasyInfo) => {
           let driver: FantasyPriceDriver = this.drivers[index];
           driver.totalPoints = fantasyDriverInfo.totalPoints;
           driver.averagePoints = this.races.length - 1 >= 1 ? fantasyDriverInfo.totalPoints / (this.races.length - 1) : 0;
           driver.differencePrice = fantasyDriverInfo.differencePrice;
+        },
+        error: (error) => {
+          console.log(error);
+          this.messageService.showInformation('No se obtuvieron los pilotos correctamente');
+          throw error;
+        },
+      })
+  }
+
+  getInfoTeam(team: FantasyPriceTeam, index: number) {
+    this.fantasyApiService.getInfoByTeam(team.team.id)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (fantasyDriverInfo: FantasyInfo) => {
+          let team: FantasyPriceTeam = this.teams[index];
+          team.totalPoints = fantasyDriverInfo.totalPoints;
+          team.averagePoints = this.races.length - 1 >= 1 ? fantasyDriverInfo.totalPoints / (this.races.length - 1) : 0;
+          team.differencePrice = fantasyDriverInfo.differencePrice;
         },
         error: (error) => {
           console.log(error);
@@ -161,6 +181,11 @@ export class FantasyTeamComponent {
           console.log(error);
           this.messageService.showInformation('No se obtuvieron los equipos correctamente');
           throw error;
+        },
+        complete: () => {
+          this.teams.forEach((team: FantasyPriceTeam, index: number) => {
+            this.getInfoTeam(team, index);
+          });
         }
       });
   }
@@ -261,17 +286,17 @@ export class FantasyTeamComponent {
     });
 
     if (order.name === 'Nombre') {
-      this.orderByDriverName(order.value);
+      this.orderByName(order.value);
     } else if (order.name === 'Precio') {
-      this.orderByDriverPrice(order.value);
+      this.orderByPrice(order.value);
     } else if (order.name === 'Puntos totales') {
-      this.orderByDriverTotalPoints(order.value);
+      this.orderByTotalPoints(order.value);
     } else if (order.name === 'Media de puntos') {
-      this.orderByDriverAveragePoints(order.value);
+      this.orderByAveragePoints(order.value);
     }
   }
 
-  private orderByDriverName(orderDirection: string): void {
+  private orderByName(orderDirection: string): void {
     if (this.optionSelected === 'Pilotos') {
       this.driversList.sort((a: FantasyPriceDriver, b: FantasyPriceDriver) => orderDirection === 'ASC' ? a.driver.name.localeCompare(b.driver.name) : b.driver.name.localeCompare(a.driver.name));
     } else {
@@ -279,15 +304,27 @@ export class FantasyTeamComponent {
     }
   }
 
-  private orderByDriverPrice(orderDirection: string): void {
-    this.driversList.sort((a: FantasyPriceDriver, b: FantasyPriceDriver) => orderDirection === 'ASC' ? a.price - b.price : b.price - a.price);
+  private orderByPrice(orderDirection: string): void {
+    if (this.optionSelected === 'Pilotos') {
+      this.driversList.sort((a: FantasyPriceDriver, b: FantasyPriceDriver) => orderDirection === 'ASC' ? a.price - b.price : b.price - a.price);
+    } else {
+      this.teamsList.sort((a: FantasyPriceTeam, b: FantasyPriceTeam) => orderDirection === 'ASC' ? a.price - b.price : b.price - a.price);
+    }
   }
 
-  private orderByDriverTotalPoints(orderDirection: string): void {
-    this.driversList.sort((a: FantasyPriceDriver, b: FantasyPriceDriver) => orderDirection === 'ASC' ? a.totalPoints - b.totalPoints : b.totalPoints - a.totalPoints);
+  private orderByTotalPoints(orderDirection: string): void {
+    if (this.optionSelected === 'Pilotos') {
+      this.driversList.sort((a: FantasyPriceDriver, b: FantasyPriceDriver) => orderDirection === 'ASC' ? a.totalPoints - b.totalPoints : b.totalPoints - a.totalPoints);
+    } else {
+      this.teamsList.sort((a: FantasyPriceTeam, b: FantasyPriceTeam) => orderDirection === 'ASC' ? a.totalPoints - b.totalPoints : b.totalPoints - a.totalPoints);
+    }
   }
 
-  private orderByDriverAveragePoints(orderDirection: string): void {
-    this.driversList.sort((a: FantasyPriceDriver, b: FantasyPriceDriver) => orderDirection === 'ASC' ? a.averagePoints - b.averagePoints : b.averagePoints - a.averagePoints);
+  private orderByAveragePoints(orderDirection: string): void {
+    if (this.optionSelected === 'Pilotos') {
+      this.driversList.sort((a: FantasyPriceDriver, b: FantasyPriceDriver) => orderDirection === 'ASC' ? a.averagePoints - b.averagePoints : b.averagePoints - a.averagePoints);
+    } else {
+      this.teamsList.sort((a: FantasyPriceTeam, b: FantasyPriceTeam) => orderDirection === 'ASC' ? a.averagePoints - b.averagePoints : b.averagePoints - a.averagePoints);
+    }
   }
 }

@@ -1,4 +1,4 @@
-export class FantasyDriverInfo {
+export class FantasyInfo {
   totalPoints: number;
   differencePrice: number = 0;
 

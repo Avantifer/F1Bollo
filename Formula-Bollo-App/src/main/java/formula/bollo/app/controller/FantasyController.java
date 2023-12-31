@@ -24,7 +24,7 @@ import formula.bollo.app.entity.Race;
 import formula.bollo.app.entity.Result;
 import formula.bollo.app.mapper.FantasyPointsMapper;
 import formula.bollo.app.mapper.FantasyPriceMapper;
-import formula.bollo.app.model.FantasyDriverInfoDTO;
+import formula.bollo.app.model.FantasyInfoDTO;
 import formula.bollo.app.model.FantasyPointsDriverDTO;
 import formula.bollo.app.model.FantasyPointsTeamDTO;
 import formula.bollo.app.model.FantasyPriceDriverDTO;
@@ -39,7 +39,7 @@ import formula.bollo.app.services.FantasyService;
 import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
 
-@CrossOrigin(origins = "http://192.168.1.135:4200")
+@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_FANTASY}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_FANTASY, description = Constants.TAG_FANTASY_SUMMARY)
@@ -187,13 +187,13 @@ public class FantasyController {
         return fantasyPriceTeamDTOs;
     }
 
-    @Operation(summary = "Get a driver points", tags = Constants.TAG_FANTASY)
-    @GetMapping("/getInfobyDriver")
-    public FantasyDriverInfoDTO getInfobyDriver(@RequestParam int driverId) {
-        Log.info("START - getInfobyDriver - START");
-        Log.info("RequestParam getInfobyDriver (driverId) -> " + driverId);
+    @Operation(summary = "Get a driver info", tags = Constants.TAG_FANTASY)
+    @GetMapping("/getInfoByDriver")
+    public FantasyInfoDTO getInfoByDriver(@RequestParam int driverId) {
+        Log.info("START - getInfoByDriver - START");
+        Log.info("RequestParam getInfoByDriver (driverId) -> " + driverId);
         
-        FantasyDriverInfoDTO driverInfoDTO = new FantasyDriverInfoDTO();
+        FantasyInfoDTO fantasyInfoDTO = new FantasyInfoDTO();
 
         int totalPoints = 0;
         List<FantasyPointsDriver> fantasyPointsDriver = this.fantasyPointsDriverRepository.findByDriverId((long) driverId);
@@ -203,20 +203,49 @@ public class FantasyController {
                 totalPoints += driver.getPoints();
             }
         }
-        driverInfoDTO.setTotalPoints(totalPoints);
+        fantasyInfoDTO.setTotalPoints(totalPoints);
 
         List<FantasyPriceDriver> fantasyPriceDriver = this.fantasyPriceDriverRepository.findTwoLastPrices((long) driverId);
-        if (fantasyPriceDriver.size() < 2) return driverInfoDTO;
+        if (fantasyPriceDriver.size() < 2) return fantasyInfoDTO;
 
         double price1 = fantasyPriceDriver.get(0).getPrice();
         double price2 = fantasyPriceDriver.get(1).getPrice();
         double difference = price2 - price1;
         double percentage = ((difference / price2) * 100) * -1;
 
-        driverInfoDTO.setDifferencePrice(percentage);
-        Log.info("END - getInfobyDriver - END");
-        return driverInfoDTO;
+        fantasyInfoDTO.setDifferencePrice(percentage);
+        Log.info("END - getInfoByDriver - END");
+        return fantasyInfoDTO;
     }
     
-    
+    @Operation(summary = "Get a team info", tags = Constants.TAG_FANTASY)
+    @GetMapping("/getInfoByTeam")
+    public FantasyInfoDTO getInfoByTeam(@RequestParam int teamId) {
+        Log.info("START - getInfoByTeam - START");
+        Log.info("RequestParam getInfoByTeam (driverId) -> " + teamId);
+        
+        FantasyInfoDTO fantasyInfoDTO = new FantasyInfoDTO();
+
+        int totalPoints = 0;
+        List<FantasyPointsTeam> fantasyPointsTeam = this.fantasyPointsTeamRepository.findByTeamId((long) teamId);
+        
+        if (!fantasyPointsTeam.isEmpty()) {
+            for(FantasyPointsTeam driver : fantasyPointsTeam) {
+                totalPoints += driver.getPoints();
+            }
+        }
+        fantasyInfoDTO.setTotalPoints(totalPoints);
+
+        List<FantasyPriceDriver> fantasyPriceDriver = this.fantasyPriceDriverRepository.findTwoLastPrices((long) teamId);
+        if (fantasyPriceDriver.size() < 2) return fantasyInfoDTO;
+
+        double price1 = fantasyPriceDriver.get(0).getPrice();
+        double price2 = fantasyPriceDriver.get(1).getPrice();
+        double difference = price2 - price1;
+        double percentage = ((difference / price2) * 100) * -1;
+
+        fantasyInfoDTO.setDifferencePrice(percentage);
+        Log.info("END - getInfoByTeam - END");
+        return fantasyInfoDTO;
+    }
 }

@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://192.168.1.135:4200")
+@CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
 @RestController
 @RequestMapping(path = {Constants.ENDPOINT_RACE}, produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = Constants.TAG_RACE, description = Constants.TAG_RACE_SUMMARY)

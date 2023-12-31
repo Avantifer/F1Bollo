@@ -142,7 +142,7 @@ public class TeamService {
     */
     private TeamWithDriversDTO assignTeamWithDrivers(List<Driver> teamDrivers, Team team, int totalPoints) {
         TeamWithDriversDTO teamWithDrivers = new TeamWithDriversDTO();
-        teamWithDrivers.setTeamDTO(teamMapper.teamToTeamDTOnoTeamImage(team));
+        teamWithDrivers.setTeamDTO(teamMapper.teamToTeamDTO(team));
         teamWithDrivers.setTotalPoints(totalPoints);
 
         teamWithDrivers.setDriver1(driverMapper.driverToDriverDTO(teamDrivers.get(0)));

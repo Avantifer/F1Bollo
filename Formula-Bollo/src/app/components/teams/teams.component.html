@@ -33,7 +33,7 @@
             <h4 class="m-0">{{ team.teamDTO.name }}</h4>
           </div>
           <div class="clasification-teams-schema-card-mid-team-end">
-            <img [src]="team.teamDTO.logoImage" [alt]="'Imagen de ' + team.teamDTO.name" class="w-100">
+            <img [src]="'data:image/jpg;base64,' + team.teamDTO.logoImage" [alt]="'Imagen de ' + team.teamDTO.name" class="w-100">
           </div>
         </div>
         <div class="clasification-teams-schema-card-mid-drivers d-flex justify-content-between py-2">

@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { environment } from 'src/enviroments/enviroment';
+import { Driver } from 'src/shared/models/driver';
 import { DriverPoints } from 'src/shared/models/driverPoints';
 import { Season } from 'src/shared/models/season';
+import { DriverApiService } from 'src/shared/services/api/driver-api.service';
 import { ResultApiService } from 'src/shared/services/api/result-api.service';
 import { SeasonApiService } from 'src/shared/services/api/season-api.service';
 import { MessageService } from 'src/shared/services/message.service';
@@ -16,6 +18,7 @@ import { MessageService } from 'src/shared/services/message.service';
 export class DriversComponent {
 
   driverPoints: DriverPoints[] = [];
+  drivers: Driver[] = [];
   seasons: Season[] = [];
 
   seasonForm: FormGroup = new FormGroup({
@@ -27,6 +30,7 @@ export class DriversComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    private driversApiService: DriverApiService,
     private resultApiService: ResultApiService,
     private messageService: MessageService,
     private seasonApiService: SeasonApiService
@@ -34,6 +38,7 @@ export class DriversComponent {
 
   ngOnInit(): void {
     this.obtainAllSeasons();
+    this.obtainAllDriversPoints();
     this.obtainAllDrivers();
     this.changeSeasonDrivers();
   }
@@ -46,7 +51,7 @@ export class DriversComponent {
   /**
    * Fetch all driver points data and update the component's driverPoints property.
   */
-  obtainAllDrivers(seasonNumber?: number): void {
+  obtainAllDriversPoints(seasonNumber?: number): void {
     this.resultApiService.getAllDriverPoints(seasonNumber)
       .pipe(
         takeUntil(this._unsubscribe)
@@ -57,6 +62,26 @@ export class DriversComponent {
         },
         error: (error) => {
           this.messageService.showInformation('No se ha podido recoger los resultados correctamente');
+          console.log(error);
+          throw error;
+        }
+      })
+  }
+
+  /**
+   * Fetch all drivers data and update the component's drivers property.
+  */
+  obtainAllDrivers(): void {
+    this.driversApiService.getAllDrivers(environment.seasonActual)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (drivers: Driver[]) => {
+          this.drivers = drivers;
+        },
+        error: (error) => {
+          this.messageService.showInformation('No se pudo obtener los pilotos correctamente');
           console.log(error);
           throw error;
         }
@@ -96,7 +121,7 @@ export class DriversComponent {
     )
     .subscribe((data: any) => {
       this.seasonSelected = data.season;
-      this.obtainAllDrivers(this.seasonSelected!.number);
+      this.obtainAllDriversPoints(this.seasonSelected!.number);
     });
   }
 }

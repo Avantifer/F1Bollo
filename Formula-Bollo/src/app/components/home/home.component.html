@@ -5,8 +5,37 @@
 <div class="drivers position-relative">
   <div class="container">
     <h2 class="text-light text-center drivers-text position-relative">Clasificación de pilotos</h2>
-    <div class="drivers-card">
-      <div *ngFor="let driver of top3; let i = index" class="position-relative m-0" [ngClass]="i === 1 ? 'driver-card-pos1 d-none d-sm-inline-block mx-md-3 mx-lg-4' : 'driver-card d-none d-md-inline-block'">
+    <div class="drivers-card" *ngIf="driverPoints.length === 0">
+      <div *ngFor="let driver of top3Drivers; let i = index" class="position-relative m-0" [ngClass]="i === 1 ? 'driver-card-pos1 d-none d-sm-inline-block mx-md-3 mx-lg-4' : 'driver-card d-none d-md-inline-block'">
+        <div class="position-relative" [ngClass]="i === 1 ? 'driver-card-top-pos1' : 'driver-card-top'">
+          <div class="driver-card-top-number position-absolute" [class]="'driver-card-top-number-' + driver.team.name">{{ driver.number }}</div>
+          <img [src]="'data:image/jpg;base64,' + driver.driverImage" alt="Imagen del piloto" class="position-absolute">
+          <div class="driver-card-top-team-border position-absolute w-100 bottom-0" [class]="'driver-card-top-team-border-' + driver.team.name"></div>
+        </div>
+        <div class="driver-card-bottom">
+          <h2 class="text-center text-light text-uppercase fw-bold">{{ driver.name }}</h2>
+        </div>
+      </div>
+
+      <div class="drivers-top10-container container-fluid container-md mt-3 position-relative">
+        <div class="drivers-top10 mx-0 mx-md-5 my-1 p-3 shadow-sm rounded d-flex align-items-center justify-content-between" *ngFor="let driver of drivers; let i = index">
+          <div class="drivers-top10-start d-flex align-items-center">
+            <h5>{{ i + 1 }}</h5>
+            <div class="line mx-2" [class]="'line-' + driver.team.name"></div>
+            <h5>{{ driver.name }}</h5>
+            <p class="ms-3 d-none d-md-block">{{ driver.team.name }}</p>
+          </div>
+          <div class="drivers-top10-end d-flex align-items-center">
+            <span class="badge me-3 p-2 text-dark rounded-pill shadow-sm">0 Puntos</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="drivers-card" *ngIf="driverPoints.length > 0">
+      <div *ngFor="let driver of top3DriverPoints; let i = index" class="position-relative m-0" [ngClass]="i === 1 ? 'driver-card-pos1 d-none d-sm-inline-block mx-md-3 mx-lg-4' : 'driver-card d-none d-md-inline-block'">
         <div class="position-relative" [ngClass]="i === 1 ? 'driver-card-top-pos1' : 'driver-card-top'">
           <div class="driver-card-top-number position-absolute" [class]="'driver-card-top-number-' + driver.driver.team.name">{{ driver.driver.number }}</div>
           <img [src]="'data:image/jpg;base64,' + driver.driver.driverImage" alt="Imagen del piloto" class="position-absolute">
@@ -16,7 +45,6 @@
           <h2 class="text-center text-light text-uppercase fw-bold">{{ driver.driver.name }}</h2>
         </div>
       </div>
-
       <div class="drivers-top10-container container-fluid container-md mt-3 position-relative">
         <div class="drivers-top10 mx-0 mx-md-5 my-1 p-3 shadow-sm rounded d-flex align-items-center justify-content-between" *ngFor="let driverPoint of driverPoints; let i = index">
           <div class="drivers-top10-start d-flex align-items-center">
@@ -34,6 +62,7 @@
         </div>
       </div>
     </div>
+
   </div>
 <div class="teams position-relative">
   <div class="teams-title">

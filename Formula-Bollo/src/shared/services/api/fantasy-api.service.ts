@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/enviroments/enviroment";
-import { FantasyDriverInfo } from "src/shared/models/fantasyDriverInfo";
+import { FantasyInfo } from "src/shared/models/fantasyInfo";
 import { FantasyPointsDriver } from "src/shared/models/fantasyPointsDriver";
 import { FantasyPointsTeam } from "src/shared/models/fantasyPointsTeam";
 import { FantasyPriceDriver } from "src/shared/models/fantasyPriceDriver";
@@ -74,8 +74,13 @@ export class FantasyApiService {
     return this.httpClient.get<FantasyPriceTeam[]>(environment.apiUrl + this.endpoint + '/allTeamPrices', {params});
   }
 
-  getInfoByDriver(driverId: number): Observable<FantasyDriverInfo> {
+  getInfoByDriver(driverId: number): Observable<FantasyInfo> {
     const params = new HttpParams().set('driverId', driverId);
-    return this.httpClient.get<FantasyDriverInfo>(environment.apiUrl + this.endpoint + '/getInfobyDriver', {params});
+    return this.httpClient.get<FantasyInfo>(environment.apiUrl + this.endpoint + '/getInfoByDriver', {params});
+  }
+
+  getInfoByTeam(teamId: number): Observable<FantasyInfo> {
+    const params = new HttpParams().set('teamId', teamId);
+    return this.httpClient.get<FantasyInfo>(environment.apiUrl + this.endpoint + '/getInfoByTeam', {params});
   }
 }

@@ -13,7 +13,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class FantasyDriverInfoDTO {
+public class FantasyInfoDTO {
     int totalPoints;
     double differencePrice;
 }
