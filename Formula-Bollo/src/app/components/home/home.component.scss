@@ -169,7 +169,7 @@
       padding: 25px;
       background-color: rgb(56, 56, 63);
 
-      h2 {
+      h3 {
         font-family: 'F1-Regular';
         letter-spacing: 5px;
       }
@@ -331,6 +331,13 @@
         font-size: 1.75rem !important;
       }
     }
+
+    &-bottom {
+
+      h3 {
+        font-size: 1.3rem;
+      }
+    }
   }
 }
 
@@ -371,8 +378,8 @@
 
     &-bottom {
 
-      h2 {
-        font-size: 1.5rem;
+      h3 {
+        font-size: 0.8rem;
       }
     }
   }
@@ -415,8 +422,8 @@
 
       &-bottom {
 
-        h2 {
-          font-size: 3rem;
+        h3 {
+          font-size: 2.8rem;
         }
       }
     }
@@ -592,26 +599,31 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @include media-breakpoint-up(sm) {
   .teams-schema {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @include media-breakpoint-up(md) {
   .teams-schema {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
 @include media-breakpoint-up(lg) {
   .teams-schema {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
 @include media-breakpoint-up(xl) {
   .teams-schema {
     grid-template-columns: repeat(7, 1fr);
   }
 }
+
 @include media-breakpoint-up(xxl) {
   .teams-schema {
     grid-template-columns: repeat(10, 1fr);

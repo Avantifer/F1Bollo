@@ -22,7 +22,8 @@ public class UserImpl implements UserMapper {
     public User userDTOToUser(UserDTO userDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
-        user.setPassword(this.passwordEncoder.encode(userDTO.getPassword()));
+        user.setPassword(null);
+        if (userDTO.getPassword() != null) user.setPassword(this.passwordEncoder.encode(userDTO.getPassword()));
         return user;
     }
 

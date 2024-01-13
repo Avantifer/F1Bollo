@@ -133,4 +133,15 @@ export class HeaderComponent {
       }
     });
   }
+
+  /**
+   * Delete the activeItem switching between fantasy and bollo
+  */
+  deleteSelected(): void {
+    let navItemSelected: Element | null = document.querySelector('.navlink.active');
+
+    if (navItemSelected == null) return;
+    navItemSelected.classList.remove('active');
+    this.activeNavItem = '';
+  }
 }

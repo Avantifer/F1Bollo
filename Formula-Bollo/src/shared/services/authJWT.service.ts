@@ -49,6 +49,20 @@ export class AuthJWTService {
   }
 
   /**
+   * Returns the id from a JWT token.
+   * @param token - The JWT token.
+   * @returns The id extracted from the token.
+   */
+  getIdFromToken(token: string): string {
+    let id: string = '';
+    let tokenDecoded = this.jwtService.decodeToken(token);
+
+    if (tokenDecoded.userId) id = tokenDecoded.userId;
+
+    return id;
+  }
+
+  /**
    * Returns the username from a JWT token.
    * @param token - The JWT token.
    * @returns The username extracted from the token.
@@ -57,7 +71,7 @@ export class AuthJWTService {
     let username: string = '';
     let tokenDecoded = this.jwtService.decodeToken(token);
 
-    if (tokenDecoded.userId) username = tokenDecoded.userId;
+    if (tokenDecoded.sub) username = tokenDecoded.sub;
 
     return username;
   }

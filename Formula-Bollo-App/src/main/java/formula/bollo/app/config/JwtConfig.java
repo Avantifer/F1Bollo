@@ -36,7 +36,7 @@ public class JwtConfig implements Serializable {
 
         return Jwts.builder()
                 .setSubject(userDTO.getUsername())
-                .claim("userId", userDTO.getUsername())
+                .claim("userId", userDTO.getId())
                 .claim("admin", userDTO.getAdmin())
                 .setIssuedAt(new Date())
                 .setExpiration(expiration)

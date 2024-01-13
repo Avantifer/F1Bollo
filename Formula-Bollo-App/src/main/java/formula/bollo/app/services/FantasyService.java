@@ -204,8 +204,9 @@ public class FantasyService {
         if (fantasyPoint == null) return -1;
 
         int points = fantasyPoint.getPoints();
-        if (points == 0) {
-            newPrice = adjustPriceForZeroPoints(newPrice);
+
+        if (points < 5) {
+            newPrice = adjustPriceForReduction(newPrice);
         } else {                
             newPrice += (points / 10) * minPrice;
         }
@@ -226,7 +227,7 @@ public class FantasyService {
      * @param newPrice The price to be adjusted based on price groups and multipliers.
      * @return         The adjusted price as an integer.
     */
-    private int adjustPriceForZeroPoints(int newPrice) {
+    private int adjustPriceForReduction(int newPrice) {
         final int PRICE_GROUP_1 = 20000000;
         final int PRICE_GROUP_2 = 10000000;
         final int PRICE_GROUP_3 = 1000000;

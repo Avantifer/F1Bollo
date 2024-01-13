@@ -51,6 +51,7 @@ import { LoaderService } from './../shared/services/loader.service';
 import { LoaderInterceptor } from './../shared/interceptors/loader.interceptor';
 import { FantasyDialogMailComponent } from './components/fantasy/fantasy-dialog-mail/fantasy-dialog-mail.component';
 import { PricePipe } from 'src/shared/pipes/price.pipe';
+import { IsNanPipe } from 'src/shared/pipes/isNan.pipe';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { PricePipe } from 'src/shared/pipes/price.pipe';
     FantasyClasificationComponent,
     FantasyRecoverPasswordComponent,
     FantasyDialogMailComponent,
-    PricePipe
+    PricePipe,
+    IsNanPipe
   ],
   imports: [
     BrowserModule,

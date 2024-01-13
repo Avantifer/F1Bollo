@@ -1,6 +1,7 @@
 package formula.bollo.app.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -140,4 +141,17 @@ public class UserController {
         Log.info("END - changePassword - END");
         return new ResponseEntity<>("Se ha cambiado la contraseña correctamente", HttpStatusCode.valueOf(200));
     }
+
+    @Operation(summary = "Get user by id", tags = Constants.TAG_USER)
+    @GetMapping("/id")
+    public User getUserById(@RequestParam Integer id) {
+        Log.info("START - getUserById - START");
+        Log.info("RequestParam getUserById (id) -> " + id);
+
+        User user = userRepository.findById((long) id).orElse(null);
+
+        Log.info("END - getUserById - END");
+
+        return user;
+    } 
 }

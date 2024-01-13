@@ -10,5 +10,4 @@ export class PricePipe implements PipeTransform {
     let groups: string[] = price.split(/(?=(?:...)*$)/);
     return groups.join(".");
   }
-
 }

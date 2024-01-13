@@ -12,4 +12,7 @@ import formula.bollo.app.entity.FantasyElection;
 public interface FantasyElectionRepository extends JpaRepository<FantasyElection, Long>{
     @Query(value = "SELECT fe FROM FantasyElection fe WHERE fe.season.number = ?1")
     List<FantasyElection> findBySeason(int seasonNumber);
+
+    @Query(value = "SELECT fe FROM FantasyElection fe WHERE fe.season.number =?1 AND fe.user.id = ?2 AND fe.race.id = ?3")
+    FantasyElection findBySeasonUserIdAndRaceId(int seasonNumber, Long userId, Long raceId);
 }

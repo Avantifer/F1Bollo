@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/enviroments/enviroment";
+import { FantasyElection } from "src/shared/models/fantasyElection";
 import { FantasyInfo } from "src/shared/models/fantasyInfo";
 import { FantasyPointsDriver } from "src/shared/models/fantasyPointsDriver";
 import { FantasyPointsTeam } from "src/shared/models/fantasyPointsTeam";
@@ -82,5 +83,21 @@ export class FantasyApiService {
   getInfoByTeam(teamId: number): Observable<FantasyInfo> {
     const params = new HttpParams().set('teamId', teamId);
     return this.httpClient.get<FantasyInfo>(environment.apiUrl + this.endpoint + '/getInfoByTeam', {params});
+  }
+
+  saveFantasyElection(fantasyElection: FantasyElection): Observable<string> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'text/plain'
+    });
+    return this.httpClient.post<string>(environment.apiUrl + this.endpoint + "/saveFantasyElection", fantasyElection, {headers, responseType: 'text' as 'json'});
+  }
+
+  getFantasyElection(raceId: number, userId: number): Observable<FantasyElection> {
+    let params =
+      new HttpParams()
+        .set('raceId', raceId)
+        .set('userId', userId);
+    return this.httpClient.get<FantasyElection>(environment.apiUrl + this.endpoint + '/getFantasyElection', {params});
   }
 }

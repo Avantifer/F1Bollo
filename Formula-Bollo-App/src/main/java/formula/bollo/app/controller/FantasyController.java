@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,19 +18,23 @@ import org.springframework.http.ResponseEntity;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import formula.bollo.app.entity.FantasyElection;
 import formula.bollo.app.entity.FantasyPointsDriver;
 import formula.bollo.app.entity.FantasyPointsTeam;
 import formula.bollo.app.entity.FantasyPriceDriver;
 import formula.bollo.app.entity.FantasyPriceTeam;
 import formula.bollo.app.entity.Race;
 import formula.bollo.app.entity.Result;
+import formula.bollo.app.mapper.FantasyElectionMapper;
 import formula.bollo.app.mapper.FantasyPointsMapper;
 import formula.bollo.app.mapper.FantasyPriceMapper;
+import formula.bollo.app.model.FantasyElectionDTO;
 import formula.bollo.app.model.FantasyInfoDTO;
 import formula.bollo.app.model.FantasyPointsDriverDTO;
 import formula.bollo.app.model.FantasyPointsTeamDTO;
 import formula.bollo.app.model.FantasyPriceDriverDTO;
 import formula.bollo.app.model.FantasyPriceTeamDTO;
+import formula.bollo.app.repository.FantasyElectionRepository;
 import formula.bollo.app.repository.FantasyPointsDriverRepository;
 import formula.bollo.app.repository.FantasyPointsTeamRepository;
 import formula.bollo.app.repository.FantasyPriceDriverRepository;
@@ -52,8 +58,10 @@ public class FantasyController {
     private FantasyPriceDriverRepository fantasyPriceDriverRepository;
     private FantasyPriceTeamRepository fantasyPriceTeamRepository;
     private FantasyPointsTeamRepository fantasyPointsTeamRepository;
+    private FantasyElectionRepository fantasyElectionRepository;
     private FantasyPriceMapper fantasyPriceMapper;
     private FantasyPointsMapper fantasyPointsMapper;
+    private FantasyElectionMapper fantasyElectionMapper;
 
     public FantasyController(
         ResultRepository resultRepository,
@@ -62,9 +70,11 @@ public class FantasyController {
         FantasyPriceDriverRepository fantasyPriceDriverRepository,
         FantasyPriceTeamRepository fantasyPriceTeamRepository,
         FantasyPointsTeamRepository fantasyPointsTeamRepository,
+        FantasyElectionRepository fantasyElectionRepository,
         RaceRepository raceRepository,
         FantasyPriceMapper fantasyPriceMapper,
-        FantasyPointsMapper fantasyPointsMapper
+        FantasyPointsMapper fantasyPointsMapper,
+        FantasyElectionMapper fantasyElectionMapper
     ) {
         this.resultRepository = resultRepository;
         this.fantasyService = fantasyService;
@@ -72,9 +82,11 @@ public class FantasyController {
         this.fantasyPriceDriverRepository = fantasyPriceDriverRepository;
         this.fantasyPriceTeamRepository = fantasyPriceTeamRepository;
         this.fantasyPointsTeamRepository = fantasyPointsTeamRepository;
+        this.fantasyElectionRepository = fantasyElectionRepository;
         this.raceRepository = raceRepository;
         this.fantasyPriceMapper = fantasyPriceMapper;
         this.fantasyPointsMapper = fantasyPointsMapper;
+        this.fantasyElectionMapper = fantasyElectionMapper;
     }
     
     @Operation(summary = "Save driver's and team's points", tags = Constants.TAG_FANTASY)
@@ -247,5 +259,34 @@ public class FantasyController {
         fantasyInfoDTO.setDifferencePrice(percentage);
         Log.info("END - getInfoByTeam - END");
         return fantasyInfoDTO;
+    }
+
+    @Operation(summary = "Save fantasy Election", tags = Constants.TAG_FANTASY)
+    @PostMapping(path = "/saveFantasyElection", produces = MediaType.TEXT_PLAIN_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> saveFantasyElection(@RequestBody FantasyElectionDTO fantasyElectionDTO) {
+        Log.info("START - saveFantasyElection - START");
+        Log.info("RequestBody fantasyElection " + fantasyElectionDTO.toString());
+        
+        FantasyElection fantasyElection = this.fantasyElectionMapper.fantasyElectionDTOToFantasyElection(fantasyElectionDTO);
+        this.fantasyElectionRepository.save(fantasyElection);
+
+        Log.info("END - saveFantasyElection - END");
+        return new ResponseEntity<>("Tu equipo ha sido guardado correctamente", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(200));
+    }
+
+    @Operation(summary = "Get fantasy election", tags = Constants.TAG_FANTASY)
+    @GetMapping("/getFantasyElection")
+    public FantasyElectionDTO getFantasyElection(@RequestParam int raceId, @RequestParam int userId) {
+        Log.info("START - getFantasyElection - START");
+        Log.info("RequestParam getFantasyElection (raceId) -> " + raceId);
+        Log.info("RequestParam getFantasyElection (userId) -> " + userId);
+        
+        FantasyElection fantasyElection = this.fantasyElectionRepository.findBySeasonUserIdAndRaceId(Constants.ACTUAL_SEASON, (long) userId, (long) raceId);
+        if (fantasyElection == null) return new FantasyElectionDTO();
+        
+        FantasyElectionDTO fantasyElectionDTO = this.fantasyElectionMapper.fantasyElectionToFantasyElectionDTO(fantasyElection);
+
+        Log.info("END - getFantasyElection - END");
+        return fantasyElectionDTO;
     }
 }
