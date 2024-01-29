@@ -345,6 +345,12 @@ public class FantasyService {
             .collect(Collectors.toList());
     }
 
+    /**
+     * Calculates fantasy points for users based on their fantasy elections in the specified race.
+     *
+     * @param raceId The ID of the race for which fantasy points are to be retrieved.
+     * @return List of FantasyPointsUserDTO objects containing user information and total fantasy points.
+    */
     public List<FantasyPointsUserDTO> getFantasyPoints(int raceId) {
         List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
         List<FantasyElection> fantasyElections = this.fantasyElectionRepository.findBySeasonAndRaceId(Constants.ACTUAL_SEASON, (long) raceId);
@@ -392,6 +398,11 @@ public class FantasyService {
         return fantasyPointsUserDTOs;
     }
 
+    /**
+     * Retrieves the sum of fantasy points for all users across all previous races in the current season.
+     *
+     * @return List of FantasyPointsUserDTO objects with total points aggregated for each user.
+    */
     public List<FantasyPointsUserDTO> sumAllFantasyPoints() {
         List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
         List<RaceDTO> raceDTOsNotFinishedAndNextOne = this.raceService.getAllPreviousRaces(Constants.ACTUAL_SEASON);

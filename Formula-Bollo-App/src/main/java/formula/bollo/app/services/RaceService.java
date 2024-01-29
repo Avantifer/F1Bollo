@@ -43,6 +43,12 @@ public class RaceService {
         raceRepository.save(race);
     }
 
+    /**
+     * Retrieves a list of all previous races and the next unfinished race for a given season.
+     *
+     * @param numberSeason The season for which races are to be retrieved.
+     * @return List of RaceDTO objects representing all previous races and the next unfinished race.
+    */
     public List<RaceDTO> getAllPreviousAndNextOne(int numberSeason) {
         List<Race> races = this.raceRepository.findBySeason(numberSeason);
         List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
@@ -60,6 +66,12 @@ public class RaceService {
         return raceDTOs;
     }
 
+    /**
+     * Retrieves a list of all previous races for a given season.
+     *
+     * @param numberSeason The season for which races are to be retrieved.
+     * @return List of RaceDTO objects representing all previous races.
+    */
     public List<RaceDTO> getAllPreviousRaces(int numberSeason) {
         List<Race> races = this.raceRepository.findBySeason(numberSeason);
         List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);

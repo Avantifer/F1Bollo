@@ -7,12 +7,14 @@ export class PricePipe implements PipeTransform {
 
   transform(value: number): string {
     let price: string = value.toString();
+    let isNegative: boolean = false;
 
-    if (price.startsWith("-")) {
-      price = price.replace("-", "");
+    if (price.startsWith("-")){
+      price = price.split("-")[1];
+      isNegative = true;
     }
 
     let groups: string[] = price.split(/(?=(?:...)*$)/);
-    return groups.join(".");
+    return isNegative ? "-" + groups.join(".") : groups.join(".");
   }
 }
