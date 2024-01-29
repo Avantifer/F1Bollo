@@ -1,1 +1,29 @@
-<p>fantasy-clasification works!</p>
+<div class="bg-secondary-subtle py-5 px-3" style="height: 91.85vh;">
+  <div class="container bg-white p-5 h-100 position-relative">
+    <div class="d-flex justify-content-start flex-wrap mb-5">
+      <form [formGroup]="raceForm">
+        <div class="d-flex flex-column">
+          <label class="mb-1">Seleccione circuito:</label>
+          <mat-form-field>
+            <mat-select formControlName="race">
+              <mat-option *ngFor="let race of races" [value]="race">
+                {{ race.circuit.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+    <div class="table-title d-flex" *ngIf="raceSelected">
+      <h2 class="mb-5" *ngIf="this.raceSelected.id != 0">Resultados de la carrera {{ raceSelected.circuit.name }}</h2>
+      <img class="ms-4" [src]="'data:image/jpg;base64,' + raceSelected.circuit.flagImage" alt="Bandera del pais del circuito" *ngIf="this.raceSelected.id != 0">
+      <h2 class="mb-5" *ngIf="this.raceSelected.id == 0">Resultados generales</h2>
+    </div>
+    <div *ngIf="raceSelected">
+      <app-formula-table [data]="fantasyPointsUsers" [displayedColumns]="displayedColumns"></app-formula-table>
+    </div>
+    <div *ngIf="races.length == 0">
+      <h3 class="message_no_results">No hay resultados disponibles</h3>
+    </div>
+  </div>
+</div>

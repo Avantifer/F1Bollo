@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, race, takeUntil } from 'rxjs';
 import { FantasyElection } from 'src/shared/models/fantasyElection';
 import { FantasyInfo } from 'src/shared/models/fantasyInfo';
 import { FantasyPriceDriver } from 'src/shared/models/fantasyPriceDriver';
@@ -13,6 +13,9 @@ import { RaceApiService } from 'src/shared/services/api/race-api.service';
 import { MessageService } from 'src/shared/services/message.service';
 import { AuthJWTService } from 'src/shared/services/authJWT.service';
 import { User } from 'src/shared/models/user';
+import { environment } from 'src/enviroments/enviroment';
+import { FantasyPointsDriver } from 'src/shared/models/fantasyPointsDriver';
+import { FantasyPointsTeam } from 'src/shared/models/fantasyPointsTeam';
 
 @Component({
   selector: 'app-fantasy-team',
@@ -51,8 +54,15 @@ export class FantasyTeamComponent {
   });
 
   fantasyElection: FantasyElection = new FantasyElection();
+  fantasyElectionCache: FantasyElection = new FantasyElection();
+
   raceSelected: Race | undefined;
   optionSelected: string = 'Pilotos';
+  pointsDriverOne: number | undefined;
+  pointsDriverTwo: number | undefined;
+  pointsDriverThree: number | undefined;
+  pointsTeamOne: number | undefined;
+  pointsTeamTwo: number | undefined;
 
   price: number = 70000000;
   private _unsubscribe: Subject<void> = new Subject<void>();
@@ -80,7 +90,7 @@ export class FantasyTeamComponent {
    * Retrieves all races for the current season and the previous and next one.
   */
   getAllRacesWithDriversAndTeams(): void {
-    this.raceApiService.getAllPreviousAndNextOne(2)
+    this.raceApiService.getAllPreviousAndNextOne(environment.seasonActual)
       .pipe(
         takeUntil(this._unsubscribe)
       )
@@ -475,10 +485,13 @@ export class FantasyTeamComponent {
 
     if (element.classList[1].includes('driver1')) {
       this.fantasyElection.driverOne = driver.driver;
+      this.fantasyElectionCache.driverOne = driver.driver;
     } else if (element.classList[1].includes('driver2')) {
       this.fantasyElection.driverTwo = driver.driver;
+      this.fantasyElectionCache.driverTwo = driver.driver;
     } else if (element.classList[1].includes('driver3')) {
       this.fantasyElection.driverThree = driver.driver;
+      this.fantasyElectionCache.driverThree = driver.driver;
     }
 
     this.calculateTotalPrice();
@@ -659,10 +672,13 @@ export class FantasyTeamComponent {
 
     if (driverNumberClass === 'driver1') {
       this.fantasyElection.driverOne = undefined;
+      this.fantasyElectionCache.driverOne = undefined;
     } else if (driverNumberClass === 'driver2') {
       this.fantasyElection.driverTwo = undefined;
+      this.fantasyElectionCache.driverTwo = undefined;
     } else if (driverNumberClass === 'driver3') {
       this.fantasyElection.driverThree = undefined;
+      this.fantasyElectionCache.driverThree = undefined;
     }
 
     this.calculateTotalPrice();
@@ -796,7 +812,7 @@ export class FantasyTeamComponent {
           next: (success: string) => {
             this.messageService.showInformation(success);
           },
-          error: () => {
+          error: (error) => {
             this.messageService.showInformation('No se ha podido guardar tu equipo correctamente. Contacta con el administrador');
           }
         });
@@ -815,9 +831,121 @@ export class FantasyTeamComponent {
       )
       .subscribe({
         next: (fantasyElection: FantasyElection) => {
-          this.fantasyElection = fantasyElection;
+          if (fantasyElection.race != undefined) {
+            this.fantasyElection = fantasyElection;
+          } else {
+            this.fantasyElection = this.fantasyElectionCache;
+          }
         }, complete: () => {
+          this.resetSelectedItem();
           this.calculateTotalPrice();
+          if (this.fantasyElection.race != undefined) {
+            this.getSpecificPointsPerDriver(this.fantasyElection);
+            this.getSpecificPointsPerTeam(this.fantasyElection);
+          }
+        }
+      })
+  }
+
+  /**
+   * Delete itemSelected if you change between drivers and teams, and activate it if needed.
+  */
+  resetSelectedItem() : void {
+    document.querySelector('.selected')?.classList.remove('selected');
+    if (!this.raceSelected?.finished && this.fantasyElection.race === undefined) {
+      if (!this.fantasyElection.driverOne) {
+        document.querySelector('.driver1')?.classList.add('selected');
+      } else if (!this.fantasyElection.driverTwo) {
+        document.querySelector('.driver2')?.classList.add('selected');
+      } else if (!this.fantasyElection.driverThree) {
+        document.querySelector('.driver3')?.classList.add('selected');
+      } else if (!this.fantasyElection.teamOne) {
+        document.querySelector('.team1')?.classList.add('selected');
+      } else if (!this.fantasyElection.teamTwo) {
+        document.querySelector('.team2')?.classList.add('selected');
+      }
+    }
+  }
+
+  /**
+   * Retrieves specific points for each driver in the fantasy election and updates corresponding properties.
+   *
+   * @param fantasyElection - The fantasy election data containing driver information.
+  */
+  getSpecificPointsPerDriver(fantasyElection: FantasyElection): void {
+    let raceId: number = fantasyElection.race!.id;
+
+    this.fantasyApiService.getDriverPoints(fantasyElection.driverOne!.id, raceId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (fantasyPointsDriver: FantasyPointsDriver) => {
+          this.pointsDriverOne = fantasyPointsDriver.points;
+        },
+        error: () => {
+          this.messageService.showInformation('No se pudieron recoger los datos de los pilotos');
+        }
+      });
+
+    this.fantasyApiService.getDriverPoints(fantasyElection.driverTwo!.id, raceId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (fantasyPointsDriver: FantasyPointsDriver) => {
+          this.pointsDriverTwo = fantasyPointsDriver.points;
+        },
+        error: () => {
+          this.messageService.showInformation('No se pudieron recoger los datos de los pilotos');
+        }
+      });
+
+    this.fantasyApiService.getDriverPoints(fantasyElection.driverThree!.id, raceId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (fantasyPointsDriver: FantasyPointsDriver) => {
+          this.pointsDriverThree = fantasyPointsDriver.points;
+        },
+        error: () => {
+          this.messageService.showInformation('No se pudieron recoger los datos de los pilotos');
+        }
+      });
+  }
+
+  /**
+   * Retrieves specific points for each team in the fantasy election and updates corresponding properties.
+   *
+   * @param fantasyElection - The fantasy election data containing team information.
+  */
+  getSpecificPointsPerTeam(fantasyElection: FantasyElection): void {
+    let raceId: number = fantasyElection.race!.id;
+
+    this.fantasyApiService.getTeamPoints(fantasyElection.teamOne!.id, raceId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (fantasyPointsTeam: FantasyPointsTeam) => {
+          this.pointsTeamOne = fantasyPointsTeam.points;
+        },
+        error: () => {
+          this.messageService.showInformation('No se pudieron recoger los datos de los pilotos');
+        }
+      })
+
+      this.fantasyApiService.getTeamPoints(fantasyElection.teamTwo!.id, raceId)
+      .pipe(
+        takeUntil(this._unsubscribe)
+      )
+      .subscribe({
+        next: (fantasyPointsTeam: FantasyPointsTeam) => {
+          this.pointsTeamTwo = fantasyPointsTeam.points;
+        },
+        error: () => {
+          this.messageService.showInformation('No se pudieron recoger los datos de los pilotos');
         }
       })
   }

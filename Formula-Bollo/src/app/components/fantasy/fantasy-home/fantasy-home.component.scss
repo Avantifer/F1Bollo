@@ -1,23 +1,146 @@
 @import "../../../../assets/scss/styles.scss";
 
-.bollo-icon {
-  left: 25px;
-  bottom: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 2rem;
-  color: white;
-  z-index: 100;
+.fantasy-intro {
+  h1 {
+    z-index: 2;
+    font-family: 'F1-Fantasy-Bold';
+    line-height: 8rem;
+    letter-spacing: 2px;
+    text-shadow: -4px 4px 20px black;
+    font-size: 7rem;
+    left: 7rem;
 
-  &::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: $red;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    &:first-of-type {
+      top: 7rem;
+    }
+
+    &:last-of-type {
+      top: 15rem;
+    }
+  }
+
+  img {
+    filter: brightness(0.5);
+  }
+}
+
+.fantasy-howToPlay {
+
+  h2 {
+    font-family: 'F1-Fantasy-Bold';
+  }
+
+  p {
+    font-family: 'F1-Fantasy-Regular';
+    letter-spacing: 0.5px;
+  }
+
+  span {
+    letter-spacing: 14px;
+  }
+
+  img {
+    width: 500px;
+  }
+
+  &-container {
+    width: 60rem;
+    padding: 4rem 0rem;
+    gap: 2rem;
+  }
+}
+
+
+@include media-breakpoint-down(xxl) {
+  .fantasy-intro {
+    h1 {
+
+      &:first-of-type {
+        top: 3rem;
+      }
+
+      &:last-of-type {
+        top: 11rem;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(xl) {
+  .fantasy-intro {
+    h1 {
+      font-size: 6rem;
+      left: 5rem;
+
+      &:first-of-type {
+        top: 1rem;
+      }
+
+      &:last-of-type {
+        top: 7rem;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .fantasy-intro {
+    h1 {
+      font-size: 4rem;
+      left: 3rem;
+
+      &:first-of-type {
+        top: 0rem;
+      }
+
+      &:last-of-type {
+        top: 5rem;
+      }
+    }
+  }
+
+  .fantasy-howToPlay {
+
+    &-container {
+      width: 70%;
+    }
+  }
+}
+
+
+@include media-breakpoint-down(md) {
+  .fantasy-intro {
+    h1 {
+      line-height: 6rem;
+
+      &:last-of-type {
+        top: 4.5rem;
+      }
+    }
+  }
+
+  .fantasy-howToPlay {
+    img {
+      width: 90%;
+    }
+
+    &-container {
+      width: 90%;
+    }
+  }
+}
+
+
+@include media-breakpoint-down(sm) {
+  .fantasy-intro {
+    h1 {
+      font-size: 2rem;
+      left: 2rem;
+      line-height: 3rem;
+
+      &:last-of-type {
+        top: 3rem;
+      }
+    }
   }
 }

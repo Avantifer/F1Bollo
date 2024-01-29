@@ -13,6 +13,9 @@ public interface FantasyElectionRepository extends JpaRepository<FantasyElection
     @Query(value = "SELECT fe FROM FantasyElection fe WHERE fe.season.number = ?1")
     List<FantasyElection> findBySeason(int seasonNumber);
 
+    @Query(value = "SELECT fe FROM FantasyElection fe WHERE fe.season.number = ?1 AND fe.race.id = ?2")
+    List<FantasyElection> findBySeasonAndRaceId(int seasonNumber, Long raceId);
+
     @Query(value = "SELECT fe FROM FantasyElection fe WHERE fe.season.number =?1 AND fe.user.id = ?2 AND fe.race.id = ?3")
     FantasyElection findBySeasonUserIdAndRaceId(int seasonNumber, Long userId, Long raceId);
 }

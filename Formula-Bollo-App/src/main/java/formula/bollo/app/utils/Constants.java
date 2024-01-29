@@ -72,7 +72,7 @@ public class Constants {
     public static final String PRODUCTION_FRONTEND = "https://formulabollo.es/";
     public static final String LOCAL_FRONTEND = "http://localhost:4200";
 
-    public static final int ACTUAL_SEASON = 2;
+    public static final int ACTUAL_SEASON = 1;
     public static final HttpHeaders HEADERS_TEXT_PLAIN = createHeaders();
     
     private static HttpHeaders createHeaders() {

@@ -16,9 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
@@ -110,19 +108,16 @@ public class RaceController {
         Log.info("RequestParam allPreviousAndNextOne (season) -> " + season);
         int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
 
-        List<Race> races = this.raceRepository.findBySeason(numberSeason);
-        List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
-        raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
+        return this.raceService.getAllPreviousAndNextOne(numberSeason);
+    }
 
-        List<RaceDTO> raceDTOsNotFinishedAndNextOne = raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
-        
-        for(RaceDTO raceDTO: raceDTOs) {
-            if (raceDTO.getFinished() == 0) {
-                raceDTOsNotFinishedAndNextOne.add(raceDTO);
-                break;
-            }
-        }
+    @Operation(summary = "Get all races finished ", tags = Constants.TAG_RACE)
+    @GetMapping(path = "/allPrevious")
+    public List<RaceDTO> getAllPrevious(@RequestParam(value = "season", required = false) Integer season) {
+        Log.info("START - getAllPrevious - START");
+        Log.info("RequestParam getAllPrevious (season) -> " + season);
+        int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
 
-        return raceDTOsNotFinishedAndNextOne;
+        return this.raceService.getAllPreviousRaces(numberSeason);
     }
 }

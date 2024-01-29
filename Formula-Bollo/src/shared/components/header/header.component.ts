@@ -68,9 +68,9 @@ export class HeaderComponent {
    * Collapse navBar on Mobile when click navItem.
   */
   collapseNavWhenSelectNavItem(): void {
-    if (document.getElementsByClassName("in")[0]) {
-      document.getElementsByClassName("in")[0].classList.remove("in");
-    };
+    if (document.querySelector('.navbar-collapse')?.classList.contains('show')){
+      document.querySelector('.navbar-collapse')?.classList.remove('show');
+    }
   }
 
   /**

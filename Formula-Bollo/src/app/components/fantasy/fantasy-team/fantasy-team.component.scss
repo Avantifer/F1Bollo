@@ -70,6 +70,20 @@
             }
           }
 
+          &-points {
+            z-index: 2;
+            background-color: green;
+            height: 1.75rem;
+            width: 1.75rem;
+            right: -10px;
+            top: -10px;
+
+            span {
+              font-family: 'F1-Fantasy-Bold', sans-serif;
+              color: white;
+            }
+          }
+
           &-photo {
             height: 80%;
             background: transparent;

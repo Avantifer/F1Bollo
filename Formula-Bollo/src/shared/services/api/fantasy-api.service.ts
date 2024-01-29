@@ -6,6 +6,7 @@ import { FantasyElection } from "src/shared/models/fantasyElection";
 import { FantasyInfo } from "src/shared/models/fantasyInfo";
 import { FantasyPointsDriver } from "src/shared/models/fantasyPointsDriver";
 import { FantasyPointsTeam } from "src/shared/models/fantasyPointsTeam";
+import { FantasyPointsUser } from "src/shared/models/fantasyPointsUser";
 import { FantasyPriceDriver } from "src/shared/models/fantasyPriceDriver";
 import { FantasyPriceTeam } from "src/shared/models/fantasyPriceTeam";
 
@@ -60,9 +61,25 @@ export class FantasyApiService {
     return this.httpClient.get<FantasyPointsDriver[]>(environment.apiUrl + this.endpoint + '/allDriverPoints', {params});
   }
 
+  getDriverPoints(driverId:number, raceId: number): Observable<FantasyPointsDriver> {
+    let params =
+      new HttpParams()
+        .set('driverId', driverId)
+        .set('raceId', raceId);
+    return this.httpClient.get<FantasyPointsDriver>(environment.apiUrl + this.endpoint + '/driverPoints', {params});
+  }
+
   getAllTeamPoints(raceId: number): Observable<FantasyPointsTeam[]> {
     const params = new HttpParams().set('raceId', raceId);
     return this.httpClient.get<FantasyPointsTeam[]>(environment.apiUrl + this.endpoint + '/allTeamPoints', {params});
+  }
+
+  getTeamPoints(teamId:number, raceId: number): Observable<FantasyPointsTeam> {
+    let params =
+      new HttpParams()
+        .set('teamId', teamId)
+        .set('raceId', raceId);
+    return this.httpClient.get<FantasyPointsTeam>(environment.apiUrl + this.endpoint + '/teamPoints', {params});
   }
 
   getAllDriverPrices(raceId: number): Observable<FantasyPriceDriver[]> {
@@ -99,5 +116,10 @@ export class FantasyApiService {
         .set('raceId', raceId)
         .set('userId', userId);
     return this.httpClient.get<FantasyElection>(environment.apiUrl + this.endpoint + '/getFantasyElection', {params});
+  }
+
+  getFantasyPoints(raceId: number): Observable<FantasyPointsUser[]> {
+    let params = new HttpParams().set('raceId', raceId);
+    return this.httpClient.get<FantasyPointsUser[]>(environment.apiUrl + this.endpoint + '/getFantasyPoints', {params});
   }
 }

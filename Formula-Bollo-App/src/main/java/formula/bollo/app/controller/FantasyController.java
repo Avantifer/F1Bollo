@@ -32,6 +32,7 @@ import formula.bollo.app.model.FantasyElectionDTO;
 import formula.bollo.app.model.FantasyInfoDTO;
 import formula.bollo.app.model.FantasyPointsDriverDTO;
 import formula.bollo.app.model.FantasyPointsTeamDTO;
+import formula.bollo.app.model.FantasyPointsUserDTO;
 import formula.bollo.app.model.FantasyPriceDriverDTO;
 import formula.bollo.app.model.FantasyPriceTeamDTO;
 import formula.bollo.app.repository.FantasyElectionRepository;
@@ -51,9 +52,9 @@ import formula.bollo.app.utils.Log;
 @Tag(name = Constants.TAG_FANTASY, description = Constants.TAG_FANTASY_SUMMARY)
 public class FantasyController {
 
+    private FantasyService fantasyService;
     private ResultRepository resultRepository;
     private RaceRepository raceRepository;
-    private FantasyService fantasyService;
     private FantasyPointsDriverRepository fantasyPointsDriverRepository;
     private FantasyPriceDriverRepository fantasyPriceDriverRepository;
     private FantasyPriceTeamRepository fantasyPriceTeamRepository;
@@ -64,8 +65,8 @@ public class FantasyController {
     private FantasyElectionMapper fantasyElectionMapper;
 
     public FantasyController(
-        ResultRepository resultRepository,
         FantasyService fantasyService,
+        ResultRepository resultRepository,
         FantasyPointsDriverRepository fantasyPointsDriverRepository,
         FantasyPriceDriverRepository fantasyPriceDriverRepository,
         FantasyPriceTeamRepository fantasyPriceTeamRepository,
@@ -76,8 +77,8 @@ public class FantasyController {
         FantasyPointsMapper fantasyPointsMapper,
         FantasyElectionMapper fantasyElectionMapper
     ) {
-        this.resultRepository = resultRepository;
         this.fantasyService = fantasyService;
+        this.resultRepository = resultRepository;
         this.fantasyPointsDriverRepository = fantasyPointsDriverRepository;
         this.fantasyPriceDriverRepository = fantasyPriceDriverRepository;
         this.fantasyPriceTeamRepository = fantasyPriceTeamRepository;
@@ -112,17 +113,32 @@ public class FantasyController {
 
     @Operation(summary = "Get driver's points", tags = Constants.TAG_FANTASY)
     @GetMapping("/allDriverPoints")
-    public List<FantasyPointsDriverDTO> getDriverPoints(@RequestParam(name = "raceId", required = true) Integer raceId) {
-        Log.info("START - getDriverPoints - START");
-        Log.info("RequestParam getDriverPoints (raceId) -> " + raceId);
+    public List<FantasyPointsDriverDTO> getAllDriverPoints(@RequestParam(name = "raceId", required = true) Integer raceId) {
+        Log.info("START - getAllDriverPoints - START");
+        Log.info("RequestParam getAllDriverPoints (raceId) -> " + raceId);
 
         List<FantasyPointsDriverDTO> fantasyPointsDriverDTOs = new ArrayList<>();
-        List<FantasyPointsDriver> fantasyPriceDrivers = this.fantasyPointsDriverRepository.findByRaceId((long) raceId);
+        List<FantasyPointsDriver> fantasyPriceDrivers = this.fantasyPointsDriverRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
         fantasyPointsDriverDTOs = this.fantasyPointsMapper.convertFantasyPointsDriverToFantasyPointsDriverDTO(fantasyPriceDrivers);
     
-        Log.info("END - getDriverPoints - END");
+        Log.info("END - getAllDriverPoints - END");
         
         return fantasyPointsDriverDTOs;
+    }
+
+    @Operation(summary = "Get fantasy points of a driver", tags = Constants.TAG_FANTASY)
+    @GetMapping("/driverPoints")
+    public FantasyPointsDriverDTO getDriverPoints(@RequestParam Integer driverId, @RequestParam Integer raceId) {
+        Log.info("START - getDriverPoints - START");
+        Log.info("RequestParam getDriverPoints (driverId) -> " + driverId);
+        Log.info("RequestParam getDriverPoints (raceId) -> " + raceId);
+
+        Optional<FantasyPointsDriver> fantasyPointsDriver = this.fantasyPointsDriverRepository.findByDriverIdAndRaceId(Constants.ACTUAL_SEASON,(long) driverId,(long) raceId);
+        if (!fantasyPointsDriver.isPresent()) return new FantasyPointsDriverDTO();
+
+        FantasyPointsDriverDTO fantasyPointsDriverDTO = this.fantasyPointsMapper.fantasyPointsDriverToFantasyPointsDriverDTO(fantasyPointsDriver.get());
+        Log.info("END - getDriverPoints - END");
+        return fantasyPointsDriverDTO;
     }
 
     @Operation(summary = "Get team's points", tags = Constants.TAG_FANTASY)
@@ -132,12 +148,27 @@ public class FantasyController {
         Log.info("RequestParam getTeamPoints (raceId) -> " + raceId);
 
         List<FantasyPointsTeamDTO> fantasyPointsTeamDTOs = new ArrayList<>();
-        List<FantasyPointsTeam> fantasyPriceTeams = this.fantasyPointsTeamRepository.findByRaceId((long) raceId);
+        List<FantasyPointsTeam> fantasyPriceTeams = this.fantasyPointsTeamRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
         fantasyPointsTeamDTOs = this.fantasyPointsMapper.convertFantasyPointsTeamToFantasyPointsTeamDTO(fantasyPriceTeams);
     
         Log.info("END - getTeamPoints - END");
         
         return fantasyPointsTeamDTOs;
+    }
+
+    @Operation(summary = "Get fantasy points of a team", tags = Constants.TAG_FANTASY)
+    @GetMapping("/teamPoints")
+    public FantasyPointsTeamDTO getTeamPoints(@RequestParam Integer teamId, @RequestParam Integer raceId) {
+        Log.info("START - getTeamPoints - START");
+        Log.info("RequestParam getTeamPoints (teamId) -> " + teamId);
+        Log.info("RequestParam getTeamPoints (raceId) -> " + raceId);
+
+        Optional<FantasyPointsTeam> fantasyPointsTeam = this.fantasyPointsTeamRepository.findByTeamIdAndRaceId(Constants.ACTUAL_SEASON,(long) teamId,(long) raceId);
+        if (!fantasyPointsTeam.isPresent()) return new FantasyPointsTeamDTO();
+
+        FantasyPointsTeamDTO fantasyPointsTeamDTO = this.fantasyPointsMapper.fantasyPointsTeamToFantasyPointsTeamDTO(fantasyPointsTeam.get());
+        Log.info("END - getTeamPoints - END");
+        return fantasyPointsTeamDTO;
     }
 
     @Operation(summary = "Save driver's and team's prices", tags = Constants.TAG_FANTASY)
@@ -289,4 +320,23 @@ public class FantasyController {
         Log.info("END - getFantasyElection - END");
         return fantasyElectionDTO;
     }
+
+    @Operation(summary = "Get fantasy points of user", tags = Constants.TAG_FANTASY)
+    @GetMapping("/getFantasyPoints")
+    public List<FantasyPointsUserDTO> getFantasyPoints(@RequestParam Integer raceId) {
+        Log.info("START - getFantasyPoints - START");
+        Log.info("RequestParam getFantasyPoints (raceId) -> " + raceId);
+
+        List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
+
+        if (raceId != 0) {
+            fantasyPointsUserDTOs = this.fantasyService.getFantasyPoints(raceId);
+        } else {
+            fantasyPointsUserDTOs = this.fantasyService.sumAllFantasyPoints();
+        }
+        
+        Log.info("END - getFantasyPoints - END");
+        return fantasyPointsUserDTOs;
+    }
+
 }

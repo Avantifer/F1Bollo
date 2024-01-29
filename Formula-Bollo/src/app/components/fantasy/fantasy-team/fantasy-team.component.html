@@ -1,4 +1,4 @@
-<div class="fantasySelection bg-secondary-subtle p-5">
+<div class="fantasySelection bg-secondary-subtle py-5 px-3">
   <form [formGroup]="raceForm" class="bg-white rounded-2">
     <div class="fantasySelection-top d-flex align-items-center justify-content-between py-4 px-3 px-md-5">
       <mat-form-field *ngIf="raceSelected">
@@ -14,8 +14,8 @@
       </div>
     </div>
   </form>
-  <div class="fantasySelection-mid py-5 px-3 row gap-2 justify-content-between flex-column flex-xxl-row">
-    <form [formGroup]="fantasyForm" class="fantasySelection-mid-form py-3 py-md-4 px-md-5 rounded-2" [ngClass]="raceSelected?.finished ? 'col-12' : 'col-12 col-xxl-6'">
+  <div class="fantasySelection-mid py-5 px-3 row gap-2 flex-column flex-xxl-row" [ngClass]="raceSelected?.finished ? 'justify-content-center' : 'justify-content-between'">
+    <form [formGroup]="fantasyForm" class="fantasySelection-mid-form py-3 py-md-4 px-md-5 rounded-2" [ngClass]="raceSelected?.finished ? 'col-12 col-xxl-6' : 'col-12 col-xxl-6'">
       <h2 class="text-center mb-4">Tu equipo</h2>
       <div class="fantasySelection-mid-form-drivers row col-12 m-auto justify-content-between">
         <div class="fantasySelection-mid-form-drivers-container bg-white rounded-2 p-0 position-relative">
@@ -23,14 +23,20 @@
             class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
             role="button"
             (click)="removeDriverSelected($event.target)"
-            *ngIf="fantasyElection.driverOne">
+            *ngIf="fantasyElection.driverOne && !this.raceSelected?.finished">
             <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.driverOne && this.raceSelected?.finished && pointsDriverOne != undefined && pointsDriverOne >= 0">
+            <span>{{ pointsDriverOne }}</span>
           </div>
           <input
             readonly
             role="button"
             formControlName="driver1"
-            class="fantasySelection-optionForm driver1 w-100 h-100 position-absolute rounded-2"
+            class="fantasySelection-optionForm driver1 w-100 h-100 position-absolute rounded-2 selected"
             (click)="changeDriverTeamSelected($event.target)"
             [style.pointer-events]="fantasyElection.driverOne ? 'none' : 'all'"
             [style.background-color]="fantasyElection.driverOne ? 'transparent' : 'white'">
@@ -50,8 +56,14 @@
             class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
             role="button"
             (click)="removeDriverSelected($event.target)"
-            *ngIf="fantasyElection.driverTwo">
+            *ngIf="fantasyElection.driverTwo && !this.raceSelected?.finished">
             <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.driverTwo && this.raceSelected?.finished && pointsDriverTwo != undefined && pointsDriverTwo >= 0">
+            <span>{{ pointsDriverTwo }}</span>
           </div>
           <input
             readonly
@@ -77,8 +89,14 @@
             class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
             role="button"
             (click)="removeDriverSelected($event.target)"
-            *ngIf="fantasyElection.driverThree">
+            *ngIf="fantasyElection.driverThree && !this.raceSelected?.finished">
             <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.driverThree && this.raceSelected?.finished && pointsDriverThree != undefined && pointsDriverThree >= 0">
+            <span>{{ pointsDriverThree }}</span>
           </div>
           <input
             readonly
@@ -106,8 +124,14 @@
             class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
             role="button"
             (click)="removeTeamSelected($event.target)"
-            *ngIf="fantasyElection.teamOne">
+            *ngIf="fantasyElection.teamOne && !this.raceSelected?.finished">
             <mat-icon>close</mat-icon>
+          </div>
+          <div
+          class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+          role="button"
+          *ngIf="fantasyElection.teamOne && this.raceSelected?.finished && pointsTeamOne != undefined && pointsTeamOne >= 0">
+            <span>{{ pointsTeamOne }}</span>
           </div>
           <input
             readonly
@@ -123,7 +147,7 @@
             <img
             [src]="fantasyElection.teamOne.carImage"
             [alt]="'Imagen de ' + fantasyElection.teamOne.name"
-            class="w-100 rounded-2"
+            class="w-100"
             *ngIf="fantasyElection.teamOne">
           </div>
           <p class="text-center rounded-2">{{ fantasyElection.teamOne?.name }}</p>
@@ -133,8 +157,14 @@
             class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
             role="button"
             (click)="removeTeamSelected($event.target)"
-            *ngIf="fantasyElection.teamTwo">
+            *ngIf="fantasyElection.teamTwo && !this.raceSelected?.finished">
             <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.teamTwo && this.raceSelected?.finished && pointsTeamTwo != undefined && pointsTeamTwo >= 0">
+            <span>{{ pointsTeamTwo }}</span>
           </div>
           <input
             readonly
@@ -150,7 +180,7 @@
             <img
               [src]="fantasyElection.teamTwo.carImage"
               [alt]="'Imagen de ' + fantasyElection.teamTwo.name"
-              class="w-100 rounded-2"
+              class="w-100"
               *ngIf="fantasyElection.teamTwo">
           </div>
           <p class="text-center rounded-2">{{ fantasyElection.teamTwo?.name }}</p>

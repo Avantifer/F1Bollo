@@ -2,12 +2,15 @@ package formula.bollo.app.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.springframework.stereotype.Service;
 
+import formula.bollo.app.entity.FantasyElection;
 import formula.bollo.app.entity.FantasyPointsDriver;
 import formula.bollo.app.entity.FantasyPointsTeam;
 import formula.bollo.app.entity.FantasyPriceDriver;
@@ -15,20 +18,49 @@ import formula.bollo.app.entity.FantasyPriceTeam;
 import formula.bollo.app.entity.Race;
 import formula.bollo.app.entity.Result;
 import formula.bollo.app.entity.Season;
+import formula.bollo.app.mapper.FantasyElectionMapper;
+import formula.bollo.app.mapper.UserMapper;
+import formula.bollo.app.model.FantasyElectionDTO;
+import formula.bollo.app.model.FantasyPointsUserDTO;
+import formula.bollo.app.model.RaceDTO;
+import formula.bollo.app.model.UserDTO;
+import formula.bollo.app.repository.FantasyElectionRepository;
 import formula.bollo.app.repository.FantasyPointsDriverRepository;
+import formula.bollo.app.repository.FantasyPointsTeamRepository;
 import formula.bollo.app.repository.FantasyPriceDriverRepository;
+import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
 
 @Service
 public class FantasyService {
     
+    private RaceService raceService;
     private FantasyPriceDriverRepository fantasyPriceRepository;
-
     private FantasyPointsDriverRepository fantasyPointsRepository;
+    private FantasyElectionRepository fantasyElectionRepository;
+    private FantasyPointsDriverRepository fantasyPointsDriverRepository;
+    private FantasyPointsTeamRepository fantasyPointsTeamRepository;
+    private FantasyElectionMapper fantasyElectionMapper;
+    private UserMapper userMapper;
 
-    public FantasyService(FantasyPriceDriverRepository fantasyPriceRepository, FantasyPointsDriverRepository fantasyPointsRepository) {
+    public FantasyService(
+        RaceService raceService,
+        FantasyPriceDriverRepository fantasyPriceRepository,
+        FantasyPointsDriverRepository fantasyPointsRepository,
+        FantasyElectionRepository fantasyElectionRepository,
+        FantasyPointsDriverRepository fantasyPointsDriverRepository,
+        FantasyPointsTeamRepository fantasyPointsTeamRepository,
+        FantasyElectionMapper fantasyElectionMapper,
+        UserMapper userMapper
+    ) {
+        this.raceService = raceService;
         this.fantasyPriceRepository = fantasyPriceRepository;
         this.fantasyPointsRepository = fantasyPointsRepository;
+        this.fantasyElectionRepository = fantasyElectionRepository;
+        this.fantasyPointsDriverRepository = fantasyPointsDriverRepository;
+        this.fantasyPointsTeamRepository = fantasyPointsTeamRepository;
+        this.fantasyElectionMapper = fantasyElectionMapper;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -191,7 +223,7 @@ public class FantasyService {
 
         int newPrice = fantasyPrice.getPrice();
 
-        List<FantasyPointsDriver> fantasyPoints = this.fantasyPointsRepository.findByRaceId(result.getRace().getId());
+        List<FantasyPointsDriver> fantasyPoints = this.fantasyPointsRepository.findByRaceId(Constants.ACTUAL_SEASON, result.getRace().getId());
         FantasyPointsDriver fantasyPoint = fantasyPoints.stream()
             .filter(fp -> Objects.equals(fp.getDriver().getId(), result.getDriver().getId()))
             .findFirst()
@@ -311,5 +343,81 @@ public class FantasyService {
             })
             .sorted(Comparator.comparingDouble((FantasyPriceTeam::getPrice)))
             .collect(Collectors.toList());
+    }
+
+    public List<FantasyPointsUserDTO> getFantasyPoints(int raceId) {
+        List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
+        List<FantasyElection> fantasyElections = this.fantasyElectionRepository.findBySeasonAndRaceId(Constants.ACTUAL_SEASON, (long) raceId);
+        List<FantasyPointsDriver> fantasyPointsDrivers = this.fantasyPointsDriverRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
+        List<FantasyPointsTeam> fantasyPointsTeams = this.fantasyPointsTeamRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
+
+        for (FantasyElection fantasyElection : fantasyElections) {
+            FantasyPointsUserDTO fantasyPointsUserDTO = new FantasyPointsUserDTO();
+            UserDTO userDTO = this.userMapper.userToUserDTO(fantasyElection.getUser());
+            userDTO.setPassword("");
+            FantasyElectionDTO fantasyElectionDTO = this.fantasyElectionMapper.fantasyElectionToFantasyElectionDTO(fantasyElection);
+            int points = 0;
+
+            List<FantasyPointsDriver> driversFound = fantasyPointsDrivers.stream()
+                .filter((FantasyPointsDriver driver) -> 
+                    driver.getDriver().getId().equals(fantasyElection.getDriverOne().getId()) ||
+                    driver.getDriver().getId().equals(fantasyElection.getDriverTwo().getId()) ||
+                    driver.getDriver().getId().equals(fantasyElection.getDriverThree().getId()))
+                .collect(Collectors.toList());
+
+            List<FantasyPointsTeam> teamsFound =  fantasyPointsTeams.stream()
+                .filter((FantasyPointsTeam team) -> 
+                    team.getTeam().getId().equals(fantasyElection.getTeamOne().getId()) ||
+                    team.getTeam().getId().equals(fantasyElection.getTeamTwo().getId()))
+                .collect(Collectors.toList());
+
+            for(FantasyPointsDriver driver: driversFound) {
+                points += driver.getPoints();
+            }
+
+            for(FantasyPointsTeam team: teamsFound) {
+                points += team.getPoints();
+            }
+
+            fantasyPointsUserDTO.setUser(userDTO);
+            fantasyPointsUserDTO.setFantasyElection(fantasyElectionDTO);
+            fantasyPointsUserDTO.setTotalPoints(points);
+            fantasyPointsUserDTOs.add(fantasyPointsUserDTO);
+        }
+
+        fantasyPointsUserDTOs = fantasyPointsUserDTOs.stream()
+        .sorted(Comparator.comparingInt(FantasyPointsUserDTO::getTotalPoints).reversed())
+        .collect(Collectors.toList());
+
+        return fantasyPointsUserDTOs;
+    }
+
+    public List<FantasyPointsUserDTO> sumAllFantasyPoints() {
+        List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
+        List<RaceDTO> raceDTOsNotFinishedAndNextOne = this.raceService.getAllPreviousRaces(Constants.ACTUAL_SEASON);
+
+        for (RaceDTO race : raceDTOsNotFinishedAndNextOne) {
+            fantasyPointsUserDTOs.addAll(this.getFantasyPoints(Integer.parseInt(race.getId().toString())));
+        }
+
+        Map<Long, FantasyPointsUserDTO> userPointsMap = new HashMap<>();
+
+        for (FantasyPointsUserDTO fantasyPointsUserDTO : fantasyPointsUserDTOs) {
+            Long userId = fantasyPointsUserDTO.getUser().getId();
+            
+            if (userPointsMap.containsKey(userId)) {
+                FantasyPointsUserDTO existingUserDTO = userPointsMap.get(userId);
+                existingUserDTO.setTotalPoints(existingUserDTO.getTotalPoints() + fantasyPointsUserDTO.getTotalPoints());
+            } else {
+                userPointsMap.put(userId, fantasyPointsUserDTO);
+            }
+        }
+
+        fantasyPointsUserDTOs = new ArrayList<>(userPointsMap.values())
+            .stream()
+            .sorted(Comparator.comparingInt(FantasyPointsUserDTO::getTotalPoints).reversed())
+            .collect(Collectors.toList());
+
+        return fantasyPointsUserDTOs;
     }
 }

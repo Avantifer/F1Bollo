@@ -1,6 +1,8 @@
 package formula.bollo.app.services;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -39,5 +41,30 @@ public class RaceService {
         }
 
         raceRepository.save(race);
+    }
+
+    public List<RaceDTO> getAllPreviousAndNextOne(int numberSeason) {
+        List<Race> races = this.raceRepository.findBySeason(numberSeason);
+        List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
+        raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
+
+        List<RaceDTO> raceDTOsNotFinishedAndNextOne = raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
+        
+        for(RaceDTO raceDTO: raceDTOs) {
+            if (raceDTO.getFinished() == 0) {
+                raceDTOsNotFinishedAndNextOne.add(raceDTO);
+                break;
+            }
+        }
+
+        return raceDTOs;
+    }
+
+    public List<RaceDTO> getAllPreviousRaces(int numberSeason) {
+        List<Race> races = this.raceRepository.findBySeason(numberSeason);
+        List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
+        raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
+
+        return raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
     }
 }
