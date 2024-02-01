@@ -14,7 +14,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -100,7 +99,6 @@ import { FantasyDialogTeamComponent } from './components/fantasy/fantasy-dialog-
     MatSelectModule,
     MatTableModule,
     MatCardModule,
-    FontAwesomeModule,
     MatProgressBarModule,
     MatDialogModule
   ],
