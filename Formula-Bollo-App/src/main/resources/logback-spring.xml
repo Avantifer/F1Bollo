@@ -1,5 +1,5 @@
 <!-- DESARROLLO -->
-<!-- <configuration>
+<configuration>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>../logs/logs.log</file> 
         <encoder>
@@ -14,10 +14,10 @@
     <root level="INFO">
         <appender-ref ref="FILE" />
     </root>
-</configuration> -->
+</configuration>
 
 <!-- PRODUCCION -->
-<configuration>
+<!-- <configuration>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/opt/logs/logs.log</file> 
         <encoder>
@@ -32,4 +32,4 @@
     <root level="INFO">
         <appender-ref ref="FILE" />
     </root>
-</configuration>
+</configuration> -->

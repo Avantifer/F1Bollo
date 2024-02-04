@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
-  seasonActual: 1,
+  seasonActual: 2,
 };

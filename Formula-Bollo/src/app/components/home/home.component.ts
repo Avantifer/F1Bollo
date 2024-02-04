@@ -39,7 +39,6 @@ export class HomeComponent {
     this.obtainAllTeams();
     this.obtainAllConfigurations();
     this.obtainAllPointsDriver();
-    this.obtainAllDrivers();
   }
 
   ngOnDestroy(): void {
@@ -128,6 +127,11 @@ export class HomeComponent {
           this.messageService.showInformation('No se puedo obtener los puntos de los pilotos correctamente');
           console.log(error);
           throw error;
+        },
+        complete: () => {
+          if (this.driverPoints.length === 0) {
+            this.obtainAllDrivers();
+          }
         }
       });
   }
