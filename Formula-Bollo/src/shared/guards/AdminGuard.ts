@@ -1,23 +1,28 @@
 import { Injectable } from "@angular/core";
 import { Router, UrlTree } from "@angular/router";
-import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable } from "rxjs";
+import { AuthJWTService } from "../services/authJWT.service";
+import { MessageService } from "../services/message.service";
 
 @Injectable()
 export class AdminGuard {
 
-  constructor(private router: Router, private jwt: JwtHelperService) {}
+  constructor(
+    private router: Router,
+    private authJWTService: AuthJWTService,
+    private messageService: MessageService
+  ) {}
 
   canActivate():Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    try {
-      let token = this.jwt.decodeToken(localStorage.getItem('auth')!);
-      if (token.sub == token.userId) {
+    if (localStorage.getItem('auth')) {
+      if (this.authJWTService.checkAdmin(localStorage.getItem('auth')!)) {
         return true;
       } else {
+        this.router.navigate(['/']);
+        this.messageService.showInformation('No tienes permisos para acceder a esta página');
         return false;
       }
-    } catch (error) {
-      localStorage.removeItem('auth');
+    } else {
       this.router.navigate(['/login']);
       return false;
     }

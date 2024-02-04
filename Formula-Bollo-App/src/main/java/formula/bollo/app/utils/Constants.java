@@ -8,8 +8,8 @@ public class Constants {
     private Constants() { }
     
     // Tags
-    public static final String TAG_ADMIN = "Admin";
-    public static final String TAG_ADMIN_SUMMARY = "Operations related with admins";
+    public static final String TAG_USER = "User";
+    public static final String TAG_USER_SUMMARY = "Operations related with users";
 
     public static final String TAG_ARCHIVE = "Archives";
     public static final String TAG_ARCHIVE_SUMMARY = "Operations related with files";
@@ -41,8 +41,11 @@ public class Constants {
     public static final String TAG_SEASON = "Seasons";
     public static final String TAG_SEASON_SUMMARY = "Operations related with seasons";
 
+    public static final String TAG_FANTASY = "Fantasy";
+    public static final String TAG_FANTASY_SUMMARY = "Operations related with fantasy section";
+
     // Endpoints
-    public static final String ENDPOINT_ADMIN = "/admin";
+    public static final String ENDPOINT_USER = "/user";
     public static final String ENDPOINT_ARCHIVES = "/archives";
     public static final String ENDPOINT_CIRCUIT = "/circuits";
     public static final String ENDPOINT_CONFIGURATION = "/configurations";
@@ -53,19 +56,23 @@ public class Constants {
     public static final String ENDPOINT_RESULT = "/results";
     public static final String ENDPOINT_TEAMS = "/teams";
     public static final String ENDPOINT_SEASONS = "/seasons";
-
+    public static final String ENDPOINT_FANTASY = "/fantasy";
+    
     // Errors
     public static final String ERROR_UNEXPECTED = "Error inesperado";
     public static final String ERROR_BBDD_GENERIC = "Hubo un problema con la base de datos";
     public static final String ERROR_GENERIC = "Hubo un error. Contacta con el administrador";
     public static final String ERROR_INVALID_CREDENTIALS = "Las credenciales no son válidas";
     public static final String ERROR_SEASON = "Hubo un problema con las temporadas";
+    public static final String ERROR_USERNAME_ALREADY_EXISTS = "El usuario ya existe con ese nombre";
+    public static final String ERROR_EMAIL_ALREADY_EXISTS = "El correo ya ha sido utilizado";
+    public static final String ERROR_USER_NOT_EXISTS = "El usuario no existe";
     
     //Urls
     public static final String PRODUCTION_FRONTEND = "https://formulabollo.es/";
     public static final String LOCAL_FRONTEND = "http://localhost:4200";
 
-    public static final int ACTUAL_SEASON = 1;
+    public static final int ACTUAL_SEASON = 2;
     public static final HttpHeaders HEADERS_TEXT_PLAIN = createHeaders();
     
     private static HttpHeaders createHeaders() {

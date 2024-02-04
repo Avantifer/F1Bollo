@@ -28,4 +28,14 @@ export class RaceApiService {
     });
     return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/save", race, {headers, params, responseType: 'text' as 'json'});
   }
+
+  getAllPreviousAndNextOne(seasonNumber?: number): Observable<Race[]> {
+    const params = seasonNumber ? new HttpParams().set('season', seasonNumber) : undefined;
+    return this.httpClient.get<Race[]>(environment.apiUrl + this.endpoint + "/allPreviousAndNextOne", {params});
+  }
+
+  getAllPrevious(seasonNumber?: number): Observable<Race[]> {
+    const params = seasonNumber ? new HttpParams().set('season', seasonNumber) : undefined;
+    return this.httpClient.get<Race[]>(environment.apiUrl + this.endpoint + "/allPrevious", {params});
+  }
 }

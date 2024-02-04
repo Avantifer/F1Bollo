@@ -38,9 +38,10 @@ public class Team {
     @NotNull
     private Blob teamImage;
 
-    @Column(name = "logo_image", nullable = false, length = 250)
+    @JsonIgnore
+    @Column(name = "logo_image", nullable = false, columnDefinition = "BLOB")
     @NotNull
-    private String logoImage;
+    private Blob logoImage;
 
     @ManyToOne
     @JoinColumn(name = "season_id")

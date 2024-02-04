@@ -1,0 +1,354 @@
+<div class="fantasySelection bg-secondary-subtle py-5 px-3">
+  <form [formGroup]="raceForm" class="bg-white rounded-2">
+    <div class="fantasySelection-top d-flex align-items-center justify-content-between py-4 px-3 px-md-5">
+      <mat-form-field *ngIf="raceSelected">
+        <mat-select formControlName="race" [(value)]="raceSelected">
+          <mat-option *ngFor="let race of races" [value]="race">
+            {{ race.circuit.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="fantasySelection-top-price d-flex ms-4 ms-md-0">
+        <mat-icon fontIcon="attach_money" class="fw-bold" [class]="price >= 0 ? 'positive' : 'negative'"></mat-icon>
+        <span [class]="price >= 0 ? 'positive' : 'negative'" *ngIf="price | isNanPipe">{{ price | pricePipe }}</span>
+      </div>
+    </div>
+  </form>
+  <div class="fantasySelection-mid py-5 px-3 row gap-2 flex-column flex-xxl-row" [ngClass]="raceSelected?.finished ? 'justify-content-center' : 'justify-content-between'">
+    <form [formGroup]="fantasyForm" class="fantasySelection-mid-form py-3 py-md-4 px-md-5 rounded-2" [ngClass]="raceSelected?.finished ? 'col-12 col-xxl-6' : 'col-12 col-xxl-6'">
+      <h2 class="text-center mb-4">Tu equipo</h2>
+      <div class="fantasySelection-mid-form-drivers row col-12 m-auto justify-content-between">
+        <div class="fantasySelection-mid-form-drivers-container bg-white rounded-2 p-0 position-relative">
+          <div
+            class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            (click)="removeDriverSelected($event.target)"
+            *ngIf="fantasyElection.driverOne && !this.raceSelected?.finished">
+            <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.driverOne && this.raceSelected?.finished && pointsDriverOne != undefined && pointsDriverOne >= 0">
+            <span>{{ pointsDriverOne }}</span>
+          </div>
+          <input
+            readonly
+            role="button"
+            formControlName="driver1"
+            class="fantasySelection-optionForm driver1 w-100 h-100 position-absolute rounded-2 selected"
+            (click)="changeDriverTeamSelected($event.target)"
+            [style.pointer-events]="fantasyElection.driverOne ? 'none' : 'all'"
+            [style.background-color]="fantasyElection.driverOne ? 'transparent' : 'white'">
+          <div
+            class="fantasySelection-mid-form-drivers-container-photo position-relative"
+            [class]="fantasyElection.driverOne ? 'fantasySelection-mid-form-drivers-container-photo-' + fantasyElection.driverOne.team.name.split(' ')[0] : null">
+            <img
+            [src]="'data:image/jpg;base64,' + fantasyElection.driverOne.driverImage"
+            [alt]="'Imagen de ' + fantasyElection.driverOne.name"
+            class="position-absolute"
+            *ngIf="fantasyElection.driverOne">
+          </div>
+          <p class="text-center rounded-2">{{ fantasyElection.driverOne?.name }}</p>
+        </div>
+        <div class="fantasySelection-mid-form-drivers-container bg-white rounded-2 p-0 position-relative">
+          <div
+            class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            (click)="removeDriverSelected($event.target)"
+            *ngIf="fantasyElection.driverTwo && !this.raceSelected?.finished">
+            <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.driverTwo && this.raceSelected?.finished && pointsDriverTwo != undefined && pointsDriverTwo >= 0">
+            <span>{{ pointsDriverTwo }}</span>
+          </div>
+          <input
+            readonly
+            role="button"
+            formControlName="driver2"
+            class="fantasySelection-optionForm driver2 w-100 h-100 position-absolute rounded-2"
+            (click)="changeDriverTeamSelected($event.target)"
+            [style.pointer-events]="fantasyElection.driverTwo ? 'none' : 'all'"
+            [style.background-color]="fantasyElection.driverTwo ? 'transparent' : 'white'">
+          <div
+            class="fantasySelection-mid-form-drivers-container-photo position-relative"
+            [class]="fantasyElection.driverTwo ? 'fantasySelection-mid-form-drivers-container-photo-' + fantasyElection.driverTwo.team.name.split(' ')[0] : null">
+            <img
+              [src]="'data:image/jpg;base64,' + fantasyElection.driverTwo.driverImage"
+              [alt]="'Imagen de ' + fantasyElection.driverTwo.name"
+              class="position-absolute"
+              *ngIf="fantasyElection.driverTwo">
+          </div>
+          <p class="text-center rounded-2">{{ fantasyElection.driverTwo?.name }}</p>
+        </div>
+        <div class="fantasySelection-mid-form-drivers-container bg-white rounded-2 p-0 position-relative">
+          <div
+            class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            (click)="removeDriverSelected($event.target)"
+            *ngIf="fantasyElection.driverThree && !this.raceSelected?.finished">
+            <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.driverThree && this.raceSelected?.finished && pointsDriverThree != undefined && pointsDriverThree >= 0">
+            <span>{{ pointsDriverThree }}</span>
+          </div>
+          <input
+            readonly
+            role="button"
+            formControlName="driver3"
+            class="fantasySelection-optionForm driver3 w-100 h-100 position-absolute rounded-2"
+            (click)="changeDriverTeamSelected($event.target)"
+            [style.pointer-events]="fantasyElection.driverThree ? 'none' : 'all'"
+            [style.background-color]="fantasyElection.driverThree ? 'transparent' : 'white'">
+          <div
+            class="fantasySelection-mid-form-drivers-container-photo position-relative"
+            [class]="fantasyElection.driverThree ? 'fantasySelection-mid-form-drivers-container-photo-' + fantasyElection.driverThree.team.name.split(' ')[0] : null">
+            <img
+            [src]="'data:image/jpg;base64,' + fantasyElection.driverThree.driverImage"
+            [alt]="'Imagen de ' + fantasyElection.driverThree.name"
+            class="position-absolute"
+            *ngIf="fantasyElection.driverThree">
+          </div>
+          <p class="text-center rounded-2">{{ fantasyElection.driverThree?.name }}</p>
+        </div>
+      </div>
+      <div class="fantasySelection-mid-form-teams flex-row mt-4 row col-12 justify-content-between m-auto">
+        <div class="fantasySelection-mid-form-teams-container bg-white rounded-2 mb-2 mb-md-0 p-0 position-relative">
+          <div
+            class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            (click)="removeTeamSelected($event.target)"
+            *ngIf="fantasyElection.teamOne && !this.raceSelected?.finished">
+            <mat-icon>close</mat-icon>
+          </div>
+          <div
+          class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+          role="button"
+          *ngIf="fantasyElection.teamOne && this.raceSelected?.finished && pointsTeamOne != undefined && pointsTeamOne >= 0">
+            <span>{{ pointsTeamOne }}</span>
+          </div>
+          <input
+            readonly
+            role="button"
+            formControlName="team1"
+            class="fantasySelection-optionForm team1 position-absolute rounded-2"
+            [style.pointer-events]="fantasyElection.teamOne ? 'none' : 'all'"
+            [style.background-color]="fantasyElection.teamOne ? 'transparent' : 'white'"
+            (click)="changeDriverTeamSelected($event.target)">
+          <div
+            class="fantasySelection-mid-form-teams-container-photo"
+            [class]="fantasyElection.teamOne ? 'fantasySelection-mid-form-drivers-container-photo-' + fantasyElection.teamOne.name.split(' ')[0] : null">
+            <img
+            [src]="fantasyElection.teamOne.carImage"
+            [alt]="'Imagen de ' + fantasyElection.teamOne.name"
+            class="w-100"
+            *ngIf="fantasyElection.teamOne">
+          </div>
+          <p class="text-center rounded-2">{{ fantasyElection.teamOne?.name }}</p>
+        </div>
+        <div class="fantasySelection-mid-form-teams-container bg-white rounded-2 p-0 position-relative">
+          <div
+            class="fantasySelection-mid-form-drivers-container-close position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            (click)="removeTeamSelected($event.target)"
+            *ngIf="fantasyElection.teamTwo && !this.raceSelected?.finished">
+            <mat-icon>close</mat-icon>
+          </div>
+          <div
+            class="fantasySelection-mid-form-drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
+            role="button"
+            *ngIf="fantasyElection.teamTwo && this.raceSelected?.finished && pointsTeamTwo != undefined && pointsTeamTwo >= 0">
+            <span>{{ pointsTeamTwo }}</span>
+          </div>
+          <input
+            readonly
+            role="button"
+            formControlName="team2"
+            class="fantasySelection-optionForm team2 position-absolute rounded-2"
+            [style.pointer-events]="fantasyElection.teamTwo ? 'none' : 'all'"
+            [style.background-color]="fantasyElection.teamTwo ? 'transparent' : 'white'"
+            (click)="changeDriverTeamSelected($event.target)">
+          <div
+            class="fantasySelection-mid-form-teams-container-photo"
+            [class]="fantasyElection.teamTwo ? 'fantasySelection-mid-form-drivers-container-photo-' + fantasyElection.teamTwo.name.split(' ')[0] : null">
+            <img
+              [src]="fantasyElection.teamTwo.carImage"
+              [alt]="'Imagen de ' + fantasyElection.teamTwo.name"
+              class="w-100"
+              *ngIf="fantasyElection.teamTwo">
+          </div>
+          <p class="text-center rounded-2">{{ fantasyElection.teamTwo?.name }}</p>
+        </div>
+      </div>
+      <div class="fantasySelection-bottom d-flex justify-content-center mt-4 mt-md-5">
+        <button
+          mat-button
+          class="fantasySelection-bottom-button py-2 px-5 shadow"
+          (click)="saveFantasyElection()"
+          *ngIf="!this.raceSelected?.finished">Guardar</button>
+      </div>
+    </form>
+
+    <div class="fantasySelection-mid-table bg-white col-12 col-xxl-5 rounded-2 mt-4 mt-xxl-0" *ngIf="!raceSelected?.finished">
+      <div class="fantasySelection-mid-table-top row mb-2">
+        <div class="fantasySelection-mid-table-top-option col-6 selected d-flex justify-content-center my-2" role="button" (click)="changeOptionSelected($event.target)">
+          <span class="pe-none">Pilotos</span>
+        </div>
+        <div class="fantasySelection-mid-table-top-option col-6 d-flex justify-content-center my-2" role="button" (click)="changeOptionSelected($event.target)">
+          <span class="pe-none">Equipos</span>
+        </div>
+      </div>
+      <div class="fantasySelection-mid-table-finder">
+        <form [formGroup]="driverFinderForm" *ngIf="optionSelected === 'Pilotos'">
+          <input
+            formControlName="finder"
+            mat-input
+            type="text"
+            placeholder="Busca a un piloto..."
+            class="w-100 mb-2 rounded-2"
+            spellcheck="false">
+        </form>
+        <form [formGroup]="teamFinderForm" *ngIf="optionSelected === 'Equipos'">
+          <input
+            formControlName="finder"
+            mat-input
+            type="text"
+            placeholder="Busca a un equipo..."
+            class="w-100 mb-2 rounded-2"
+            spellcheck="false">
+        </form>
+      </div>
+      <div class="fantasySelection-mid-table-order d-flex justify-content-evenly align-items-center mb-2 rounded-2 py-2">
+        <p class="m-0 text-uppercase fw-bold d-none d-md-block">Ordenar por: </p>
+        <div class="fantasySelection-mid-table-order-item d-flex align-items-center" role="button" *ngFor="let order of orders" (click)="changeOrder(order)">
+          <p class="m-0">{{ order.name }}</p>
+          <mat-icon fontIcon="expand_less" *ngIf="order.value === 'ASC'"></mat-icon>
+          <mat-icon fontIcon="expand_more" class="ms-0" *ngIf="order.value === 'DESC'"></mat-icon>
+        </div>
+      </div>
+      <div class="fantasySelection-mid-table-bottom rounded-2" *ngIf="optionSelected === 'Pilotos'">
+        <div class="fantasySelection-mid-table-bottom-drivers d-flex mb-2 me-1 rounded-2 overflow-hidden" *ngFor="let driver of driversList">
+          <img
+            [src]="'data:image/jpg;base64,' + driver.driver.driverImage"
+            [alt]="'Imagen de ' + driver.driver.name"
+            class="fantasySelection-mid-table-bottom-drivers-image"
+            [class]="'fantasySelection-mid-table-bottom-drivers-image-' + driver.driver.team.name">
+          <div class="fantasySelection-mid-table-bottom-drivers-info d-flex py-2">
+            <div class="fantasySelection-mid-table-bottom-drivers-info-driver d-flex flex-column justify-content-between">
+              <div class="fantasySelection-mid-table-bottom-drivers-info-driver-visual d-flex align-items-baseline">
+                <div
+                  class="fantasySelection-mid-table-bottom-drivers-info-driver-visual-team d-flex justify-content-center align-items-center"
+                  [class]="'fantasySelection-mid-table-bottom-drivers-info-driver-visual-team-' + driver.driver.team.name">
+                  <img [src]="'data:image/jpg;base64,' + driver.driver.team.teamImage" [alt]="'Imagen del equipo ' + driver.driver.team.name">
+                </div>
+                <span class="ms-2">{{ driver.driver.name }}</span>
+              </div>
+              <div class="fantasySelection-mid-table-bottom-drivers-info-driver-price d-flex ms-1">
+                <div class="fantasySelection-mid-table-bottom-drivers-info-driver-price-info d-flex">
+                  <div>
+                    <mat-icon fontIcon="attach_money"></mat-icon>
+                  </div>
+                  <span class="me-1">{{ driver.price | pricePipe }}</span>
+                  <span *ngIf="driver.differencePrice! > 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-goodDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_less"></mat-icon>
+                    {{ driver.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                  <span *ngIf="driver.differencePrice! === 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-equalDifference d-flex align-items-center ms-1 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path d="M48 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48zm0 192c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48z"/>
+                    </svg>
+                    {{ driver.differencePrice! }}%
+                  </span>
+                  <span *ngIf="driver.differencePrice! < 0" class="fantasySelection-mid-table-bottom-drivers-info-driver-price-badDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_more"></mat-icon>
+                    {{ driver.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="fantasySelection-mid-table-bottom-drivers-info-points row align-items-center ms-1 ms-md-0 mt-1">
+              <span class="col-12 col-md-5 text-center">Total {{ driver.totalPoints }}</span>
+              <span class="col-12 col-md-6 text-center">Media {{ driver.averagePoints }}</span>
+            </div>
+          </div>
+          <div
+            class="fantasySelection-mid-table-bottom-drivers-button d-flex flex-column justify-content-between ms-auto"
+            (click)="addDriverToSelection(driver)"
+            *ngIf="comprobateIfDriverIsElected(driver)">
+            <button class="h-100 ms-auto d-flex align-items-center justify-content-center rounded-1">
+              <mat-icon fontIcon="add"></mat-icon>
+            </button>
+          </div>
+          <div
+            class="fantasySelection-mid-table-bottom-drivers-button fantasySelection-mid-table-bottom-drivers-button-selected d-flex flex-column justify-content-between ms-auto"
+            *ngIf="!comprobateIfDriverIsElected(driver)">
+            <button class="h-100 ms-auto d-flex align-items-center justify-content-center rounded-1" disabled>
+              <mat-icon fontIcon="add"></mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fantasySelection-mid-table-bottom rounded-2" *ngIf="optionSelected === 'Equipos'">
+        <div class="fantasySelection-mid-table-bottom-teams d-flex mb-2 me-1 rounded-2 overflow-hidden " *ngFor="let team of teamsList">
+          <div class="fantasySelection-mid-table-bottom-teams-image position-relative" [class]="'fantasySelection-mid-table-bottom-teams-image-' + team.team.name">
+            <img [src]="team.team.carImage" [alt]="'Imagen coche de ' + team.team.name" class="fantasySelection-mid-table-bottom-teams-image-car position-absolute h-100">
+            <img [src]="'data:image/jpg;base64,' + team.team.logoImage" [alt]="'Imagen logo de ' + team.team.name" class="fantasySelection-mid-table-bottom-teams-image-logo position-absolute">
+          </div>
+          <div class="fantasySelection-mid-table-bottom-teams-info d-flex py-2">
+            <div class="fantasySelection-mid-table-bottom-teams-info-team d-flex flex-column justify-content-between">
+              <div class="fantasySelection-mid-table-bottom-teams-info-team-visual d-flex align-items-baseline">
+                <span class="ms-2">{{ team.team.name }}</span>
+              </div>
+              <div class="fantasySelection-mid-table-bottom-teams-info-team-price d-flex ms-1">
+                <div class="fantasySelection-mid-table-bottom-teams-info-team-price-info d-flex">
+                  <div>
+                    <mat-icon fontIcon="attach_money"></mat-icon>
+                  </div>
+                  <span class="me-1">{{ team.price | pricePipe }}</span>
+                  <span *ngIf="team.differencePrice! > 0" class="fantasySelection-mid-table-bottom-teams-info-team-price-goodDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_less"></mat-icon>
+                    {{ team.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                  <span *ngIf="team.differencePrice! === 0" class="fantasySelection-mid-table-bottom-teams-info-team-price-equalDifference d-flex align-items-center ms-1 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path d="M48 128c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48zm0 192c-17.7 0-32 14.3-32 32s14.3 32 32 32H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H48z"/>
+                    </svg>
+                    {{ team.differencePrice! }}%
+                  </span>
+                  <span *ngIf="team.differencePrice! < 0" class="fantasySelection-mid-table-bottom-teams-info-team-price-badDifference d-flex align-items-center mb-1">
+                    <mat-icon fontIcon="expand_more"></mat-icon>
+                    {{ team.differencePrice! | number:'0.0-2'}}%
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="fantasySelection-mid-table-bottom-teams-info-points row align-items-center ms-0 ms-sm-5 ms-md-0 mt-1">
+              <span class="col-12 col-md-5">Total {{ team.totalPoints }}</span>
+              <span class="col-12 col-md-6">Media {{ team.averagePoints }}</span>
+            </div>
+          </div>
+          <div
+            class="fantasySelection-mid-table-bottom-drivers-button d-flex flex-column justify-content-between ms-auto"
+            (click)="addTeamToSelection(team)"
+            *ngIf="comprobateIfTeamIsElected(team)">
+            <button class="h-100 ms-auto d-flex align-items-center justify-content-center rounded-1">
+              <mat-icon fontIcon="add"></mat-icon>
+            </button>
+          </div>
+          <div
+            class="fantasySelection-mid-table-bottom-drivers-button fantasySelection-mid-table-bottom-drivers-button-selected d-flex flex-column justify-content-between ms-auto"
+            *ngIf="!comprobateIfTeamIsElected(team)">
+            <button class="h-100 ms-auto d-flex align-items-center justify-content-center rounded-1" disabled>
+              <mat-icon fontIcon="add"></mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,8 +1,9 @@
 package formula.bollo.app.services;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import formula.bollo.app.entity.Race;
@@ -13,11 +14,14 @@ import formula.bollo.app.repository.RaceRepository;
 @Service
 public class RaceService {
     
-    @Autowired
-    private RaceMapper raceMapper;
+    private final RaceMapper raceMapper;
 
-    @Autowired
-    private RaceRepository raceRepository;
+    private final RaceRepository raceRepository;
+
+    public RaceService(RaceMapper raceMapper, RaceRepository raceRepository) {
+        this.raceMapper = raceMapper;
+        this.raceRepository = raceRepository;
+    }
 
     /**
      * Saves or updates a race based on the provided RaceDTO.
@@ -37,5 +41,42 @@ public class RaceService {
         }
 
         raceRepository.save(race);
+    }
+
+    /**
+     * Retrieves a list of all previous races and the next unfinished race for a given season.
+     *
+     * @param numberSeason The season for which races are to be retrieved.
+     * @return List of RaceDTO objects representing all previous races and the next unfinished race.
+    */
+    public List<RaceDTO> getAllPreviousAndNextOne(int numberSeason) {
+        List<Race> races = this.raceRepository.findBySeason(numberSeason);
+        List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
+        raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
+
+        List<RaceDTO> raceDTOsNotFinishedAndNextOne = raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
+        
+        for(RaceDTO raceDTO: raceDTOs) {
+            if (raceDTO.getFinished() == 0) {
+                raceDTOsNotFinishedAndNextOne.add(raceDTO);
+                break;
+            }
+        }
+
+        return raceDTOs;
+    }
+
+    /**
+     * Retrieves a list of all previous races for a given season.
+     *
+     * @param numberSeason The season for which races are to be retrieved.
+     * @return List of RaceDTO objects representing all previous races.
+    */
+    public List<RaceDTO> getAllPreviousRaces(int numberSeason) {
+        List<Race> races = this.raceRepository.findBySeason(numberSeason);
+        List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
+        raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
+
+        return raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
     }
 }

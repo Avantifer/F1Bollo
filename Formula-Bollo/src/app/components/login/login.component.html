@@ -1,7 +1,7 @@
 <div class="login bg-dark">
   <div class="container d-flex align-items-center justify-content-center h-100">
-    <div class="login-card bg-white">
-      <div class="login-card-title fst-italic my-5">Login</div>
+    <div class="login-card bg-white py-5">
+      <div class="login-card-title fst-italic">Iniciar Sesión</div>
       <div class="login-card-form">
         <form [formGroup]="loginForm" class="form text-center w-75 m-auto">
           <p class="login-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">
@@ -15,6 +15,7 @@
               placeholder="Nombre de Usuario"
               autocomplete="off"
             />
+            <mat-error *ngIf="loginForm.get('username')?.invalid">Necesitas poner el nombre de usuario</mat-error>
           </mat-form-field>
           <p class="login-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">Contraseña</p>
           <mat-form-field appearance="fill">
@@ -38,8 +39,9 @@
                 >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
               >
             </span>
+            <mat-error *ngIf="loginForm.get('password')?.invalid">Necesitas poner la contraseña</mat-error>
           </mat-form-field>
-          <button mat-button class="login-card-form-button mt-4 py-1 w-65" (click)="login()">Login</button>
+          <button mat-button class="login-card-form-button mt-4 py-1 w-65" (click)="login()">Iniciar Sesión</button>
         </form>
       </div>
     </div>

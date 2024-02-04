@@ -15,8 +15,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./src/webpack.config.js",
+              "replaceDuplicatePlugins": true
+            },
             "allowedCommonJsDependencies": [
               "pdfjs-dist"
             ],
@@ -68,8 +72,8 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
-              "optimization": false,
+              "buildOptimizer": true,
+              "optimization": true,
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
@@ -82,10 +86,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Formula-Bollo:build:production"
+              "buildTarget": "Formula-Bollo:build:production"
             },
             "development": {
-              "browserTarget": "Formula-Bollo:build:development"
+              "buildTarget": "Formula-Bollo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -93,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Formula-Bollo:build"
+            "buildTarget": "Formula-Bollo:build"
           }
         },
         "test": {

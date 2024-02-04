@@ -2,7 +2,53 @@
 
 .navbar {
   background-color: $red;
+  color: white;
   height: 4.7rem;
+
+  &-fantasy {
+    background-color: $fantasyblue;
+    color: black;
+  }
+
+  &-collapse {
+    margin-left: 8rem;
+  }
+
+  &-text {
+    &-button {
+      &-fantasy {
+        border: none;
+        background: rgba($fantasyblue, 0.9);
+        font-size: 1.25rem;
+        border-radius: 0.5rem;
+        padding: 0.35rem 2rem;
+        color: white;
+        text-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
+        font-family: 'F1-REGULAR';
+
+        &:hover {
+          background: $fantasyblue;
+          transform: translate(-1px, -1px);
+        }
+      }
+
+      &-formula {
+        border: none;
+        background: rgba($red, 0.9);
+        font-size: 1.25rem;
+        border-radius: 0.5rem;
+        padding: 0.35rem 2rem;
+        color: white;
+        text-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
+        font-family: 'F1-REGULAR';
+
+        &:hover {
+          background: $red;
+          transform: translate(-1px, -1px);
+        }
+      }
+    }
+  }
 
   &-nav {
     display: flex;
@@ -16,21 +62,16 @@
   }
 
   &-toggler {
-    border-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255) !important;
 
     &-icon {
-      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
     }
   }
 
   .logo {
     width: 4.25rem;
     height: auto;
-  }
-
-
-  .navbar-collapse {
-    margin-left: 7rem;
   }
 
   .nav-item {
@@ -60,6 +101,7 @@
       font-weight: bold !important;
     }
   }
+
 }
 
 @include media-breakpoint-down(lg) {

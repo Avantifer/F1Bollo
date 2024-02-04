@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Penalty;
@@ -18,17 +17,22 @@ import formula.bollo.app.model.PenaltyDTO;
 @Component
 public class PenaltyImpl implements PenaltyMapper {
 
-    @Autowired
     private RaceMapper raceMapper;
-
-    @Autowired
     private DriverMapper driverMapper;
-
-    @Autowired
     private PenaltySeverityMapper penaltySeverityMapper;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public PenaltyImpl(
+        RaceMapper raceMapper,
+        DriverMapper driverMapper,
+        PenaltySeverityMapper penaltySeverityMapper,
+        SeasonMapper seasonMapper
+    ) {
+        this.raceMapper = raceMapper;
+        this.driverMapper = driverMapper;
+        this.penaltySeverityMapper = penaltySeverityMapper;
+        this.seasonMapper = seasonMapper;
+    }
 
     /**
      * Converts a PenaltyDTO object to a Penalty object.
