@@ -7,7 +7,6 @@ import java.util.Base64;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Team;
@@ -19,8 +18,11 @@ import formula.bollo.app.utils.Log;
 @Component
 public class TeamImpl implements TeamMapper{
     
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public TeamImpl(SeasonMapper seasonMapper) {
+        this.seasonMapper = seasonMapper;
+    }
 
     /**
      * Converts a TeamDTO object to a Team object.
@@ -33,10 +35,15 @@ public class TeamImpl implements TeamMapper{
         Team team = new Team();
 
         try {
-            byte[] decodedByte = Base64.getDecoder().decode(teamDTO.getTeamImage());
-            Blob teamImage = new SerialBlob(decodedByte);
+            byte[] decodedByteTeamImage = Base64.getDecoder().decode(teamDTO.getTeamImage());
+            Blob teamImage = new SerialBlob(decodedByteTeamImage);
+
+            byte[] decodedByteLogoImage = Base64.getDecoder().decode(teamDTO.getLogoImage());
+            Blob logoImage = new SerialBlob(decodedByteLogoImage);
+
             BeanUtils.copyProperties(teamDTO, team);
             team.setTeamImage(teamImage);
+            team.setLogoImage(logoImage);
         } catch (SQLException | IllegalArgumentException e) {
             Log.error("No se ha podido obtener el blob de base64: ", e);
         }
@@ -58,8 +65,11 @@ public class TeamImpl implements TeamMapper{
 
         try {
             String teamImage = Base64.getEncoder().encodeToString(team.getTeamImage().getBytes(1, (int) team.getTeamImage().length()));
+            String logoImage = Base64.getEncoder().encodeToString(team.getLogoImage().getBytes(1, (int) team.getLogoImage().length()));
+
             BeanUtils.copyProperties(team, teamDTO);
             teamDTO.setTeamImage(teamImage);
+            teamDTO.setLogoImage(logoImage);
         } catch (SQLException e) {
             Log.error("No se ha podido obtener la base64 del blob: ", e);
         }

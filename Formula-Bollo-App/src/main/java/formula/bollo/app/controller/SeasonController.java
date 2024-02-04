@@ -2,7 +2,6 @@ package formula.bollo.app.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +24,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = Constants.TAG_SEASON, description = Constants.TAG_SEASON_SUMMARY)
 public class SeasonController {
 
-    @Autowired
     private SeasonRepository seasonRepository;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public SeasonController(SeasonRepository seasonRepository, SeasonMapper seasonMapper) {
+        this.seasonRepository = seasonRepository;
+        this.seasonMapper = seasonMapper;
+    }
 
     @Operation(summary = "Get all seasons", tags = Constants.TAG_SEASON)
     @GetMapping("/all")

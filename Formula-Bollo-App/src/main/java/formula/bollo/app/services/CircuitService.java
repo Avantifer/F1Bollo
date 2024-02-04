@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import formula.bollo.app.entity.Circuit;
@@ -16,11 +15,14 @@ import formula.bollo.app.utils.Constants;
 @Service
 public class CircuitService {
     
-    @Autowired
-    private CircuitRepository circuitRepository;
+    private final CircuitRepository circuitRepository;
 
-    @Autowired
-    private CircuitMapper circuitMapper;
+    private final CircuitMapper circuitMapper;
+
+    public CircuitService(CircuitRepository circuitRepository, CircuitMapper circuitMapper) {
+        this.circuitRepository = circuitRepository;
+        this.circuitMapper = circuitMapper;
+    }
 
     /**
      * Puts circuits into a cache if the cache is empty.

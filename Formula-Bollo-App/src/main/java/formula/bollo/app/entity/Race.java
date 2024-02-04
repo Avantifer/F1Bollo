@@ -28,10 +28,13 @@ public class Race {
     @JoinColumn(name = "circuit_id")
     private Circuit circuit;
 
-    @Column(name = "date_start")
+    @Column(name = "date_start", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateStart;
 
+    @Column(name = "finished", nullable = false, length = 1)
+    private int finished;
+    
     @ManyToOne
     @JoinColumn(name = "season_id")
     private Season season;

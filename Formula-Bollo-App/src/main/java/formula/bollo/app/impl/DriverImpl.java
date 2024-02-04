@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Driver;
 import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.SeasonMapper;
+import formula.bollo.app.mapper.TeamMapper;
 import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.model.TeamDTO;
 import formula.bollo.app.utils.Log;
@@ -22,8 +22,13 @@ import formula.bollo.app.utils.Log;
 @Component
 public class DriverImpl implements DriverMapper {
 
-    @Autowired
     private SeasonMapper seasonMapper;
+    private TeamMapper teamMapper;
+
+    public DriverImpl(SeasonMapper seasonMapper, TeamMapper teamMapper) {
+        this.seasonMapper = seasonMapper;
+        this.teamMapper = teamMapper;
+    }
 
     /**
      * Converts a DriverDTO object to a Driver object.
@@ -46,8 +51,9 @@ public class DriverImpl implements DriverMapper {
         } catch (SQLException | IllegalArgumentException e) {
             Log.error("No se ha podido obtener el blob de base64: ", e);
         }
-
+        
         driver.setSeason(this.seasonMapper.seasonDTOToSeason(driverDTO.getSeason()));
+        
         return driver;
     }
 
@@ -71,11 +77,8 @@ public class DriverImpl implements DriverMapper {
         } catch (SQLException e) {
             Log.error("No se ha podido obtener la base64 del blob: ", e);
         }
-        
-        TeamDTO teamDTO = new TeamDTO();
-        teamDTO.setId(driver.getTeam().getId());
-        teamDTO.setName(driver.getTeam().getName());
-        driverDTO.setTeam(teamDTO);
+
+        driverDTO.setTeam(this.teamMapper.teamToTeamDTO(driver.getTeam()));
         driverDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(driver.getSeason()));
 
         return driverDTO;
@@ -110,6 +113,19 @@ public class DriverImpl implements DriverMapper {
     public List<DriverDTO> convertDriversToDriverDTONoImage(List<Driver> drivers) {
         return drivers.parallelStream()
                 .map(this::driverToDriverDTONoImage)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Converts a list of Driver objects to a list of DriverDTO objects.
+     *
+     * @param drivers The list of Driver objects to be converted.
+     * @return        A list of DriverDTO objects with properties copied from the Drivers.
+    */
+    @Override
+    public List<DriverDTO> convertDriversToDriverDTO(List<Driver> drivers) {
+        return drivers.parallelStream()
+                .map(this::driverToDriverDTO)
                 .collect(Collectors.toList());
     }
 }

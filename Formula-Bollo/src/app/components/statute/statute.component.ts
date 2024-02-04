@@ -13,7 +13,7 @@ import { MessageService } from 'src/shared/services/message.service';
 export class StatuteComponent {
   pdf: SafeResourceUrl | undefined;
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private archiveApiService: ArchiveApiService,

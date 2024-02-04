@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = Constants.TAG_PENALTY_SEVERITY, description = Constants.TAG_PENALTY_SEVERITY_SUMMARY)
 public class PenaltySeverityController {
 
-    @Autowired
     private PenaltySeverityRepository penaltySeverityRepository;
-
-    @Autowired
     private PenaltySeverityMapper penaltySeverityMapper;
+
+    public PenaltySeverityController(PenaltySeverityRepository penaltySeverityRepository, PenaltySeverityMapper penaltySeverityMapper) {
+        this.penaltySeverityRepository = penaltySeverityRepository;
+        this.penaltySeverityMapper = penaltySeverityMapper;
+    }
 
     @Operation(summary = "Get all penalties severities", tags = Constants.TAG_PENALTY_SEVERITY)
     @GetMapping("/all")

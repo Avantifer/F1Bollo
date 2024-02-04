@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import formula.bollo.app.entity.Race;
@@ -20,11 +19,13 @@ import formula.bollo.app.model.RaceDTO;
 @Component
 public class RaceImpl implements RaceMapper{
 
-    @Autowired
     private CircuitMapper circuitMapper;
-
-    @Autowired
     private SeasonMapper seasonMapper;
+
+    public RaceImpl(CircuitMapper circuitMapper, SeasonMapper seasonMapper) {
+        this.circuitMapper = circuitMapper;
+        this.seasonMapper = seasonMapper;
+    }
 
     /**
      * Converts a RaceDTO object to a Race object.

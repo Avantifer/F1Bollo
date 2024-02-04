@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import formula.bollo.app.entity.Driver;
@@ -25,17 +24,25 @@ import formula.bollo.app.repository.PenaltyRepository;
 @Service
 public class PenaltyService {
 
-    @Autowired
-    private PenaltyMapper penaltyMapper;
+    private final PenaltyMapper penaltyMapper;
 
-    @Autowired
-    private DriverMapper driverMapper;
+    private final DriverMapper driverMapper;
 
-    @Autowired
-    private RaceMapper raceMapper;
+    private final RaceMapper raceMapper;
 
-    @Autowired
-    private PenaltyRepository penaltyRepository;
+    private final PenaltyRepository penaltyRepository;
+    
+    public PenaltyService(
+        PenaltyMapper penaltyMapper,
+        DriverMapper driverMapper,
+        RaceMapper raceMapper,
+        PenaltyRepository penaltyRepository
+    ) {
+        this.penaltyMapper = penaltyMapper;
+        this.driverMapper = driverMapper;
+        this.raceMapper = raceMapper;
+        this.penaltyRepository = penaltyRepository;
+    }
 
     /**
      * Saves penalties from a list of PenaltyDTO objects to a repository.

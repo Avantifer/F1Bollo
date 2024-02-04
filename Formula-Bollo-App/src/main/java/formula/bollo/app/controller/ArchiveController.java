@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -32,11 +31,13 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = Constants.TAG_ARCHIVE, description = Constants.TAG_ARCHIVE_SUMMARY)
 public class ArchiveController {
     
-    @Autowired
     private ArchiveRepository archiveRepository;
-    
-    @Autowired
     private ArchiveMapper archiveMapper;
+
+    public ArchiveController(ArchiveRepository archiveRepository, ArchiveMapper archiveMapper) {
+        this.archiveRepository = archiveRepository;
+        this.archiveMapper = archiveMapper;
+    }
     
     @Operation(summary = "Get statute", tags = Constants.TAG_ARCHIVE)
     @GetMapping("/statute")

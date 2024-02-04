@@ -24,7 +24,7 @@ export class TeamsComponent {
 
   seasonSelected: Season | undefined;
 
-  private _unsubscribe = new Subject<void>();
+  private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private teamApiService: TeamApiService,

@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 @CrossOrigin(origins = Constants.PRODUCTION_FRONTEND)
@@ -29,10 +28,12 @@ import org.springframework.http.MediaType;
 @Tag(name = Constants.TAG_CIRCUIT, description = Constants.TAG_CIRCUIT_SUMMARY)
 public class CircuitController {
 
-    @Autowired
     private CircuitService circuitService;
-
     private Map<Long, CircuitDTO> circuitsCache = new ConcurrentHashMap<>();
+
+    public CircuitController(CircuitService circuitService) {
+        this.circuitService = circuitService;
+    }
 
     @Operation(summary = "Get all circuits", tags = Constants.TAG_CIRCUIT)
     @GetMapping("/all")

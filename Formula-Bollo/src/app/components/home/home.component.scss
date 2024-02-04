@@ -117,6 +117,9 @@
             color: $colorAlfa;
           }
 
+          &-Alpine {
+            color: $colorAlpine;
+          }
         }
 
         &-team-border {
@@ -166,7 +169,7 @@
       padding: 25px;
       background-color: rgb(56, 56, 63);
 
-      h2 {
+      h3 {
         font-family: 'F1-Regular';
         letter-spacing: 5px;
       }
@@ -227,6 +230,10 @@
     &-Alfa {
       background-color: $colorAlfa;
     }
+
+    &-Alpine {
+      background-color: $colorAlpine;
+    }
   }
 
   p, h5 {
@@ -249,6 +256,27 @@
 
   svg {
     color: $red;
+  }
+}
+
+.fantasy-icon {
+  left: 25px;
+  bottom: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 2rem;
+  z-index: 100;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: $fantasyblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -307,6 +335,13 @@
         font-size: 1.75rem !important;
       }
     }
+
+    &-bottom {
+
+      h3 {
+        font-size: 1.3rem;
+      }
+    }
   }
 }
 
@@ -347,8 +382,8 @@
 
     &-bottom {
 
-      h2 {
-        font-size: 1.5rem;
+      h3 {
+        font-size: 0.8rem;
       }
     }
   }
@@ -391,8 +426,8 @@
 
       &-bottom {
 
-        h2 {
-          font-size: 3rem;
+        h3 {
+          font-size: 2.8rem;
         }
       }
     }
@@ -446,6 +481,7 @@
 .configurations {
   background: url("../../../assets/images/intro/introConfigurations.avif");
   background-size: cover;
+  padding-bottom: 4rem;
 
   &-title {
     color: white;
@@ -567,26 +603,31 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @include media-breakpoint-up(sm) {
   .teams-schema {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @include media-breakpoint-up(md) {
   .teams-schema {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
 @include media-breakpoint-up(lg) {
   .teams-schema {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
 @include media-breakpoint-up(xl) {
   .teams-schema {
     grid-template-columns: repeat(7, 1fr);
   }
 }
+
 @include media-breakpoint-up(xxl) {
   .teams-schema {
     grid-template-columns: repeat(10, 1fr);
