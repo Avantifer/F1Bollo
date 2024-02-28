@@ -44,9 +44,9 @@
         <div class="flex align-items-center">
           <div class="mr-2 p-2 surface-0 border-round-md h-2rem cursor-pointer" (click)="themeService.changeTheme(); isDarkTheme = !isDarkTheme">
             @if (isDarkTheme) {
-              <i class="pi pi-sun text-900 font-bold"></i>
-            } @else {
               <i class="pi pi-moon text-900 font-bold"></i>
+            } @else {
+              <i class="pi pi-sun text-900 font-bold"></i>
             }
           </div>
           <p-button

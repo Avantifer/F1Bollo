@@ -115,7 +115,7 @@ public class UserController {
 
         UserDTO userDTO = userMapper.userToUserDTO(user.get(0));
         String token = jwtConfig.generateToken(userDTO);
-        String link = Constants.LOCAL_FRONTEND + "/fantasy/recoverPassword/" + token;
+        String link = Constants.PRODUCTION_FRONTEND + "/fantasy/recoverPassword/" + token;
         String message = """
                 Para recuperar la contraseña, haz click en el siguiente enlace:
                 %s

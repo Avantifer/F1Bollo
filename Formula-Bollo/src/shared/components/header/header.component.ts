@@ -72,9 +72,6 @@ export class HeaderComponent {
     this._unsubscribe.complete();
   }
 
-  //TODO FER: Mirar porque recien te registras no puedes hacer el fantasy.
-
-
   /**
    * Reset the active navItem from Header.
    */
