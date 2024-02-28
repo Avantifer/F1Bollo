@@ -54,16 +54,16 @@ public class RaceService {
         List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
         raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
 
-        List<RaceDTO> raceDTOsNotFinishedAndNextOne = raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
-        
+        List<RaceDTO> raceDTOsFinishedAndNextOne = raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
+
         for(RaceDTO raceDTO: raceDTOs) {
             if (raceDTO.getFinished() == 0) {
-                raceDTOsNotFinishedAndNextOne.add(raceDTO);
+                raceDTOsFinishedAndNextOne.add(raceDTO);
                 break;
             }
         }
 
-        return raceDTOs;
+        return raceDTOsFinishedAndNextOne;
     }
 
     /**

@@ -1,72 +1,69 @@
-<div class="penalty pt-5 px-2 px-md-5">
-  <div class="penalty-topSide d-flex justify-content-evenly flex-wrap mx-auto mb-5">
-    <form [formGroup]="circuitsForm">
-      <div class="penalty-topSide-form d-flex flex-column">
-        <label class="mb-1">Seleccione circuito:</label>
-        <mat-form-field>
-          <mat-select formControlName="circuit">
-            <mat-option *ngFor="let circuit of circuits" [value]="circuit">
-              {{ circuit.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </form>
-
-    <form [formGroup]="driverForm" *ngIf="circuitSelected">
-      <div class="penalty-topSide-form d-flex flex-column">
-        <label class="mb-1">Seleccione piloto:</label>
-        <mat-form-field>
-          <mat-select formControlName="driver">
-            <mat-option *ngFor="let driver of drivers" [value]="driver">
-              {{ driver.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </form>
-
-    <form [formGroup]="penaltySeverityForm" *ngIf="driverSelected">
-      <div class="penalty-topSide-form d-flex flex-column">
-        <label class="mb-1">Seleccione severidad:</label>
-        <mat-form-field>
-          <mat-select formControlName="penaltySeverity" [(value)]="penaltySeveritySelected">
-            <mat-option *ngFor="let penaltyseverity of penaltiesSeverity" [value]="penaltyseverity">
-              {{ penaltyseverity.severity }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </form>
-  </div>
-
-  <div class="penalty-bottomSide m-0 mx-md-auto" *ngIf="penaltySeveritySelected">
-    <form [formGroup]="reasonForm">
-      <label class="mb-1">Razón de penalización:</label>
-      <mat-form-field>
-        <textarea matInput formControlName="reason"></textarea>
-      </mat-form-field>
-    </form>
-  </div>
-
-  <div class="d-flex align-items-center">
-    <button mat-button class="mx-auto my-5 penalty-button p-2 shadow" *ngIf="saveButtonActivated" (click)="savePenalty()">Guardar</button>
-  </div>
-
-  <hr>
-  <div class="penalty-list">
-    <div class="penalty-list-item" *ngFor="let driverPenalty of penalties">
+<div class="penalty surface-200 pt-5">
+  <div class="container h-full">
+    <div class="penalty-topSide grid justify-content-evenly mx-auto w-full xl:w-9">
+      <form [formGroup]="raceForm" class="col-12 lg:col-4 flex justify-content-center">
+        <div class="flex flex-column align-items-start lg:align-items-center w-max">
+          <label class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione circuito:</label>
+          <p-dropdown
+            formControlName="race"
+            [options]="races"
+            [(ngModel)]="raceSelected"
+            optionLabel="circuit.name"
+            class="align-self-center"
+          ></p-dropdown>
+        </div>
+      </form>
+      <form [formGroup]="driverForm" class="col-12 lg:col-4 flex justify-content-center">
+        <div class="flex flex-column align-items-start lg:align-items-center w-max">
+          <label class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione piloto:</label>
+          <p-dropdown
+            formControlName="driver"
+            [options]="drivers"
+            [(ngModel)]="driverSelected"
+            optionLabel="name"
+            class="align-self-center"
+          ></p-dropdown>
+        </div>
+      </form>
+      <form [formGroup]="penaltySeverityForm" class="col-12 lg:col-4 flex justify-content-center">
+        <div class="flex flex-column align-items-start lg:align-items-center w-max">
+          <label class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione severidad:</label>
+          <p-dropdown
+            formControlName="penaltySeverity"
+            [options]="penaltiesSeverity"
+            [(ngModel)]="penaltySeveritySelected"
+            optionLabel="severity"
+            class="align-self-center"
+          ></p-dropdown>
+        </div>
+      </form>
+      @if (penaltySeveritySelected && raceSelected && driverSelected) {
+        <form [formGroup]="reasonForm" class="col-12 mt-3">
+          <div class="flex flex-column align-items-start">
+            <label class="mb-1 font-bold F1_Regular ml-0 md:ml-3 text-sm md:text-base">Razón de penalización:</label>
+            <textarea rows="5" cols="70" pInputTextarea formControlName="reason" class="align-self-center ml-0 md:ml-4 w-full"></textarea>
+          </div>
+        </form>
+        <div class="penalty-button flex justify-content-center">
+          <p-button class="mx-auto my-5 p-2 p-button-raised" [raised]="true" (click)="savePenalty()">
+            Guardar
+          </p-button>
+        </div>
+      }
+    </div>
+    <hr />
+    @for (driverPenalty of penalties; track $index) {
       <p>{{ driverPenalty.driver.name }}</p>
-      <div class="ms-4">
-        <div *ngFor="let racePenalty of driverPenalty.racePenalties">
-          {{ racePenalty.race.circuit.name }}:
-          <ul class="ms-5">
-            <li *ngFor="let penalty of racePenalty.penalties">
+      @for (racePenalty of driverPenalty.racePenalties; track $index) {
+        <p class="ml-4">{{ racePenalty.race.circuit.name }}:</p>
+        <ul class="ml-5">
+          @for (penalty of racePenalty.penalties; track $index) {
+            <li>
               {{ showReason(penalty.reason) }} ({{ penalty.severity.severity }})
             </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+          }
+        </ul>
+      }
+    }
   </div>
 </div>

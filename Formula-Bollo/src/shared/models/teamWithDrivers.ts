@@ -7,7 +7,12 @@ export class TeamWithDrivers {
   driver2: Driver;
   totalPoints: number;
 
-  constructor(teamDTO: Team, driver1: Driver, driver2: Driver, totalPoints: number) {
+  constructor(
+    teamDTO: Team,
+    driver1: Driver,
+    driver2: Driver,
+    totalPoints: number,
+  ) {
     this.teamDTO = teamDTO;
     this.driver1 = driver1;
     this.driver2 = driver2;

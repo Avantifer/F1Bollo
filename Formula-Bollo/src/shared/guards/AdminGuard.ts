@@ -1,29 +1,28 @@
 import { Injectable } from "@angular/core";
-import { Router, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { Router } from "@angular/router";
 import { AuthJWTService } from "../services/authJWT.service";
-import { MessageService } from "../services/message.service";
+import { MessageInfoService } from "../services/messageinfo.service";
+import { WARNING_NO_ADMIN } from "src/app/constants";
 
 @Injectable()
 export class AdminGuard {
-
   constructor(
     private router: Router,
     private authJWTService: AuthJWTService,
-    private messageService: MessageService
+    private messageInfoService: MessageInfoService,
   ) {}
 
-  canActivate():Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (localStorage.getItem('auth')) {
-      if (this.authJWTService.checkAdmin(localStorage.getItem('auth')!)) {
+  canActivate(): boolean  {
+    if (localStorage.getItem("auth")) {
+      if (this.authJWTService.checkAdmin(localStorage.getItem("auth")!)) {
         return true;
       } else {
-        this.router.navigate(['/']);
-        this.messageService.showInformation('No tienes permisos para acceder a esta página');
+        this.router.navigate(["/"]);
+        this.messageInfoService.showError(WARNING_NO_ADMIN);
         return false;
       }
     } else {
-      this.router.navigate(['/login']);
+      this.router.navigate(["/login"]);
       return false;
     }
   }

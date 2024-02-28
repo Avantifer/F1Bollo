@@ -1,104 +1,16 @@
-<div class="intro position-relative">
-  <h1 class="position-absolute text-light text-uppercase text-center m-0">Formula bollo</h1>
-  <img src="../../../assets/images/intro/introImage.avif" class="img-fluid w-100" alt="Imagen principal">
-</div>
-<div class="drivers position-relative">
-  <div class="container">
-    <h2 class="text-light text-center drivers-text position-relative">Clasificación de pilotos</h2>
-    <div class="drivers-card" *ngIf="driverPoints.length > 0">
-      <div *ngFor="let driver of top3DriverPoints; let i = index" class="position-relative m-0" [ngClass]="i === 1 ? 'driver-card-pos1 d-none d-sm-inline-block mx-md-3 mx-lg-4' : 'driver-card d-none d-md-inline-block'">
-        <div class="position-relative" [ngClass]="i === 1 ? 'driver-card-top-pos1' : 'driver-card-top'">
-          <div class="driver-card-top-number position-absolute" [class]="'driver-card-top-number-' + driver.driver.team.name">{{ driver.driver.number }}</div>
-          <img [src]="'data:image/jpg;base64,' + driver.driver.driverImage" alt="Imagen del piloto" class="position-absolute">
-          <div class="driver-card-top-team-border position-absolute w-100 bottom-0" [class]="'driver-card-top-team-border-' + driver.driver.team.name"></div>
-        </div>
-        <div class="driver-card-bottom">
-          <h3 class="text-center text-light text-uppercase fw-bold">{{ driver.driver.name }}</h3>
-        </div>
-      </div>
-      <div class="drivers-top10-container container-fluid container-md mt-3 position-relative">
-        <div class="drivers-top10 mx-0 mx-md-5 my-1 p-3 shadow-sm rounded d-flex align-items-center justify-content-between" *ngFor="let driverPoint of driverPoints; let i = index">
-          <div class="drivers-top10-start d-flex align-items-center">
-            <h5>{{ i + 1 }}</h5>
-            <div class="line mx-2" [class]="'line-' + driverPoint.driver.team.name"></div>
-            <h5>{{ driverPoint.driver.name }}</h5>
-            <p class="ms-3 d-none d-md-block">{{ driverPoint.driver.team.name }}</p>
-          </div>
-          <div class="drivers-top10-end d-flex align-items-center">
-            <span class="badge me-3 p-2 text-dark rounded-pill shadow-sm">{{ driverPoint.totalPoints }} Puntos</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p>{{ driverPoints.length }}</p>
-    <div class="drivers-card" *ngIf="driverPoints.length === 0">
-      <div *ngFor="let driver of top3Drivers; let i = index" class="position-relative m-0" [ngClass]="i === 1 ? 'driver-card-pos1 d-none d-sm-inline-block mx-md-3 mx-lg-4' : 'driver-card d-none d-md-inline-block'">
-        <div class="position-relative" [ngClass]="i === 1 ? 'driver-card-top-pos1' : 'driver-card-top'">
-          <div class="driver-card-top-number position-absolute" [class]="'driver-card-top-number-' + driver.team.name">{{ driver.number }}</div>
-          <img [src]="'data:image/jpg;base64,' + driver.driverImage" alt="Imagen del piloto" class="position-absolute">
-          <div class="driver-card-top-team-border position-absolute w-100 bottom-0" [class]="'driver-card-top-team-border-' + driver.team.name"></div>
-        </div>
-        <div class="driver-card-bottom">
-          <h3 class="text-center text-light text-uppercase fw-bold">{{ driver.name }}</h3>
-        </div>
-      </div>
-      <div class="drivers-top10-container container-fluid container-md mt-3 position-relative">
-        <div class="drivers-top10 mx-0 mx-md-5 my-1 p-3 shadow-sm rounded d-flex align-items-center justify-content-between" *ngFor="let driver of drivers; let i = index">
-          <div class="drivers-top10-start d-flex align-items-center">
-            <h5>{{ i + 1 }}</h5>
-            <div class="line mx-2" [class]="'line-' + driver.team.name"></div>
-            <h5>{{ driver.name }}</h5>
-            <p class="ms-3 d-none d-md-block">{{ driver.team.name }}</p>
-          </div>
-          <div class="drivers-top10-end d-flex align-items-center">
-            <span class="badge me-3 p-2 text-dark rounded-pill shadow-sm">0 Puntos</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<div class="teams position-relative">
-  <div class="teams-title">
-    <h2 class="text-uppercase fw-bold">Escuderias</h2>
-  </div>
-  <div class="teams-schema d-grid">
-    <div class="teams-schema-container shadow-lg d-flex rounded-4" [class]="'teams-schema-container-' + team.name" *ngFor="let team of teams">
-      <img [src]="'data:image/jpg;base64,' + team.teamImage" [alt]="'Imagen de ' + team.name" class="teams-schema-container-image m-auto">
-    </div>
-  </div>
-</div>
-<div class="configurations position-relative">
-  <div class="configurations-title mb-5">
-    <h2 class="text-uppercase fw-bold">Configuraciones</h2>
-  </div>
-  <div class="configurations-schema container-fluid container-lg">
-    <div *ngFor="let conf of configurations; let i = index">
-      <ng-container *ngIf="i >= 0 && i <= 4">
-        <p class="m-0 text-light">{{ conf.setting }}: {{ conf.value }}</p>
-        <ng-container *ngIf="i === 4 || i === configurations.length - 1">
-          <hr class="text-light">
-        </ng-container>
-      </ng-container>
-
-      <ng-container *ngIf="i >= 5 && i <= 10">
-        <p class="text-end m-0 text-light">{{ conf.setting }}: {{ conf.value }}
-        <ng-container *ngIf="i === 10 || i === configurations.length - 1">
-          <hr class="text-light">
-        </ng-container>
-      </ng-container>
-
-      <ng-container *ngIf="i >= 11">
-        <p class="m-0 text-light">{{ conf.setting }}: {{ conf.value }}
-        </ng-container>
-    </div>
-  </div>
+<div class="intro relative h-15rem md:h-20rem lg:h-25rem">
+  <h1 class="absolute text-white uppercase text-center F1_Wide m-0 z-1 top-50 left-50 line-height-4 text-xl sm:text-3xl md:text-5xl lg:text-7xl">
+    Formula bollo
+  </h1>
+  <img
+    src="../../../assets/images/intro/introImage.avif"
+    class="w-full h-15rem md:h-20rem lg:h-25rem"
+    alt="Imagen principal"
+  />
 </div>
 
-<!-- TODO: Poner los circuitos con su fecha -->
-<!-- TODO: Crear un contador debajo del header para indicar cuando es la proxima carrera -->
+<div class="surface-200">
+  <app-home-drivers></app-home-drivers>
+  <app-home-teams></app-home-teams>
+  <app-home-configuration></app-home-configuration>
+</div>

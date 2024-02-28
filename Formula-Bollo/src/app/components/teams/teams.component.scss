@@ -1,237 +1,63 @@
 @import "../../../assets/scss/styles.scss";
 
+
 .clasification-teams {
-  &-text {
-    border-top: 10px solid black;
-    border-right: 10px solid black;
+  &-top {
+    border-top: 10px solid #111827;
+    border-right: 10px solid #111827;
     border-top-right-radius: 25px;
-
-    h1 {
-      font-family: 'F1-Bold';
-    }
   }
 
-  &-schema {
-    margin-top: 5rem;
-    margin-right: auto !important;
-    margin-left: auto !important;
+  &-schema-card {
+    border-top-right-radius: 10px;
 
-    &-card {
-      border-top: solid 1px #000;
-      border-right: solid 1px #000;
-      border-top-right-radius: 10px;
-      margin-top: 40px;
-      padding-top: 10px;
+    &:hover {
+      margin-top: 2.5rem !important;
+      padding-top: 1rem !important;
+    }
 
-      &-Red:hover {
-        border-color: $colorRedBull;
+    &-top-points {
+      letter-spacing: 2px;
+
+      ::ng-deep .p-chip {
+        font-family: 'F1-Regular';
+        letter-spacing: 1px;
+        font-weight: bold;
+        font-size: 0.75rem;
+        padding: 0.25rem .75rem;
+        background-color: #111827;
+        color: #ffffff;
       }
+    }
 
-      &-AlphaTauri:hover {
-        border-color: $colorAlphaTauri;
-      }
-
-      &-Ferrari:hover {
-        border-color: $colorFerrari;
-      }
-
-      &-Mercedes:hover {
-        border-color: $colorMercedes;
-      }
-
-      &-Aston:hover {
-        border-color: $colorAston;
-      }
-
-      &-Williams:hover {
-        border-color: $colorWilliams;
-      }
-
-      &-Haas:hover {
-        border-color: $colorHaas;
-      }
-
-      &-McLaren:hover {
-        border-color: $colorMcLaren;
-      }
-
-      &-Alfa:hover {
-        border-color: $colorAlfa;
-      }
-
-      &-Alpine:hover {
-        border-color: $colorAlpine;
-      }
-
-      &:hover {
-        margin-top: 30px;
-        padding-top: 20px;
-        transition: .1s all ease;
-        cursor: pointer;
-      }
-
-      &-top {
-        &-number {
-          h3 {
-            font-family: 'F1-Bold';
-            font-size: 2.5rem;
-          }
+    &-mid {
+      &-team-start {
+        &-line {
+          width: 5px;
         }
 
-        &-points {
-          h4 {
-            font-family: 'F1-Bold';
-            letter-spacing: 2px;
-          }
-
-          span {
-            font-family: 'F1-Regular';
-            letter-spacing: 1px;
-          }
+        h2 {
+          letter-spacing: 1px;
         }
       }
 
-      &-mid {
-
-        &-team {
-          border-bottom: 1px solid black;
-
-          &-start {
-
-            &-line {
-              width: 5px;
-              height: 2rem;
-
-              &-Red {
-                background-color: $colorRedBull;
-              }
-
-              &-AlphaTauri {
-                background-color: $colorAlphaTauri;
-              }
-
-              &-Ferrari {
-                background-color: $colorFerrari;
-              }
-
-              &-Mercedes {
-                background-color: $colorMercedes;
-              }
-
-              &-Aston {
-                background-color: $colorAston;
-              }
-
-              &-Williams {
-                background-color: $colorWilliams;
-              }
-
-              &-Haas {
-                background-color: $colorHaas;
-              }
-
-              &-McLaren {
-                background-color: $colorMcLaren;
-              }
-
-              &-Alfa {
-                background-color: $colorAlfa;
-              }
-
-              &-Alpine {
-                background-color: $colorAlpine;
-              }
-            }
-
-            h4 {
-              font-family: 'F1-Bold';
-              letter-spacing: 1px;
-            }
-          }
-
-          &-end {
-            height: 50px;
-            width: 50px;
-          }
-        }
-
-        &-drivers {
-          &-driver1, &-driver2 {
-            height: 50px;
-            width: 48%;
-            border-bottom-right-radius: 10px;
-
-            h5 {
-              font-family: 'F1-Regular';
-            }
-
-            img {
-              width: 50px;
-              height: 50px;
-            }
-          }
-        }
-      }
-
-      &-bottom {
-        background-image: url('../../../assets/images/teams/background-carImage.png');
-
-        img {
-          display: inherit;
+      &-drivers {
+        &-driver1, &-driver2 {
+          width: 48%;
+          border-bottom-right-radius: 10px;
         }
       }
     }
-  }
-}
 
-@include media-breakpoint-down(lg) {
-  .clasification{
-    &-teams{
-      &-schema{
-        &-card{
-
-          h4 {
-            font-size: 1.25rem;
-          }
-
-          h5 {
-            font-size: 1rem;
-          }
-
-          &-bottom {
-            img {
-              width: 300px;
-            }
-          }
-        }
-      }
+    &-bottom {
+      background-image: url("../../../assets/images/teams/background-carImage.png");
     }
   }
 }
 
 @include media-breakpoint-down(md) {
-  .clasification{
-    &-teams{
-      &-schema{
-        &-card{
-
-          h4 {
-            font-size: 1.5rem;
-          }
-
-          h5 {
-            font-size: 1rem;
-            word-break: break-all;
-          }
-
-          &-bottom {
-            img {
-              width: 100%;
-              max-width: 70%;
-            }
-          }
-        }
-      }
-    }
+  ::ng-deep .p-skeleton {
+    height: 20rem !important;
+    width: 17.5rem !important;
   }
 }

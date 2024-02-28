@@ -1,7 +1,11 @@
 @import "../../../../assets/scss/styles.scss";
 
-form {
-  label {
-    font-family: 'F1-Regular', sans-serif;
+.fantasyResults {
+  ::ng-deep .p-dropdown {
+    width: 11.2rem;
+  }
+
+  .message_no_results {
+    transform: translate(-50%, -50%);
   }
 }

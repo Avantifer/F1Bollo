@@ -1,24 +1,44 @@
 @font-face {
-  font-family: 'F1-Regular';
-  src: url('./../../fonts/Formula1-Regular.otf');
+  font-family: "F1-Regular";
+  src: url("./../../fonts/Formula1-Regular.otf");
 }
 
 @font-face {
-  font-family: 'F1-Wide';
-  src: url('./../../fonts/Formula1-Wide.otf');
+  font-family: "F1-Wide";
+  src: url("./../../fonts/Formula1-Wide.otf");
 }
 
 @font-face {
-  font-family: 'F1-Bold';
-  src: url('./../../fonts/Formula1-Bold.otf');
+  font-family: "F1-Bold";
+  src: url("./../../fonts/Formula1-Bold.otf");
 }
 
 @font-face {
-  font-family: 'F1-Fantasy-Bold';
-  src: url('./../../fonts/Fantasy-Bold.otf');
+  font-family: "F1-Fantasy-Bold";
+  src: url("./../../fonts/Fantasy-Bold.otf");
 }
 
 @font-face {
-  font-family: 'F1-Fantasy-Regular';
-  src: url('./../../fonts/Fantasy-Regular.otf');
+  font-family: "F1-Fantasy-Regular";
+  src: url("./../../fonts/Fantasy-Regular.otf");
+}
+
+.F1_Regular {
+  font-family: "F1-Regular", sans-serif;
+}
+
+.F1_Wide {
+  font-family: "F1-Wide", sans-serif;
+}
+
+.F1_Bold {
+  font-family: "F1-Bold", sans-serif;
+}
+
+.Fantasy_Bold {
+  font-family: "F1-Fantasy-Bold", sans-serif;
+}
+
+.Fantasy_Regular {
+  font-family: "F1-Fantasy-Regular", sans-serif;
 }

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import formula.bollo.app.entity.Driver;
 import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.model.DriverDTO;
+import formula.bollo.app.model.DriverInfoDTO;
 import formula.bollo.app.repository.DriverRepository;
+import formula.bollo.app.services.DriverService;
 import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
 
@@ -30,10 +32,16 @@ public class DriverController {
 
     private DriverRepository driverRepository;
     private DriverMapper driverMapper;
+    private DriverService driverService;
 
-    public DriverController(DriverRepository driverRepository, DriverMapper driverMapper) {
+    public DriverController(
+        DriverRepository driverRepository,
+        DriverMapper driverMapper,
+        DriverService driverService
+    ) {
         this.driverRepository = driverRepository;
         this.driverMapper = driverMapper;
+        this.driverService = driverService;
     }
 
     @Operation(summary = "Get all drivers", tags = Constants.TAG_DRIVER)
@@ -52,5 +60,27 @@ public class DriverController {
         Log.info("END - getAllDrivers - END");
         
         return driverDTOs;
+    }
+
+    @Operation(summary = "Get info of a driver", tags = Constants.TAG_DRIVER)
+    @GetMapping("/infoDriverByName")
+    public DriverInfoDTO getinfoDriverByName(@RequestParam(value = "season", required = false) Integer season, @RequestParam(value = "driverName") String driverName) {
+        Log.info("START - getinfoDriverByName - START");
+        Log.info("RequestParam getinfoDriverByName (season) -> " + season);
+        Log.info("RequestParam getinfoDriverByName (driverName) -> " + driverName);
+        List<Driver> drivers = new ArrayList<>();
+        DriverInfoDTO driverInfoDTO = new DriverInfoDTO();
+
+        if (season == null) {
+            drivers = driverRepository.findByName(driverName);
+        } else {
+            drivers = driverRepository.findByNameAndSeason(season, driverName);
+        }
+        
+        driverInfoDTO = this.driverService.getAllInfoDriver(drivers);
+        
+        Log.info("END - getinfoDriverByName - END");
+        
+        return driverInfoDTO;
     }
 }

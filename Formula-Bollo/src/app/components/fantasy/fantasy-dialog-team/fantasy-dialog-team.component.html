@@ -1,64 +1,112 @@
-
-<div class="title my-4 mx-4 d-flex justify-content-between align-items-center">
-  <h3 class="mb-0">Equipo</h3>
-  <mat-icon role="button" (click)="closeDialog()">close</mat-icon>
-</div>
-<div class="drivers d-flex justify-content-around flex-wrap" *ngIf="fantasyElection">
-  <div class="drivers-container rounded-1 position-relative">
-    <div
-      class="drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
-      *ngIf="fantasyElection.driverOne  && pointsDriverOne != undefined && pointsDriverOne >= 0">
-      <span>{{ pointsDriverOne }}</span>
+@if (fantasyElection) {
+  <div class="fantasySelection py-2 sm:py-5 px-0">
+    <div class="flex flex-column">
+      <div class="drivers">
+        <div class="fantasySelection-mid-form-drivers flex justify-content-evenly w-full pr-3 sm:pr-0 mt-4">
+          <div class="fantasySelection-mid-form-drivers-container surface-0 border-round-md relative h-6rem w-6rem sm:h-9rem sm:w-9rem md:h-9rem md:w-12rem lg:h-9rem lg:w-12rem xl:h-9rem xl:w-10rem shadow-3 border-1 border-400">
+            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">
+              <span>{{ pointsDriverOne }}</span>
+            </div>
+            <div
+              class="fantasySelection-mid-form-drivers-container-photo h-5rem sm:h-7rem lg:h-7rem relative border-round-top-sm"
+              [class]="fantasyElection.driverOne ? 'bg-Fantasy-' + (fantasyElection.driverOne.team.name | SpaceToUnderscore) : 'transparent'"
+            >
+              @if (fantasyElection.driverOne) {
+                <img
+                  [src]="'data:image/jpg;base64,' + fantasyElection.driverOne.driverImage"
+                  [alt]="'Imagen de ' + fantasyElection.driverOne.name"
+                  class="absolute h-5rem w-5rem sm:h-7rem sm:w-7rem lg:h-7rem lg:w-7rem bottom-0 left-50"
+                />
+              }
+            </div>
+            <p class="text-center F1_Regular border-round-md mt-0 sm:mt-1 mb-0">
+              {{ fantasyElection.driverOne?.name }}
+            </p>
+          </div>
+          <div class="fantasySelection-mid-form-drivers-container surface-0 border-round-md relative h-6rem w-6rem sm:h-9rem sm:w-9rem md:h-9rem md:w-12rem lg:h-9rem lg:w-12rem xl:h-9rem xl:w-10rem shadow-3 border-1 border-400">
+            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">
+              <span>{{ pointsDriverTwo }}</span>
+            </div>
+            <div
+              class="fantasySelection-mid-form-drivers-container-photo h-5rem sm:h-7rem lg:h-7rem relative border-round-top-sm"
+              [class]="fantasyElection.driverTwo ? 'bg-Fantasy-' + (fantasyElection.driverTwo.team.name | SpaceToUnderscore) : 'transparent'"
+            >
+              @if (fantasyElection.driverTwo) {
+                <img
+                  [src]="'data:image/jpg;base64,' + fantasyElection.driverTwo.driverImage"
+                  [alt]="'Imagen de ' + fantasyElection.driverTwo.name"
+                  class="absolute h-5rem w-5rem sm:h-7rem sm:w-7rem lg:h-7rem lg:w-7rem bottom-0 left-50"
+                />
+              }
+            </div>
+            <p class="text-center F1_Regular border-round-md mt-0 sm:mt-1 mb-0">
+              {{ fantasyElection.driverTwo?.name }}
+            </p>
+          </div>
+          <div class="fantasySelection-mid-form-drivers-container surface-0 border-round-md relative h-6rem w-6rem sm:h-9rem sm:w-9rem md:h-9rem md:w-12rem lg:h-9rem lg:w-12rem xl:h-9rem xl:w-10rem shadow-3 border-1 border-400">
+            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">
+              <span>{{ pointsDriverThree }}</span>
+            </div>
+            <div
+              class="fantasySelection-mid-form-drivers-container-photo h-5rem sm:h-7rem lg:h-7rem relative border-round-top-sm"
+              [class]="fantasyElection.driverThree ? 'bg-Fantasy-' + (fantasyElection.driverThree.team.name | SpaceToUnderscore) : 'transparent'"
+            >
+              @if (fantasyElection.driverThree) {
+                <img
+                  [src]="'data:image/jpg;base64,' + fantasyElection.driverThree.driverImage"
+                  [alt]="'Imagen de ' + fantasyElection.driverThree.name"
+                  class="absolute h-5rem w-5rem sm:h-7rem sm:w-7rem lg:h-7rem lg:w-7rem bottom-0 left-50"
+                />
+              }
+            </div>
+            <p class="text-center F1_Regular border-round-md mt-0 sm:mt-1 mb-0">
+              {{ fantasyElection.driverThree?.name }}
+            </p>
+          </div>
+        </div>
+        <div class="teams">
+        <div class="fantasySelection-mid-form-teams flex mt-4 justify-content-evenly w-full pr-3 sm:pr-0">
+          <div class="fantasySelection-mid-form-teams-container surface-0 border-round-md relative w-9rem h-4rem sm:w-13rem sm:h-6rem md:w-18rem md:h-7rem xl:w-15rem shadow-3 border-1 border-400">
+            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">
+              <span>{{ pointsTeamOne }}</span>
+            </div>
+            <div
+              class="fantasySelection-mid-form-teams-container-photo h-3rem sm:h-4rem md:h-5rem relative border-round-top-sm"
+              [class]="fantasyElection.teamOne ? 'bg-Fantasy-' + (fantasyElection.teamOne.name | SpaceToUnderscore) : 'transparent'"
+            >
+              <img
+                [src]="fantasyElection.teamOne.carImage"
+                [alt]="'Imagen de ' + fantasyElection.teamOne.name"
+                class="w-full mt-1"
+                *ngIf="fantasyElection.teamOne"
+              />
+            </div>
+            <p class="text-center border-round-md F1_Regular my-0 sm:mt-1">
+              {{ fantasyElection.teamOne?.name }}
+            </p>
+          </div>
+          <div class="fantasySelection-mid-form-teams-container surface-0 border-round-md relative w-9rem h-4rem sm:w-13rem sm:h-6rem md:w-18rem md:h-7rem xl:w-15rem shadow-3 border-1 border-400">
+            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">
+              <span>{{ pointsTeamTwo }}</span>
+            </div>
+            <div
+              class="fantasySelection-mid-form-teams-container-photo h-3rem sm:h-4rem md:h-5rem relative border-round-top-sm"
+              [class]="fantasyElection.teamTwo ? 'bg-Fantasy-' + (fantasyElection.teamTwo.name | SpaceToUnderscore) : 'transparent'"
+            >
+              <img
+                [src]="fantasyElection.teamTwo.carImage"
+                [alt]="'Imagen de ' + fantasyElection.teamTwo.name"
+                class="w-full mt-1"
+                *ngIf="fantasyElection.teamTwo"
+              />
+            </div>
+            <p class="text-center border-round-md F1_Regular my-0 sm:mt-1">
+              {{ fantasyElection.teamTwo?.name }}
+            </p>
+          </div>
+        </div>
+        </div>
+      </div>
     </div>
-    <div class="drivers-driver1 overflow-hidden rounded-1 rounded-bottom-0 d-flex align-items-end justify-content-center pb-1" [class]="'drivers-' + fantasyElection.driverOne?.team?.name">
-      <img [src]="'data:image/jpg;base64,' + fantasyElection.driverOne?.driverImage" alt="Imagen del piloto1">
-    </div>
-    <p class="mb-0 text-center rounded-bottom-1">{{ fantasyElection.driverOne?.name }}</p>
   </div>
-  <div class="drivers-container rounded-1 position-relative">
-    <div
-      class="drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
-      *ngIf="fantasyElection.driverTwo  && pointsDriverTwo != undefined && pointsDriverTwo >= 0">
-      <span>{{ pointsDriverTwo }}</span>
-    </div>
-    <div class="drivers-driver2 overflow-hidden rounded-1 rounded-bottom-0 d-flex align-items-end justify-content-center pb-1" [class]="'drivers-' + fantasyElection.driverTwo?.team?.name">
-      <img [src]="'data:image/jpg;base64,' + fantasyElection.driverTwo?.driverImage" alt="Imagen del piloto2">
-    </div>
-    <p class="mb-0 text-center rounded-bottom-1">{{ fantasyElection.driverTwo?.name }}</p>
-  </div>
-  <div class="drivers-container rounded-1 position-relative">
-    <div
-      class="drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
-      *ngIf="fantasyElection.driverThree  && pointsDriverThree != undefined && pointsDriverThree >= 0">
-      <span>{{ pointsDriverThree }}</span>
-    </div>
-    <div class="drivers-driver3 overflow-hidden rounded-1 rounded-bottom-0 d-flex align-items-end justify-content-center pb-1" [class]="'drivers-' + fantasyElection.driverThree?.team?.name">
-      <img [src]="'data:image/jpg;base64,' + fantasyElection.driverThree?.driverImage" alt="Imagen del piloto3">
-    </div>
-    <p class="mb-0 text-center rounded-bottom-1">{{ fantasyElection.driverThree?.name }}</p>
-  </div>
-</div>
-<div class="teams mt-3 mb-4 d-flex justify-content-around flex-wrap" *ngIf="fantasyElection">
-  <div class="teams-container rounded-1 position-relative">
-    <div
-      class="drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
-      *ngIf="fantasyElection.teamOne && pointsTeamOne != undefined && pointsTeamOne >= 0">
-      <span>{{ pointsTeamOne }}</span>
-    </div>
-    <div class="teams-team1 overflow-hidden rounded-1 rounded-bottom-0 d-flex align-items-end justify-content-center" [class]="'teams-' + fantasyElection.teamOne?.name">
-      <img [src]="fantasyElection.teamOne?.carImage" alt="Imagen del equipo1">
-    </div>
-    <p class="mb-0 text-center rounded-bottom-1">{{ fantasyElection.teamOne?.name }}</p>
-  </div>
-  <div class="teams-container rounded-1 position-relative">
-      <div
-      class="drivers-container-points position-absolute rounded-circle d-flex justify-content-center align-items-center"
-      *ngIf="fantasyElection.teamTwo && pointsTeamTwo != undefined && pointsTeamTwo >= 0">
-      <span>{{ pointsTeamTwo }}</span>
-    </div>
-    <div class="teams-team2 overflow-hidden rounded-1 rounded-bottom-0 d-flex align-items-end justify-content-center" [class]="'teams-' + fantasyElection.teamTwo?.name">
-      <img [src]="fantasyElection.teamTwo?.carImage" alt="Imagen del equipo2">
-    </div>
-    <p class="mb-0 text-center rounded-bottom-1">{{ fantasyElection.teamTwo?.name }}</p>
-  </div>
-</div>
+}

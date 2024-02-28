@@ -47,7 +47,7 @@ public class ConfigurationController {
             this.configurationService.putCircuitsOnCache(configurationsCache);
             configurationDTOs = configurationsCache.values().stream().collect(Collectors.toList());
         } else {
-            configurationDTOs = this.configurationService.getCircuitsSeason(season);
+            configurationDTOs = this.configurationService.getConfigurationsBySeason(season);
         }
 
         Log.info("END - getAllConfigurations - END");

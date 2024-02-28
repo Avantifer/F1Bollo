@@ -1,55 +1,103 @@
-<div class="login bg-dark">
-  <div class="container d-flex align-items-center justify-content-center h-100">
-    <div class="login-card bg-white py-5">
-      <div class="login-card-title fst-italic">Iniciar Sesión</div>
+<div class="login surface-200">
+  <div class="container flex align-items-center justify-content-center h-full">
+    <div class="login-card surface-ground py-5 w-30rem border-round-2xl">
+      <div class="login-card-title min-w-min text-center mx-3 mt-3 mb-6">
+        <h1 class="font-italic F1_Bold m-0 uppercase">Iniciar Sesión</h1>
+      </div>
       <div class="login-card-form">
-        <form [formGroup]="loginForm" class="form text-center w-75 m-auto d-flex flex-column align-items-start">
-          <p class="login-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">
+        <form [formGroup]="loginForm" class="form text-center w-9 m-auto">
+          <p class="login-card-form-label mt-3 mb-1 ms-3 text-left font-bold">
             Usuario
           </p>
-          <mat-form-field appearance="fill">
+          <p-inputGroup>
+            <p-inputGroupAddon class="border-none">
+              <i class="pi pi-user"></i>
+            </p-inputGroupAddon>
             <input
-              matInput
               type="text"
+              pInputText
               formControlName="username"
-              placeholder="Nombre de Usuario"
-              autocomplete="off"
-            />
-            <mat-error *ngIf="loginForm.get('username')?.invalid">Necesitas poner el nombre de usuario</mat-error>
-          </mat-form-field>
-          <label class="login-card-form-label d-flex justify-content-between align-items-end">
-            <p class="mt-3 mb-1 ms-3 text-start fw-bold">Contraseña</p>
-          </label>
-          <mat-form-field appearance="fill">
-            <input
-            matInput
-            [type]="hidePassword ? 'password' : 'text'"
-            formControlName="password"
-            placeholder="Contraseña"
-            autocomplete="off"
-            />
-            <span
-            class="btn-password"
-            mat-icon-button
-            matSuffix
-            (click)="hidePassword = !hidePassword"
-            >
-            <mat-icon
-            class="position-absolute"
-            disableRipple="true"
-            role="button"
-            >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
-            >
-            </span>
-            <mat-error *ngIf="loginForm.get('password')?.invalid">Necesitas poner la contraseña</mat-error>
-          </mat-form-field>
-          <a role="button" class="text-end fw-normal mb-4" (click)="openRecoveryPasswordDialog()">Recuperar contraseña</a>
-          <div class="w-100">
-            <button mat-button class="login-card-form-button py-1 w-65" (click)="login()">Iniciar Sesión</button>
+              placeholder="Usuario"
+              class="border-none w-full surface-200 outline-none text-lg pl-2" />
+          </p-inputGroup>
+          @if (loginForm.get('username')?.invalid && loginForm.get('username')?.dirty) {
+            <span class="text-xs sm:text-sm">Necesitas poner el nombre de usuario</span>
+          }
+          <p class="login-card-form-label mt-3 mb-1 ms-3 text-left font-bold">
+            Contraseña
+          </p>
+          <p-inputGroup>
+            <p-inputGroupAddon class="border-none">
+              <i class="pi pi-lock"></i>
+            </p-inputGroupAddon>
+            <p-password
+              formControlName="password"
+              placeholder="Contraseña"
+              class="w-full text-lg"
+              [toggleMask]="true"
+              [feedback]="false">
+            </p-password>
+          </p-inputGroup>
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.dirty) {
+            <span class="text-xs sm:text-sm">Necesitas poner la contraseña</span>
+          }
+          <div class="mt-3 text-left">
+            <a class="cursor-pointer mb-4" (click)="openRecoveryPasswordDialog()">Recuperar contraseña</a>
           </div>
-          <span class="fst-italic align-self-center mt-3">¿Eres nuevo? <a routerLink="/fantasy/register" class="text-start">Create una cuenta.</a></span>
+          <div class="mt-6">
+            <p-button
+              label="Iniciar Sesión"
+              [raised]="true"
+              (click)="login()">
+            </p-button>
+          </div>
+          <p class="font-italic align-self-center mt-3 mb-0">
+            ¿Eres nuevo? <a routerLink="/fantasy/register"> Create una cuenta.</a>
+          </p>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<p-dialog
+  header="Header"
+  [(visible)]="showDialog"
+  [modal]="true"
+  [style]="{ width: '45rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [dismissableMask]="true"
+  [resizable]="false">
+  <ng-template pTemplate="header">
+    <div class="inline-flex align-items-center justify-content-center gap-2">
+      <h3 class="font-bold white-space-nowrap text-0 m-0">Recupera tu contraseña</h3>
+    </div>
+  </ng-template>
+  <form [formGroup]="emailForm" class="recoverPassword-form p-5">
+    <p-inputGroup>
+      <p-inputGroupAddon class="border-none">
+        <i class="pi pi-envelope"></i>
+      </p-inputGroupAddon>
+      <input
+        type="text"
+        pInputText
+        formControlName="email"
+        placeholder="Correo electrónico"
+        class="border-none w-full surface-200 outline-none text-lg pl-2" />
+    </p-inputGroup>
+    @if (emailForm.get('email')?.hasError('required') && emailForm.get('email')?.dirty) {
+      <span class="text-xs sm:text-sm">Necesitas poner un correo</span>
+    }
+    @if (emailForm.get('email')?.hasError('email') && emailForm.get('email')?.dirty) {
+      <span class="text-xs sm:text-sm">Necesitas poner un correo válido</span>
+    }
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Enviar Email"
+      [raised]="true"
+      (click)="sendRecoveryPasswordEmail()"
+      icon="pi pi-send">
+    </p-button>
+  </ng-template>
+</p-dialog>

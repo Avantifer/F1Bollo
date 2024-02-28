@@ -1,22 +1,21 @@
 import { Injectable } from "@angular/core";
-import { Router, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { Router } from "@angular/router";
 import { AuthJWTService } from "../services/authJWT.service";
-import { MessageService } from "../services/message.service";
+import { MessageInfoService } from "../services/messageinfo.service";
+import { WARNING_NO_LOGIN } from "src/app/constants";
 
 @Injectable()
 export class FantasyTeamGuard {
-
   constructor(
     private router: Router,
     private authJWTService: AuthJWTService,
-    private messageService: MessageService
+    private messageInfoService: MessageInfoService,
   ) {}
 
-  canActivate():Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): boolean {
     if (!this.authJWTService.isLogged()) {
-      this.messageService.showInformation('Debes estar logueado para acceder a esta página');
-      this.router.navigate(['/fantasy/login']);
+      this.messageInfoService.showWarn(WARNING_NO_LOGIN);
+      this.router.navigate(["/fantasy/login"]);
       return false;
     } else {
       return true;

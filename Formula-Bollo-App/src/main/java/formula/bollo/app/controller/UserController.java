@@ -90,7 +90,11 @@ public class UserController {
 
         User userToSave = userMapper.userDTOToUser(userDTO);
         userRepository.save(userToSave);
-        String token = jwtConfig.generateToken(userDTO);
+        List<User> userRegistered = this.userRepository.findByUsername(userDTO.getUsername());
+        Log.info(userRegistered.get(0).toString());
+
+        UserDTO userToGetToken = this.userMapper.userToUserDTO(userRegistered.get(0));
+        String token = jwtConfig.generateToken(userToGetToken);
         
         Log.info("END - register - END");
         
@@ -153,5 +157,5 @@ public class UserController {
         Log.info("END - getUserById - END");
 
         return user;
-    } 
+    }
 }

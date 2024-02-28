@@ -1,67 +1,24 @@
 @import "../../../../assets/scss/styles.scss";
 
 .penalty {
-  &-topSide {
-    &-form {
-      width: 240px;
-    }
-  }
+  min-height: calc(100vh - 54px);
 
-  &-topSide,  &-bottomSide {
-    width: 60%;
-    font-family: 'F1-Regular';
-
-    &-title {
-      font-family: "F1-Bold";
-      letter-spacing: 0.2px;
-    }
-  }
-
-  &-bottomSide {
-    mat-form-field {
-      width: 100%;
-    }
-
-    ::ng-deep .mat-mdc-text-field-wrapper {
-      height: auto !important;
-    }
-
-    ::ng-deep .mat-mdc-form-field-textarea-control {
-      width: 100% !important;
-      height: 7rem !important;
-    }
+  ::ng-deep .p-dropdown {
+    width: 11.2rem;
   }
 
   &-button {
-    border: none;
-    background: rgba($red, 0.8);
-    font-size: 1.25rem;
-    border-radius: 0.5rem;
-    width: 25%;
-    color: white;
-    font-family: 'F1-REGULAR';
+    ::ng-deep .p-button {
+      color: white !important;
+      background-color: $red !important;
+      border: none;
+      padding: 0.55rem 2.55rem;
+      font-size: 1.25rem;
+      font-weight: bold;
 
-    &:hover {
-      background: $red;
-      transform: translate(-1px, -1px);
-    }
-  }
-
-  hr {
-    border-top: 10px solid rgb(33, 37, 41);
-    opacity: 1;
-  }
-}
-
-
-@include media-breakpoint-down(md) {
-  .penalty {
-    &-button {
-      width: 50%;
-    }
-
-    &-bottomSide {
-      width: 100% !important;
+      &:hover {
+        transform: translate(-1px, -1px);
+      }
     }
   }
 }

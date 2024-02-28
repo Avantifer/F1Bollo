@@ -6,6 +6,12 @@
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";
 
+@import "generic/container.scss";
 @import "generic/scrollbar.scss";
 
 @import "objects/input.scss";
+@import "objects/button.scss";
+@import "objects/navbar.scss";
+@import "objects/teamsColors.scss";
+@import "objects/toast.scss";
+

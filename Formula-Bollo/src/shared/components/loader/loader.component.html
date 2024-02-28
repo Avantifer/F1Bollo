@@ -1,9 +1,5 @@
-<div *ngIf="isLoading | async" class="overlay">
-  <mat-progress-spinner
-    class="spinner"
-    color="primary"
-    mode="indeterminate"
-    value="50"
-  >
-  </mat-progress-spinner>
-</div>
+@if (isLoading | async) {
+  <div class="flex align-items-center justify-content-center overlay">
+    <i class="pi pi-spin pi-spinner" style="font-size: 10rem"></i>
+  </div>
+}

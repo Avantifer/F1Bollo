@@ -1,16 +1,17 @@
 import { Injectable } from "@angular/core";
-import { Router, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { Router } from "@angular/router";
 import { AuthJWTService } from "../services/authJWT.service";
 
 @Injectable()
 export class LoginGuard {
+  constructor(
+    private router: Router,
+    private authJWTService: AuthJWTService,
+  ) {}
 
-  constructor(private router: Router, private authJWTService: AuthJWTService) {}
-
-  canActivate():Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): boolean {
     if (this.authJWTService.isLogged()) {
-      this.router.navigate(['/']);
+      this.router.navigate(["/"]);
       return false;
     } else {
       return true;

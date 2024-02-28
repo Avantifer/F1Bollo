@@ -5,18 +5,16 @@ import { environment } from "src/enviroments/enviroment";
 import { PenaltySeverity } from "../../models/penaltySeverity";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-
 export class PenaltySeverityApiService {
-
   private endpoint: string = "/penaltiesSeverity";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getAllPenalties(): Observable<PenaltySeverity[]> {
-    return this.httpClient.get<PenaltySeverity[]>(environment.apiUrl + this.endpoint + "/all");
+    return this.httpClient.get<PenaltySeverity[]>(
+      environment.apiUrl + this.endpoint + "/all",
+    );
   }
-
-
 }

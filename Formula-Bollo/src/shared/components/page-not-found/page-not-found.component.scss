@@ -4,13 +4,10 @@
   height: calc(100vh - 75px);
 
   h1 {
-    font-family: 'F1-Regular';
+    font-family: "F1-Regular";
     letter-spacing: 1px;
   }
-
-
 }
-
 
 @include media-breakpoint-down(lg) {
   .container {

@@ -24,7 +24,7 @@ export class FantasyElection {
     teamOne?: Team | undefined,
     teamTwo?: Team | undefined,
     race?: Race | undefined,
-    season?: Season | undefined
+    season?: Season | undefined,
   ) {
     this.id = id;
     this.user = user;
@@ -36,5 +36,4 @@ export class FantasyElection {
     this.race = race;
     this.season = season;
   }
-
 }

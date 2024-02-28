@@ -1,45 +1,45 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { environment } from 'src/enviroments/enviroment';
-import { Driver } from 'src/shared/models/driver';
-import { DriverPoints } from 'src/shared/models/driverPoints';
-import { Season } from 'src/shared/models/season';
-import { DriverApiService } from 'src/shared/services/api/driver-api.service';
-import { ResultApiService } from 'src/shared/services/api/result-api.service';
-import { SeasonApiService } from 'src/shared/services/api/season-api.service';
-import { MessageService } from 'src/shared/services/message.service';
+import { Component } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
+import { Subject, takeUntil } from "rxjs";
+import { ERROR_DRIVER_FETCH, ERROR_RESULT_FETCH, ERROR_SEASON_FETCH } from "src/app/constants";
+import { environment } from "src/enviroments/enviroment";
+import { Driver } from "src/shared/models/driver";
+import { DriverPoints } from "src/shared/models/driverPoints";
+import { Season } from "src/shared/models/season";
+import { DriverApiService } from "src/shared/services/api/driver-api.service";
+import { ResultApiService } from "src/shared/services/api/result-api.service";
+import { SeasonApiService } from "src/shared/services/api/season-api.service";
+import { MessageInfoService } from "src/shared/services/messageinfo.service";
 
 @Component({
-  selector: 'app-drivers',
-  templateUrl: './drivers.component.html',
-  styleUrls: ['./drivers.component.scss']
+  selector: "app-drivers",
+  templateUrl: "./drivers.component.html",
+  styleUrls: ["./drivers.component.scss"],
 })
 export class DriversComponent {
-
   driverPoints: DriverPoints[] = [];
   drivers: Driver[] = [];
   seasons: Season[] = [];
 
   seasonForm: FormGroup = new FormGroup({
-    season: new FormControl(''),
+    season: new FormControl(""),
   });
 
-  seasonSelected: Season | undefined;
+  seasonSelected: Season = environment.seasonActual;
+  seasonName: string = environment.seasonActual.name;
 
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private driversApiService: DriverApiService,
     private resultApiService: ResultApiService,
-    private messageService: MessageService,
-    private seasonApiService: SeasonApiService
-  ) {  }
+    private messageInfoService: MessageInfoService,
+    private seasonApiService: SeasonApiService,
+  ) {}
 
   ngOnInit(): void {
     this.obtainAllSeasons();
     this.obtainAllDriversPoints();
-    this.obtainAllDrivers();
     this.changeSeasonDrivers();
   }
 
@@ -50,78 +50,83 @@ export class DriversComponent {
 
   /**
    * Fetch all driver points data and update the component's driverPoints property.
-  */
+   */
   obtainAllDriversPoints(seasonNumber?: number): void {
-    this.resultApiService.getAllDriverPoints(seasonNumber)
-      .pipe(
-        takeUntil(this._unsubscribe)
-      )
+    this.resultApiService
+      .getAllDriverPoints(seasonNumber)
+      .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (driverPoints: DriverPoints[]) => {
           this.driverPoints = driverPoints;
         },
         error: (error) => {
-          this.messageService.showInformation('No se ha podido recoger los resultados correctamente');
+          this.messageInfoService.showError(ERROR_RESULT_FETCH);
           console.log(error);
           throw error;
-        }
-      })
+        },
+        complete: () => {
+          if (this.driverPoints.length === 0) {
+            this.obtainAllDrivers(seasonNumber);
+          }
+        },
+      });
   }
 
   /**
    * Fetch all drivers data and update the component's drivers property.
-  */
-  obtainAllDrivers(): void {
-    this.driversApiService.getAllDrivers(environment.seasonActual)
-      .pipe(
-        takeUntil(this._unsubscribe)
-      )
+   */
+  obtainAllDrivers(seasonNumber?: number): void {
+    this.driversApiService
+      .getAllDrivers(seasonNumber)
+      .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (drivers: Driver[]) => {
           this.drivers = drivers;
         },
         error: (error) => {
-          this.messageService.showInformation('No se pudo obtener los pilotos correctamente');
+          this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
           throw error;
-        }
-      })
+        },
+      });
   }
 
   /**
    * Fetch all seasons and set a default season in the form.
-  */
+   */
   obtainAllSeasons(): void {
-    this.seasonApiService.getSeasons()
-      .pipe(
-        takeUntil(this._unsubscribe)
-      )
+    this.seasonApiService
+      .getSeasons()
+      .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (seasons: Season[]) => {
           this.seasons = seasons;
-
           // Put seasonActual on the season Form as default value and update seasonSelected's property
-          this.seasonSelected = this.seasons.filter((season: Season) => season.number === environment.seasonActual)[0];
-          this.seasonForm.get('season')?.setValue(this.seasonSelected);
+          this.seasonSelected = this.seasons.filter(
+            (season: Season) =>
+              season.number === environment.seasonActual.number,
+          )[0];
+          this.seasonForm.get("season")?.setValue(this.seasonSelected);
         },
         error: (error) => {
-          this.messageService.showInformation('No se ha podido recoger las temporadas correctamente');
+          this.messageInfoService.showError(ERROR_SEASON_FETCH);
           console.log(error);
           throw error;
-        }
+        },
       });
   }
 
   /**
    * Listen for changes in the selected season and update the list of drivers accordingly.
-  */
+   */
   changeSeasonDrivers(): void {
-    this.seasonForm.valueChanges.pipe(
-      takeUntil(this._unsubscribe)
-    )
-    .subscribe((data: any) => {
-      this.seasonSelected = data.season;
-      this.obtainAllDriversPoints(this.seasonSelected!.number);
-    });
+    this.seasonForm.valueChanges
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe((data) => {
+        this.seasonSelected = data.season;
+        this.driverPoints = [];
+        this.drivers = [];
+        this.obtainAllDriversPoints(this.seasonSelected.number);
+      });
   }
 }

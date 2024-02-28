@@ -1,123 +1,41 @@
 @import "../../../assets/scss/styles.scss";
 
 .navbar {
-  background-color: $red;
-  color: white;
-  height: 4.7rem;
+  &-bollo {
+    ::ng-deep .p-menubar {
+      background-color: $red;
+    }
+
+    ::ng-deep .p-menubar-root-list {
+      background-color: $red;
+    }
+
+    ::ng-deep .p-button {
+      background-color: $fantasyblue !important;
+    }
+  }
 
   &-fantasy {
-    background-color: $fantasyblue;
-    color: black;
-  }
+    ::ng-deep .p-menubar {
+      background-color: $fantasyblue;
+    }
 
-  &-collapse {
-    margin-left: 8rem;
-  }
+    ::ng-deep .p-menubar-root-list {
+      background-color: $fantasyblue;
+    }
 
-  &-text {
-    &-button {
-      &-fantasy {
-        border: none;
-        background: rgba($fantasyblue, 0.9);
-        font-size: 1.25rem;
-        border-radius: 0.5rem;
-        padding: 0.35rem 2rem;
-        color: white;
-        text-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
-        font-family: 'F1-REGULAR';
-
-        &:hover {
-          background: $fantasyblue;
-          transform: translate(-1px, -1px);
-        }
-      }
-
-      &-formula {
-        border: none;
-        background: rgba($red, 0.9);
-        font-size: 1.25rem;
-        border-radius: 0.5rem;
-        padding: 0.35rem 2rem;
-        color: white;
-        text-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
-        font-family: 'F1-REGULAR';
-
-        &:hover {
-          background: $red;
-          transform: translate(-1px, -1px);
-        }
-      }
+    ::ng-deep .p-button {
+      background-color: $red !important;
     }
   }
 
-  &-nav {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  ::ng-deep .p-menubar-root-list {
+    border: 0;
+    box-shadow: none;
+    margin-left: 3rem;
   }
 
-  &-collapse.in {
-    display: block !important;
-    padding: 1rem 0;
-  }
-
-  &-toggler {
-    border-color: rgb(255, 255, 255) !important;
-
-    &-icon {
-      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
-    }
-  }
-
-  .logo {
-    width: 4.25rem;
-    height: auto;
-  }
-
-  .nav-item {
-    font-size: 19px;
-    font-family: 'F1-Regular';
-
-    a:hover {
-      color: black !important;
-      font-weight: bold !important;
-    }
-
-    .active {
-      position: relative;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 7px;
-        left: -13px;
-        height: 10px;
-        width: 10px;
-        border-radius: 10rem;
-        background-color: black;
-      }
-
-      color: black !important;
-      font-weight: bold !important;
-    }
-  }
-
-}
-
-@include media-breakpoint-down(lg) {
-  .navbar {
-    height: auto !important;
-
-    &-brand {
-      position: relative !important;
-    }
-
-    .logo {
-      margin-left: 5rem;
-    }
-
-    &-collapse {
-      margin-left: 0 !important ;
-    }
+  ::ng-deep .p-button-label {
+    color: white !important;
   }
 }

@@ -12,4 +12,10 @@ import formula.bollo.app.entity.Driver;
 public interface DriverRepository extends JpaRepository<Driver, Long>{
     @Query(value = "SELECT d FROM Driver d WHERE d.season.number = ?1")
     List<Driver> findBySeason(int seasonNumber);
+
+    @Query(value = "SELECT d FROM Driver d WHERE d.season.number = ?1 AND d.name = ?2")
+    List<Driver> findByNameAndSeason(int seasonNumber, String driverName);
+
+    @Query(value = "SELECT d FROM Driver d WHERE d.name = ?1")
+    List<Driver> findByName(String driverName);
 }

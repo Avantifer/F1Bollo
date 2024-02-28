@@ -1,74 +1,29 @@
 @import "../../../../assets/scss/styles.scss";
 
-svg {
-  font-size: 3.5rem;
-  fill: #5f6982;
-}
+.statute {
+  min-height: calc(100vh - 54px);
 
-p, h3 {
-  font-family: 'F1-Regular';
-}
-
-h3 {
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-
-input {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  opacity: 0;
-}
-
-mat-progress-bar {
-  width: 80%;
-  border-radius: 1rem;
-}
-
-.circle {
-  height: 2rem;
-  width: 2rem;
-
-  &-correct {
-    background-color: lightgreen;
+  p {
+    font-family: "Inter var", sans-serif;
   }
 
-  &-wrong {
-    background-color: lightcoral;
+  h1 {
+    letter-spacing: 1px;
   }
 
-  svg {
-    font-size: 1.65rem;
-    fill: white;
-  }
-}
+  &-button {
+    ::ng-deep .p-button {
+      color: white !important;
+      background-color: $red !important;
+      border: none;
+      padding: 0.55rem 2.55rem;
+      font-size: 1.25rem;
+      font-weight: bold;
 
-.statute-button {
-  border: none;
-  background: rgba($red, 0.8);
-  font-size: 1.25rem;
-  border-radius: 0.5rem;
-  width: 25%;
-  color: white;
-  font-family: 'F1-REGULAR';
-
-  &:hover {
-    background: $red;
-    transform: translate(-1px, -1px);
-  }
-}
-
-@include media-breakpoint-down(md) {
-  mat-card {
-    width: 100% !important;
-  }
-
-  .statute {
-    &-button {
-      width: 50%;
+      &:hover {
+        transform: translate(-1px, -1px);
+      }
     }
   }
 }
+

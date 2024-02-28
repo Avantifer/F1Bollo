@@ -1,0 +1,102 @@
+<div class="drivers relative surface-200">
+  <div class="container">
+    <h2 class="drivers-text F1_Wide text-white text-center mt-0 mb-3 pt-6 pb-8 text-xl md:text-2xl relative">Clasificación de pilotos</h2>
+    <div class="drivers-cards flex flex-column justify-content-center md:block">
+      @if (driverPoints.length === 0 && drivers.length === 0) {
+        <div class="skeleton-template mt-8">
+          @for (item of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; track $index) {
+            <p-skeleton width="w-full" height="4.25rem" [styleClass]="$index === 0 ? 'mt-8' : 'mt-3'"></p-skeleton>
+          }
+        </div>
+      } @else if (driverPoints.length > 0) {
+        @for (driver of top3DriverPoints; track $index) {
+          <div
+            class="relative surface-0 border-round-2xl"
+            [ngClass]="$index === 1 ? 'drivers-card-pos1 w-full m-0 sm:mr-3 md:mx-3 lg:mx-4 md:w-4 md:inline-block' : 'drivers-card hidden md:inline-block'">
+            <div class="F1_Wide relative" [class]="$index === 1 ? 'drivers-card-pos1-top h-11rem' : 'drivers-card-top h-9rem'">
+              <div
+                class="F1_Wide drivers-card-top-number absolute text-5xl md:text-xl lg:text-4xl xl:text-5xl"
+                [class]="'color-' + (driver.driver.team.name | SpaceToUnderscore)">
+                {{ driver.driver.number }}
+              </div>
+              <img
+                [src]="'data:image/jpg;base64,' + driver.driver.driverImage"
+                [alt]="'Imagen de ' + (driver.driver.team.name | SpaceToUnderscore)"
+                class="absolute z-1 top-100">
+              <div
+                class="drivers-card-top-border w-full absolute -translate-y-100 top-100"
+                [class]="'bg-' + (driver.driver.team.name | SpaceToUnderscore)">
+              </div>
+            </div>
+            <div class="drivers-card-bot w-full border-round-2xl border-noround-top">
+              <h3 class="text-center text-white uppercase font-bold p-4 m-0 text-2xl md:text-base lg:text-xl xl:text-3xl">{{ driver.driver.name }}</h3>
+            </div>
+          </div>
+        }
+        <div class="drivers-top10 mt-3">
+          @for (driverPoint of driverPoints; track $index) {
+            <div
+              class="drivers-top10-container mx-0 my-1 md:mx-6 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0">
+              <div class="drivers-top10-start flex align-items-center">
+                <h4 class="my-0">{{ $index + 1 }}</h4>
+                <div class="drivers-top10-line mx-2" [class]="'bg-' + (driverPoint.driver.team.name | SpaceToUnderscore)"></div>
+                <h4 class="my-0">{{ driverPoint.driver.name }}</h4>
+                <p class="my-0 ml-3 hidden md:block">{{ driverPoint.driver.team.name }}</p>
+              </div>
+              <div class="drivers-top10-end flex align-items-center">
+                <p-chip class="badge me-3 p-2 text-dark rounded-pill shadow-sm font-bold" [label]="driverPoint.totalPoints + ' Puntos'"></p-chip>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+              </div>
+            </div>
+          }
+        </div>
+      } @else if (drivers.length > 0) {
+        @for (driver of top3Drivers; track $index) {
+          <div
+            class="relative surface-0 border-round-2xl"
+            [ngClass]="$index === 1 ? 'drivers-card-pos1 w-full m-0 sm:mr-3 md:mx-3 lg:mx-4 md:w-4 md:inline-block' : 'drivers-card hidden md:inline-block'">
+            <div class="F1_Wide relative" [class]="$index === 1 ? 'drivers-card-pos1-top h-11rem' : 'drivers-card-top h-9rem'">
+              <div
+                class="F1_Wide drivers-card-top-number absolute text-5xl md:text-xl lg:text-4xl xl:text-5xl"
+                [class]="'color-' + (driver.team.name | SpaceToUnderscore)">
+                {{ driver.number }}
+              </div>
+              <img
+                [src]="'data:image/jpg;base64,' + driver.driverImage"
+                [alt]="'Imagen de ' + (driver.team.name | SpaceToUnderscore)"
+                class="absolute z-1 top-100">
+              <div
+                class="drivers-card-top-border w-full absolute -translate-y-100 top-100"
+                [class]="'bg-' + (driver.team.name | SpaceToUnderscore)">
+              </div>
+            </div>
+            <div class="drivers-card-bot w-full border-round-2xl border-noround-top">
+              <h3 class="text-center text-white uppercase font-bold p-4 m-0 text-2xl md:text-base lg:text-xl xl:text-3xl">{{ driver.name }}</h3>
+            </div>
+          </div>
+        }
+        <div class="drivers-top10 mt-3">
+          @for (driver of drivers; track $index) {
+            <div
+            class="drivers-top10-container mx-0 my-1 md:mx-6 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0">
+            <div class="drivers-top10-start flex align-items-center">
+              <h4 class="my-0">{{ $index + 1 }}</h4>
+              <div class="drivers-top10-line mx-2" [class]="'bg-' + (driver.team.name | SpaceToUnderscore)"></div>
+              <h4 class="my-0">{{ driver.name }}</h4>
+              <p class="my-0 ml-3 hidden md:block">{{ driver.team.name }}</p>
+            </div>
+            <div class="drivers-top10-end flex align-items-center">
+              <p-chip class="badge me-3 p-2 text-dark rounded-pill shadow-sm font-bold" label="0 Puntos"></p-chip>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </div>
+          </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

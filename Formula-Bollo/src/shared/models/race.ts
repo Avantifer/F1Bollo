@@ -8,7 +8,13 @@ export class Race {
   season: Season | undefined;
   finished: number;
 
-  constructor( id: number, circuit: Circuit, dateStart: Date, finished: number, season?: Season) {
+  constructor(
+    id: number,
+    circuit: Circuit,
+    dateStart: Date,
+    finished: number,
+    season?: Season,
+  ) {
     this.id = id;
     this.circuit = circuit;
     this.dateStart = dateStart;

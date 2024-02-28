@@ -279,11 +279,11 @@ public class FantasyController {
         }
         fantasyInfoDTO.setTotalPoints(totalPoints);
 
-        List<FantasyPriceDriver> fantasyPriceDriver = this.fantasyPriceDriverRepository.findTwoLastPrices((long) teamId);
-        if (fantasyPriceDriver.size() < 2) return fantasyInfoDTO;
-
-        double price1 = fantasyPriceDriver.get(0).getPrice();
-        double price2 = fantasyPriceDriver.get(1).getPrice();
+        List<FantasyPriceTeam> fantasyPriceTeam = this.fantasyPriceTeamRepository.findTwoLastPrices((long) teamId);
+        if (fantasyPriceTeam.size() < 2) return fantasyInfoDTO;
+        
+        double price1 = fantasyPriceTeam.get(0).getPrice();
+        double price2 = fantasyPriceTeam.get(1).getPrice();
         double difference = price2 - price1;
         double percentage = ((difference / price2) * 100) * -1;
 
