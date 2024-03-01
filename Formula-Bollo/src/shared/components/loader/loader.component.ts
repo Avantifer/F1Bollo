@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import { Subject } from 'rxjs';
-import { LoaderService } from '../../services/loader.service';
+import { Component } from "@angular/core";
+import { Subject } from "rxjs";
+import { LoaderService } from "../../services/loader.service";
 
 @Component({
-  selector: 'app-loader',
-  templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.scss']
+  selector: "app-loader",
+  templateUrl: "./loader.component.html",
+  styleUrls: ["./loader.component.scss"],
 })
 export class LoaderComponent {
 
-  constructor(private loaderService : LoaderService) { }
+  constructor(private loaderService: LoaderService) {}
 
   isLoading: Subject<boolean> = this.loaderService.isLoading;
 }

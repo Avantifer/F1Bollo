@@ -1,0 +1,81 @@
+.navbar {
+  .logo {
+    width: 2.4rem;
+  }
+
+  ::ng-deep .p-menubar {
+    border: none;
+    border-radius: 0;
+  }
+
+  ::ng-deep .p-menubar-end {
+    margin: 0;
+  }
+
+  ::ng-deep .p-menubar-start {
+    display: flex;
+  }
+
+  ::ng-deep .p-element {
+    margin: auto;
+  }
+
+  ::ng-deep .p-menuitem > * {
+    background: transparent !important;
+  }
+
+  ::ng-deep .p-menuitem-text {
+    color: white;
+    font-family: "Inter var", sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+
+    &-selected {
+      font-weight: bold;
+      color: black;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 14px;
+        left: 3px;
+        height: 10px;
+        width: 10px;
+        border-radius: 10rem;
+        background-color: black;
+      }
+    }
+  }
+
+  ::ng-deep .p-menuitem-content:hover {
+    background: transparent;
+
+    .p-menuitem-text {
+      color: black;
+    }
+  }
+
+  ::ng-deep .p-menuitem-link {
+    padding: 0.65rem 0.95rem;
+  }
+
+  ::ng-deep .p-menubar-button {
+    color: #000000;
+
+    &:hover {
+      background: #ffffff;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  ::ng-deep .p-menubar-root-list {
+    flex-direction: row;
+  }
+
+  ::ng-deep .p-menuitem {
+    width: auto;
+  }
+}

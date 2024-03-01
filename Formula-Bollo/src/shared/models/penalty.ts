@@ -11,7 +11,14 @@ export class Penalty {
   reason: string;
   season: Season | undefined;
 
-  constructor(id: number, race: Race, driver: Driver, severity: PenaltySeverity, reason: string, season?: Season) {
+  constructor(
+    id: number,
+    race: Race,
+    driver: Driver,
+    severity: PenaltySeverity,
+    reason: string,
+    season?: Season,
+  ) {
     this.id = id;
     this.race = race;
     this.driver = driver;

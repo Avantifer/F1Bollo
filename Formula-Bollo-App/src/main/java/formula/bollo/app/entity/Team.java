@@ -34,11 +34,6 @@ public class Team {
     private String carImage;
     
     @JsonIgnore
-    @Column(name = "team_image", nullable = false, columnDefinition = "BLOB")
-    @NotNull
-    private Blob teamImage;
-
-    @JsonIgnore
     @Column(name = "logo_image", nullable = false, columnDefinition = "BLOB")
     @NotNull
     private Blob logoImage;

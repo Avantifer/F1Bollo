@@ -1,0 +1,18 @@
+@import "../../../../assets/scss/styles.scss";
+
+.teams {
+  &-title {
+    letter-spacing: 2px;
+  }
+
+  &-schema-container {
+    transition: 0.25s cubic-bezier(0.35, 0.15, 0.6, 1);
+  }
+}
+
+.dark-theme {
+  img {
+    filter: invert(100%) brightness(1) grayscale(1);
+  }
+}
+

@@ -11,115 +11,146 @@ import { FantasyPriceDriver } from "src/shared/models/fantasyPriceDriver";
 import { FantasyPriceTeam } from "src/shared/models/fantasyPriceTeam";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-
 export class FantasyApiService {
-
   private endpoint: string = "/fantasy";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   saveAllPoints(raceId: number): Observable<string> {
-    const params = new HttpParams().set('raceId', raceId);
+    const params = new HttpParams().set("raceId", raceId);
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      "Content-Type": "application/json",
+      Accept: "application/json",
     });
 
     const options = {
       headers: headers,
       params: params,
-      responseType: 'text' as 'json'
+      responseType: "text" as "json",
     };
 
-    const url = environment.apiUrl + this.endpoint + '/saveDriverTeamPoints';
+    const url = environment.apiUrl + this.endpoint + "/saveDriverTeamPoints";
 
     return this.httpClient.put<string>(url, {}, options);
   }
 
   saveAllPrices(raceId: number): Observable<string> {
-    const params = new HttpParams().set('raceId', raceId);
+    const params = new HttpParams().set("raceId", raceId);
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      "Content-Type": "application/json",
+      Accept: "application/json",
     });
 
     const options = {
       headers: headers,
       params: params,
-      responseType: 'text' as 'json'
+      responseType: "text" as "json",
     };
 
-    const url = environment.apiUrl + this.endpoint + '/saveDriverTeamPrices';
+    const url = environment.apiUrl + this.endpoint + "/saveDriverTeamPrices";
 
     return this.httpClient.put<string>(url, {}, options);
   }
 
   getAllDriverPoints(raceId: number): Observable<FantasyPointsDriver[]> {
-    const params = new HttpParams().set('raceId', raceId);
-    return this.httpClient.get<FantasyPointsDriver[]>(environment.apiUrl + this.endpoint + '/allDriverPoints', {params});
+    const params = new HttpParams().set("raceId", raceId);
+    return this.httpClient.get<FantasyPointsDriver[]>(
+      environment.apiUrl + this.endpoint + "/allDriverPoints",
+      { params },
+    );
   }
 
-  getDriverPoints(driverId:number, raceId: number): Observable<FantasyPointsDriver> {
-    let params =
-      new HttpParams()
-        .set('driverId', driverId)
-        .set('raceId', raceId);
-    return this.httpClient.get<FantasyPointsDriver>(environment.apiUrl + this.endpoint + '/driverPoints', {params});
+  getDriverPoints(
+    driverId: number,
+    raceId: number,
+  ): Observable<FantasyPointsDriver> {
+    const params = new HttpParams()
+      .set("driverId", driverId)
+      .set("raceId", raceId);
+    return this.httpClient.get<FantasyPointsDriver>(
+      environment.apiUrl + this.endpoint + "/driverPoints",
+      { params },
+    );
   }
 
   getAllTeamPoints(raceId: number): Observable<FantasyPointsTeam[]> {
-    const params = new HttpParams().set('raceId', raceId);
-    return this.httpClient.get<FantasyPointsTeam[]>(environment.apiUrl + this.endpoint + '/allTeamPoints', {params});
+    const params = new HttpParams().set("raceId", raceId);
+    return this.httpClient.get<FantasyPointsTeam[]>(
+      environment.apiUrl + this.endpoint + "/allTeamPoints",
+      { params },
+    );
   }
 
-  getTeamPoints(teamId:number, raceId: number): Observable<FantasyPointsTeam> {
-    let params =
-      new HttpParams()
-        .set('teamId', teamId)
-        .set('raceId', raceId);
-    return this.httpClient.get<FantasyPointsTeam>(environment.apiUrl + this.endpoint + '/teamPoints', {params});
+  getTeamPoints(teamId: number, raceId: number): Observable<FantasyPointsTeam> {
+    const params = new HttpParams().set("teamId", teamId).set("raceId", raceId);
+    return this.httpClient.get<FantasyPointsTeam>(
+      environment.apiUrl + this.endpoint + "/teamPoints",
+      { params },
+    );
   }
 
   getAllDriverPrices(raceId: number): Observable<FantasyPriceDriver[]> {
-    const params = new HttpParams().set('raceId', raceId);
-    return this.httpClient.get<FantasyPriceDriver[]>(environment.apiUrl + this.endpoint + '/allDriverPrices', {params});
+    const params = new HttpParams().set("raceId", raceId);
+    return this.httpClient.get<FantasyPriceDriver[]>(
+      environment.apiUrl + this.endpoint + "/allDriverPrices",
+      { params },
+    );
   }
 
   getAllTeamPrices(raceId: number): Observable<FantasyPriceTeam[]> {
-    const params = new HttpParams().set('raceId', raceId);
-    return this.httpClient.get<FantasyPriceTeam[]>(environment.apiUrl + this.endpoint + '/allTeamPrices', {params});
+    const params = new HttpParams().set("raceId", raceId);
+    return this.httpClient.get<FantasyPriceTeam[]>(
+      environment.apiUrl + this.endpoint + "/allTeamPrices",
+      { params },
+    );
   }
 
   getInfoByDriver(driverId: number): Observable<FantasyInfo> {
-    const params = new HttpParams().set('driverId', driverId);
-    return this.httpClient.get<FantasyInfo>(environment.apiUrl + this.endpoint + '/getInfoByDriver', {params});
+    const params = new HttpParams().set("driverId", driverId);
+    return this.httpClient.get<FantasyInfo>(
+      environment.apiUrl + this.endpoint + "/getInfoByDriver",
+      { params },
+    );
   }
 
   getInfoByTeam(teamId: number): Observable<FantasyInfo> {
-    const params = new HttpParams().set('teamId', teamId);
-    return this.httpClient.get<FantasyInfo>(environment.apiUrl + this.endpoint + '/getInfoByTeam', {params});
+    const params = new HttpParams().set("teamId", teamId);
+    return this.httpClient.get<FantasyInfo>(
+      environment.apiUrl + this.endpoint + "/getInfoByTeam",
+      { params },
+    );
   }
 
   saveFantasyElection(fantasyElection: FantasyElection): Observable<string> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'text/plain'
+      "Content-Type": "application/json",
+      Accept: "text/plain",
     });
-    return this.httpClient.post<string>(environment.apiUrl + this.endpoint + "/saveFantasyElection", fantasyElection, {headers, responseType: 'text' as 'json'});
+    return this.httpClient.post<string>(
+      environment.apiUrl + this.endpoint + "/saveFantasyElection",
+      fantasyElection,
+      { headers, responseType: "text" as "json" },
+    );
   }
 
-  getFantasyElection(raceId: number, userId: number): Observable<FantasyElection> {
-    let params =
-      new HttpParams()
-        .set('raceId', raceId)
-        .set('userId', userId);
-    return this.httpClient.get<FantasyElection>(environment.apiUrl + this.endpoint + '/getFantasyElection', {params});
+  getFantasyElection(
+    raceId: number,
+    userId: number,
+  ): Observable<FantasyElection> {
+    const params = new HttpParams().set("raceId", raceId).set("userId", userId);
+    return this.httpClient.get<FantasyElection>(
+      environment.apiUrl + this.endpoint + "/getFantasyElection",
+      { params },
+    );
   }
 
   getFantasyPoints(raceId: number): Observable<FantasyPointsUser[]> {
-    let params = new HttpParams().set('raceId', raceId);
-    return this.httpClient.get<FantasyPointsUser[]>(environment.apiUrl + this.endpoint + '/getFantasyPoints', {params});
+    const params = new HttpParams().set("raceId", raceId);
+    return this.httpClient.get<FantasyPointsUser[]>(
+      environment.apiUrl + this.endpoint + "/getFantasyPoints",
+      { params },
+    );
   }
 }

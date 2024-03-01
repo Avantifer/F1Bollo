@@ -1,47 +1,53 @@
-<div class="login bg-dark">
-  <div class="container d-flex align-items-center justify-content-center h-100">
-    <div class="login-card bg-white py-5">
-      <div class="login-card-title fst-italic">Iniciar Sesión</div>
+<div class="login surface-200">
+  <div class="container flex align-items-center justify-content-center h-full">
+    <div class="login-card surface-ground py-5 w-30rem border-round-2xl">
+      <div class="login-card-title min-w-min text-center mx-3 mt-3 mb-6">
+        <h1 class="font-italic F1_Bold m-0 uppercase">Iniciar Sesión</h1>
+      </div>
       <div class="login-card-form">
-        <form [formGroup]="loginForm" class="form text-center w-75 m-auto">
-          <p class="login-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">
+        <form [formGroup]="loginForm" class="form text-center w-9 m-auto">
+          <p class="login-card-form-label mt-3 mb-1 ms-3 text-left font-bold">
             Usuario
           </p>
-          <mat-form-field appearance="fill">
+          <p-inputGroup>
+            <p-inputGroupAddon class="border-none">
+              <i class="pi pi-user"></i>
+            </p-inputGroupAddon>
             <input
-              matInput
               type="text"
+              pInputText
               formControlName="username"
-              placeholder="Nombre de Usuario"
-              autocomplete="off"
-            />
-            <mat-error *ngIf="loginForm.get('username')?.invalid">Necesitas poner el nombre de usuario</mat-error>
-          </mat-form-field>
-          <p class="login-card-form-label mt-3 mb-1 ms-3 text-start fw-bold">Contraseña</p>
-          <mat-form-field appearance="fill">
-            <input
-              matInput
-              [type]="hidePassword ? 'password' : 'text'"
+              placeholder="Usuario"
+              class="border-none w-full surface-200 outline-none text-lg pl-2" />
+          </p-inputGroup>
+          @if (loginForm.get('username')?.invalid && loginForm.get('username')?.dirty) {
+            <span class="text-xs sm:text-sm">Necesitas poner el nombre de usuario</span>
+          }
+          <p class="login-card-form-label mt-3 mb-1 ms-3 text-left font-bold">
+            Contraseña
+          </p>
+          <p-inputGroup>
+            <p-inputGroupAddon class="border-none">
+              <i class="pi pi-lock"></i>
+            </p-inputGroupAddon>
+            <p-password
               formControlName="password"
               placeholder="Contraseña"
-              autocomplete="off"
-            />
-            <span
-              class="btn-password"
-              mat-icon-button
-              matSuffix
-              (click)="hidePassword = !hidePassword"
-            >
-              <mat-icon
-                class="position-absolute"
-                disableRipple="true"
-                role="button"
-                >{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon
-              >
-            </span>
-            <mat-error *ngIf="loginForm.get('password')?.invalid">Necesitas poner la contraseña</mat-error>
-          </mat-form-field>
-          <button mat-button class="login-card-form-button mt-4 py-1 w-65" (click)="login()">Iniciar Sesión</button>
+              class="w-full text-lg"
+              [toggleMask]="true"
+              [feedback]="false">
+            </p-password>
+          </p-inputGroup>
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.dirty) {
+            <span class="text-xs sm:text-sm">Necesitas poner la contraseña</span>
+          }
+          <div class="mt-6">
+            <p-button
+              label="Iniciar Sesión"
+              [raised]="true"
+              (click)="login()">
+            </p-button>
+          </div>
         </form>
       </div>
     </div>

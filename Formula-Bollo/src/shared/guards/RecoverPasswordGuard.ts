@@ -1,20 +1,21 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import { AuthJWTService } from "../services/authJWT.service";
 
 @Injectable()
 export class RecoverPasswordGuard {
+  constructor(
+    private router: Router,
+    private authJWTService: AuthJWTService,
+  ) {}
 
-  constructor(private router: Router, private authJWTService: AuthJWTService) {}
+  canActivate(route: ActivatedRouteSnapshot,state: RouterStateSnapshot): boolean {
+    const token: string = state.url.split("/")[3];
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    let token: string = state.url.split('/')[3];
-
-    if (this.authJWTService.checkTokenValid(token) && !this.authJWTService.isLogged()) {
+    if ( this.authJWTService.checkTokenValid(token) && !this.authJWTService.isLogged()) {
       return true;
     } else {
-      this.router.navigate(['/fantasy']);
+      this.router.navigate(["/fantasy"]);
       return false;
     }
   }

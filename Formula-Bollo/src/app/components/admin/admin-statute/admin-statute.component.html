@@ -1,32 +1,43 @@
-<div class="container">
-  <h3 class="text-center my-5">Actualizar Estatuto</h3>
-  <mat-card class="py-3 w-50 m-auto">
-    <mat-card-header class="justify-content-center">
-      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
-        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
-      </svg>
-      <span class="fas fa-download"></span>
-    </mat-card-header>
-    <mat-card-content>
-      <p class="text-center my-4">Selecciona un fichero o arrastralo</p>
-    </mat-card-content>
-    <input role="button" type="file" mat-button (change)="onFileSelected($event)" accept=".pdf">
-    <mat-card-footer *ngIf="selectedFile" class="d-flex justify-content-center align-items-center">
-      <mat-progress-bar mode="determinate" [value]="progressValue" *ngIf="progressValue < 100"></mat-progress-bar>
-      <span *ngIf="progressValue === 100">{{ selectedFile.name }}</span>
-      <div class="circle circle-correct rounded-circle d-flex justify-content-center align-items-center ms-2" *ngIf="correct && progressValue === 100">
-        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-          <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
-        </svg>
+<div class="statute surface-200">
+  <div class="container">
+    <h1 class="text-center py-6 m-0 F1_Regular font-bold">Actualizar Estatuto</h1>
+    <div class="py-4 w-full lg:w-7 xl:w-5 m-auto surface-ground relative shadow-2 border-round-lg">
+      <div class="flex justify-content-center">
+        <i class="pi pi-download text-900 text-6xl"></i>
       </div>
-      <div class="circle circle-wrong rounded-circle d-flex justify-content-center align-items-center ms-2" *ngIf="!correct && progressValue === 100">
-        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
-          <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
-        </svg>
+      <div>
+        <p class="text-center my-5">Selecciona un fichero o arrastralo</p>
       </div>
-    </mat-card-footer>
-  </mat-card>
-  <div class="d-flex justify-content-center align-items-center">
-    <button mat-button class="mx-auto my-5 statute-button p-2 shadow" (click)="readPDFContent()">Guardar</button>
+      <input
+        role="button"
+        type="file"
+        (change)="onFileSelected($event)"
+        accept=".pdf"
+        class="h-full w-full absolute top-0 left-0 opacity-0 cursor-pointer"
+      />
+      @if (selectedFile) {
+        <div class="flex justify-content-center align-items-center">
+          @if (progressValue < 100) {
+            <p-progressBar [value]="progressValue" class="w-10 border-round-2xl"></p-progressBar>
+          } @if (progressValue === 100) {
+            <span>{{ selectedFile.name }}</span>
+            @if (correct) {
+              <div class="circle h-2rem w-2rem bg-green-300 border-circle flex justify-content-center align-items-center ml-2">
+                <i class="pi pi-check text-0 font-bold"></i>
+              </div>
+            } @else {
+              <div class="circle h-2rem w-2rem bg-red-300 border-circle flex justify-content-center align-items-center ml-2">
+                <i class="pi pi-times text-0 font-bold"></i>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+    <div class="statute-button flex justify-content-center">
+      <p-button class="mx-auto my-5 p-2 p-button-raised" [raised]="true" (click)="readPDFContent()">
+        Guardar
+      </p-button>
+    </div>
   </div>
 </div>

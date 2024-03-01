@@ -1,0 +1,12 @@
+
+.configurations {
+  background: url("../../../../assets/images/intro/introConfigurations.avif");
+
+  &-schema {
+    hr {
+      border-top: 2px solid;
+      color: rgba(248, 249, 250, 0.25);
+      border-color: rgba(248, 249, 250, 0.25);
+    }
+  }
+}

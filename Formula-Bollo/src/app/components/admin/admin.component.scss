@@ -1,53 +1,39 @@
 @import "../../../assets/scss/styles.scss";
 
 .admin {
-  min-height: calc(100vh - 75px);
+  min-height: calc(100vh - 54px);
 
   &-leftSide {
+    background-color: #1f2937 !important;
+
     &-title {
       p {
-        color: white;
-        font-family: 'F1-Regular', sans-serif;
         letter-spacing: 1px;
-        font-size: 1.75rem;
       }
     }
 
     &-item {
-      width: 10rem;
       color: white;
 
       &:hover {
         background-color: white;
-        cursor: pointer;
-        color: black;
+        color: #111827;
       }
 
       &.active {
         background-color: white;
-        color: black;
+        color: #111827;
       }
     }
   }
-}
 
-@include media-breakpoint-down(lg) {
-  .admin {
-    min-height: calc(100vh - 92px) !important;
+  &-rightSide {
+    margin-left: 225px !important;
   }
 }
 
 @include media-breakpoint-down(sm) {
-  .admin {
-    &-leftSide {
-      &-item {
-        width: 4rem !important;
-        margin: auto;
-      }
-    }
-
-    &-rightSide {
-      margin-left: 129px !important;
-    }
+  .admin-rightSide {
+    margin-left: 145px !important;
   }
 }

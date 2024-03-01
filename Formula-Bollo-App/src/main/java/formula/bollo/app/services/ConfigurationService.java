@@ -10,6 +10,7 @@ import formula.bollo.app.entity.Configuration;
 import formula.bollo.app.mapper.ConfigurationMapper;
 import formula.bollo.app.model.ConfigurationDTO;
 import formula.bollo.app.repository.ConfigurationRepository;
+import formula.bollo.app.utils.Constants;
 
 @Service
 public class ConfigurationService {
@@ -30,7 +31,7 @@ public class ConfigurationService {
     */
     public void putCircuitsOnCache(Map<Long, ConfigurationDTO> cache) {
         if (!cache.isEmpty()) return;
-        List<Configuration> configurations = configurationRepository.findAll();
+        List<Configuration> configurations = configurationRepository.findBySeason(Constants.ACTUAL_SEASON);
         
         Map<Long, ConfigurationDTO> configurationDTOMap = configurations.parallelStream()
                 .collect(Collectors.toMap(Configuration::getId, configurationMapper::configurationToConfigurationDTO));
@@ -44,7 +45,7 @@ public class ConfigurationService {
      * @param season The season for which circuit data is requested.
      * @return A list of ConfigurationDTO objects representing the configuration of the specified season.
     */
-    public List<ConfigurationDTO> getCircuitsSeason(int season) {
+    public List<ConfigurationDTO> getConfigurationsBySeason(int season) {
         List<Configuration> circuits = configurationRepository.findBySeason(season);
 
         return circuits.parallelStream()

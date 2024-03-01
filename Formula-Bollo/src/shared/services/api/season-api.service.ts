@@ -5,20 +5,22 @@ import { environment } from "src/enviroments/enviroment";
 import { Season } from "src/shared/models/season";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-
 export class SeasonApiService {
-
   private endpoint: string = "/seasons";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getSeasons(): Observable<Season[]> {
-    return this.httpClient.get<Season[]>(environment.apiUrl + this.endpoint + "/all");
+    return this.httpClient.get<Season[]>(
+      environment.apiUrl + this.endpoint + "/all",
+    );
   }
 
   getActualSeason(): Observable<Season> {
-    return this.httpClient.get<Season>(environment.apiUrl + this.endpoint + "/actual");
+    return this.httpClient.get<Season>(
+      environment.apiUrl + this.endpoint + "/actual",
+    );
   }
 }

@@ -16,7 +16,7 @@ import formula.bollo.app.model.CircuitDTO;
 import formula.bollo.app.utils.Log;
 
 @Component
-public class CircuitImpl implements CircuitMapper{
+public class CircuitImpl implements CircuitMapper {
 
     private SeasonMapper seasonMapper;
 

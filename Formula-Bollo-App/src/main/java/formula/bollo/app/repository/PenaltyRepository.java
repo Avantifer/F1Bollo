@@ -10,8 +10,10 @@ import formula.bollo.app.entity.Penalty;
 
 @Repository
 public interface PenaltyRepository extends JpaRepository<Penalty, Long>{
+    @Query(value = "SELECT p FROM Penalty p WHERE p.driver.id = ?1")
+    List<Penalty> findByDriverId(Long driverId);
     @Query(value = "SELECT p FROM Penalty p WHERE p.driver.id = ?1 AND p.season.number = ?2")
-    List<Penalty> findByDriverId(Long driverId, int seasonNumber);
+    List<Penalty> findByDriverIdAndSeason(Long driverId, int seasonNumber);
 
     @Query(value = "SELECT p FROM Penalty p WHERE p.race.id = ?1 AND p.season.number = ?2")
     List<Penalty> findByRaceId(Long race, int seasonNumber);

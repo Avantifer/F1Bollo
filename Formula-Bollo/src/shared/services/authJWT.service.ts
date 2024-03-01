@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { User } from '../models/user';
-import { Router } from '@angular/router';
-import { MessageService } from './message.service';
+import { Injectable } from "@angular/core";
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { User } from "../models/user";
+import { Router } from "@angular/router";
+import { MessageInfoService, } from "./messageinfo.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class AuthJWTService {
-
   constructor(
     private jwtService: JwtHelperService,
     private router: Router,
-    private messageService: MessageService
+    private messageInfoService: MessageInfoService,
   ) { }
+
+  isUserLogged: boolean = false;
 
   /**
    * Checks if the user associated with the given JWT token is an admin.
@@ -22,7 +23,7 @@ export class AuthJWTService {
    */
   checkAdmin(jwt: string): boolean {
     let isAdmin: boolean = false;
-    let token: User | null = this.jwtService.decodeToken(jwt);
+    const token: User | null = this.jwtService.decodeToken(jwt);
 
     if (token?.admin) isAdmin = true;
 
@@ -38,7 +39,7 @@ export class AuthJWTService {
     let isValid: boolean = false;
 
     if (token) {
-      let tokenDecoded = this.jwtService.decodeToken(token);
+      const tokenDecoded = this.jwtService.decodeToken(token);
 
       if (!this.jwtService.isTokenExpired(token) && tokenDecoded.userId) {
         isValid = true;
@@ -54,8 +55,8 @@ export class AuthJWTService {
    * @returns The id extracted from the token.
    */
   getIdFromToken(token: string): string {
-    let id: string = '';
-    let tokenDecoded = this.jwtService.decodeToken(token);
+    let id: string = "";
+    const tokenDecoded = this.jwtService.decodeToken(token);
 
     if (tokenDecoded.userId) id = tokenDecoded.userId;
 
@@ -68,8 +69,8 @@ export class AuthJWTService {
    * @returns The username extracted from the token.
    */
   getUsernameFromToken(token: string): string {
-    let username: string = '';
-    let tokenDecoded = this.jwtService.decodeToken(token);
+    let username: string = "";
+    const tokenDecoded = this.jwtService.decodeToken(token);
 
     if (tokenDecoded.sub) username = tokenDecoded.sub;
 
@@ -82,19 +83,19 @@ export class AuthJWTService {
    */
   isLogged(): boolean {
     let isLogged: boolean = false;
-    let token: string | null = localStorage.getItem('auth');
+    const token: string | null = localStorage.getItem("auth");
 
     if (token) isLogged = true;
-
+    this.isUserLogged = isLogged;
     return isLogged;
   }
 
   /**
-   * Removes the 'auth' item from local storage, navigates to the login page, and displays a success message.
-  */
+   * Removes the "auth" item from local storage, navigates to the login page, and displays a success message.
+   */
   logOut(): void {
-    localStorage.removeItem('auth');
-    this.router.navigate(['/fantasy/login']);
-    this.messageService.showInformation('Has cerrado sesión correctamnete');
+    localStorage.removeItem("auth");
+    this.isUserLogged = false;
+    this.messageInfoService.showInfo("Has cerrado sesión correctamente");
   }
 }

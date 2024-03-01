@@ -1,9 +1,11 @@
 export default class HeaderLinks {
-  name: string;
-  url: string;
+  label: string;
+  routerLink: string[];
+  command: () => void;
 
-  constructor(name: string, url: string) {
-    this.name = name;
-    this.url = url;
+  constructor(label: string, routerLink: string[], command: () => void) {
+    this.label = label;
+    this.routerLink = routerLink;
+    this.command = command;
   }
 }

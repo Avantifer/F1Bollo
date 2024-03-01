@@ -5,26 +5,29 @@ import { environment } from "src/enviroments/enviroment";
 import { Archive } from "../../models/archive";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-
 export class ArchiveApiService {
-
   private endpoint: string = "/archives";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getStatute(): Observable<Archive> {
-    return this.httpClient.get<Archive>(environment.apiUrl + this.endpoint + "/statute");
+    return this.httpClient.get<Archive>(
+      environment.apiUrl + this.endpoint + "/statute",
+    );
   }
 
   saveStatute(statute: Archive): Observable<string> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      "Content-Type": "application/json",
+      Accept: "application/json",
     });
 
-    return this.httpClient.put<string>(environment.apiUrl + this.endpoint + "/statute/save", statute, {headers, responseType: 'text' as 'json'});
+    return this.httpClient.put<string>(
+      environment.apiUrl + this.endpoint + "/statute/save",
+      statute,
+      { headers, responseType: "text" as "json" },
+    );
   }
-
 }

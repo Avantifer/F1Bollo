@@ -1,40 +1,48 @@
-<div class="bg-secondary-subtle py-5 px-3">
-  <div class="container bg-white p-5 h-100 position-relative">
-    <div class="d-flex justify-content-evenly flex-wrap mb-5">
-      <form [formGroup]="circuitsForm">
-        <div class="d-flex flex-column">
-          <label class="mb-1">Seleccione circuito:</label>
-          <mat-form-field>
-            <mat-select formControlName="circuit">
-              <mat-option *ngFor="let circuit of circuits" [value]="circuit">
-                {{ circuit.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </form>
-      <form [formGroup]="seasonForm">
-        <div class="d-flex flex-column">
-          <label class="mb-1">Seleccione temporada:</label>
-          <mat-form-field *ngIf="seasonSelected">
-            <mat-select formControlName="season" [(value)]="seasonSelected">
-              <mat-option *ngFor="let season of seasons" [value]="season">
-                {{ season.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </form>
+<div class="results surface-ground py-5 px-3">
+  <div class="container surface-200 p-6 h-full relative">
+    <div class="grid justify-content-evenly flex-wrap mb-2 md:mb-6">
+      @if (seasons.length > 0) {
+        <form [formGroup]="seasonForm" class="col-12 md:col-6">
+          <div class="flex flex-column align-items-start md:align-items-center">
+            <label class="mb-1 font-bold F1_Regular">Seleccione temporada:</label>
+            <p-dropdown
+              formControlName="season"
+              [options]="seasons"
+              [(ngModel)]="seasonSelected"
+              optionLabel="name"
+            ></p-dropdown>
+          </div>
+        </form>
+      }
+      @if (circuits.length > 0) {
+        <form [formGroup]="circuitsForm" class="col-12 md:col-6">
+          <div class="flex flex-column align-items-start md:align-items-center">
+            <label class="mb-1 font-bold F1_Regular">Seleccione circuito:</label>
+            <p-dropdown
+              formControlName="circuit"
+              [options]="circuits"
+              [(ngModel)]="circuitSelected"
+              optionLabel="name"
+            ></p-dropdown>
+          </div>
+        </form>
+      }
     </div>
-    <div class="table-title d-flex" *ngIf="circuitSelected">
-      <h2 class="mb-5">Resultados de la carrera {{ circuitSelected.name }}</h2>
-      <img class="ms-4" [src]="'data:image/jpg;base64,' + circuitSelected.flagImage" alt="Bandera del pais del circuito">
+    <div class="table-title flex" *ngIf="circuitSelected">
+      <h2 class="mb-5 F1_Regular font-bold text-base md:text-2xl">Resultados de  {{ circuitSelected.name }}</h2>
+      <img
+        class="ml-4 h-3rem shadow-3"
+        [src]="'data:image/jpg;base64,' + circuitSelected.flagImage"
+        alt="Bandera del pais del circuito"
+      />
     </div>
-    <div *ngIf="results.length > 0">
-      <app-formula-table [data]="results" [displayedColumns]="displayedColumns"></app-formula-table>
-    </div>
-    <div *ngIf="results.length == 0">
-      <h3 class="message_no_results">No hay resultados disponibles</h3>
-    </div>
+    @if (results.length > 0) {
+      <app-formula-table
+        [data]="results"
+        [displayedColumns]="displayedColumns"
+      ></app-formula-table>
+    } @else {
+      <h3 class="message_no_results F1_Regular font-bold absolute left-50 top-50 mt-8 md:m-0">No hay resultados disponibles</h3>
+    }
   </div>
 </div>

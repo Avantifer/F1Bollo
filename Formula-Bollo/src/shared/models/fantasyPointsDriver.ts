@@ -10,7 +10,13 @@ export class FantasyPointsDriver {
   season: Season;
   totalPoints?: number;
 
-  constructor(id: number, driver: Driver, race: Race, points: number, season: Season) {
+  constructor(
+    id: number,
+    driver: Driver,
+    race: Race,
+    points: number,
+    season: Season,
+  ) {
     this.id = id;
     this.driver = driver;
     this.race = race;

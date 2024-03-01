@@ -1,7 +1,7 @@
 @import "../../../assets/scss/styles.scss";
 
 * {
-  font-family: 'F1-Regular';
+  font-family: "F1-Regular";
   letter-spacing: 0.1px;
 }
 
@@ -9,46 +9,21 @@
 
   &-header {
     th {
-      font-weight: bold;
-      text-decoration: underline;
-      text-decoration-style: dashed;
-    }
-  }
-
-  &-row {
-
-    &-color {
-      background-color: rgb(203 203 203 / 20%);
-
-      &:hover {
-        background-color: rgb(203 203 203 / 20%) !important;
-      }
+      text-decoration-style: dashed !important;
     }
   }
 }
 
 @include media-breakpoint-down(md) {
   table {
-    overflow-x: auto;
     display: list-item;
-
-    th, td {
-      white-space: nowrap;
-    }
   }
 }
 
-button {
-  border: none;
-  background: rgba(91, 206, 255, 0.9);
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.5rem;
-  color: white;
-  text-shadow: 2px 1px 3px rgba(0, 0, 0, 0.5);
-  font-family: "F1-REGULAR";
+::ng-deep .p-button {
+  background-color: $fantasyblue !important;
+}
 
-  &:hover {
-    background: $fantasyblue;
-    transform: translate(-1px, -1px);
-  }
+::ng-deep .p-button-label {
+  color: var(--surface-900) !important;
 }

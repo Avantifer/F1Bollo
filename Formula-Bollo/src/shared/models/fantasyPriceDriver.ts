@@ -12,7 +12,13 @@ export class FantasyPriceDriver {
   averagePoints: number = 0;
   differencePrice?: number;
 
-  constructor(id: number, driver: Driver, race: Race, price: number, season: Season) {
+  constructor(
+    id: number,
+    driver: Driver,
+    race: Race,
+    price: number,
+    season: Season,
+  ) {
     this.id = id;
     this.driver = driver;
     this.race = race;

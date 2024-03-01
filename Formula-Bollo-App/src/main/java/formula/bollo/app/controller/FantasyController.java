@@ -279,11 +279,11 @@ public class FantasyController {
         }
         fantasyInfoDTO.setTotalPoints(totalPoints);
 
-        List<FantasyPriceDriver> fantasyPriceDriver = this.fantasyPriceDriverRepository.findTwoLastPrices((long) teamId);
-        if (fantasyPriceDriver.size() < 2) return fantasyInfoDTO;
-
-        double price1 = fantasyPriceDriver.get(0).getPrice();
-        double price2 = fantasyPriceDriver.get(1).getPrice();
+        List<FantasyPriceTeam> fantasyPriceTeam = this.fantasyPriceTeamRepository.findTwoLastPrices((long) teamId);
+        if (fantasyPriceTeam.size() < 2) return fantasyInfoDTO;
+        
+        double price1 = fantasyPriceTeam.get(0).getPrice();
+        double price2 = fantasyPriceTeam.get(1).getPrice();
         double difference = price2 - price1;
         double percentage = ((difference / price2) * 100) * -1;
 
@@ -299,7 +299,18 @@ public class FantasyController {
         Log.info("RequestBody fantasyElection " + fantasyElectionDTO.toString());
         
         FantasyElection fantasyElection = this.fantasyElectionMapper.fantasyElectionDTOToFantasyElection(fantasyElectionDTO);
-        this.fantasyElectionRepository.save(fantasyElection);
+        Optional<FantasyElection> fantasyElectionPrevious = this.fantasyElectionRepository.findBySeasonUserIdAndRaceId(
+                fantasyElectionDTO.getSeason().getNumber(),
+                fantasyElectionDTO.getUser().getId(),
+                fantasyElectionDTO.getRace().getId());
+
+        if (fantasyElectionPrevious.isPresent()) {
+            fantasyElection.setId(fantasyElectionPrevious.get().getId());
+            this.fantasyElectionRepository.save(fantasyElection);
+        } else {
+            this.fantasyElectionRepository.save(fantasyElection);
+        }
+
 
         Log.info("END - saveFantasyElection - END");
         return new ResponseEntity<>("Tu equipo ha sido guardado correctamente", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(200));
@@ -312,10 +323,10 @@ public class FantasyController {
         Log.info("RequestParam getFantasyElection (raceId) -> " + raceId);
         Log.info("RequestParam getFantasyElection (userId) -> " + userId);
         
-        FantasyElection fantasyElection = this.fantasyElectionRepository.findBySeasonUserIdAndRaceId(Constants.ACTUAL_SEASON, (long) userId, (long) raceId);
-        if (fantasyElection == null) return new FantasyElectionDTO();
+        Optional<FantasyElection> fantasyElection = this.fantasyElectionRepository.findBySeasonUserIdAndRaceId(Constants.ACTUAL_SEASON, (long) userId, (long) raceId);
+        if (fantasyElection.isEmpty()) return new FantasyElectionDTO();
         
-        FantasyElectionDTO fantasyElectionDTO = this.fantasyElectionMapper.fantasyElectionToFantasyElectionDTO(fantasyElection);
+        FantasyElectionDTO fantasyElectionDTO = this.fantasyElectionMapper.fantasyElectionToFantasyElectionDTO(fantasyElection.get());
 
         Log.info("END - getFantasyElection - END");
         return fantasyElectionDTO;

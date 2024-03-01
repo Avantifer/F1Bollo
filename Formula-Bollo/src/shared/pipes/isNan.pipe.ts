@@ -1,14 +1,13 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'isNanPipe'
+  name: "isNanPipe",
 })
 export class IsNanPipe implements PipeTransform {
-
   transform(value: number): boolean {
     let isNan: boolean = true;
 
-    if (Number.isNaN(value)) isNan = false
+    if (Number.isNaN(value)) isNan = false;
 
     return isNan;
   }

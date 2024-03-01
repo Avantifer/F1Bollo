@@ -1,46 +1,70 @@
-import { Component } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import HeaderLinks from 'src/shared/models/headerLinks';
-import { AuthJWTService } from 'src/shared/services/authJWT.service';
+import { Component } from "@angular/core";
+import { NavigationEnd, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
+import HeaderLinks from "src/shared/models/headerLinks";
+import { ThemeService } from "src/shared/services/theme.service";
+import { AuthJWTService } from "src/shared/services/authJWT.service";
+import { MessageInfoService } from "src/shared/services/messageinfo.service";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent {
-
-  links: HeaderLinks[] = [];
   bolloLinks: HeaderLinks[] = [
-    new HeaderLinks("Pilotos", "/drivers"),
-    new HeaderLinks("Escuderias", "/teams"),
-    new HeaderLinks("Resultados", "/results"),
-    new HeaderLinks("Estatuto", "/statute"),
-    new HeaderLinks("Admin", "/admin")
-  ];
-  fantasyLinks: HeaderLinks[] = [
-    new HeaderLinks("Mi Equipo", "/fantasy/team"),
-    new HeaderLinks("Clasificación", "/fantasy/clasification"),
-    new HeaderLinks("Iniciar Sesión", "/fantasy/login"),
+    new HeaderLinks("Pilotos", ["/drivers"], () => this.selectNavItem("Pilotos")),
+    new HeaderLinks("Escuderias", ["/teams"], () => this.selectNavItem("Escuderias")),
+    new HeaderLinks("Resultados", ["/results"], () => this.selectNavItem("Resultados")),
+    new HeaderLinks("Estatuto", ["/statute"], () => this.selectNavItem("Estatuto")),
+    new HeaderLinks("Admin", ["/admin"], () => this.selectNavItem("Admin"))
   ];
 
-  routerLink: string = '';
-  routerBolloLink: string = '/';
-  routerFantasyLink: string = '/fantasy';
+  fantasyLinksLogIn: HeaderLinks[] = [
+    new HeaderLinks("Mi Equipo", ["/fantasy/team"], () => this.selectNavItem("Mi Equipo")),
+    new HeaderLinks("Clasificación", ["/fantasy/clasification"], () => this.selectNavItem("Clasificación")),
+    new HeaderLinks("Iniciar Sesión", ["/fantasy/login"], () => this.selectNavItem("Iniciar Sesión"))
+  ];
 
-  activeNavItem: string = '';
+  fantasyLinksClose: HeaderLinks[] = [
+    new HeaderLinks("Mi Equipo", ["/fantasy/team"], () => this.selectNavItem("Mi Equipo")),
+    new HeaderLinks("Clasificación", ["/fantasy/clasification"], () => this.selectNavItem("Clasificación")),
+    new HeaderLinks("Cerrar Sesión", ["/fantasy"], () => this.logoutAction())
+  ];
 
-  isNavOpen: boolean = false;
+  urlMappings: { [key: string]: string } = {
+    "/drivers": "Pilotos",
+    "/teams": "Escuderias",
+    "/results": "Resultados",
+    "/statute": "Estatuto",
+    "/admin": "Admin",
+    "/login": "Admin",
+    "/fantasy/team": "Mi Equipo",
+    "/fantasy/clasification": "Clasificación",
+    "/fantasy/login": "Iniciar Sesión"
+  };
+
+  routerLink: string = "";
+  routerBolloLink: string = "/";
+  routerFantasyLink: string = "/fantasy";
+  activeNavItem: string = "";
+
+  isDarkTheme: boolean = false;
   isFantasy: boolean = false;
 
-  private _unsubscribe= new Subject<void>();
+  private _unsubscribe = new Subject<void>();
 
-  constructor(private router: Router, public authJWTService: AuthJWTService) { }
+  constructor(
+    private router: Router,
+    public authJWTService: AuthJWTService,
+    public themeService: ThemeService,
+    private messageInfoService: MessageInfoService
+  ) { }
 
   ngOnInit(): void {
+    this.isDarkTheme = this.themeService.checkTheme();
+    this.authJWTService.isLogged();
     this.changeNavItems();
-    this.searchNavItemSelected();
   }
 
   ngOnDestroy(): void {
@@ -50,98 +74,79 @@ export class HeaderComponent {
 
   /**
    * Reset the active navItem from Header.
-  */
-  selectNavItem(navItem: string): void {
-    this.activeNavItem = navItem;
-    this.collapseNavWhenSelectNavItem();
-  }
+   */
+  selectNavItem(navItemSelected: string): void {
+    const allNavItem: NodeListOf<Element> = document.querySelectorAll(
+      "span.p-menuitem-text",
+    );
 
-  /**
-   * Set the active navItem for Header.
-  */
-  resetSelectedNavItem(): void {
-    this.activeNavItem = '';
-    this.collapseNavWhenSelectNavItem();
-  }
+    allNavItem.forEach((navItem: Element) => {
+      if (navItem.classList.contains("p-menuitem-text-selected")) {
+        navItem.classList.remove("p-menuitem-text-selected");
+      }
 
-  /**
-   * Collapse navBar on Mobile when click navItem.
-  */
-  collapseNavWhenSelectNavItem(): void {
-    if (document.querySelector('.navbar-collapse')?.classList.contains('show')){
-      document.querySelector('.navbar-collapse')?.classList.remove('show');
-    }
-  }
-
-  /**
-   * Resets the 'active' class from elements with the class 'admin-leftSide-item'.
-  */
-  resetNavItemAdmin(): void {
-    let navItemSelected: NodeListOf<Element> = document.querySelectorAll('.admin-leftSide-item.active');
-
-    if (navItemSelected.length === 0) return;
-
-    navItemSelected.forEach((navItemSelected: Element) => {
-      navItemSelected.classList.remove('active');
-    });
-  }
-
-  /**
-   * Search and set the currently selected navigation item based on the current URL.
-  */
-  searchNavItemSelected(): void {
-    let allurl: string = window.location.href;
-    // Find the index of the first forward slash after the domain part of the URL.
-    let startIndex: number = allurl.indexOf("/", 8);
-
-    let urlSelected: string = '';
-    if (!allurl.includes('fantasy')) {
-      // Find the index of the second forward slash after the domain part of the URL.
-      let endIndex: number = allurl.indexOf("/", startIndex + 1);
-      urlSelected = endIndex !== -1 ? allurl.substring(startIndex, endIndex) : allurl.substring(startIndex);
-    } else {
-      urlSelected = allurl.substring(startIndex);
-    }
-
-    let actualNavItem: HeaderLinks | undefined = this.links.find((link: HeaderLinks) => link.url === urlSelected);
-
-    if (actualNavItem === undefined) return;
-    this.activeNavItem = actualNavItem.name;
-  }
-
-  /**
-   * Changes navigation items based on the current route.
-  */
-  changeNavItems(): void {
-    this.router.events.pipe(
-      takeUntil(this._unsubscribe)
-    )
-    .subscribe({
-      next: (event) => {
-        if (event instanceof NavigationEnd) {
-          if (event.url.includes('fantasy')) {
-            this.links = this.fantasyLinks;
-            this.routerLink = this.routerFantasyLink;
-            this.isFantasy = true;
-          } else {
-            this.links = this.bolloLinks;
-            this.routerLink = this.routerBolloLink;
-            this.isFantasy = false;
-          }
-          this.searchNavItemSelected();
-        }
+      if (navItem.innerHTML === navItemSelected) {
+        navItem.classList.add("p-menuitem-text-selected");
       }
     });
   }
 
   /**
-   * Delete the activeItem switching between fantasy and bollo
-  */
-  deleteSelected(): void {
-    let navItemSelected: Element | null = document.querySelector('.navlink.active');
+   * Delete the previous selected nav item (occurs when logo is clicked).
+   */
+  resetSelectedNavItem(): void {
+    this.activeNavItem = "";
+    this.authJWTService.isLogged();
+  }
 
-    if (navItemSelected == null) return;
-    navItemSelected.classList.remove('active');
-    this.activeNavItem = '';
+  /**
+   * Search and set the currently selected navigation item based on the current URL.
+   */
+  searchNavItemSelected(): void {
+    const allurl: string = window.location.href;
+
+    const startIndex: number = allurl.indexOf("/", 8);
+    const urlSelected: string = allurl.substring(startIndex);
+
+    this.activeNavItem = this.urlMappings[urlSelected];
+
+    this.selectNavItem(this.activeNavItem);
+  }
+
+  /**
+   * Changes navigation items based on the current route.
+   */
+  changeNavItems(): void {
+    this.router.events
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe({
+        next: (event) => {
+          if (event instanceof NavigationEnd) {
+            if (event.url.includes("fantasy")) {
+              this.routerLink = this.routerFantasyLink;
+              this.isFantasy = true;
+            } else {
+              this.routerLink = this.routerBolloLink;
+              this.isFantasy = false;
+            }
+
+            // Gives time to check what links are show.
+            setTimeout(() => {
+              this.searchNavItemSelected();
+            }, 0);
+          }
+        },
+      });
+  }
+
+  /**
+   * Log out the user removing the item auth of localStorage and refreshing to show "Iniciar sesión".
+   */
+  logoutAction(): void {
+    localStorage.removeItem("auth");
+    this.authJWTService.isLogged();
+    this.messageInfoService.showSuccess("Has cerrado sesión correctamente");
+    this.router.navigate(["fantasy/login"]);
+    this.searchNavItemSelected();
   }
 }

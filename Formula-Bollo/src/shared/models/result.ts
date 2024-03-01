@@ -1,10 +1,10 @@
 import { Driver } from "./driver";
 import { Position } from "./position";
-import { Race } from "./race"
+import { Race } from "./race";
 import { Season } from "./season";
 
 export class Result {
-  id: number
+  id: number;
   race: Race | null;
   driver: Driver;
   position: Position | null;
@@ -19,9 +19,9 @@ export class Result {
     position: Position | null,
     fastlap: number,
     pole: number,
-    season?: Season
+    season?: Season,
   ) {
-    this.id = id
+    this.id = id;
     this.race = race;
     this.driver = driver;
     this.position = position;

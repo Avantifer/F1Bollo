@@ -126,15 +126,18 @@ public class ResultController {
         Log.info("RequestParam saveResultsCircuit (season) -> " + season);
 
         int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
-
         if (resultDTOs.isEmpty()) return new ResponseEntity<>("No hay resultados", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
 
+        ResultDTO firstResult = resultDTOs.get(0);
+        List<Result> existingResults = this.resultRepository.findByRaceId(firstResult.getRace().getId());
+        
         try {
             List<Season> seasons = this.seasonRepository.findByNumber(numberSeason);
             if (seasons.isEmpty()) return new ResponseEntity<>(Constants.ERROR_SEASON, Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
             SeasonDTO seasonToSave = this.seasonMapper.seasonToSeasonDTO(seasons.get(0));
             resultDTOs.forEach((ResultDTO resultDTO) -> resultDTO.setSeason(seasonToSave));
 
+            resultRepository.deleteAll(existingResults);
             resultService.saveResults(resultDTOs, numberSeason);
         } catch (DataAccessException e) {
             Log.error(Constants.ERROR_UNEXPECTED, e);
