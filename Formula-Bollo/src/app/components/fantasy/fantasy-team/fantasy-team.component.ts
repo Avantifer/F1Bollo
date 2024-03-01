@@ -74,8 +74,8 @@ export class FantasyTeamComponent {
   pointsDriverThree: number | undefined;
   pointsTeamOne: number | undefined;
   pointsTeamTwo: number | undefined;
-
   price: number = 70000000;
+
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
@@ -109,6 +109,7 @@ export class FantasyTeamComponent {
           this.races = races;
           this.raceSelected = races[races.length - 1];
           this.raceForm.get("race")?.setValue(this.raceSelected);
+          this.getAllDrivers(this.raceSelected.id);
         },
         error: (error) => {
           console.log(error);
@@ -116,8 +117,6 @@ export class FantasyTeamComponent {
           throw error;
         },
         complete: () => {
-          this.getAllDrivers(this.raceSelected!.id);
-          this.getAllTeams(this.raceSelected!.id);
           this.getFantasyElection();
         },
       });
@@ -152,6 +151,7 @@ export class FantasyTeamComponent {
           throw error;
         },
         complete: () => {
+          this.getAllTeams(this.raceSelected!.id);
           for (let i = 0; i < this.drivers.length; i++) {
             this.getInfoDriver(this.drivers[i], i);
           }
@@ -219,6 +219,8 @@ export class FantasyTeamComponent {
           this.teams.forEach((team: FantasyPriceTeam, index: number) => {
             this.getInfoTeam(team, index);
           });
+
+          this.calculateTotalPrice();
         },
       });
   }
@@ -860,7 +862,7 @@ export class FantasyTeamComponent {
     if (this.fantasyElection.driverOne) {
       const driverOne: FantasyPriceDriver = this.driversList.filter(
         (driver: FantasyPriceDriver) =>
-          this.fantasyElection.driverOne!.id === driver.driver.id,
+          this.fantasyElection.driverOne!.id === driver.driver.id
       )[0];
       this.price -= driverOne?.price;
     }
@@ -915,7 +917,7 @@ export class FantasyTeamComponent {
       const differenceMiliseconds: number = Math.abs(dateStart.getTime() - today.getTime());
       const differenceHours: number = differenceMiliseconds / (1000 * 60 * 60);
 
-      if (differenceHours > 12) {
+      if (differenceHours < 12) {
         this.messageInfoService.showWarn(WARNING_FANTASY_SAVE_LATE);
         return;
       }
@@ -979,7 +981,6 @@ export class FantasyTeamComponent {
         },
         complete: () => {
           this.resetSelectedItem();
-          this.calculateTotalPrice();
           if (this.fantasyElection.race != undefined) {
             this.getSpecificPointsPerDriver(this.fantasyElection);
             this.getSpecificPointsPerTeam(this.fantasyElection);

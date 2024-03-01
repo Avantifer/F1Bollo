@@ -39,3 +39,10 @@
     color: white !important;
   }
 }
+
+
+@include media-breakpoint-down(lg) {
+  ::ng-deep .p-menubar-root-list {
+    margin-left: 0 !important;
+  }
+}
