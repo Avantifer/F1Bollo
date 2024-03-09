@@ -49,6 +49,7 @@ import { FantasyTeamComponent } from "./components/fantasy/fantasy-team/fantasy-
 import { FantasyClasificationComponent } from "./components/fantasy/fantasy-clasification/fantasy-clasification.component";
 import { FantasyRecoverPasswordComponent } from "./components/fantasy/fantasy-recover-password/fantasy-recover-password.component";
 import { FantasyDialogTeamComponent } from "./components/fantasy/fantasy-dialog-team/fantasy-dialog-team.component";
+import { DriversInfoComponent } from "./components/drivers/drivers-info/drivers-info.component";
 
 import { AdminGuard } from "src/shared/guards/AdminGuard";
 import { LoginGuard } from "src/shared/guards/LoginGuard";
@@ -63,6 +64,7 @@ import { IsNanPipe } from "src/shared/pipes/isNan.pipe";
 import { SpaceToUnderscorePipe } from "src/shared/pipes/spaceToUnderscore.pipe";
 import { ThemeService } from "src/shared/services/theme.service";
 import { MessageService } from "primeng/api";
+import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.component";
 
 @NgModule({
   declarations: [
@@ -92,6 +94,8 @@ import { MessageService } from "primeng/api";
     FantasyClasificationComponent,
     FantasyRecoverPasswordComponent,
     FantasyDialogTeamComponent,
+    DriversInfoComponent,
+    TeamsInfoComponent,
     PricePipe,
     IsNanPipe,
     SpaceToUnderscorePipe

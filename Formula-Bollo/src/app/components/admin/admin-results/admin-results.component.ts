@@ -445,7 +445,7 @@ export class AdminResultsComponent {
     const pole: number = poleValue?.driver.name === controlValue.driver.name ? 1 : 0;
     let position: Position | null = null;
 
-    if (positionActual < this.findFirstDisqualifiedIndex()) {
+    if (positionActual <= this.findFirstDisqualifiedIndex()) {
       position = new Position(0, positionActual, 0);
     }
 

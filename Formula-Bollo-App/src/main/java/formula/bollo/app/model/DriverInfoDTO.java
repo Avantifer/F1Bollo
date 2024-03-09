@@ -15,11 +15,13 @@ import lombok.ToString;
 @NoArgsConstructor
 public class DriverInfoDTO {
     DriverDTO driver;
-    int podiums;
+    int poles;
     int fastlaps;
     int racesFinished;
     int totalPoints;
     int championships;
     int penalties;
     int bestPosition;
+    int victories;
+    int podiums;
 }

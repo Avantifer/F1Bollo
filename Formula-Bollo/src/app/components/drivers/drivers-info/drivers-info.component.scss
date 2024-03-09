@@ -1,0 +1,28 @@
+@import "../../../../assets/scss/styles.scss";
+
+.driversInfo{
+  min-height: calc(100vh - 54px);
+
+  h1 {
+    letter-spacing: 1px;
+  }
+
+  ::ng-deep .p-dropdown {
+    width: 11.2rem;
+  }
+
+  &-background-image {
+    background-image: url(../../../../assets/images/fantasy/selectionDriversTeamsBackground.svg);
+
+    &-principal {
+      height: 450px;
+    }
+  }
+}
+
+
+@include media-breakpoint-down(sm) {
+  .driversInfo-background-image-principal {
+    height: 15rem !important;
+  }
+}

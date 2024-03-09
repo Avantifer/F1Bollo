@@ -1,0 +1,1487 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>formula-bollo documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">formula-bollo documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  HeaderComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/shared/components/header/header.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-header</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./header.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./header.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_unsubscribe" >_unsubscribe</a>
+                            </li>
+                            <li>
+                                <a href="#activeNavItem" >activeNavItem</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#authJWTService" >authJWTService</a>
+                            </li>
+                            <li>
+                                <a href="#bolloLinks" >bolloLinks</a>
+                            </li>
+                            <li>
+                                <a href="#fantasyLinksClose" >fantasyLinksClose</a>
+                            </li>
+                            <li>
+                                <a href="#fantasyLinksLogIn" >fantasyLinksLogIn</a>
+                            </li>
+                            <li>
+                                <a href="#isDarkTheme" >isDarkTheme</a>
+                            </li>
+                            <li>
+                                <a href="#isFantasy" >isFantasy</a>
+                            </li>
+                            <li>
+                                <a href="#routerBolloLink" >routerBolloLink</a>
+                            </li>
+                            <li>
+                                <a href="#routerFantasyLink" >routerFantasyLink</a>
+                            </li>
+                            <li>
+                                <a href="#routerLink" >routerLink</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#themeService" >themeService</a>
+                            </li>
+                            <li>
+                                <a href="#urlMappings" >urlMappings</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#changeNavItems" >changeNavItems</a>
+                            </li>
+                            <li>
+                                <a href="#logoutAction" >logoutAction</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#resetSelectedNavItem" >resetSelectedNavItem</a>
+                            </li>
+                            <li>
+                                <a href="#searchNavItemSelected" >searchNavItemSelected</a>
+                            </li>
+                            <li>
+                                <a href="#selectNavItem" >selectNavItem</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: Router, authJWTService: <a href="../injectables/AuthJWTService.html" target="_self">AuthJWTService</a>, themeService: <a href="../injectables/ThemeService.html" target="_self">ThemeService</a>, messageInfoService: <a href="../injectables/MessageInfoService.html" target="_self">MessageInfoService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/shared/components/header/header.component.ts:55</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>authJWTService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthJWTService.html" target="_self" >AuthJWTService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>themeService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>messageInfoService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MessageInfoService.html" target="_self" >MessageInfoService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeNavItems"></a>
+                    <span class="name">
+                        <span ><b>changeNavItems</b></span>
+                        <a href="#changeNavItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeNavItems()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="119"
+                                    class="link-to-prism">src/shared/components/header/header.component.ts:119</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Changes navigation items based on the current route.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logoutAction"></a>
+                    <span class="name">
+                        <span ><b>logoutAction</b></span>
+                        <a href="#logoutAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>logoutAction()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/shared/components/header/header.component.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Log out the user removing the item auth of localStorage and refreshing to show &quot;Iniciar sesión&quot;.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/shared/components/header/header.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/shared/components/header/header.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetSelectedNavItem"></a>
+                    <span class="name">
+                        <span ><b>resetSelectedNavItem</b></span>
+                        <a href="#resetSelectedNavItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetSelectedNavItem()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/shared/components/header/header.component.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Delete the previous selected nav item (occurs when logo is clicked).</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchNavItemSelected"></a>
+                    <span class="name">
+                        <span ><b>searchNavItemSelected</b></span>
+                        <a href="#searchNavItemSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>searchNavItemSelected()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/shared/components/header/header.component.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Search and set the currently selected navigation item based on the current URL.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectNavItem"></a>
+                    <span class="name">
+                        <span ><b>selectNavItem</b></span>
+                        <a href="#selectNavItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectNavItem(navItemSelected: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/shared/components/header/header.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reset the active navItem from Header.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>navItemSelected</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_unsubscribe"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_unsubscribe</b></span>
+                        <a href="#_unsubscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/shared/components/header/header.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeNavItem"></a>
+                    <span class="name">
+                        <span ><b>activeNavItem</b></span>
+                        <a href="#activeNavItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/shared/components/header/header.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authJWTService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>authJWTService</b></span>
+                        <a href="#authJWTService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/AuthJWTService.html" target="_self" >AuthJWTService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/shared/components/header/header.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="bolloLinks"></a>
+                    <span class="name">
+                        <span ><b>bolloLinks</b></span>
+                        <a href="#bolloLinks"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/HeaderLinks.html" target="_self" >HeaderLinks[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    new HeaderLinks(&quot;Pilotos&quot;, [&quot;/drivers&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Pilotos&quot;)),
+    new HeaderLinks(&quot;Escuderias&quot;, [&quot;/teams&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Escuderias&quot;)),
+    new HeaderLinks(&quot;Resultados&quot;, [&quot;/results&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Resultados&quot;)),
+    new HeaderLinks(&quot;Estatuto&quot;, [&quot;/statute&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Estatuto&quot;)),
+    new HeaderLinks(&quot;Admin&quot;, [&quot;/admin&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Admin&quot;))
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/shared/components/header/header.component.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fantasyLinksClose"></a>
+                    <span class="name">
+                        <span ><b>fantasyLinksClose</b></span>
+                        <a href="#fantasyLinksClose"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/HeaderLinks.html" target="_self" >HeaderLinks[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    new HeaderLinks(&quot;Mi Equipo&quot;, [&quot;/fantasy/team&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Mi Equipo&quot;)),
+    new HeaderLinks(&quot;Clasificación&quot;, [&quot;/fantasy/clasification&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Clasificación&quot;)),
+    new HeaderLinks(&quot;Cerrar Sesión&quot;, [&quot;/fantasy&quot;], () &#x3D;&gt; this.logoutAction())
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/shared/components/header/header.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fantasyLinksLogIn"></a>
+                    <span class="name">
+                        <span ><b>fantasyLinksLogIn</b></span>
+                        <a href="#fantasyLinksLogIn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/HeaderLinks.html" target="_self" >HeaderLinks[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    new HeaderLinks(&quot;Mi Equipo&quot;, [&quot;/fantasy/team&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Mi Equipo&quot;)),
+    new HeaderLinks(&quot;Clasificación&quot;, [&quot;/fantasy/clasification&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Clasificación&quot;)),
+    new HeaderLinks(&quot;Iniciar Sesión&quot;, [&quot;/fantasy/login&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Iniciar Sesión&quot;))
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/shared/components/header/header.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isDarkTheme"></a>
+                    <span class="name">
+                        <span ><b>isDarkTheme</b></span>
+                        <a href="#isDarkTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/shared/components/header/header.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFantasy"></a>
+                    <span class="name">
+                        <span ><b>isFantasy</b></span>
+                        <a href="#isFantasy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/shared/components/header/header.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="routerBolloLink"></a>
+                    <span class="name">
+                        <span ><b>routerBolloLink</b></span>
+                        <a href="#routerBolloLink"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;/&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/shared/components/header/header.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="routerFantasyLink"></a>
+                    <span class="name">
+                        <span ><b>routerFantasyLink</b></span>
+                        <a href="#routerFantasyLink"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;/fantasy&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/shared/components/header/header.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="routerLink"></a>
+                    <span class="name">
+                        <span ><b>routerLink</b></span>
+                        <a href="#routerLink"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/shared/components/header/header.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="themeService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>themeService</b></span>
+                        <a href="#themeService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/shared/components/header/header.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="urlMappings"></a>
+                    <span class="name">
+                        <span ><b>urlMappings</b></span>
+                        <a href="#urlMappings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    &quot;/drivers&quot;: &quot;Pilotos&quot;,
+    &quot;/teams&quot;: &quot;Escuderias&quot;,
+    &quot;/results&quot;: &quot;Resultados&quot;,
+    &quot;/statute&quot;: &quot;Estatuto&quot;,
+    &quot;/admin&quot;: &quot;Admin&quot;,
+    &quot;/login&quot;: &quot;Admin&quot;,
+    &quot;/fantasy/team&quot;: &quot;Mi Equipo&quot;,
+    &quot;/fantasy/clasification&quot;: &quot;Clasificación&quot;,
+    &quot;/fantasy/login&quot;: &quot;Iniciar Sesión&quot;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/shared/components/header/header.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &quot;@angular/core&quot;;
+import { NavigationEnd, Router } from &quot;@angular/router&quot;;
+import { Subject, takeUntil } from &quot;rxjs&quot;;
+import HeaderLinks from &quot;src/shared/models/headerLinks&quot;;
+import { ThemeService } from &quot;src/shared/services/theme.service&quot;;
+import { AuthJWTService } from &quot;src/shared/services/authJWT.service&quot;;
+import { MessageInfoService } from &quot;src/shared/services/messageinfo.service&quot;;
+
+@Component({
+  selector: &quot;app-header&quot;,
+  templateUrl: &quot;./header.component.html&quot;,
+  styleUrls: [&quot;./header.component.scss&quot;],
+})
+export class HeaderComponent {
+  bolloLinks: HeaderLinks[] &#x3D; [
+    new HeaderLinks(&quot;Pilotos&quot;, [&quot;/drivers&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Pilotos&quot;)),
+    new HeaderLinks(&quot;Escuderias&quot;, [&quot;/teams&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Escuderias&quot;)),
+    new HeaderLinks(&quot;Resultados&quot;, [&quot;/results&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Resultados&quot;)),
+    new HeaderLinks(&quot;Estatuto&quot;, [&quot;/statute&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Estatuto&quot;)),
+    new HeaderLinks(&quot;Admin&quot;, [&quot;/admin&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Admin&quot;))
+  ];
+
+  fantasyLinksLogIn: HeaderLinks[] &#x3D; [
+    new HeaderLinks(&quot;Mi Equipo&quot;, [&quot;/fantasy/team&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Mi Equipo&quot;)),
+    new HeaderLinks(&quot;Clasificación&quot;, [&quot;/fantasy/clasification&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Clasificación&quot;)),
+    new HeaderLinks(&quot;Iniciar Sesión&quot;, [&quot;/fantasy/login&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Iniciar Sesión&quot;))
+  ];
+
+  fantasyLinksClose: HeaderLinks[] &#x3D; [
+    new HeaderLinks(&quot;Mi Equipo&quot;, [&quot;/fantasy/team&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Mi Equipo&quot;)),
+    new HeaderLinks(&quot;Clasificación&quot;, [&quot;/fantasy/clasification&quot;], () &#x3D;&gt; this.selectNavItem(&quot;Clasificación&quot;)),
+    new HeaderLinks(&quot;Cerrar Sesión&quot;, [&quot;/fantasy&quot;], () &#x3D;&gt; this.logoutAction())
+  ];
+
+  urlMappings: { [key: string]: string } &#x3D; {
+    &quot;/drivers&quot;: &quot;Pilotos&quot;,
+    &quot;/teams&quot;: &quot;Escuderias&quot;,
+    &quot;/results&quot;: &quot;Resultados&quot;,
+    &quot;/statute&quot;: &quot;Estatuto&quot;,
+    &quot;/admin&quot;: &quot;Admin&quot;,
+    &quot;/login&quot;: &quot;Admin&quot;,
+    &quot;/fantasy/team&quot;: &quot;Mi Equipo&quot;,
+    &quot;/fantasy/clasification&quot;: &quot;Clasificación&quot;,
+    &quot;/fantasy/login&quot;: &quot;Iniciar Sesión&quot;
+  };
+
+  routerLink: string &#x3D; &quot;&quot;;
+  routerBolloLink: string &#x3D; &quot;/&quot;;
+  routerFantasyLink: string &#x3D; &quot;/fantasy&quot;;
+  activeNavItem: string &#x3D; &quot;&quot;;
+
+  isDarkTheme: boolean &#x3D; false;
+  isFantasy: boolean &#x3D; false;
+
+  private _unsubscribe &#x3D; new Subject&lt;void&gt;();
+
+  constructor(
+    private router: Router,
+    public authJWTService: AuthJWTService,
+    public themeService: ThemeService,
+    private messageInfoService: MessageInfoService
+  ) { }
+
+  ngOnInit(): void {
+    this.isDarkTheme &#x3D; this.themeService.checkTheme();
+    this.authJWTService.isLogged();
+    this.changeNavItems();
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
+
+  /**
+   * Reset the active navItem from Header.
+   */
+  selectNavItem(navItemSelected: string): void {
+    const allNavItem: NodeListOf&lt;Element&gt; &#x3D; document.querySelectorAll(
+      &quot;span.p-menuitem-text&quot;,
+    );
+
+    allNavItem.forEach((navItem: Element) &#x3D;&gt; {
+      if (navItem.classList.contains(&quot;p-menuitem-text-selected&quot;)) {
+        navItem.classList.remove(&quot;p-menuitem-text-selected&quot;);
+      }
+
+      if (navItem.innerHTML &#x3D;&#x3D;&#x3D; navItemSelected) {
+        navItem.classList.add(&quot;p-menuitem-text-selected&quot;);
+      }
+    });
+  }
+
+  /**
+   * Delete the previous selected nav item (occurs when logo is clicked).
+   */
+  resetSelectedNavItem(): void {
+    this.activeNavItem &#x3D; &quot;&quot;;
+    this.authJWTService.isLogged();
+  }
+
+  /**
+   * Search and set the currently selected navigation item based on the current URL.
+   */
+  searchNavItemSelected(): void {
+    const allurl: string &#x3D; window.location.href;
+
+    const startIndex: number &#x3D; allurl.indexOf(&quot;/&quot;, 8);
+    const urlSelected: string &#x3D; allurl.substring(startIndex);
+
+    this.activeNavItem &#x3D; this.urlMappings[urlSelected];
+
+    this.selectNavItem(this.activeNavItem);
+  }
+
+  /**
+   * Changes navigation items based on the current route.
+   */
+  changeNavItems(): void {
+    this.router.events
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe({
+        next: (event) &#x3D;&gt; {
+          if (event instanceof NavigationEnd) {
+            if (event.url.includes(&quot;fantasy&quot;)) {
+              this.routerLink &#x3D; this.routerFantasyLink;
+              this.isFantasy &#x3D; true;
+            } else {
+              this.routerLink &#x3D; this.routerBolloLink;
+              this.isFantasy &#x3D; false;
+            }
+
+            // Gives time to check what links are show.
+            setTimeout(() &#x3D;&gt; {
+              this.searchNavItemSelected();
+            }, 0);
+          }
+        },
+      });
+  }
+
+  /**
+   * Log out the user removing the item auth of localStorage and refreshing to show &quot;Iniciar sesión&quot;.
+   */
+  logoutAction(): void {
+    localStorage.removeItem(&quot;auth&quot;);
+    this.authJWTService.isLogged();
+    this.messageInfoService.showSuccess(&quot;Has cerrado sesión correctamente&quot;);
+    this.router.navigate([&quot;fantasy/login&quot;]);
+    this.searchNavItemSelected();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;navbar&quot; [ngClass]&#x3D;&quot;isFantasy ? &#x27;navbar-fantasy&#x27; : &#x27;navbar-bollo&#x27;&quot;&gt;
+  @if (isFantasy) {
+    &lt;p-menubar [model]&#x3D;&quot;authJWTService.isUserLogged ? fantasyLinksClose : fantasyLinksLogIn&quot;&gt;
+      &lt;ng-template pTemplate&#x3D;&quot;start&quot;&gt;
+        &lt;img
+          src&#x3D;&quot;../../../assets/images/logo.png&quot;
+          alt&#x3D;&quot;Logo&quot;
+          class&#x3D;&quot;logo mx-3 cursor-pointer&quot;
+          [routerLink]&#x3D;&quot;routerLink&quot;
+          (click)&#x3D;&quot;resetSelectedNavItem()&quot;
+        /&gt;
+      &lt;/ng-template&gt;
+      &lt;ng-template pTemplate&#x3D;&quot;end&quot;&gt;
+        &lt;div class&#x3D;&quot;flex align-items-center&quot;&gt;
+          &lt;div class&#x3D;&quot;mr-2 p-2 surface-0 border-round-md h-2rem cursor-pointer&quot; (click)&#x3D;&quot;themeService.changeTheme(); isDarkTheme &#x3D; !isDarkTheme&quot;&gt;
+            @if (isDarkTheme) {
+              &lt;i class&#x3D;&quot;pi pi-moon text-900&quot;&gt;&lt;/i&gt;
+            } @else {
+              &lt;i class&#x3D;&quot;pi pi-sun text-900&quot;&gt;&lt;/i&gt;
+            }
+          &lt;/div&gt;
+        &lt;p-button
+          label&#x3D;&quot;Formula&quot;
+          [raised]&#x3D;&quot;true&quot;
+          routerLink&#x3D;&quot;/&quot;
+          (click)&#x3D;&quot;resetSelectedNavItem()&quot;
+          class&#x3D;&quot;mr-3 bolloLinks&quot;&gt;
+        &lt;/p-button&gt;
+        &lt;/div&gt;
+      &lt;/ng-template&gt;
+    &lt;/p-menubar&gt;
+  } @else {
+    &lt;p-menubar [model]&#x3D;&quot;bolloLinks&quot;&gt;
+      &lt;ng-template pTemplate&#x3D;&quot;start&quot;&gt;
+        &lt;img
+          src&#x3D;&quot;../../../assets/images/logo.png&quot;
+          alt&#x3D;&quot;Logo&quot;
+          class&#x3D;&quot;logo mx-3 cursor-pointer&quot;
+          [routerLink]&#x3D;&quot;routerLink&quot;
+          (click)&#x3D;&quot;resetSelectedNavItem()&quot;
+        /&gt;
+      &lt;/ng-template&gt;
+      &lt;ng-template pTemplate&#x3D;&quot;end&quot;&gt;
+        &lt;div class&#x3D;&quot;flex align-items-center&quot;&gt;
+          &lt;div class&#x3D;&quot;mr-2 p-2 surface-0 border-round-md h-2rem cursor-pointer&quot; (click)&#x3D;&quot;themeService.changeTheme(); isDarkTheme &#x3D; !isDarkTheme&quot;&gt;
+            @if (isDarkTheme) {
+              &lt;i class&#x3D;&quot;pi pi-moon text-900 font-bold&quot;&gt;&lt;/i&gt;
+            } @else {
+              &lt;i class&#x3D;&quot;pi pi-sun text-900 font-bold&quot;&gt;&lt;/i&gt;
+            }
+          &lt;/div&gt;
+          &lt;p-button
+            label&#x3D;&quot;Fantasy&quot;
+            [raised]&#x3D;&quot;true&quot;
+            routerLink&#x3D;&quot;/fantasy&quot;
+            (click)&#x3D;&quot;resetSelectedNavItem()&quot;
+            class&#x3D;&quot;mr-3 fantasyLinks&quot;&gt;
+          &lt;/p-button&gt;
+        &lt;/div&gt;
+      &lt;/ng-template&gt;
+    &lt;/p-menubar&gt;
+  }
+&lt;/div&gt;
+
+&lt;router-outlet&gt;&lt;/router-outlet&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./header.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">@import &quot;../../../assets/scss/styles.scss&quot;;
+
+.navbar {
+  &amp;-bollo {
+    ::ng-deep .p-menubar {
+      background-color: $red;
+    }
+
+    ::ng-deep .p-menubar-root-list {
+      background-color: $red;
+    }
+
+    ::ng-deep .p-button {
+      background-color: $fantasyblue !important;
+    }
+  }
+
+  &amp;-fantasy {
+    ::ng-deep .p-menubar {
+      background-color: $fantasyblue;
+    }
+
+    ::ng-deep .p-menubar-root-list {
+      background-color: $fantasyblue;
+    }
+
+    ::ng-deep .p-button {
+      background-color: $red !important;
+    }
+  }
+
+  ::ng-deep .p-menubar-root-list {
+    border: 0;
+    box-shadow: none;
+    margin-left: 3rem;
+  }
+
+  ::ng-deep .p-button-label {
+    color: white !important;
+  }
+}
+
+
+@include media-breakpoint-down(lg) {
+  ::ng-deep .p-menubar-root-list {
+    margin-left: 0 !important;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="navbar" [ngClass]="isFantasy ? \'navbar-fantasy\' : \'navbar-bollo\'">  @if (isFantasy) {    <p-menubar [model]="authJWTService.isUserLogged ? fantasyLinksClose : fantasyLinksLogIn">      <ng-template pTemplate="start">        <img          src="../../../assets/images/logo.png"          alt="Logo"          class="logo mx-3 cursor-pointer"          [routerLink]="routerLink"          (click)="resetSelectedNavItem()"        />      </ng-template>      <ng-template pTemplate="end">        <div class="flex align-items-center">          <div class="mr-2 p-2 surface-0 border-round-md h-2rem cursor-pointer" (click)="themeService.changeTheme(); isDarkTheme = !isDarkTheme">            @if (isDarkTheme) {              <i class="pi pi-moon text-900"></i>            } @else {              <i class="pi pi-sun text-900"></i>            }          </div>        <p-button          label="Formula"          [raised]="true"          routerLink="/"          (click)="resetSelectedNavItem()"          class="mr-3 bolloLinks">        </p-button>        </div>      </ng-template>    </p-menubar>  } @else {    <p-menubar [model]="bolloLinks">      <ng-template pTemplate="start">        <img          src="../../../assets/images/logo.png"          alt="Logo"          class="logo mx-3 cursor-pointer"          [routerLink]="routerLink"          (click)="resetSelectedNavItem()"        />      </ng-template>      <ng-template pTemplate="end">        <div class="flex align-items-center">          <div class="mr-2 p-2 surface-0 border-round-md h-2rem cursor-pointer" (click)="themeService.changeTheme(); isDarkTheme = !isDarkTheme">            @if (isDarkTheme) {              <i class="pi pi-moon text-900 font-bold"></i>            } @else {              <i class="pi pi-sun text-900 font-bold"></i>            }          </div>          <p-button            label="Fantasy"            [raised]="true"            routerLink="/fantasy"            (click)="resetSelectedNavItem()"            class="mr-3 fantasyLinks">          </p-button>        </div>      </ng-template>    </p-menubar>  }</div><router-outlet></router-outlet></div>'
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'HeaderComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'HeaderComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

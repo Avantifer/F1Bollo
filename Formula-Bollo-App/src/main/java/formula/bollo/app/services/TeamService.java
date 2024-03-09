@@ -1,8 +1,11 @@
 package formula.bollo.app.services;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,8 +17,14 @@ import formula.bollo.app.entity.Sprint;
 import formula.bollo.app.entity.Team;
 import formula.bollo.app.mapper.DriverMapper;
 import formula.bollo.app.mapper.TeamMapper;
+import formula.bollo.app.model.DriverDTO;
 import formula.bollo.app.model.TeamDTO;
+import formula.bollo.app.model.TeamInfoDTO;
 import formula.bollo.app.model.TeamWithDriversDTO;
+import formula.bollo.app.repository.ChampionshipRepository;
+import formula.bollo.app.repository.ConstructorRepository;
+import formula.bollo.app.repository.DriverRepository;
+import formula.bollo.app.repository.PenaltyRepository;
 import formula.bollo.app.repository.ResultRepository;
 import formula.bollo.app.repository.SprintRepository;
 import formula.bollo.app.repository.TeamRepository;
@@ -25,27 +34,38 @@ import formula.bollo.app.utils.Constants;
 public class TeamService {
  
     private final TeamRepository teamRepository;
-
     private final TeamMapper teamMapper;
-
     private final ResultRepository resultRepository;
-
     private final SprintRepository sprintRepository;
-
     private final DriverMapper driverMapper;
+    private final DriverRepository driverRepository;
+    private final ChampionshipRepository championshipRepository;
+    private final ConstructorRepository constructorRepository;
+    private final PenaltyRepository penaltyRepository;
+    private final ResultService resultService;
 
     public TeamService(
         TeamRepository teamRepository, 
         TeamMapper teamMapper, 
         ResultRepository resultRepository, 
         SprintRepository sprintRepository, 
-        DriverMapper driverMapper
+        DriverMapper driverMapper,
+        DriverRepository driverRepository,
+        ChampionshipRepository championshipRepository,
+        ConstructorRepository constructorRepository,
+        PenaltyRepository penaltyRepository,
+        ResultService resultService
     ) {
         this.teamRepository = teamRepository;
         this.teamMapper = teamMapper;
         this.resultRepository = resultRepository;
         this.sprintRepository = sprintRepository;
         this.driverMapper = driverMapper;
+        this.driverRepository = driverRepository;
+        this.championshipRepository = championshipRepository;
+        this.constructorRepository = constructorRepository;
+        this.penaltyRepository = penaltyRepository;
+        this.resultService = resultService;
     }
 
     /**
@@ -166,5 +186,79 @@ public class TeamService {
         return teams.parallelStream()
             .map(teamMapper::teamToTeamDTO)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves all type of info by the team name
+     *
+     * @param teams list of the teams with the name filter
+    */ 
+    public TeamInfoDTO getAllInfoTeam(List<Team> teams) {
+        TeamInfoDTO teamInfoDTO = new TeamInfoDTO();
+
+        List<Long> listOfIds = teams.stream().map(Team::getId).collect(Collectors.toList());
+        TeamDTO teamDTO = teamMapper.teamToTeamDTO(teams.get(teams.size() - 1));
+ 
+        int poles = 0;
+        int fastlaps = 0;
+        int racesFinished = 0;
+        int totalPoints = 0;
+        int championships = 0;
+        int constructors = 0;
+        int penalties = 0;
+        int bestPosition = 0;
+        int podiums = 0;
+        int victories = 0;
+
+        List<Result> results = new ArrayList<>(); 
+        List<Sprint> sprints = new ArrayList<>();
+        Map<DriverDTO, Integer> totalPointsByDriver = new HashMap<>();
+
+        for(Long id : listOfIds) {
+            List<Driver> drivers = this.driverRepository.findByTeam(id);
+            List<Long> listOfIdsDrivers = drivers.stream().map(Driver::getId).collect(Collectors.toList());
+            constructors += this.constructorRepository.findByTeamId(id).size();
+
+            for(Long idDriver : listOfIdsDrivers) {
+                poles += this.resultRepository.polesByDriverId(idDriver).size();
+                fastlaps += this.resultRepository.fastlapByDriverId(idDriver).size();
+                racesFinished += this.resultRepository.racesFinishedByDriverId(idDriver).size();
+                championships += this.championshipRepository.findByDriverId(idDriver).size();
+                penalties += this.penaltyRepository.findByDriverId(idDriver).size();
+                podiums += this.resultRepository.podiumsOfDriver(id).size();
+                victories += this.resultRepository.victoriesOfDriver(id).size();
+
+                Optional<Result> bestResult = this.resultRepository.bestResultOfDriver(idDriver);
+                if (bestResult.isPresent()) {
+                    int currentPositionNumber = bestResult.get().getPosition().getPositionNumber();
+                
+                    if (bestPosition == 0 || bestPosition > currentPositionNumber) {
+                        bestPosition = currentPositionNumber;
+                    }
+                }
+                results.addAll(this.resultRepository.findByDriverId(idDriver));
+                sprints.addAll(this.sprintRepository.findByDriverId(idDriver));
+                resultService.setTotalPointsByDriver(results, sprints, totalPointsByDriver);
+                Optional<Driver> driver = this.driverRepository.findById(idDriver);
+                Integer pointsOfDriver = driver.isPresent() ? totalPointsByDriver.get(this.driverMapper.driverToDriverDTO(driver.get())) : null;
+                if (pointsOfDriver == null) break;
+                totalPoints +=  pointsOfDriver;
+
+            }
+        }
+        
+        teamInfoDTO.setTeam(teamDTO);
+        teamInfoDTO.setPoles(poles);
+        teamInfoDTO.setFastlaps(fastlaps);
+        teamInfoDTO.setRacesFinished(racesFinished);
+        teamInfoDTO.setTotalPoints(totalPoints);
+        teamInfoDTO.setChampionships(championships);
+        teamInfoDTO.setConstructors(constructors);
+        teamInfoDTO.setPenalties(penalties);
+        teamInfoDTO.setBestPosition(bestPosition);
+        teamInfoDTO.setPodiums(podiums);
+        teamInfoDTO.setVictories(victories);
+        
+        return teamInfoDTO;
     }
 }

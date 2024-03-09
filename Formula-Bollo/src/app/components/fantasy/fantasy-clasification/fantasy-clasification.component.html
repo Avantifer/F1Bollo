@@ -1,4 +1,4 @@
-<div class="fantasyResults surface-ground py-5 px-3" style="height: 91.85vh">
+<div class="fantasyResults surface-ground py-5 px-3" style="height: 91.85vh" [style.height]="fantasyPointsUsers.length > 5 ? 'auto' : '91.85vh'">
   <div class="container surface-200 p-6 h-full relative">
     <div class="flex justify-content-start flex-wrap mb-5">
       <form [formGroup]="raceForm" class="col-12">

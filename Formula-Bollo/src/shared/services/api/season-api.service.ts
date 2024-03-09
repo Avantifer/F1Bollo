@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/enviroments/enviroment";
@@ -21,6 +21,24 @@ export class SeasonApiService {
   getActualSeason(): Observable<Season> {
     return this.httpClient.get<Season>(
       environment.apiUrl + this.endpoint + "/actual",
+    );
+  }
+
+  getSeasonByDriverName(driverName: string): Observable<Season[]> {
+    const params = new HttpParams().set("driverName", driverName);
+
+    return this.httpClient.get<Season[]>(
+      environment.apiUrl + this.endpoint + "/byDriverName",
+      { params },
+    );
+  }
+
+  getSeasonByTeamName(teamName: string): Observable<Season[]> {
+    const params = new HttpParams().set("teamName", teamName);
+
+    return this.httpClient.get<Season[]>(
+      environment.apiUrl + this.endpoint + "/byTeamName",
+      { params },
     );
   }
 }

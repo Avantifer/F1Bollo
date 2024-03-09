@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import formula.bollo.app.entity.Driver;
+import formula.bollo.app.entity.Team;
 import formula.bollo.app.model.TeamDTO;
+import formula.bollo.app.model.TeamInfoDTO;
 import formula.bollo.app.model.TeamWithDriversDTO;
 import formula.bollo.app.repository.DriverRepository;
+import formula.bollo.app.repository.TeamRepository;
 import formula.bollo.app.services.TeamService;
 import formula.bollo.app.utils.Constants;
 import formula.bollo.app.utils.Log;
@@ -32,11 +35,13 @@ public class TeamsController {
     
     private TeamService teamService;
     private DriverRepository driverRepository;
+    private TeamRepository teamRepository;
     private Map<Long, TeamDTO> teamCache = new ConcurrentHashMap<>();
 
-    public TeamsController(TeamService teamService, DriverRepository driverRepository) {
+    public TeamsController(TeamService teamService, DriverRepository driverRepository, TeamRepository teamRepository) {
         this.teamService = teamService;
         this.driverRepository = driverRepository;
+        this.teamRepository = teamRepository;
     }
 
     @Operation(summary = "Get all teams", tags = Constants.TAG_TEAM)
@@ -75,4 +80,26 @@ public class TeamsController {
 
         return teamsWithDriversDTOList;
     } 
+
+    @Operation(summary = "Get info of a team", tags = Constants.TAG_TEAM)
+    @GetMapping("/infoTeamByName")
+    public TeamInfoDTO getinfoTeamByName(@RequestParam(value = "season", required = false) Integer season, @RequestParam(value = "teamName") String teamName) {
+        Log.info("START - getinfoTeamByName - START");
+        Log.info("RequestParam getinfoTeamByName (season) -> " + season);
+        Log.info("RequestParam getinfoTeamByName (driverName) -> " + teamName);
+
+        List<Team> teams = new ArrayList<>();
+        TeamInfoDTO teamInfoDTO = new TeamInfoDTO();
+
+        if (season == null) {
+            teams = teamRepository.findByName(teamName);
+        } else {
+            teams = teamRepository.findByNameAndSeason(season, teamName);
+        }
+        
+        teamInfoDTO = this.teamService.getAllInfoTeam(teams);
+        Log.info("END - getinfoTeamByName - END");
+        
+        return teamInfoDTO;
+    }
 }
