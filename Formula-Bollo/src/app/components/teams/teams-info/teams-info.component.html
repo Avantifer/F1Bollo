@@ -1,0 +1,85 @@
+@if (teamInfo) {
+  <div class="teamsInfo surface-200 p-2 sm:p-5">
+    <div class="surface-100 border-round-md px-4 py-3 flex justify-content-between">
+      <form [formGroup]="seasonForm">
+        <p-dropdown
+        formControlName="season"
+        [options]="seasons"
+        [(ngModel)]="seasonSelected"
+        optionLabel="name"
+        class="align-self-center">
+        </p-dropdown>
+      </form>
+    </div>
+    <div class="surface-100 grid grid-nogutter p-3 lg:p-4 xl:p-5 mt-2 sm:mt-5 border-round-md overflow-hidden flex-column-reverse xl:flex-row align-items-center">
+      <div class="col-12 xl:col-7 flex lg:mt-2">
+        @if (drivers.length > 0) {
+          <div class="flex flex-column mr-2 xl:mr-3 cursor-pointer" (click)="router.navigate(['/drivers/' + driverNameSpaceToUnderScore(drivers[0].name)])">
+            <div
+              class="teamsInfo-background-image flex flex-column align-items-center border-round-top-md relative w-full"
+              [class]="'bg-' + (drivers[0].team.name | SpaceToUnderscore)"
+            >
+              <img [src]="'data:image/jpg;base64,' + drivers[0].driverImage" alt="Imagen del piloto" class="teamsInfo-background-image-principal w-10 h-10">
+            </div>
+            <div class="surface-300 h-3rem w-full flex align-items-center justify-content-center border-round-bottom-md">
+              <h1 class="number font-bold F1_Regular text-sm sm:text-lg md:text-xl lg:text-2xl m-0">{{ drivers[0].name }}</h1>
+              <h1 class="number font-bold F1_Regular text-xs sm:text-lg md:text-xl lg:text-xl mt-2 mb-0 ml-1 xl:mt-3" [class]="'color-' + (drivers[0].team.name | SpaceToUnderscore)">{{ drivers[0].number }}</h1>
+            </div>
+          </div>
+
+          <div class="flex flex-column ml-2 xl:ml-3 xl:mr-4 cursor-pointer" (click)="router.navigate(['/drivers/' + driverNameSpaceToUnderScore(drivers[1].name)])">
+            <div
+              class="teamsInfo-background-image flex flex-column align-items-center border-round-top-md relative w-full"
+              [class]="'bg-' + (drivers[1].team.name | SpaceToUnderscore)"
+            >
+              <img [src]="'data:image/jpg;base64,' + drivers[1].driverImage" alt="Imagen del piloto" class="teamsInfo-background-image-principal w-10 h-10">
+            </div>
+            <div class="surface-300 h-3rem w-full flex align-items-center justify-content-center border-round-bottom-md">
+              <h1 class="font-bold F1_Regular text-sm sm:text-lg md:text-xl lg:text-2xl m-0">{{ drivers[1].name }}</h1>
+              <h1 class="font-bold F1_Regular text-xs sm:text-lg md:text-xl lg:text-xl mt-2 mb-0 ml-1 xl:mt-3"  [class]="'color-' + (drivers[0].team.name | SpaceToUnderscore)">{{ drivers[1].number }}</h1>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="col-12 xl:col-5">
+        <div class="flex align-items-center justify-content-center">
+          <h1 class="uppercase F1_Regular font-bold text-center text-3xl sm:text-5xl mt-0 mb-3 lg:mb-4" [class]="'color-' + (teamInfo.team.name | SpaceToUnderscore)">{{ teamInfo.team.name }}</h1>
+        </div>
+        <div class="grid grid-nogutter F1_Regular mx-4 xl:m-0">
+          <div class="col-8 xl:col-7">
+            @if (drivers.length > 0) {
+              <p class="font-bold text-sm sm:text-lg"> Piloto 1 :</p>
+              <p class="font-bold text-sm sm:text-lg"> Piloto 2 :</p>
+            }
+            <p class="font-bold text-sm sm:text-lg">Victorias :</p>
+            <p class="font-bold text-sm sm:text-lg">Poles :</p>
+            <p class="font-bold text-sm sm:text-lg">Podios :</p>
+            <p class="font-bold text-sm sm:text-lg">Vueltas rápidas :</p>
+            <p class="font-bold text-sm sm:text-lg">Carreras terminadas :</p>
+            <p class="font-bold text-sm sm:text-lg">Puntos totales :</p>
+            <p class="font-bold text-sm sm:text-lg">Penalizaciones :</p>
+            <p class="font-bold text-sm sm:text-lg">Mejor posición :</p>
+            <p class="font-bold text-sm sm:text-lg">Campeonatos pilotos :</p>
+            <p class="font-bold text-sm sm:text-lg">Constructores :</p>
+          </div>
+          <div class="col-4 xl:col-5">
+            @if (drivers.length > 0) {
+              <p class="text-sm sm:text-lg">{{ drivers[0].name }}</p>
+              <p class="text-sm sm:text-lg">{{ drivers[1].name }}</p>
+            }
+            <p class="text-sm sm:text-lg">{{ teamInfo.victories }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.poles }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.podiums }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.fastlaps }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.racesFinished }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.totalPoints }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.penalties }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.bestPosition }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.championships }}</p>
+            <p class="text-sm sm:text-lg">{{ teamInfo.constructors }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

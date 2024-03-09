@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { Team } from "../../models/team";
 import { environment } from "src/enviroments/enviroment";
 import { TeamWithDrivers } from "../../models/teamWithDrivers";
+import { TeamInfo } from "src/shared/models/teamInfo";
 
 @Injectable({
   providedIn: "root",
@@ -29,6 +30,16 @@ export class TeamApiService {
       : undefined;
     return this.httpClient.get<TeamWithDrivers[]>(
       environment.apiUrl + this.endpoint + "/withDrivers",
+      { params },
+    );
+  }
+
+  getInfoByTeamName(teamName: string, seasonNumber?: number): Observable<TeamInfo> {
+    let params = new HttpParams().set("teamName", teamName);
+    if (seasonNumber) params = params.set("season", seasonNumber);
+
+    return this.httpClient.get<TeamInfo>(
+      environment.apiUrl + this.endpoint + "/infoTeamByName",
       { params },
     );
   }

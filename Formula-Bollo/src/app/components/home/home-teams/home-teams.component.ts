@@ -7,6 +7,7 @@ import { ThemeService } from "src/shared/services/theme.service";
 import { TeamApiService } from "src/shared/services/api/team-api.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 import { ERROR_TEAM_FETCH } from "src/app/constants";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-home-teams",
@@ -22,6 +23,7 @@ export class HomeTeamsComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    public router: Router,
     private teamApiService: TeamApiService,
     private messageInfoService: MessageInfoService,
     private themeService: ThemeService
@@ -56,5 +58,9 @@ export class HomeTeamsComponent {
           throw error;
         },
       });
+  }
+
+  public teamNameSpaceToUnderScore(teamName: string): string {
+    return teamName.replaceAll(" ", "_");
   }
 }

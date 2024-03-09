@@ -30,4 +30,10 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     @Query(value = "SELECT r FROM Result r WHERE r.driver.id = ?1 AND r.position IS NOT NULL ORDER BY r.position ASC LIMIT 1")
     Optional<Result> bestResultOfDriver(Long driverId);
+
+    @Query(value = "SELECT r FROM Result r WHERE r.driver.id = ?1 AND r.position.positionNumber = 1")
+    List<Result> victoriesOfDriver(Long driverId);
+
+    @Query(value = "SELECT r FROM Result r WHERE r.driver.id = ?1 AND r.position.positionNumber IS NOT NULL AND r.position.positionNumber <= 3")
+    List<Result> podiumsOfDriver(Long driverId);
 }

@@ -148,8 +148,9 @@ public class FantasyService {
         if (priceDriver <= 20 && priceDriver >= 10 && goodPosition) points += 3;
         
         // Depends on the number of drivers finished the race gives points
-        int multiplier = (resultsSize / 10) < 1 ? 1 : (resultsSize / 10); 
-        points *= multiplier;
+        double multiplier = (resultsSize / 10.0) < 1 ? 1 : (resultsSize / 10.0);
+        double pointsNotExact = points * multiplier;
+        points = (int) Math.ceil(pointsNotExact);
 
         return points;
     }
@@ -161,7 +162,7 @@ public class FantasyService {
     */
     public List<FantasyPointsDriver> createDriversPoints(List<Result> results) {
         List<FantasyPointsDriver> fantasyPoints = new ArrayList<>();
-
+        int sizeResults = results.stream().filter(result ->  result.getPosition() != null).collect(Collectors.toList()).size();
         boolean pointsProblem = false;
 
         for (Result result: results) {
@@ -169,7 +170,7 @@ public class FantasyService {
             fantasyPoint.setDriver(result.getDriver());
             fantasyPoint.setRace(result.getRace());
             fantasyPoint.setSeason(result.getSeason());
-            fantasyPoint.setPoints(this.calculatePoints(result, results.size()));
+            fantasyPoint.setPoints(this.calculatePoints(result, sizeResults));
             if (fantasyPoint.getPoints() == -1) pointsProblem = true;
             fantasyPoints.add(fantasyPoint);
         }

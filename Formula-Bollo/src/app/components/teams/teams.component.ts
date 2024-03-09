@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
+import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ERROR_SEASON_FETCH, ERROR_TEAM_FETCH } from "src/app/constants";
 import { environment } from "src/enviroments/enviroment";
@@ -27,6 +28,7 @@ export class TeamsComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    public router: Router,
     private teamApiService: TeamApiService,
     private messageInfoService: MessageInfoService,
     private seasonApiService: SeasonApiService,
@@ -99,5 +101,9 @@ export class TeamsComponent {
         this.teamWithDrivers = [];
         this.obtainAllTeamsWithDrivers(this.seasonSelected!.number);
       });
+  }
+
+  public teamNameSpaceToUnderScore(teamName: string): string {
+    return teamName.replaceAll(" ", "_");
   }
 }

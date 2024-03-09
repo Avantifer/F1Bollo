@@ -11,6 +11,9 @@ export const ERROR_PENALTY_TYPE_FETCH: string = "No se han podido recoger los ti
 export const ERROR_POINT_FETCH: string = "Al parecer hubo problemas al recoger los puntos";
 export const ERROR_PRICE_FETCH: string = "Al parecer hubo problemas al recoger los precios";
 export const ERROR_PENALTIES_FETCH: string = "No se ha podido recoger las penalizaciones correctamente";
+export const ERROR_DRIVER_INFO_FETCH: string = "No se ha podido recoger la información del piloto correctamente";
+export const ERROR_DRIVER_TEAM_FETCH: string = "No se ha podido recoger los pilotos correctamente";
+export const ERROR_TEAM_INFO_FETCH: string = "No se ha podido recoger la información del equipo correctamente";
 export const ERROR_SAVE: string = "No se ha podido guardar correctamente";
 export const ERROR_ARCHIVE_NOT_VALID: string = "Ocurrió un error al procesar el archivo";
 export const ERROR_EMAIL_NOT_VALID: string = "El email introducido no es válido";
@@ -18,6 +21,8 @@ export const ERROR_FORM_NOT_VALID: string = "No has rellenado correctamente el f
 export const ERROR_FANTASY_DRIVER_IN_TEAM: string = "No puedes poner un piloto como equipo";
 export const ERROR_FANTASY_TEAM_IN_DRIVER: string = "No puedes poner un equipo como piloto";
 export const ERROR_FANTASY_ELECTION_SAVE: string = "No se ha podido guardar tu equipo correctamente. Contacta con el administrador";
+export const ERROR_DRIVER_NAME_NOT_FOUND: string = "No hay ningún piloto con ese nombre";
+export const ERROR_TEAM_NAME_NOT_FOUND: string = "No hay ningún equipo con ese nombre";
 
 // Warnings
 export const WARNING_NO_ADMIN: string = "No tienes permisos de administrador";
@@ -32,7 +37,6 @@ export const WARNING_FANTASY_SAVE_LATE: string = "Demasiado tarde para guardar e
 
 // Info
 export const INFO_CREDENTIALS_NEED: string = "Necesitas poner el usuario/contraseña";
-
 
 // Success
 export const SUCCESS_SAVE: string = "Se ha guardado correctamente";
