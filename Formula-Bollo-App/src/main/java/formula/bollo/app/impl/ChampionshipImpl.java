@@ -22,7 +22,7 @@ public class ChampionshipImpl implements ChampionshipMapper {
     /**
      * Converts a ChampionshipDTO object to a Championship object.
      *
-     * @param circuitDTO The ChampionshipDTO object to be converted.
+     * @param championshipDTO The ChampionshipDTO object to be converted.
      * @return           A Championship object with properties copied from the ChampionshipDTO.
     */
     @Override
@@ -38,7 +38,7 @@ public class ChampionshipImpl implements ChampionshipMapper {
     /**
      * Converts a Championship object to a ChampionshipDTO object.
      *
-     * @param circuit The Championship object to be converted.
+     * @param championship The Championship object to be converted.
      * @return        A ChampionshipDTO object with properties copied from the Championship.
     */ 
     @Override

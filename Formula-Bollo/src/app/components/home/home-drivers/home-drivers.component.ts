@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ERROR_DRIVER_FETCH } from "src/app/constants";
 import { environment } from "src/enviroments/enviroment";
@@ -26,6 +27,7 @@ export class HomeDriversComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    public router: Router,
     private driversApiService: DriverApiService,
     private resultApiService: ResultApiService,
     private messageInfoService: MessageInfoService
@@ -92,5 +94,9 @@ export class HomeDriversComponent {
           throw error;
         },
       });
+  }
+
+  public driverNameSpaceToUnderScore(driverName: string): string {
+    return driverName.replaceAll(" ", "_");
   }
 }

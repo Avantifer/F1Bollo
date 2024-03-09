@@ -36,8 +36,10 @@
         <div class="drivers-top10 mt-3">
           @for (driverPoint of driverPoints; track $index) {
             <div
-              class="drivers-top10-container mx-0 my-1 md:mx-6 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0">
-              <div class="drivers-top10-start flex align-items-center">
+              class="drivers-top10-container mx-0 my-1 md:mx-6 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0"
+              (click)="router.navigate(['/drivers/' + driverNameSpaceToUnderScore(driverPoint.driver.name)])"
+            >
+              <div class="drivers-top10-start flex align-items-center" >
                 <h4 class="my-0">{{ $index + 1 }}</h4>
                 <div class="drivers-top10-line mx-2" [class]="'bg-' + (driverPoint.driver.team.name | SpaceToUnderscore)"></div>
                 <h4 class="my-0">{{ driverPoint.driver.name }}</h4>
@@ -80,7 +82,9 @@
         <div class="drivers-top10 mt-3">
           @for (driver of drivers; track $index) {
             <div
-            class="drivers-top10-container mx-0 my-1 md:mx-6 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0">
+              class="drivers-top10-container mx-0 my-1 md:mx-6 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0"
+              (click)="router.navigate(['/drivers/' + driverNameSpaceToUnderScore(driver.name)])"
+            >
             <div class="drivers-top10-start flex align-items-center">
               <h4 class="my-0">{{ $index + 1 }}</h4>
               <div class="drivers-top10-line mx-2" [class]="'bg-' + (driver.team.name | SpaceToUnderscore)"></div>

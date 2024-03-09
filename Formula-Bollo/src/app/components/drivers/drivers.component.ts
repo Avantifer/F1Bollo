@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ERROR_DRIVER_FETCH, ERROR_RESULT_FETCH, ERROR_SEASON_FETCH } from "src/app/constants";
 import { environment } from "src/enviroments/enviroment";
@@ -31,6 +32,7 @@ export class DriversComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
+    public router: Router,
     private driversApiService: DriverApiService,
     private resultApiService: ResultApiService,
     private messageInfoService: MessageInfoService,
@@ -128,5 +130,9 @@ export class DriversComponent {
         this.drivers = [];
         this.obtainAllDriversPoints(this.seasonSelected.number);
       });
+  }
+
+  public driverNameSpaceToUnderScore(driverName: string) {
+    return driverName.replaceAll(" ", "_");
   }
 }

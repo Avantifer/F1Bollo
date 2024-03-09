@@ -1,0 +1,555 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>formula-bollo documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">formula-bollo documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  FantasyHomeComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/fantasy/fantasy-home/fantasy-home.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-fantasy-home</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./fantasy-home.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./fantasy-home.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &quot;@angular/core&quot;;
+
+@Component({
+  selector: &quot;app-fantasy-home&quot;,
+  templateUrl: &quot;./fantasy-home.component.html&quot;,
+  styleUrls: [&quot;./fantasy-home.component.scss&quot;],
+})
+export class FantasyHomeComponent {}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;fantasy-intro relative h-10rem md:h-15rem md:h-20rem lg:h-25rem&quot;&gt;
+  &lt;h1 class&#x3D;&quot;absolute text-white F1_Bold uppercase m-0 z-1 text-4xl md:text-7xl lg:text-8xl&quot;&gt;Fantasy&lt;/h1&gt;
+  &lt;h1 class&#x3D;&quot;absolute text-white F1_Bold uppercase m-0 z-1 text-4xl md:text-7xl lg:text-8xl&quot;&gt;Bollo&lt;/h1&gt;
+  &lt;img
+    src&#x3D;&quot;../../../../assets/images/fantasy/fantasyImage.avif&quot;
+    class&#x3D;&quot;w-full h-10rem md:h-15rem md:h-20rem lg:h-25rem&quot;
+    alt&#x3D;&quot;Imagen principal&quot;
+  /&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;fantasy-howToPlay&quot;&gt;
+  &lt;div class&#x3D;&quot;surface-50&quot;&gt;
+    &lt;div class&#x3D;&quot;fantasy-howToPlay-container text-900 flex flex-column lg:flex-row m-auto gap-5 py-7&quot;&gt;
+      &lt;div class&#x3D;&quot;fantasy-howToPlay-container-text&quot;&gt;
+        &lt;h2 class&#x3D;&quot;mt-0 mb-4 text-4xl&quot;&gt;Crea tu equipo&lt;/h2&gt;
+        &lt;p class&#x3D;&quot;Fantasy_Regular m-0&quot;&gt;
+          Escoge tu equipo favorito de 3 pilotos y 2 escuderías, manteniendote
+          debajo del presupuesto ficticio de 70 millones. Los tendrás que
+          rellenar por cada temporada. El equipo NO se guarda automáticamente,
+          se tendrá que guardar y crear cada jornada. Puedes guardar el equipo
+          hasta 12 horas antes de la carrera, después no dejará.
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;flex justify-content-center&quot;&gt;
+        &lt;img
+          src&#x3D;&quot;../../../../assets/images/fantasy/fantasyHowToPlay1.avif&quot;
+          alt&#x3D;&quot;Primera imagen del fantasy&quot;
+          class&#x3D;&quot;border-round-md&quot;
+        /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;surface-200&quot;&gt;
+    &lt;div class&#x3D;&quot;fantasy-howToPlay-container text-900 flex flex-column-reverse lg:flex-row m-auto gap-5 py-7&quot;&gt;
+      &lt;div class&#x3D;&quot;flex justify-content-center&quot;&gt;
+        &lt;img
+          src&#x3D;&quot;../../../../assets/images/fantasy/fantasyHowToPlay2.avif&quot;
+          alt&#x3D;&quot;Segunda imagen del fantasy&quot;
+          class&#x3D;&quot;border-round-md&quot;
+        /&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;fantasy-howToPlay-container-text&quot;&gt;
+        &lt;h2 class&#x3D;&quot;mt-0 mb-4 text-4xl&quot;&gt;Precios dinámicos&lt;/h2&gt;
+        &lt;p class&#x3D;&quot;Fantasy_Regular m-0&quot;&gt;
+          Los precios van cambiando cada jornada dependiendo del rendimiento del
+          jugador en la carrera. De esta manera vas a poder variar tu equipo y
+          analizar cual puede ser el mejor equipo para la jornada que viene. Al
+          igual también va cambiando el precio de los equipos teniendo el cuenta
+          los pilotos de la escudería en específico.
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;surface-50&quot;&gt;
+    &lt;div class&#x3D;&quot;fantasy-howToPlay-container text-900 flex flex-column lg:flex-row m-auto gap-5 py-7&quot;&gt;
+      &lt;div class&#x3D;&quot;fantasy-howToPlay-container-text&quot;&gt;
+        &lt;h2 class&#x3D;&quot;mt-0 mb-4 text-4xl&quot;&gt;Sistema de puntuación&lt;/h2&gt;
+        &lt;p class&#x3D;&quot;Fantasy_Regular m-0&quot;&gt;
+          Los puntos de los pilotos se definirán dependiendo de su rendimiento
+          en la carrera. Cuanto más arriba quede el piloto más puntos obtendrán
+          al igual que si tiene la vuelta rápida o haya obtenido una pole. No
+          obtendrá puntos si consiguió hacer un DNF o si ni siquiera participó.
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;flex justify-content-center&quot;&gt;
+        &lt;img
+          src&#x3D;&quot;../../../../assets/images/fantasy/fantasyHowToPlay3.avif&quot;
+          alt&#x3D;&quot;Tercera imagen del fantasy&quot;
+          class&#x3D;&quot;border-round-md&quot;
+        /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;surface-200&quot;&gt;
+    &lt;div class&#x3D;&quot;fantasy-howToPlay-container text-900 flex flex-column-reverse lg:flex-row m-auto gap-5 py-7&quot;&gt;
+      &lt;div class&#x3D;&quot;flex justify-content-center&quot;&gt;
+        &lt;img
+          src&#x3D;&quot;../../../../assets/images/fantasy/fantasyHowToPlay4.avif&quot;
+          alt&#x3D;&quot;Segunda imagen del fantasy&quot;
+          class&#x3D;&quot;border-round-md&quot;
+        /&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;fantasy-howToPlay-container-text&quot;&gt;
+        &lt;h2 class&#x3D;&quot;mt-0 mb-4 text-4xl&quot;&gt;Clasificación&lt;/h2&gt;
+        &lt;p class&#x3D;&quot;Fantasy_Regular m-0&quot;&gt;
+          Compite con tus amigos o compañeros de F1 Bollo para ver quien es el
+          mejor jugador del Fantasy Bollo. Todos estarán en la misma liga y
+          aunque no juegues al F1 Bollo puedes seguir jugando al Fantasy Bollo y
+          estar pendiente de la competición. También podrás ver el equipo que
+          escogieron para obtener inspiración.
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./fantasy-home.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">@import &quot;../../../../assets/scss/styles.scss&quot;;
+
+.fantasy-intro {
+  h1 {
+    letter-spacing: 2px;
+    text-shadow: -4px 4px 20px black;
+    left: 7rem;
+
+    &amp;:first-of-type {
+      top: 3rem;
+    }
+
+    &amp;:last-of-type {
+      top: 10rem;
+    }
+  }
+
+  img {
+    filter: brightness(0.5);
+  }
+}
+
+.fantasy-howToPlay {
+
+  &amp;-container {
+    width: 60rem;
+  }
+
+  p {
+    letter-spacing: 0.5px;
+  }
+
+  img {
+    width: 500px;
+    height: 240px;
+  }
+}
+
+@include media-breakpoint-down(xxl) {
+  .fantasy-intro {
+    h1 {
+      &amp;:first-of-type {
+        top: 3rem;
+      }
+
+      &amp;:last-of-type {
+        top: 11rem;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(xl) {
+  .fantasy-intro {
+    h1 {
+      font-size: 6rem;
+      left: 5rem;
+
+      &amp;:first-of-type {
+        top: 3rem;
+      }
+
+      &amp;:last-of-type {
+        top: 10rem;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .fantasy-intro {
+    h1 {
+      font-size: 4rem;
+      left: 3rem;
+
+      &amp;:first-of-type {
+        top: 2rem;
+      }
+
+      &amp;:last-of-type {
+        top: 8rem;
+      }
+    }
+  }
+
+  .fantasy-howToPlay {
+    &amp;-container {
+      width: 70%;
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .fantasy-intro {
+    h1 {
+      line-height: 6rem;
+
+      &amp;:first-of-type {
+        top: 0rem;
+      }
+
+      &amp;:last-of-type {
+        top: 3.5rem;
+      }
+    }
+  }
+
+  .fantasy-howToPlay {
+    img {
+      width: 90%;
+      height: auto;
+    }
+
+    &amp;-container {
+      width: 90%;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .fantasy-intro {
+    h1 {
+      font-size: 2rem;
+      left: 2rem;
+      line-height: 3rem;
+
+      &amp;:first-of-type {
+        top: 2rem;
+      }
+
+      &amp;:last-of-type {
+        top: 5rem;
+      }
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="fantasy-intro relative h-10rem md:h-15rem md:h-20rem lg:h-25rem">  <h1 class="absolute text-white F1_Bold uppercase m-0 z-1 text-4xl md:text-7xl lg:text-8xl">Fantasy</h1>  <h1 class="absolute text-white F1_Bold uppercase m-0 z-1 text-4xl md:text-7xl lg:text-8xl">Bollo</h1>  <img    src="../../../../assets/images/fantasy/fantasyImage.avif"    class="w-full h-10rem md:h-15rem md:h-20rem lg:h-25rem"    alt="Imagen principal"  /></div><div class="fantasy-howToPlay">  <div class="surface-50">    <div class="fantasy-howToPlay-container text-900 flex flex-column lg:flex-row m-auto gap-5 py-7">      <div class="fantasy-howToPlay-container-text">        <h2 class="mt-0 mb-4 text-4xl">Crea tu equipo</h2>        <p class="Fantasy_Regular m-0">          Escoge tu equipo favorito de 3 pilotos y 2 escuderías, manteniendote          debajo del presupuesto ficticio de 70 millones. Los tendrás que          rellenar por cada temporada. El equipo NO se guarda automáticamente,          se tendrá que guardar y crear cada jornada. Puedes guardar el equipo          hasta 12 horas antes de la carrera, después no dejará.        </p>      </div>      <div class="flex justify-content-center">        <img          src="../../../../assets/images/fantasy/fantasyHowToPlay1.avif"          alt="Primera imagen del fantasy"          class="border-round-md"        />      </div>    </div>  </div>  <div class="surface-200">    <div class="fantasy-howToPlay-container text-900 flex flex-column-reverse lg:flex-row m-auto gap-5 py-7">      <div class="flex justify-content-center">        <img          src="../../../../assets/images/fantasy/fantasyHowToPlay2.avif"          alt="Segunda imagen del fantasy"          class="border-round-md"        />      </div>      <div class="fantasy-howToPlay-container-text">        <h2 class="mt-0 mb-4 text-4xl">Precios dinámicos</h2>        <p class="Fantasy_Regular m-0">          Los precios van cambiando cada jornada dependiendo del rendimiento del          jugador en la carrera. De esta manera vas a poder variar tu equipo y          analizar cual puede ser el mejor equipo para la jornada que viene. Al          igual también va cambiando el precio de los equipos teniendo el cuenta          los pilotos de la escudería en específico.        </p>      </div>    </div>  </div>  <div class="surface-50">    <div class="fantasy-howToPlay-container text-900 flex flex-column lg:flex-row m-auto gap-5 py-7">      <div class="fantasy-howToPlay-container-text">        <h2 class="mt-0 mb-4 text-4xl">Sistema de puntuación</h2>        <p class="Fantasy_Regular m-0">          Los puntos de los pilotos se definirán dependiendo de su rendimiento          en la carrera. Cuanto más arriba quede el piloto más puntos obtendrán          al igual que si tiene la vuelta rápida o haya obtenido una pole. No          obtendrá puntos si consiguió hacer un DNF o si ni siquiera participó.        </p>      </div>      <div class="flex justify-content-center">        <img          src="../../../../assets/images/fantasy/fantasyHowToPlay3.avif"          alt="Tercera imagen del fantasy"          class="border-round-md"        />      </div>    </div>  </div>  <div class="surface-200">    <div class="fantasy-howToPlay-container text-900 flex flex-column-reverse lg:flex-row m-auto gap-5 py-7">      <div class="flex justify-content-center">        <img          src="../../../../assets/images/fantasy/fantasyHowToPlay4.avif"          alt="Segunda imagen del fantasy"          class="border-round-md"        />      </div>      <div class="fantasy-howToPlay-container-text">        <h2 class="mt-0 mb-4 text-4xl">Clasificación</h2>        <p class="Fantasy_Regular m-0">          Compite con tus amigos o compañeros de F1 Bollo para ver quien es el          mejor jugador del Fantasy Bollo. Todos estarán en la misma liga y          aunque no juegues al F1 Bollo puedes seguir jugando al Fantasy Bollo y          estar pendiente de la competición. También podrás ver el equipo que          escogieron para obtener inspiración.        </p>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'FantasyHomeComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'FantasyHomeComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -83,4 +83,20 @@ public class DriverController {
         
         return driverInfoDTO;
     }
+
+    @Operation(summary = "Get drivers of an id team", tags = Constants.TAG_DRIVER)
+    @GetMapping("/byTeam")
+    public List<DriverDTO> getDriversByTeam(@RequestParam int teamId) {
+        Log.info("START - getinfoDriverByName - START");
+        Log.info("RequestParam getinfoDriverByName (teamId) -> " + teamId);
+
+        List<DriverDTO> driverDTOs = new ArrayList<>();
+        List<Driver> drivers = this.driverRepository.findByTeam( (long) teamId);
+
+        if (drivers.isEmpty()) return driverDTOs;
+        driverDTOs = driverMapper.convertDriversToDriverDTO(drivers);
+
+        Log.info("END - getinfoDriverByName - END");
+        return driverDTOs;
+    }
 }

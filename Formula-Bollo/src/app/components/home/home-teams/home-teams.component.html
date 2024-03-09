@@ -7,7 +7,9 @@
       <div
         class="teams-schema-container shadow-2 flex rounded-4 h-9rem border-round-2xl cursor-pointer surface-0 col-5  lg:col-2"
         [class]="'hover-bg-' + (team.name | SpaceToUnderscore)"
-        [ngClass]="(team.name | SpaceToUnderscore) === 'Alpine' || (team.name | SpaceToUnderscore) === 'AlphaTauri' ? themeClass : null">
+        [ngClass]="(team.name | SpaceToUnderscore) === 'Alpine' || (team.name | SpaceToUnderscore) === 'AlphaTauri' ? themeClass : null"
+        (click)="router.navigate(['/teams/' + teamNameSpaceToUnderScore(team.name)])"
+        >
         <img [src]="'data:image/jpg;base64,' + team.logoImage" [alt]="'Imagen de ' + team.name" class="teams-schema-container-image m-auto w-6rem	">
       </div>
     }

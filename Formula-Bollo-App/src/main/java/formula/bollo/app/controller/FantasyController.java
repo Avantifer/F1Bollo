@@ -97,13 +97,18 @@ public class FantasyController {
         Log.info("RequestParam saveDriverTeamPoints (raceId) -> " + raceId);
         
         List<Result> results = this.resultRepository.findByRaceId(raceId.longValue());
-        
+        List<FantasyPointsDriver> fantasyDriversPrevious = this.fantasyPointsDriverRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
         List<FantasyPointsDriver> fantasyPointsDriver = this.fantasyService.createDriversPoints(results);
         if (fantasyPointsDriver.isEmpty()) return new ResponseEntity<>("Hubo un problema con los puntos. Contacte con el administrador", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
+        
+        fantasyPointsDriverRepository.deleteAll(fantasyDriversPrevious);
         fantasyPointsDriverRepository.saveAll(fantasyPointsDriver);
-
+        
         List<FantasyPointsTeam> fantasyPointsTeams = this.fantasyService.createTeamsPoints(fantasyPointsDriver);
+        List<FantasyPointsTeam> fantasyTeamsPrevious = this.fantasyPointsTeamRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
         if (fantasyPointsTeams.isEmpty()) return new ResponseEntity<>("Hubo un problema con los puntos. Contacte con el administrador", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
+        
+        fantasyPointsTeamRepository.deleteAll(fantasyTeamsPrevious);
         fantasyPointsTeamRepository.saveAll(fantasyPointsTeams);
 
         Log.info("END - saveDriverTeamPoints - END");
@@ -185,13 +190,19 @@ public class FantasyController {
             Log.info("No se ha encontrado la siguiente carrera con el id -> " + raceId + 1);
             return new ResponseEntity<>("No se ha encontrado la siguiente carrera", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(404));
         }
-
+        
+        List<FantasyPriceDriver> fantasyDriversPrevious = this.fantasyPriceDriverRepository.findByRaceId(raceId.longValue() + 1);
         List<FantasyPriceDriver> fantasyPricesDriver = this.fantasyService.createDriversPrices(results, nextRace.get());
         if (fantasyPricesDriver.isEmpty()) return new ResponseEntity<>("Hubo un problema con los precios. Contacte con el administrador", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
+        
+        fantasyPriceDriverRepository.deleteAll(fantasyDriversPrevious);
         fantasyPriceDriverRepository.saveAll(fantasyPricesDriver);
     
+        List<FantasyPriceTeam> fantasyTeamPrevious = this.fantasyPriceTeamRepository.findByRaceId(raceId.longValue() + 1);
         List<FantasyPriceTeam> fantasyPricesTeam = this.fantasyService.createTeamsPrices(fantasyPricesDriver, nextRace.get());
         if (fantasyPricesTeam.isEmpty()) return new ResponseEntity<>("Hubo un problema con los precios. Contacte con el administrador", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
+        
+        fantasyPriceTeamRepository.deleteAll(fantasyTeamPrevious);
         fantasyPriceTeamRepository.saveAll(fantasyPricesTeam);
 
         Log.info("END - saveDriverTeamPrices - END");
