@@ -44,6 +44,12 @@ export class TeamsInfoComponent {
     this.changeSeasons();
   }
 
+  /**
+   * Retrieves seasons by team name from the SeasonApiService.
+   * If the team name is not found, it navigates to the "/teams" route and displays an error message.
+   *
+   * @param teamName - The name of the team for which seasons are to be retrieved.
+   */
   getSeasonsByTeamName(teamName: string): void {
     this.seasonApiService
       .getSeasonByTeamName(teamName)
@@ -69,6 +75,13 @@ export class TeamsInfoComponent {
       });
   }
 
+  /**
+   * Retrieves information by team name and season number from the TeamApiService.
+   * Additionally, it fetches drivers associated with the team.
+   *
+   * @param teamName - The name of the team for which information is to be retrieved.
+   * @param seasonNumber - The optional season number for which information is to be fetched.
+   */
   getInfoByTeamName(teamName: string, seasonNumber?: number): void {
     this.teamApiService
       .getInfoByTeamName(teamName, seasonNumber)
@@ -88,6 +101,9 @@ export class TeamsInfoComponent {
       });
   }
 
+  /**
+   * Listens to changes in the seasonForm and triggers the retrieval of information by team name accordingly.
+   */
   changeSeasons(): void {
     this.seasonForm.valueChanges
       .pipe(takeUntil(this._unsubscribe))
@@ -102,6 +118,12 @@ export class TeamsInfoComponent {
       });
   }
 
+  /**
+   * Retrieves drivers by team ID from the DriverApiService.
+   * If no drivers are found, it displays an error message.
+   *
+   * @param teamId - The ID of the team for which drivers are to be retrieved.
+   */
   getDriversbyTeam(teamId: number): void {
     this.driverApiService.getDriversByTeam(teamId)
       .pipe(takeUntil(this._unsubscribe))
@@ -120,6 +142,12 @@ export class TeamsInfoComponent {
       });
   }
 
+  /**
+   * Convert driver name space to underscore.
+   *
+   * @param driverName - The input driver name to be converted.
+   * @returns The driver name with spaces replaced by underscores.
+   */
   public driverNameSpaceToUnderScore(driverName: string): string {
     return driverName.replaceAll(" ", "_");
   }

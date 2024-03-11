@@ -40,6 +40,12 @@ export class DriversInfoComponent {
     this.changeSeasons();
   }
 
+  /**
+   * Retrieves seasons by driver name from the SeasonApiService.
+   * If the driver name is not found, it navigates to the "/drivers" route and displays an error message.
+   *
+   * @param driverName - The name of the driver for whom seasons are to be retrieved.
+   */
   getSeasonsByDriverName(driverName: string): void {
     this.seasonApiService
       .getSeasonByDriverName(driverName)
@@ -65,6 +71,12 @@ export class DriversInfoComponent {
       });
   }
 
+  /**
+   * Retrieves additional information by driver name and season number from the DriverApiService.
+   *
+   * @param driverName - The name of the driver for whom additional information is to be retrieved.
+   * @param seasonNumber - The optional season number for which information is to be fetched.
+   */
   getInfoByDriverName(driverName: string, seasonNumber?: number): void {
     this.driverApiService
       .getInfoByDriverName(driverName, seasonNumber)
@@ -81,6 +93,9 @@ export class DriversInfoComponent {
       });
   }
 
+  /**
+   * Listens to changes in the seasonForm and triggers the retrieval of information by driver name accordingly.
+   */
   changeSeasons(): void {
     this.seasonForm.valueChanges
       .pipe(takeUntil(this._unsubscribe))
