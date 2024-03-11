@@ -92,6 +92,8 @@ export class FantasyClasificationComponent {
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsUser: FantasyPointsUser[]) => {
+          console.log(fantasyPointsUser);
+
           this.fantasyPointsUsers = fantasyPointsUser;
         },
         error: (error) => {
