@@ -36,7 +36,7 @@
         <div class="drivers-top10 mt-3">
           @for (driverPoint of driverPoints; track $index) {
             <div
-              class="drivers-top10-container mx-0 my-1 md:mx-6 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0"
+              class="drivers-top10-container mx-0 my-1 md:ml-6 md:mr-7 py-2 px-3 shadow-1 border-round-xl flex align-items-center justify-content-between surface-ground cursor-pointer hover:surface-600 hover:text-0"
               (click)="router.navigate(['/drivers/' + driverNameSpaceToUnderScore(driverPoint.driver.name)])"
             >
               <div class="drivers-top10-start flex align-items-center" >

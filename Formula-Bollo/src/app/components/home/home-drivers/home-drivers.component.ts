@@ -96,6 +96,12 @@ export class HomeDriversComponent {
       });
   }
 
+  /**
+   * Convert driver name space to underscore.
+   *
+   * @param driverName - The input driver name to be converted.
+   * @returns The driver name with spaces replaced by underscores.
+   */
   public driverNameSpaceToUnderScore(driverName: string): string {
     return driverName.replaceAll(" ", "_");
   }

@@ -128,7 +128,6 @@ public class FantasyService {
             default:
                 break;
         }
-
         
         List<FantasyPriceDriver> fantasyPrices = this.fantasyPriceRepository.findByRaceId(result.getRace().getId());
 
@@ -222,7 +221,7 @@ public class FantasyService {
 
         if (fantasyPrice == null) return -1;
 
-        int newPrice = fantasyPrice.getPrice();
+        int price = fantasyPrice.getPrice();
 
         List<FantasyPointsDriver> fantasyPoints = this.fantasyPointsRepository.findByRaceId(Constants.ACTUAL_SEASON, result.getRace().getId());
         FantasyPointsDriver fantasyPoint = fantasyPoints.stream()
@@ -235,24 +234,43 @@ public class FantasyService {
         
         // Calcular el nuevo precio
         if (fantasyPoint == null) return -1;
+        double points = fantasyPoint.getPoints();
 
-        int points = fantasyPoint.getPoints();
-
-        if (points < 5) {
-            newPrice = adjustPriceForReduction(newPrice);
-        } else {                
-            newPrice += (points / 10) * minPrice;
+        if (price >= minPrice && price < 4000000) {
+            if (points < 1) {
+                price = adjustPriceForReduction(price);
+            } else if (points >= 2) {
+                price += (points / 10.0) * minPrice;
+            }
+        } else if (price >= 4000000 && price < 6000000) {
+            if (points <= 1) {
+                price = adjustPriceForReduction(price);
+            } else if (points >= 3) {
+                price += (points / 10.0) * minPrice;
+            }
+        } else if (price >= 6000000 && price < 10000000) {
+            if (points <= 2) {
+                price = adjustPriceForReduction(price);
+            } else if (points >= 4) {
+                price += (points / 10.0) * minPrice;
+            }
+        } else if (price >= 10000000) {
+            if (points <= 5) {
+                price = adjustPriceForReduction(price);
+            } else {
+                price += (points / 10.0) * minPrice;
+            }
         }
 
         // Si el nuevo precio es menor que 1, el precio es 1; si es mayor que 30, el precio es 30
-        if (newPrice <= minPrice) {
-            newPrice = minPrice;
+        if (price <= minPrice) {
+            price = minPrice;
         }
-        if (newPrice >= maxPrice) {
-            newPrice = maxPrice;
+        if (price >= maxPrice) {
+            price = maxPrice;
         }
 
-        return newPrice;
+        return price;
     }
 
     /**
@@ -420,6 +438,7 @@ public class FantasyService {
             if (userPointsMap.containsKey(userId)) {
                 FantasyPointsUserDTO existingUserDTO = userPointsMap.get(userId);
                 existingUserDTO.setTotalPoints(existingUserDTO.getTotalPoints() + fantasyPointsUserDTO.getTotalPoints());
+                existingUserDTO.setFantasyElection(fantasyPointsUserDTO.getFantasyElection());
             } else {
                 userPointsMap.put(userId, fantasyPointsUserDTO);
             }
