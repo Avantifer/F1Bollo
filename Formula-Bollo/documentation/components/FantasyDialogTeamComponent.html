@@ -241,6 +241,9 @@
                                 <a href="#getSpecificPointsPerTeam" >getSpecificPointsPerTeam</a>
                             </li>
                             <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
                                 <a href="#ngOnInit" >ngOnInit</a>
                             </li>
                         </ul>
@@ -357,8 +360,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/app/components/fantasy/fantasy-dialog-team/fantasy-dialog-team.component.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/app/components/fantasy/fantasy-dialog-team/fantasy-dialog-team.component.ts:49</a></div>
                         </td>
                     </tr>
 
@@ -433,8 +436,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/app/components/fantasy/fantasy-dialog-team/fantasy-dialog-team.component.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">src/app/components/fantasy/fantasy-dialog-team/fantasy-dialog-team.component.ts:96</a></div>
                         </td>
                     </tr>
 
@@ -485,6 +488,43 @@
                             <div class="io-description">
                                 
                             </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/app/components/fantasy/fantasy-dialog-team/fantasy-dialog-team.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -817,6 +857,11 @@ export class FantasyDialogTeamComponent {
     this.getSpecificPointsPerTeam(this.fantasyElection!);
   }
 
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
+
   /**
    * Retrieves specific points for each driver in the fantasy election and updates corresponding properties.
    *
@@ -826,7 +871,7 @@ export class FantasyDialogTeamComponent {
     const raceId: number &#x3D; fantasyElection.race!.id;
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverOne!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) &#x3D;&gt; {
@@ -838,7 +883,7 @@ export class FantasyDialogTeamComponent {
       });
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverTwo!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverTwo!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) &#x3D;&gt; {
@@ -850,7 +895,7 @@ export class FantasyDialogTeamComponent {
       });
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverThree!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverThree!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) &#x3D;&gt; {
@@ -873,7 +918,7 @@ export class FantasyDialogTeamComponent {
     const raceId: number &#x3D; fantasyElection.race!.id;
 
     this.fantasyApiService
-      .getTeamPoints(fantasyElection.teamOne!.id, raceId)
+      .getTeamsPointsSpecificRace(fantasyElection.teamOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) &#x3D;&gt; {
@@ -885,7 +930,7 @@ export class FantasyDialogTeamComponent {
       });
 
     this.fantasyApiService
-      .getTeamPoints(fantasyElection.teamTwo!.id, raceId)
+      .getTeamsPointsSpecificRace(fantasyElection.teamTwo!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) &#x3D;&gt; {
@@ -1104,7 +1149,7 @@ export class FantasyDialogTeamComponent {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div>@if (fantasyElection) {  <div class="fantasySelection py-2 sm:py-5 px-0">    <div class="flex flex-column">      <div class="drivers">        <div class="fantasySelection-mid-form-drivers flex justify-content-evenly w-full pr-3 sm:pr-0 mt-4">          <div class="fantasySelection-mid-form-drivers-container surface-0 border-round-md relative h-6rem w-6rem sm:h-9rem sm:w-9rem md:h-9rem md:w-12rem lg:h-9rem lg:w-12rem xl:h-9rem xl:w-10rem shadow-3 border-1 border-400">            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">              <span>{{ pointsDriverOne }}</span>            </div>            <div              class="fantasySelection-mid-form-drivers-container-photo h-5rem sm:h-7rem lg:h-7rem relative border-round-top-sm"              [class]="fantasyElection.driverOne ? \'bg-Fantasy-\' + (fantasyElection.driverOne.team.name | SpaceToUnderscore) : \'transparent\'"            >              @if (fantasyElection.driverOne) {                <img                  [src]="\'data:image/jpg;base64,\' + fantasyElection.driverOne.driverImage"                  [alt]="\'Imagen de \' + fantasyElection.driverOne.name"                  class="absolute h-5rem w-5rem sm:h-7rem sm:w-7rem lg:h-7rem lg:w-7rem bottom-0 left-50"                />              }            </div>            <p class="text-center F1_Regular border-round-md mt-0 sm:mt-1 mb-0">              {{ fantasyElection.driverOne?.name }}            </p>          </div>          <div class="fantasySelection-mid-form-drivers-container surface-0 border-round-md relative h-6rem w-6rem sm:h-9rem sm:w-9rem md:h-9rem md:w-12rem lg:h-9rem lg:w-12rem xl:h-9rem xl:w-10rem shadow-3 border-1 border-400">            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">              <span>{{ pointsDriverTwo }}</span>            </div>            <div              class="fantasySelection-mid-form-drivers-container-photo h-5rem sm:h-7rem lg:h-7rem relative border-round-top-sm"              [class]="fantasyElection.driverTwo ? \'bg-Fantasy-\' + (fantasyElection.driverTwo.team.name | SpaceToUnderscore) : \'transparent\'"            >              @if (fantasyElection.driverTwo) {                <img                  [src]="\'data:image/jpg;base64,\' + fantasyElection.driverTwo.driverImage"                  [alt]="\'Imagen de \' + fantasyElection.driverTwo.name"                  class="absolute h-5rem w-5rem sm:h-7rem sm:w-7rem lg:h-7rem lg:w-7rem bottom-0 left-50"                />              }            </div>            <p class="text-center F1_Regular border-round-md mt-0 sm:mt-1 mb-0">              {{ fantasyElection.driverTwo?.name }}            </p>          </div>          <div class="fantasySelection-mid-form-drivers-container surface-0 border-round-md relative h-6rem w-6rem sm:h-9rem sm:w-9rem md:h-9rem md:w-12rem lg:h-9rem lg:w-12rem xl:h-9rem xl:w-10rem shadow-3 border-1 border-400">            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">              <span>{{ pointsDriverThree }}</span>            </div>            <div              class="fantasySelection-mid-form-drivers-container-photo h-5rem sm:h-7rem lg:h-7rem relative border-round-top-sm"              [class]="fantasyElection.driverThree ? \'bg-Fantasy-\' + (fantasyElection.driverThree.team.name | SpaceToUnderscore) : \'transparent\'"            >              @if (fantasyElection.driverThree) {                <img                  [src]="\'data:image/jpg;base64,\' + fantasyElection.driverThree.driverImage"                  [alt]="\'Imagen de \' + fantasyElection.driverThree.name"                  class="absolute h-5rem w-5rem sm:h-7rem sm:w-7rem lg:h-7rem lg:w-7rem bottom-0 left-50"                />              }            </div>            <p class="text-center F1_Regular border-round-md mt-0 sm:mt-1 mb-0">              {{ fantasyElection.driverThree?.name }}            </p>          </div>        </div>        <div class="teams">        <div class="fantasySelection-mid-form-teams flex mt-4 justify-content-evenly w-full pr-3 sm:pr-0">          <div class="fantasySelection-mid-form-teams-container surface-0 border-round-md relative w-9rem h-4rem sm:w-13rem sm:h-6rem md:w-18rem md:h-7rem xl:w-15rem shadow-3 border-1 border-400">            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">              <span>{{ pointsTeamOne }}</span>            </div>            <div              class="fantasySelection-mid-form-teams-container-photo h-3rem sm:h-4rem md:h-5rem relative border-round-top-sm"              [class]="fantasyElection.teamOne ? \'bg-Fantasy-\' + (fantasyElection.teamOne.name | SpaceToUnderscore) : \'transparent\'"            >              <img                [src]="fantasyElection.teamOne.carImage"                [alt]="\'Imagen de \' + fantasyElection.teamOne.name"                class="w-full mt-1"                *ngIf="fantasyElection.teamOne"              />            </div>            <p class="text-center border-round-md F1_Regular my-0 sm:mt-1">              {{ fantasyElection.teamOne?.name }}            </p>          </div>          <div class="fantasySelection-mid-form-teams-container surface-0 border-round-md relative w-9rem h-4rem sm:w-13rem sm:h-6rem md:w-18rem md:h-7rem xl:w-15rem shadow-3 border-1 border-400">            <div class="fantasySelection-mid-form-drivers-container-points absolute border-circle flex justify-content-center align-items-center z-2 bg-green-500 Fantasy_Bold">              <span>{{ pointsTeamTwo }}</span>            </div>            <div              class="fantasySelection-mid-form-teams-container-photo h-3rem sm:h-4rem md:h-5rem relative border-round-top-sm"              [class]="fantasyElection.teamTwo ? \'bg-Fantasy-\' + (fantasyElection.teamTwo.name | SpaceToUnderscore) : \'transparent\'"            >              <img                [src]="fantasyElection.teamTwo.carImage"                [alt]="\'Imagen de \' + fantasyElection.teamTwo.name"                class="w-full mt-1"                *ngIf="fantasyElection.teamTwo"              />            </div>            <p class="text-center border-round-md F1_Regular my-0 sm:mt-1">              {{ fantasyElection.teamTwo?.name }}            </p>          </div>        </div>        </div>      </div>    </div>  </div>}</div>'
-    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FantasyTeamDialogPointComponent', 'selector': 'app-fantasy-team-dialog-point'},{'name': 'FantasyTeamDialogPriceComponent', 'selector': 'app-fantasy-team-dialog-price'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'FantasyDialogTeamComponent'};
 </script>
