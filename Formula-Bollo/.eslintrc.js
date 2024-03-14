@@ -20,6 +20,9 @@ module.exports = {
       }
     }
   ],
+  "ignorePatterns": [
+    "documentation/*"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest"

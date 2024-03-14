@@ -13,6 +13,9 @@ public interface FantasyPriceDriverRepository  extends JpaRepository<FantasyPric
     @Query("SELECT fp FROM FantasyPriceDriver fp WHERE fp.race.id = ?1")
     List<FantasyPriceDriver> findByRaceId(Long raceId);
 
+    @Query("SELECT fp FROM FantasyPriceDriver fp WHERE fp.driver.id = ?1")
+    List<FantasyPriceDriver> findByDriverId(Long driverId);
+
     @Query("SELECT fp FROM FantasyPriceDriver fp WHERE fp.driver.id = ?1 ORDER BY fp.race.id DESC LIMIT 2")
     List<FantasyPriceDriver> findTwoLastPrices(Long driverId);
 }

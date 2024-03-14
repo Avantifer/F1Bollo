@@ -62,7 +62,7 @@ export class FantasyApiService {
     );
   }
 
-  getDriverPoints(
+  getDriverPointsSpecificRace(
     driverId: number,
     raceId: number,
   ): Observable<FantasyPointsDriver> {
@@ -70,6 +70,14 @@ export class FantasyApiService {
       .set("driverId", driverId)
       .set("raceId", raceId);
     return this.httpClient.get<FantasyPointsDriver>(
+      environment.apiUrl + this.endpoint + "/driverPoints",
+      { params },
+    );
+  }
+
+  getDriverPoints(driverId: number): Observable<FantasyPointsDriver[]> {
+    const params = new HttpParams().set("driverId", driverId);
+    return this.httpClient.get<FantasyPointsDriver[]>(
       environment.apiUrl + this.endpoint + "/driverPoints",
       { params },
     );
@@ -83,9 +91,17 @@ export class FantasyApiService {
     );
   }
 
-  getTeamPoints(teamId: number, raceId: number): Observable<FantasyPointsTeam> {
+  getTeamsPointsSpecificRace(teamId: number, raceId: number): Observable<FantasyPointsTeam> {
     const params = new HttpParams().set("teamId", teamId).set("raceId", raceId);
     return this.httpClient.get<FantasyPointsTeam>(
+      environment.apiUrl + this.endpoint + "/teamsPointsSpecificRace",
+      { params },
+    );
+  }
+
+  getTeamPoints(teamId: number): Observable<FantasyPointsTeam[]> {
+    const params = new HttpParams().set("teamId", teamId);
+    return this.httpClient.get<FantasyPointsTeam[]>(
       environment.apiUrl + this.endpoint + "/teamPoints",
       { params },
     );
@@ -99,10 +115,26 @@ export class FantasyApiService {
     );
   }
 
+  getDriverPrice(driverId: number): Observable<FantasyPriceDriver[]> {
+    const params = new HttpParams().set("driverId", driverId);
+    return this.httpClient.get<FantasyPriceDriver[]>(
+      environment.apiUrl + this.endpoint + "/driverPrice",
+      { params },
+    );
+  }
+
   getAllTeamPrices(raceId: number): Observable<FantasyPriceTeam[]> {
     const params = new HttpParams().set("raceId", raceId);
     return this.httpClient.get<FantasyPriceTeam[]>(
       environment.apiUrl + this.endpoint + "/allTeamPrices",
+      { params },
+    );
+  }
+
+  getTeamPrice(teamId: number): Observable<FantasyPriceTeam[]> {
+    const params = new HttpParams().set("teamId", teamId);
+    return this.httpClient.get<FantasyPriceTeam[]>(
+      environment.apiUrl + this.endpoint + "/teamPrice",
       { params },
     );
   }

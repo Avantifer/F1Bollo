@@ -675,7 +675,7 @@ export class AdminComponent {
 
     <div class="tab-pane fade " id="templateData">
         <pre class="line-numbers"><code class="language-html">&lt;mat-drawer-container class&#x3D;&quot;admin&quot;&gt;
-  &lt;mat-drawer mode&#x3D;&quot;side&quot; opened class&#x3D;&quot;admin-leftSide bg-gray-900 px-4 pt-3&quot;&gt;
+  &lt;mat-drawer #drawer mode&#x3D;&quot;side&quot; opened class&#x3D;&quot;admin-leftSide bg-gray-900 px-4 pt-3&quot;&gt;
     &lt;div class&#x3D;&quot;admin-leftSide-title mb-4&quot;&gt;
       &lt;p class&#x3D;&quot;m-0 font-bold w-full text-center text-white F1_Regular text-3xl&quot;&gt;Menu&lt;/p&gt;
     &lt;/div&gt;
@@ -688,8 +688,14 @@ export class AdminComponent {
         &lt;p class&#x3D;&quot;m-0 hidden sm:block pr-none font-bold&quot;&gt;{{ sideItem.text }}&lt;/p&gt;
       &lt;/div&gt;
     }
+    @if (drawer.opened) {
+      &lt;i class&#x3D;&quot;pi pi-angle-left text-xl text-white cursor-pointer absolute top-0 right-0 mr-1 sm:mr-4 mt-4&quot; (click)&#x3D;&quot;drawer.toggle()&quot;&gt;&lt;/i&gt;
+    }
   &lt;/mat-drawer&gt;
-  &lt;mat-drawer-content class&#x3D;&quot;admin-rightSide&quot;&gt;
+  &lt;mat-drawer-content [class]&#x3D;&quot;drawer.opened ? &#x27;admin-rightSide&#x27; : null&quot;&gt;
+    @if (!drawer.opened) {
+      &lt;i class&#x3D;&quot;pi pi-angle-right text-xl cursor-pointer absolute top-0 left-0 ml-4 mt-4 pt-1&quot; (click)&#x3D;&quot;drawer.toggle()&quot;&gt;&lt;/i&gt;
+    }
     &lt;router-outlet&gt;&lt;/router-outlet&gt;
   &lt;/mat-drawer-content&gt;
 &lt;/mat-drawer-container&gt;
@@ -729,7 +735,7 @@ export class AdminComponent {
     }
   }
 
-  &amp;-rightSide {
+  &amp;-rightSide.opened {
     margin-left: 225px !important;
   }
 }
@@ -767,8 +773,8 @@ export class AdminComponent {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><mat-drawer-container class="admin">  <mat-drawer mode="side" opened class="admin-leftSide bg-gray-900 px-4 pt-3">    <div class="admin-leftSide-title mb-4">      <p class="m-0 font-bold w-full text-center text-white F1_Regular text-3xl">Menu</p>    </div>    @for (sideItem of sideNavItems; track $index) {      <div        class="admin-leftSide-item flex w-4rem sm:w-11rem mx-auto sm:mx-0 pl-0 sm:pl-2 py-2 mt-1 mb-1 align-items-center justify-content-center sm:justify-content-start border-round-md cursor-pointer"        [class.active]="activeNavItem === sideItem.text"        (click)="navigateByUrl(sideItem.url); selectNavItem($event.target)">        <i class="m-0 sm:mr-1 pr-none" [class]="sideItem.icon"></i>        <p class="m-0 hidden sm:block pr-none font-bold">{{ sideItem.text }}</p>      </div>    }  </mat-drawer>  <mat-drawer-content class="admin-rightSide">    <router-outlet></router-outlet>  </mat-drawer-content></mat-drawer-container></div>'
-    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
+        var COMPONENT_TEMPLATE = '<div><mat-drawer-container class="admin">  <mat-drawer #drawer mode="side" opened class="admin-leftSide bg-gray-900 px-4 pt-3">    <div class="admin-leftSide-title mb-4">      <p class="m-0 font-bold w-full text-center text-white F1_Regular text-3xl">Menu</p>    </div>    @for (sideItem of sideNavItems; track $index) {      <div        class="admin-leftSide-item flex w-4rem sm:w-11rem mx-auto sm:mx-0 pl-0 sm:pl-2 py-2 mt-1 mb-1 align-items-center justify-content-center sm:justify-content-start border-round-md cursor-pointer"        [class.active]="activeNavItem === sideItem.text"        (click)="navigateByUrl(sideItem.url); selectNavItem($event.target)">        <i class="m-0 sm:mr-1 pr-none" [class]="sideItem.icon"></i>        <p class="m-0 hidden sm:block pr-none font-bold">{{ sideItem.text }}</p>      </div>    }    @if (drawer.opened) {      <i class="pi pi-angle-left text-xl text-white cursor-pointer absolute top-0 right-0 mr-1 sm:mr-4 mt-4" (click)="drawer.toggle()"></i>    }  </mat-drawer>  <mat-drawer-content [class]="drawer.opened ? \'admin-rightSide\' : null">    @if (!drawer.opened) {      <i class="pi pi-angle-right text-xl cursor-pointer absolute top-0 left-0 ml-4 mt-4 pt-1" (click)="drawer.toggle()"></i>    }    <router-outlet></router-outlet>  </mat-drawer-content></mat-drawer-container></div>'
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FantasyTeamDialogPointComponent', 'selector': 'app-fantasy-team-dialog-point'},{'name': 'FantasyTeamDialogPriceComponent', 'selector': 'app-fantasy-team-dialog-price'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'AdminComponent'};
 </script>

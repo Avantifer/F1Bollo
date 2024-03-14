@@ -36,6 +36,11 @@ export class FantasyDialogTeamComponent {
     this.getSpecificPointsPerTeam(this.fantasyElection!);
   }
 
+  ngOnDestroy(): void {
+    this._unsubscribe.next();
+    this._unsubscribe.complete();
+  }
+
   /**
    * Retrieves specific points for each driver in the fantasy election and updates corresponding properties.
    *
@@ -45,7 +50,7 @@ export class FantasyDialogTeamComponent {
     const raceId: number = fantasyElection.race!.id;
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverOne!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
@@ -57,7 +62,7 @@ export class FantasyDialogTeamComponent {
       });
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverTwo!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverTwo!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
@@ -69,7 +74,7 @@ export class FantasyDialogTeamComponent {
       });
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverThree!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverThree!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
@@ -92,7 +97,7 @@ export class FantasyDialogTeamComponent {
     const raceId: number = fantasyElection.race!.id;
 
     this.fantasyApiService
-      .getTeamPoints(fantasyElection.teamOne!.id, raceId)
+      .getTeamsPointsSpecificRace(fantasyElection.teamOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) => {
@@ -104,7 +109,7 @@ export class FantasyDialogTeamComponent {
       });
 
     this.fantasyApiService
-      .getTeamPoints(fantasyElection.teamTwo!.id, raceId)
+      .getTeamsPointsSpecificRace(fantasyElection.teamTwo!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) => {
