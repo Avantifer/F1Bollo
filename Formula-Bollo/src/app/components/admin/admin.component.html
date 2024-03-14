@@ -1,5 +1,5 @@
 <mat-drawer-container class="admin">
-  <mat-drawer mode="side" opened class="admin-leftSide bg-gray-900 px-4 pt-3">
+  <mat-drawer #drawer mode="side" opened class="admin-leftSide bg-gray-900 px-4 pt-3">
     <div class="admin-leftSide-title mb-4">
       <p class="m-0 font-bold w-full text-center text-white F1_Regular text-3xl">Menu</p>
     </div>
@@ -12,8 +12,14 @@
         <p class="m-0 hidden sm:block pr-none font-bold">{{ sideItem.text }}</p>
       </div>
     }
+    @if (drawer.opened) {
+      <i class="pi pi-angle-left text-xl text-white cursor-pointer absolute top-0 right-0 mr-1 sm:mr-4 mt-4" (click)="drawer.toggle()"></i>
+    }
   </mat-drawer>
-  <mat-drawer-content class="admin-rightSide">
+  <mat-drawer-content [class]="drawer.opened ? 'admin-rightSide' : null">
+    @if (!drawer.opened) {
+      <i class="pi pi-angle-right text-xl cursor-pointer absolute top-0 left-0 ml-4 mt-4 pt-1" (click)="drawer.toggle()"></i>
+    }
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>

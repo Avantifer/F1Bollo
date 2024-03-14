@@ -173,6 +173,12 @@
                                 <a href="#getDriverPoints" >getDriverPoints</a>
                             </li>
                             <li>
+                                <a href="#getDriverPointsSpecificRace" >getDriverPointsSpecificRace</a>
+                            </li>
+                            <li>
+                                <a href="#getDriverPrice" >getDriverPrice</a>
+                            </li>
+                            <li>
                                 <a href="#getFantasyElection" >getFantasyElection</a>
                             </li>
                             <li>
@@ -186,6 +192,12 @@
                             </li>
                             <li>
                                 <a href="#getTeamPoints" >getTeamPoints</a>
+                            </li>
+                            <li>
+                                <a href="#getTeamPrice" >getTeamPrice</a>
+                            </li>
+                            <li>
+                                <a href="#getTeamsPointsSpecificRace" >getTeamsPointsSpecificRace</a>
                             </li>
                             <li>
                                 <a href="#saveAllPoints" >saveAllPoints</a>
@@ -349,8 +361,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="110"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:110</a></div>
                         </td>
                     </tr>
 
@@ -416,8 +428,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="78"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:78</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:86</a></div>
                         </td>
                     </tr>
 
@@ -483,8 +495,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:102</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="126"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:126</a></div>
                         </td>
                     </tr>
 
@@ -543,7 +555,74 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getDriverPoints(driverId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, raceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>getDriverPoints(driverId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>driverId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FantasyPointsDriver[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDriverPointsSpecificRace"></a>
+                    <span class="name">
+                        <span ><b>getDriverPointsSpecificRace</b></span>
+                        <a href="#getDriverPointsSpecificRace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDriverPointsSpecificRace(driverId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, raceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -613,6 +692,73 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getDriverPrice"></a>
+                    <span class="name">
+                        <span ><b>getDriverPrice</b></span>
+                        <a href="#getDriverPrice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDriverPrice(driverId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:118</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>driverId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FantasyPriceDriver[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getFantasyElection"></a>
                     <span class="name">
                         <span ><b>getFantasyElection</b></span>
@@ -629,8 +775,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="138"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:138</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="170"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:170</a></div>
                         </td>
                     </tr>
 
@@ -708,8 +854,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="149"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:149</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:181</a></div>
                         </td>
                     </tr>
 
@@ -775,8 +921,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="110"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:110</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:142</a></div>
                         </td>
                     </tr>
 
@@ -842,8 +988,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="118"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:118</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="150"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:150</a></div>
                         </td>
                     </tr>
 
@@ -902,15 +1048,149 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getTeamPoints(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, raceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+<code>getTeamPoints(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="86"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:86</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FantasyPointsTeam[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTeamPrice"></a>
+                    <span class="name">
+                        <span ><b>getTeamPrice</b></span>
+                        <a href="#getTeamPrice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTeamPrice(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FantasyPriceTeam[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTeamsPointsSpecificRace"></a>
+                    <span class="name">
+                        <span ><b>getTeamsPointsSpecificRace</b></span>
+                        <a href="#getTeamsPointsSpecificRace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTeamsPointsSpecificRace(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, raceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -1122,8 +1402,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="126"
-                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:126</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="158"
+                                    class="link-to-prism">src/shared/services/api/fantasy-api.service.ts:158</a></div>
                         </td>
                     </tr>
 
@@ -1277,7 +1557,7 @@ export class FantasyApiService {
     );
   }
 
-  getDriverPoints(
+  getDriverPointsSpecificRace(
     driverId: number,
     raceId: number,
   ): Observable&lt;FantasyPointsDriver&gt; {
@@ -1285,6 +1565,14 @@ export class FantasyApiService {
       .set(&quot;driverId&quot;, driverId)
       .set(&quot;raceId&quot;, raceId);
     return this.httpClient.get&lt;FantasyPointsDriver&gt;(
+      environment.apiUrl + this.endpoint + &quot;/driverPoints&quot;,
+      { params },
+    );
+  }
+
+  getDriverPoints(driverId: number): Observable&lt;FantasyPointsDriver[]&gt; {
+    const params &#x3D; new HttpParams().set(&quot;driverId&quot;, driverId);
+    return this.httpClient.get&lt;FantasyPointsDriver[]&gt;(
       environment.apiUrl + this.endpoint + &quot;/driverPoints&quot;,
       { params },
     );
@@ -1298,9 +1586,17 @@ export class FantasyApiService {
     );
   }
 
-  getTeamPoints(teamId: number, raceId: number): Observable&lt;FantasyPointsTeam&gt; {
+  getTeamsPointsSpecificRace(teamId: number, raceId: number): Observable&lt;FantasyPointsTeam&gt; {
     const params &#x3D; new HttpParams().set(&quot;teamId&quot;, teamId).set(&quot;raceId&quot;, raceId);
     return this.httpClient.get&lt;FantasyPointsTeam&gt;(
+      environment.apiUrl + this.endpoint + &quot;/teamsPointsSpecificRace&quot;,
+      { params },
+    );
+  }
+
+  getTeamPoints(teamId: number): Observable&lt;FantasyPointsTeam[]&gt; {
+    const params &#x3D; new HttpParams().set(&quot;teamId&quot;, teamId);
+    return this.httpClient.get&lt;FantasyPointsTeam[]&gt;(
       environment.apiUrl + this.endpoint + &quot;/teamPoints&quot;,
       { params },
     );
@@ -1314,10 +1610,26 @@ export class FantasyApiService {
     );
   }
 
+  getDriverPrice(driverId: number): Observable&lt;FantasyPriceDriver[]&gt; {
+    const params &#x3D; new HttpParams().set(&quot;driverId&quot;, driverId);
+    return this.httpClient.get&lt;FantasyPriceDriver[]&gt;(
+      environment.apiUrl + this.endpoint + &quot;/driverPrice&quot;,
+      { params },
+    );
+  }
+
   getAllTeamPrices(raceId: number): Observable&lt;FantasyPriceTeam[]&gt; {
     const params &#x3D; new HttpParams().set(&quot;raceId&quot;, raceId);
     return this.httpClient.get&lt;FantasyPriceTeam[]&gt;(
       environment.apiUrl + this.endpoint + &quot;/allTeamPrices&quot;,
+      { params },
+    );
+  }
+
+  getTeamPrice(teamId: number): Observable&lt;FantasyPriceTeam[]&gt; {
+    const params &#x3D; new HttpParams().set(&quot;teamId&quot;, teamId);
+    return this.httpClient.get&lt;FantasyPriceTeam[]&gt;(
+      environment.apiUrl + this.endpoint + &quot;/teamPrice&quot;,
       { params },
     );
   }

@@ -373,14 +373,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="84"
-                                    class="link-to-prism">src/app/components/drivers/drivers-info/drivers-info.component.ts:84</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="99"
+                                    class="link-to-prism">src/app/components/drivers/drivers-info/drivers-info.component.ts:99</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Listens to changes in the seasonForm and triggers the retrieval of information by driver name accordingly.</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -410,14 +412,16 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/app/components/drivers/drivers-info/drivers-info.component.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/app/components/drivers/drivers-info/drivers-info.component.ts:80</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves additional information by driver name and season number from the DriverApiService.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -428,6 +432,7 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -442,6 +447,12 @@
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>The name of the driver for whom additional information is to be retrieved.</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                         <tr>
                                                 <td>seasonNumber</td>
@@ -454,6 +465,12 @@
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>The optional season number for which information is to be fetched.</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -489,14 +506,17 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/app/components/drivers/drivers-info/drivers-info.component.ts:43</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/app/components/drivers/drivers-info/drivers-info.component.ts:49</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves seasons by driver name from the SeasonApiService.
+If the driver name is not found, it navigates to the &quot;/drivers&quot; route and displays an error message.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -507,6 +527,7 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
+                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -521,6 +542,12 @@
                                             </td>
 
 
+                                            <td>
+                                                    <ul>
+<li>The name of the driver for whom seasons are to be retrieved.</li>
+</ul>
+
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -842,6 +869,12 @@ export class DriversInfoComponent {
     this.changeSeasons();
   }
 
+  /**
+   * Retrieves seasons by driver name from the SeasonApiService.
+   * If the driver name is not found, it navigates to the &quot;/drivers&quot; route and displays an error message.
+   *
+   * @param driverName - The name of the driver for whom seasons are to be retrieved.
+   */
   getSeasonsByDriverName(driverName: string): void {
     this.seasonApiService
       .getSeasonByDriverName(driverName)
@@ -867,6 +900,12 @@ export class DriversInfoComponent {
       });
   }
 
+  /**
+   * Retrieves additional information by driver name and season number from the DriverApiService.
+   *
+   * @param driverName - The name of the driver for whom additional information is to be retrieved.
+   * @param seasonNumber - The optional season number for which information is to be fetched.
+   */
   getInfoByDriverName(driverName: string, seasonNumber?: number): void {
     this.driverApiService
       .getInfoByDriverName(driverName, seasonNumber)
@@ -883,6 +922,9 @@ export class DriversInfoComponent {
       });
   }
 
+  /**
+   * Listens to changes in the seasonForm and triggers the retrieval of information by driver name accordingly.
+   */
   changeSeasons(): void {
     this.seasonForm.valueChanges
       .pipe(takeUntil(this._unsubscribe))
@@ -984,7 +1026,7 @@ export class DriversInfoComponent {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div>@if (driverInfo) {  <div class="driversInfo surface-200 p-2 sm:p-5">    <div class="surface-100 border-round-md px-4 py-3 flex justify-content-between">      <form [formGroup]="seasonForm">        <p-dropdown        formControlName="season"        [options]="seasons"        [(ngModel)]="seasonSelected"        optionLabel="name"        class="align-self-center">        </p-dropdown>      </form>    </div>    <div class="surface-100 grid grid-nogutter p-0 xl:p-8 mt-5 border-round-md overflow-hidden">      <div class="col-12 xl:col-7">        <div class="driversInfo-background-image m-0 xl:mr-8 flex justify-content-center border-noround xl:border-round-md relative" [class]="\'bg-\' + (driverInfo.driver.team.name | SpaceToUnderscore)">          <img [src]="\'data:image/jpg;base64,\' + driverInfo.driver.driverImage" alt="Imagen del piloto" class="driversInfo-background-image-principal">          <img [src]="\'data:image/jpg;base64,\' + driverInfo.driver.team.logoImage" alt="Logo del equipo" class="absolute right-0 top-0 w-5rem md:w-7rem m-2">        </div>      </div>      <div class="col-12 xl:col-5">        <div class="flex align-items-center justify-content-center">          <h1 class="uppercase F1_Regular font-bold text-center text-3xl sm:text-5xl mt-3 mb-0 xl:mb-4 xl:mt-0" [class]="\'color-\' + (driverInfo.driver.team.name | SpaceToUnderscore)">{{ driverInfo.driver.name }}</h1>          <h1 class="F1_Regular text-xl sm:text-3xl mt-4 mb-0 ml-2 md:mb-1 xl:mt-1 text-400">{{ driverInfo.driver.number }}</h1>        </div>        <div class="grid grid-nogutter F1_Regular m-4 xl:m-0">          <div class="col-9 sm:col-8 xl:col-7 sm:pl-4 xl:pl-0">            <p class="font-bold text-base sm:text-lg">Victorias :</p>            <p class="font-bold text-base sm:text-lg">Poles :</p>            <p class="font-bold text-base sm:text-lg">Podios :</p>            <p class="font-bold text-base sm:text-lg">Vueltas rápidas :</p>            <p class="font-bold text-base sm:text-lg">Carreras terminadas :</p>            <p class="font-bold text-base sm:text-lg">Puntos totales :</p>            <p class="font-bold text-base sm:text-lg">Penalizaciones :</p>            <p class="font-bold text-base sm:text-lg">Mejor posición :</p>            <p class="font-bold text-base sm:text-lg">Campeonatos :</p>          </div>          <div class="col-3 sm:col-4 xl:col-5">            <p class="text-base sm:text-lg">{{ driverInfo.victories }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.poles }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.podiums }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.fastlaps }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.racesFinished }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.totalPoints }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.penalties }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.bestPosition }}</p>            <p class="text-base sm:text-lg">{{ driverInfo.championships }}</p>          </div>        </div>      </div>    </div>  </div>}</div>'
-    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminPenaltiesComponent', 'selector': 'app-penalties'},{'name': 'AdminResultsComponent', 'selector': 'app-modify-results'},{'name': 'AdminStatuteComponent', 'selector': 'app-admin-statute'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DriversComponent', 'selector': 'app-drivers'},{'name': 'DriversInfoComponent', 'selector': 'app-drivers-info'},{'name': 'FantasyClasificationComponent', 'selector': 'app-fantasy-clasification'},{'name': 'FantasyComponent', 'selector': 'app-fantasy'},{'name': 'FantasyDialogTeamComponent', 'selector': 'app-fantasy-dialog-team'},{'name': 'FantasyHomeComponent', 'selector': 'app-fantasy-home'},{'name': 'FantasyLoginComponent', 'selector': 'app-login'},{'name': 'FantasyRecoverPasswordComponent', 'selector': 'app-fantasy-recover-password'},{'name': 'FantasyRegisterComponent', 'selector': 'app-fantasy-register'},{'name': 'FantasyTeamComponent', 'selector': 'app-fantasy-team'},{'name': 'FantasyTeamDialogPointComponent', 'selector': 'app-fantasy-team-dialog-point'},{'name': 'FantasyTeamDialogPriceComponent', 'selector': 'app-fantasy-team-dialog-price'},{'name': 'FormulaTableComponent', 'selector': 'app-formula-table'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'HomeConfigurationComponent', 'selector': 'app-home-configuration'},{'name': 'HomeDriversComponent', 'selector': 'app-home-drivers'},{'name': 'HomeTeamsComponent', 'selector': 'app-home-teams'},{'name': 'LoaderComponent', 'selector': 'app-loader'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PageNotFoundComponent', 'selector': 'app-page-not-found'},{'name': 'ResultsComponent', 'selector': 'app-results'},{'name': 'StatuteComponent', 'selector': 'app-statute'},{'name': 'TeamsComponent', 'selector': 'app-teams'},{'name': 'TeamsInfoComponent', 'selector': 'app-teams-info'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'DriversInfoComponent'};
 </script>

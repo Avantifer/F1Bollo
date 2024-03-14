@@ -22,6 +22,7 @@ import { ToastModule } from "primeng/toast";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { DialogModule } from "primeng/dialog";
 import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
+import { ChartModule } from "primeng/chart";
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "src/shared/components/header/header.component";
@@ -65,6 +66,8 @@ import { SpaceToUnderscorePipe } from "src/shared/pipes/spaceToUnderscore.pipe";
 import { ThemeService } from "src/shared/services/theme.service";
 import { MessageService } from "primeng/api";
 import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.component";
+import { FantasyTeamDialogPriceComponent } from "./components/fantasy/fantasy-team/fantasy-team-dialog-price/fantasy-team-dialog-price.component";
+import { FantasyTeamDialogPointComponent } from "./components/fantasy/fantasy-team/fantasy-team-dialog-point/fantasy-team-dialog-point.component";
 
 @NgModule({
   declarations: [
@@ -96,6 +99,8 @@ import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.com
     FantasyDialogTeamComponent,
     DriversInfoComponent,
     TeamsInfoComponent,
+    FantasyTeamDialogPriceComponent,
+    FantasyTeamDialogPointComponent,
     PricePipe,
     IsNanPipe,
     SpaceToUnderscorePipe
@@ -124,7 +129,8 @@ import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.com
     ToastModule,
     InputTextareaModule,
     DialogModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    ChartModule
   ],
   providers: [
     AdminGuard,

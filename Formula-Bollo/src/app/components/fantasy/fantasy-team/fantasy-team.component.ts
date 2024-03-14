@@ -28,6 +28,9 @@ import {
   WARNING_FANTASY_SAVE_LATE,
   WARNING_MONEY_NEGATIVE
 } from "src/app/constants";
+import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
+import { FantasyTeamDialogPriceComponent } from "./fantasy-team-dialog-price/fantasy-team-dialog-price.component";
+import { FantasyTeamDialogPointComponent } from "./fantasy-team-dialog-point/fantasy-team-dialog-point.component";
 
 @Component({
   selector: "app-fantasy-team",
@@ -77,12 +80,14 @@ export class FantasyTeamComponent {
   price: number = 70000000;
 
   private _unsubscribe: Subject<void> = new Subject<void>();
+  ref: DynamicDialogRef | undefined;
 
   constructor(
     private raceApiService: RaceApiService,
     private messageInfoService: MessageInfoService,
     private fantasyApiService: FantasyApiService,
     private authJWTService: AuthJWTService,
+    public dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -1021,7 +1026,7 @@ export class FantasyTeamComponent {
     const raceId: number = fantasyElection.race!.id;
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverOne!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
@@ -1033,7 +1038,7 @@ export class FantasyTeamComponent {
       });
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverTwo!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverTwo!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
@@ -1045,7 +1050,7 @@ export class FantasyTeamComponent {
       });
 
     this.fantasyApiService
-      .getDriverPoints(fantasyElection.driverThree!.id, raceId)
+      .getDriverPointsSpecificRace(fantasyElection.driverThree!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
@@ -1066,7 +1071,7 @@ export class FantasyTeamComponent {
     const raceId: number = fantasyElection.race!.id;
 
     this.fantasyApiService
-      .getTeamPoints(fantasyElection.teamOne!.id, raceId)
+      .getTeamsPointsSpecificRace(fantasyElection.teamOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) => {
@@ -1078,7 +1083,7 @@ export class FantasyTeamComponent {
       });
 
     this.fantasyApiService
-      .getTeamPoints(fantasyElection.teamTwo!.id, raceId)
+      .getTeamsPointsSpecificRace(fantasyElection.teamTwo!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) => {
@@ -1088,5 +1093,76 @@ export class FantasyTeamComponent {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
         },
       });
+  }
+
+  /**
+   * Opens a dialog to display the price chart for a specific driver.
+   * @param driverId The ID of the driver for which the price chart will be displayed.
+  */
+  openDriverPriceDialog(driverId: number): void {
+    this.ref = this.dialogService.open(FantasyTeamDialogPriceComponent, {
+      header: "Gráfico de precio",
+      data: {"id": driverId, "type": "drivers"},
+      resizable: false,
+      dismissableMask: true,
+      width: "45rem",
+      breakpoints: { "1199px": "94vw", "575px": "90vw" }
+    });
+  }
+
+
+  /**
+   * Opens a dialog to display the price chart for a specific team.
+   * @param teamId The ID of the team for which the price chart will be displayed.
+   */
+  openTeamPriceDialog(teamId: number): void {
+    this.ref = this.dialogService.open(FantasyTeamDialogPriceComponent, {
+      header: "Gráfico de precio",
+      data: {"id": teamId, "type": "teams"},
+      resizable: false,
+      dismissableMask: true,
+      width: "45rem",
+      breakpoints: { "1199px": "94vw", "575px": "90vw" }
+    });
+  }
+
+  /**
+   * Opens a dialog to display the price chart for a specific driver.
+   * @param driverId The ID of the driver for which the price chart will be displayed.
+  */
+  openDriverPointDialog(driverId: number): void {
+    this.ref = this.dialogService.open(FantasyTeamDialogPointComponent, {
+      header: "Gráfico de puntos",
+      data: {"id": driverId, "type": "drivers"},
+      resizable: false,
+      dismissableMask: true,
+      width: "45rem",
+      breakpoints: { "1199px": "94vw", "575px": "90vw" }
+    });
+  }
+
+
+  /**
+   * Opens a dialog to display the price chart for a specific team.
+   * @param teamId The ID of the team for which the price chart will be displayed.
+   */
+  openTeamPointDialog(teamId: number): void {
+    this.ref = this.dialogService.open(FantasyTeamDialogPointComponent, {
+      header: "Gráfico de puntos",
+      data: {"id": teamId, "type": "teams"},
+      resizable: false,
+      dismissableMask: true,
+      width: "45rem",
+      breakpoints: { "1199px": "94vw", "575px": "90vw" }
+    });
+  }
+
+  /**
+   * Parses the average points to a string format without decimal places if the number is an integer.
+   * @param points The average points to be parsed.
+   * @returns A string representation of the parsed average points.
+  */
+  parseAveragePoints(points: number): string {
+    return points === undefined ? "0" : points.toFixed(1).replace(".0", "");
   }
 }
