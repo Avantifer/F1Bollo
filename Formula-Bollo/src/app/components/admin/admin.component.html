@@ -12,12 +12,12 @@
         <p class="m-0 hidden sm:block pr-none font-bold">{{ sideItem.text }}</p>
       </div>
     }
-    @if (drawer.opened) {
+    @if (drawer.opened && activeNavItem != "") {
       <i class="pi pi-angle-left text-xl text-white cursor-pointer absolute top-0 right-0 mr-1 sm:mr-4 mt-4" (click)="drawer.toggle()"></i>
     }
   </mat-drawer>
   <mat-drawer-content [class]="drawer.opened ? 'admin-rightSide' : null">
-    @if (!drawer.opened) {
+    @if (!drawer.opened && activeNavItem != "") {
       <i class="pi pi-angle-right text-xl cursor-pointer absolute top-0 left-0 ml-4 mt-4 pt-1" (click)="drawer.toggle()"></i>
     }
     <router-outlet></router-outlet>

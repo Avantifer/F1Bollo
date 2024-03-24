@@ -1,13 +1,15 @@
 import { Component } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Subject, takeUntil } from "rxjs";
-import { ERROR_POINT_FETCH, ERROR_RACE_FETCH } from "src/app/constants";
+import { ERROR_POINT_FETCH, ERROR_RACE_FETCH, ERROR_SEASON_FETCH } from "src/app/constants";
 import { environment } from "src/enviroments/enviroment";
 import { Circuit } from "src/shared/models/circuit";
 import { FantasyPointsUser } from "src/shared/models/fantasyPointsUser";
 import { Race } from "src/shared/models/race";
+import { Season } from "src/shared/models/season";
 import { FantasyApiService } from "src/shared/services/api/fantasy-api.service";
 import { RaceApiService } from "src/shared/services/api/race-api.service";
+import { SeasonApiService } from "src/shared/services/api/season-api.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 
 @Component({
@@ -19,8 +21,13 @@ export class FantasyClasificationComponent {
   raceForm: FormGroup = new FormGroup({
     race: new FormControl(""),
   });
+  seasonForm: FormGroup = new FormGroup({
+    season: new FormControl(""),
+  });
 
   races: Race[] = [];
+  seasons: Season[] = [];
+
   fantasyPointsUsers: FantasyPointsUser[] = [];
   displayedColumns: string[] = [
     "positionUser",
@@ -30,6 +37,8 @@ export class FantasyClasificationComponent {
   ];
 
   raceSelected: Race | undefined;
+  seasonSelected: Season | undefined;
+
   firstRaceSelected: Race = new Race(
     0,
     new Circuit(0, "Total", "", "", ""),
@@ -43,11 +52,13 @@ export class FantasyClasificationComponent {
     private raceApiService: RaceApiService,
     private messageInfoService: MessageInfoService,
     private fantasyApiService: FantasyApiService,
+    private seasonApiService: SeasonApiService
   ) {}
 
   ngOnInit(): void {
-    this.getAllRaces();
+    this.getAllSeasons();
     this.changeRace();
+    this.changeSeason();
   }
 
   ngOnDestroy(): void {
@@ -59,11 +70,14 @@ export class FantasyClasificationComponent {
    * Retrieves all previous races for the current season and updates the race selection form.
    */
   getAllRaces(): void {
+    if (this.seasonSelected === undefined) return;
+
     this.raceApiService
-      .getAllPrevious(environment.seasonActual.number)
+      .getAllPrevious(this.seasonSelected.id)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (races: Race[]) => {
+          this.races = [];
           this.raceSelected = this.firstRaceSelected;
           this.raceForm.get("race")?.setValue(this.firstRaceSelected);
 
@@ -84,16 +98,36 @@ export class FantasyClasificationComponent {
   }
 
   /**
+   * Retrieves all seasons that contains fantasyElection.
+   */
+  getAllSeasons(): void  {
+    this.seasonApiService
+      .getSeasonOfFantasy()
+      .pipe((takeUntil(this._unsubscribe)))
+      .subscribe({
+        next: (seasons: Season[]) => {
+          this.seasons = seasons;
+          this.seasonSelected = this.seasons.filter((season: Season) => season.id === environment.seasonActual.id)[0];
+        }, error: (error) => {
+          this.messageInfoService.showError(ERROR_SEASON_FETCH);
+          console.log(error);
+          throw error;
+        },
+        complete: () => {
+          this.getAllRaces();
+        }
+      });
+  }
+
+  /**
    * Retrieves fantasy points for the selected race and updates the fantasyPointsUsers array.
    */
   getFantasyPoints(): void {
     this.fantasyApiService
-      .getFantasyPoints(this.raceSelected!.id)
+      .getFantasyPoints(this.raceSelected!.id, this.seasonSelected!.id)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsUser: FantasyPointsUser[]) => {
-          console.log(fantasyPointsUser);
-
           this.fantasyPointsUsers = fantasyPointsUser;
         },
         error: (error) => {
@@ -115,6 +149,19 @@ export class FantasyClasificationComponent {
           if (this.raceSelected != undefined) {
             this.raceSelected = data.race;
             this.getFantasyPoints();
+          }
+        },
+      });
+  }
+
+  changeSeason(): void {
+    this.seasonForm.valueChanges
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe({
+        next: (data) => {
+          if (this.seasonSelected != undefined) {
+            this.seasonSelected = data.season;
+            this.getAllRaces();
           }
         },
       });

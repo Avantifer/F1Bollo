@@ -42,10 +42,10 @@ public class SeasonImpl implements SeasonMapper{
     }
 
     /**
-     * Converts a list of Race objects to a list of RaceDTO objects.
+     * Converts a list of Season objects to a list of SeasonDTO objects.
      *
-     * @param races The list of Race objects to be converted.
-     * @return      A list of RaceDTO objects with properties copied from the Races.
+     * @param seasons The list of Season objects to be converted.
+     * @return      A list of SeasonDTO objects with properties copied from the Seasons.
     */
     @Override
     public List<SeasonDTO> convertSeasonsToSeasonsDTO(List<Season> seasons) {

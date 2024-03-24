@@ -18,6 +18,5 @@ public class SprintDTO {
     private RaceDTO race;
     private DriverDTO driver;
     private SprintPositionDTO position;
-    private int fastlap;
     private SeasonDTO season;
 }

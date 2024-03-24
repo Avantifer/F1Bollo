@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
+import { Subject, takeUntil } from "rxjs";
 import { SideNavItem } from "src/shared/models/sideNavItems";
 
 @Component({
@@ -12,10 +13,14 @@ export class AdminComponent {
     new SideNavItem("pi pi-flag", "Resultados", "/admin/results"),
     new SideNavItem("pi pi-exclamation-triangle", "Penalizaciones", "/admin/penalties"),
     new SideNavItem("pi pi-book", "Estatuto", "/admin/statute"),
+    new SideNavItem("pi pi-flag-fill", "Sprints", "/admin/sprints"),
   ];
   activeNavItem: string = "";
 
-  constructor(private router: Router) {}
+  private _unsubscribe: Subject<void> = new Subject<void>();
+
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.searchNavItemSelected();
@@ -28,6 +33,28 @@ export class AdminComponent {
    */
   navigateByUrl(url: string): void {
     this.router.navigate([url]);
+  }
+
+  /**
+   * Check the actual url to check if navSideItem is selected to show the drawer toggle.
+   */
+  drawerCanBeOpened(): void {
+    this.router.events
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe({
+        next: (event) => {
+          if (event instanceof NavigationEnd) {
+            if (event.url.endsWith("admin")) {
+              this.activeNavItem = "";
+            }
+
+            // Gives time to check what links are show.
+            setTimeout(() => {
+              this.searchNavItemSelected();
+            }, 0);
+          }
+        },
+      });
   }
 
   /**
