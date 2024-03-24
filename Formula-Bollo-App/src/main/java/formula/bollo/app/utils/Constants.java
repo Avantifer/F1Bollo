@@ -43,6 +43,9 @@ public class Constants {
 
     public static final String TAG_FANTASY = "Fantasy";
     public static final String TAG_FANTASY_SUMMARY = "Operations related with fantasy section";
+    
+    public static final String TAG_SPRINT = "Sprint";
+    public static final String TAG_SPRINT_SUMMARY = "Operations related with sprint section";
 
     // Endpoints
     public static final String ENDPOINT_USER = "/user";
@@ -57,6 +60,7 @@ public class Constants {
     public static final String ENDPOINT_TEAMS = "/teams";
     public static final String ENDPOINT_SEASONS = "/seasons";
     public static final String ENDPOINT_FANTASY = "/fantasy";
+    public static final String ENDPOINT_SPRINT = "/sprint";
     
     // Errors
     public static final String ERROR_UNEXPECTED = "Error inesperado";

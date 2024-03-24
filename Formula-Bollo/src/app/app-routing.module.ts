@@ -23,6 +23,7 @@ import { FantasyRecoverPasswordComponent } from "./components/fantasy/fantasy-re
 import { RecoverPasswordGuard } from "src/shared/guards/RecoverPasswordGuard";
 import { DriversInfoComponent } from "./components/drivers/drivers-info/drivers-info.component";
 import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.component";
+import { AdminSprintsComponent } from "./components/admin/admin-sprints/admin-sprints.component";
 
 const routes: Routes = [
   {
@@ -74,6 +75,10 @@ const routes: Routes = [
       {
         path: "statute",
         component: AdminStatuteComponent,
+      },
+      {
+        path: "sprints",
+        component: AdminSprintsComponent,
       },
     ],
   },

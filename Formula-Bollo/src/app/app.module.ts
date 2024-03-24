@@ -68,6 +68,7 @@ import { MessageService } from "primeng/api";
 import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.component";
 import { FantasyTeamDialogPriceComponent } from "./components/fantasy/fantasy-team/fantasy-team-dialog-price/fantasy-team-dialog-price.component";
 import { FantasyTeamDialogPointComponent } from "./components/fantasy/fantasy-team/fantasy-team-dialog-point/fantasy-team-dialog-point.component";
+import { AdminSprintsComponent } from "./components/admin/admin-sprints/admin-sprints.component";
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { FantasyTeamDialogPointComponent } from "./components/fantasy/fantasy-te
     TeamsInfoComponent,
     FantasyTeamDialogPriceComponent,
     FantasyTeamDialogPointComponent,
+    AdminSprintsComponent,
     PricePipe,
     IsNanPipe,
     SpaceToUnderscorePipe

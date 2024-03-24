@@ -1,7 +1,11 @@
 package formula.bollo.app.controller;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import formula.bollo.app.entity.Driver;
+import formula.bollo.app.entity.FantasyElection;
 import formula.bollo.app.entity.Season;
 import formula.bollo.app.entity.Team;
 import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.model.SeasonDTO;
 import formula.bollo.app.repository.DriverRepository;
+import formula.bollo.app.repository.FantasyElectionRepository;
 import formula.bollo.app.repository.SeasonRepository;
 import formula.bollo.app.repository.TeamRepository;
 import formula.bollo.app.utils.Constants;
@@ -33,17 +39,20 @@ public class SeasonController {
     private SeasonMapper seasonMapper;
     private DriverRepository driverRepository;
     private TeamRepository teamRepository;
+    private FantasyElectionRepository fantasyElectionRepository;
 
     public SeasonController(
         SeasonRepository seasonRepository,
         SeasonMapper seasonMapper,
         DriverRepository driverRepository,
-        TeamRepository teamRepository
+        TeamRepository teamRepository,
+        FantasyElectionRepository fantasyElectionRepository
     ) {
         this.seasonRepository = seasonRepository;
         this.seasonMapper = seasonMapper;
         this.driverRepository = driverRepository;
         this.teamRepository = teamRepository;
+        this.fantasyElectionRepository = fantasyElectionRepository;
     }
 
     @Operation(summary = "Get all seasons", tags = Constants.TAG_SEASON)
@@ -106,6 +115,25 @@ public class SeasonController {
 
         Log.info("END - seasonsByTeamName - END");
         return seasons;
+    }
+
+    @Operation(summary = "Get seasons of fantasy", tags = Constants.TAG_SEASON)
+    @GetMapping("/fantasy")
+    public List<SeasonDTO> seasonsByTeamName() {
+        Log.info("START - seasonsByTeamName - START");
+        
+        Set<Season> seasons = new HashSet<>();
+        List<FantasyElection> fantasyElections = this.fantasyElectionRepository.findAll();
+        List<Season> fSeasonDTOs = fantasyElections.stream().map(FantasyElection::getSeason).collect(Collectors.toList());
+
+        seasons = new HashSet<>(fSeasonDTOs);
+        List<SeasonDTO> seasonsReturn = seasons.stream().map(seasonMapper::seasonToSeasonDTO).collect(Collectors.toList());
+        seasonsReturn.sort(Comparator.comparingLong(SeasonDTO::getId));
+        
+        if (seasons.isEmpty()) return seasonsReturn;
+
+        Log.info("END - seasonsByTeamName - END");
+        return seasonsReturn;
     }
 
 }
