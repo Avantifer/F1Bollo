@@ -50,8 +50,6 @@ export class AdminSprintsComponent {
     private messageInfoService: MessageInfoService
   ) {}
 
-  //TODO: Falta que muestre bien los resultados obtenidos
-
   ngOnInit(): void {
     this.createResultForm();
     this.getAllDrivers();
