@@ -422,9 +422,9 @@ public class FantasyService {
      *
      * @return List of FantasyPointsUserDTO objects with total points aggregated for each user.
     */
-    public List<FantasyPointsUserDTO> sumAllFantasyPoints() {
+    public List<FantasyPointsUserDTO> sumAllFantasyPoints(int seasonNumber) {
         List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
-        List<RaceDTO> raceDTOsNotFinishedAndNextOne = this.raceService.getAllPreviousRaces(Constants.ACTUAL_SEASON);
+        List<RaceDTO> raceDTOsNotFinishedAndNextOne = this.raceService.getAllPreviousRaces(seasonNumber);
 
         for (RaceDTO race : raceDTOsNotFinishedAndNextOne) {
             fantasyPointsUserDTOs.addAll(this.getFantasyPoints(Integer.parseInt(race.getId().toString())));

@@ -70,7 +70,7 @@ export class FantasyApiService {
       .set("driverId", driverId)
       .set("raceId", raceId);
     return this.httpClient.get<FantasyPointsDriver>(
-      environment.apiUrl + this.endpoint + "/driverPoints",
+      environment.apiUrl + this.endpoint + "/driverPointsSpecificRace",
       { params },
     );
   }
@@ -178,8 +178,10 @@ export class FantasyApiService {
     );
   }
 
-  getFantasyPoints(raceId: number): Observable<FantasyPointsUser[]> {
-    const params = new HttpParams().set("raceId", raceId);
+  getFantasyPoints(raceId: number, season?: number): Observable<FantasyPointsUser[]> {
+    let params = new HttpParams().set("raceId", raceId);
+    if (season != undefined) params = params.set("season", season);
+
     return this.httpClient.get<FantasyPointsUser[]>(
       environment.apiUrl + this.endpoint + "/getFantasyPoints",
       { params },

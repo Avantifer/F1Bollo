@@ -14,4 +14,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Long> {
 
     @Query(value = "SELECT s FROM Sprint s WHERE s.season.number = ?1")
     List<Sprint> findBySeason(int seasonNumber);
+
+    @Query(value = "SELECT s FROM Sprint s WHERE s.race.id = ?1")
+    List<Sprint> findByRaceId(Long race);
 }

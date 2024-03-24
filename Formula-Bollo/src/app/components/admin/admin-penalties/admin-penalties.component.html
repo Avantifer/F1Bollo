@@ -3,7 +3,7 @@
     <div class="penalty-topSide grid justify-content-evenly mx-auto w-full xl:w-9">
       <form [formGroup]="raceForm" class="col-12 lg:col-4 flex justify-content-center">
         <div class="flex flex-column align-items-start lg:align-items-center w-max">
-          <label class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione circuito:</label>
+          <span class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione circuito:</span>
           <p-dropdown
             formControlName="race"
             [options]="races"
@@ -15,7 +15,7 @@
       </form>
       <form [formGroup]="driverForm" class="col-12 lg:col-4 flex justify-content-center">
         <div class="flex flex-column align-items-start lg:align-items-center w-max">
-          <label class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione piloto:</label>
+          <span class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione piloto:</span>
           <p-dropdown
             formControlName="driver"
             [options]="drivers"
@@ -27,7 +27,7 @@
       </form>
       <form [formGroup]="penaltySeverityForm" class="col-12 lg:col-4 flex justify-content-center">
         <div class="flex flex-column align-items-start lg:align-items-center w-max">
-          <label class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione severidad:</label>
+          <span class="mb-1 font-bold F1_Regular text-sm md:text-base">Seleccione severidad:</span>
           <p-dropdown
             formControlName="penaltySeverity"
             [options]="penaltiesSeverity"
@@ -40,7 +40,7 @@
       @if (penaltySeveritySelected && raceSelected && driverSelected) {
         <form [formGroup]="reasonForm" class="col-12 mt-3">
           <div class="flex flex-column align-items-start">
-            <label class="mb-1 font-bold F1_Regular ml-0 md:ml-3 text-sm md:text-base">Razón de penalización:</label>
+            <span class="mb-1 font-bold F1_Regular ml-0 md:ml-3 text-sm md:text-base">Razón de penalización:</span>
             <textarea rows="5" cols="70" pInputTextarea formControlName="reason" class="align-self-center ml-0 md:ml-4 w-full"></textarea>
           </div>
         </form>

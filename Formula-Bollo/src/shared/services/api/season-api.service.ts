@@ -41,4 +41,8 @@ export class SeasonApiService {
       { params },
     );
   }
+
+  getSeasonOfFantasy(): Observable<Season[]> {
+    return this.httpClient.get<Season[]>(environment.apiUrl + this.endpoint + "/fantasy");
+  }
 }

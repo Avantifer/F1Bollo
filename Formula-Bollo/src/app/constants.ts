@@ -1,6 +1,6 @@
 // Errors
 export const ERROR_TEAM_FETCH: string = "No se pudo obtener los equipos correctamente";
-export const ERROR_SEASON_FETCH: string = "No se pudo obtener los equipos correctamente";
+export const ERROR_SEASON_FETCH: string = "No se pudo obtener las temporadas correctamente";
 export const ERROR_STATUTE_FETCH: string = "No se puedo obtener el estatuto correctamente";
 export const ERROR_CIRCUIT_FETCH: string = "Hubo un problema al recoger los circuitos";
 export const ERROR_RESULT_FETCH: string = "No se ha podido recoger los resultados";

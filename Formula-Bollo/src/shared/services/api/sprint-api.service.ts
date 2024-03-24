@@ -1,52 +1,34 @@
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { DriverPoints } from "../../models/driverPoints";
 import { environment } from "src/enviroments/enviroment";
-import { Result } from "../../models/result";
+import { Sprint } from "src/shared/models/sprint";
 
 @Injectable({
   providedIn: "root",
 })
-export class ResultApiService {
-  private endpoint: string = "/results";
+export class SprintApiService {
+  private endpoint: string = "/sprint";
 
   constructor(private httpClient: HttpClient) {}
 
-  getAllDriverPoints(
-    seasonNumber?: number,
-    numResults?: number,
-  ): Observable<DriverPoints[]> {
-    let params = new HttpParams();
-    if (numResults) params = params.set("numResults", numResults);
-    if (seasonNumber) params = params.set("season", seasonNumber);
-    const headers = new HttpHeaders().set(
-      "Content-Type",
-      "application/json; charset=utf-8",
-    );
-    return this.httpClient.get<DriverPoints[]>(
-      environment.apiUrl + this.endpoint + "/totalPerDriver",
-      { params, headers },
-    );
-  }
-
-  getAllResultsPerCircuit(
+  getAllSprintPerCircuit(
     circuitId: number,
     seasonNumber?: number,
-  ): Observable<Result[]> {
+  ): Observable<Sprint[]> {
     let params = new HttpParams().set("circuitId", circuitId);
     if (seasonNumber) params = params.set("season", seasonNumber);
     const headers = new HttpHeaders().set(
       "Content-type",
       "application/json; charset=utf-8",
     );
-    return this.httpClient.get<Result[]>(
+    return this.httpClient.get<Sprint[]>(
       environment.apiUrl + this.endpoint + "/circuit",
       { params, headers },
     );
   }
 
-  saveResults(results: Result[], seasonNumber?: number): Observable<string> {
+  saveSprints(sprints: Sprint[], seasonNumber?: number): Observable<string> {
     const params = seasonNumber
       ? new HttpParams().set("season", seasonNumber)
       : undefined;
@@ -56,7 +38,7 @@ export class ResultApiService {
     });
     return this.httpClient.put<string>(
       environment.apiUrl + this.endpoint + "/save",
-      results,
+      sprints,
       { headers, params, responseType: "text" as "json" },
     );
   }

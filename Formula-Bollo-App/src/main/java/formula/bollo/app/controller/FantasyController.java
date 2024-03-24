@@ -344,16 +344,18 @@ public class FantasyController {
 
     @Operation(summary = "Get fantasy points of user", tags = Constants.TAG_FANTASY)
     @GetMapping("/getFantasyPoints")
-    public List<FantasyPointsUserDTO> getFantasyPoints(@RequestParam Integer raceId) {
+    public List<FantasyPointsUserDTO> getFantasyPoints(@RequestParam Integer raceId, @RequestParam(value = "season", required = false) Integer season) {
         Log.info("START - getFantasyPoints - START");
         Log.info("RequestParam getFantasyPoints (raceId) -> " + raceId);
+        Log.info("RequestParam getFantasyPoints (season) -> " + season);
 
+        int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
         List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
 
         if (raceId != 0) {
             fantasyPointsUserDTOs = this.fantasyService.getFantasyPoints(raceId);
         } else {
-            fantasyPointsUserDTOs = this.fantasyService.sumAllFantasyPoints();
+            fantasyPointsUserDTOs = this.fantasyService.sumAllFantasyPoints(numberSeason);
         }
         
         Log.info("END - getFantasyPoints - END");
