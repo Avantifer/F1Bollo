@@ -17,6 +17,7 @@ export class HeaderComponent {
     new HeaderLinks("Escuderias", ["/teams"], () => this.selectNavItem("Escuderias")),
     new HeaderLinks("Resultados", ["/results"], () => this.selectNavItem("Resultados")),
     new HeaderLinks("Estatuto", ["/statute"], () => this.selectNavItem("Estatuto")),
+    new HeaderLinks("Estadísticas", ["/stats"], () => this.selectNavItem("Stats")),
     new HeaderLinks("Admin", ["/admin"], () => this.selectNavItem("Admin"))
   ];
 
@@ -37,6 +38,7 @@ export class HeaderComponent {
     "/teams": "Escuderias",
     "/results": "Resultados",
     "/statute": "Estatuto",
+    "/stats": "Estadísticas",
     "/admin": "Admin",
     "/login": "Admin",
     "/fantasy/team": "Mi Equipo",

@@ -69,6 +69,7 @@ import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.com
 import { FantasyTeamDialogPriceComponent } from "./components/fantasy/fantasy-team/fantasy-team-dialog-price/fantasy-team-dialog-price.component";
 import { FantasyTeamDialogPointComponent } from "./components/fantasy/fantasy-team/fantasy-team-dialog-point/fantasy-team-dialog-point.component";
 import { AdminSprintsComponent } from "./components/admin/admin-sprints/admin-sprints.component";
+import { StatisticsComponent } from "./components/statistics/statistics.component";
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { AdminSprintsComponent } from "./components/admin/admin-sprints/admin-sp
     FantasyTeamDialogPriceComponent,
     FantasyTeamDialogPointComponent,
     AdminSprintsComponent,
+    StatisticsComponent,
     PricePipe,
     IsNanPipe,
     SpaceToUnderscorePipe

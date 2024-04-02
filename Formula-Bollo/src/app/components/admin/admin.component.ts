@@ -82,6 +82,8 @@ export class AdminComponent {
 
     if (divSelected?.classList.contains("active")) return;
     divSelected?.classList.add("active");
+
+    this.drawerCanBeOpened();
   }
 
   /**

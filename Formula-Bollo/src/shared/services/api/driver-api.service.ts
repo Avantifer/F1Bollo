@@ -41,4 +41,15 @@ export class DriverApiService {
       { params },
     );
   }
+
+  getAllInfoDrivers(seasonNumber?: number): Observable<DriverInfo[]> {
+    const params = seasonNumber
+      ? new HttpParams().set("season", seasonNumber)
+      : undefined;
+
+    return this.httpClient.get<DriverInfo[]>(
+      environment.apiUrl + this.endpoint + "/allInfoDriver",
+      { params },
+    );
+  }
 }

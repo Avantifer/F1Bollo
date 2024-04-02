@@ -261,4 +261,30 @@ public class TeamService {
         
         return teamInfoDTO;
     }
+
+    public List<TeamInfoDTO> sumDuplicates(List<TeamInfoDTO> teamsInfoDTO) {
+        Map<String, TeamInfoDTO> resultMap = new HashMap<>();
+        
+        for (TeamInfoDTO teamInfo : teamsInfoDTO) {
+            String teamName = teamInfo.getTeam().getName();
+            
+            if (resultMap.containsKey(teamName)) {
+                TeamInfoDTO existingTeamInfo = resultMap.get(teamName);
+                existingTeamInfo.setTeam(teamInfo.getTeam());
+                existingTeamInfo.setPoles(existingTeamInfo.getPoles() + teamInfo.getPoles());
+                existingTeamInfo.setFastlaps(existingTeamInfo.getFastlaps() + teamInfo.getFastlaps());
+                existingTeamInfo.setRacesFinished(existingTeamInfo.getRacesFinished() + teamInfo.getRacesFinished());
+                existingTeamInfo.setTotalPoints(existingTeamInfo.getTotalPoints() + teamInfo.getTotalPoints());
+                existingTeamInfo.setChampionships(existingTeamInfo.getChampionships() + teamInfo.getChampionships());
+                existingTeamInfo.setPenalties(existingTeamInfo.getPenalties() + teamInfo.getPenalties());
+                existingTeamInfo.setBestPosition(Math.max(existingTeamInfo.getBestPosition(), teamInfo.getBestPosition()));
+                existingTeamInfo.setVictories(existingTeamInfo.getVictories() + teamInfo.getVictories());
+                existingTeamInfo.setPodiums(existingTeamInfo.getPodiums() + teamInfo.getPodiums());
+            } else {
+                resultMap.put(teamName, teamInfo);
+            }
+        }
+        
+        return new ArrayList<>(resultMap.values());
+    }
 }
