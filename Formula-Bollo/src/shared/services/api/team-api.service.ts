@@ -43,4 +43,15 @@ export class TeamApiService {
       { params },
     );
   }
+
+  getAllInfoTeam(seasonNumber?: number): Observable<TeamInfo[]> {
+    const params = seasonNumber
+      ? new HttpParams().set("season", seasonNumber)
+      : undefined;
+
+    return this.httpClient.get<TeamInfo[]>(
+      environment.apiUrl + this.endpoint + "/allInfoTeam",
+      { params },
+    );
+  }
 }

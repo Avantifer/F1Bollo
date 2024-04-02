@@ -109,4 +109,30 @@ public class DriverService {
         
         return driverInfoDTO;
     }
+
+    public List<DriverInfoDTO> sumDuplicates(List<DriverInfoDTO> driversInfoDTO) {
+        Map<String, DriverInfoDTO> resultMap = new HashMap<>();
+        
+        for (DriverInfoDTO driverInfo : driversInfoDTO) {
+            String driverName = driverInfo.getDriver().getName();
+            
+            if (resultMap.containsKey(driverName)) {
+                DriverInfoDTO existingDriverInfo = resultMap.get(driverName);
+                existingDriverInfo.setDriver(driverInfo.getDriver());
+                existingDriverInfo.setPoles(existingDriverInfo.getPoles() + driverInfo.getPoles());
+                existingDriverInfo.setFastlaps(existingDriverInfo.getFastlaps() + driverInfo.getFastlaps());
+                existingDriverInfo.setRacesFinished(existingDriverInfo.getRacesFinished() + driverInfo.getRacesFinished());
+                existingDriverInfo.setTotalPoints(existingDriverInfo.getTotalPoints() + driverInfo.getTotalPoints());
+                existingDriverInfo.setChampionships(existingDriverInfo.getChampionships() + driverInfo.getChampionships());
+                existingDriverInfo.setPenalties(existingDriverInfo.getPenalties() + driverInfo.getPenalties());
+                existingDriverInfo.setBestPosition(Math.max(existingDriverInfo.getBestPosition(), driverInfo.getBestPosition()));
+                existingDriverInfo.setVictories(existingDriverInfo.getVictories() + driverInfo.getVictories());
+                existingDriverInfo.setPodiums(existingDriverInfo.getPodiums() + driverInfo.getPodiums());
+            } else {
+                resultMap.put(driverName, driverInfo);
+            }
+        }
+        
+        return new ArrayList<>(resultMap.values());
+    }
 }

@@ -102,4 +102,30 @@ public class TeamsController {
         
         return teamInfoDTO;
     }
+
+    @Operation(summary = "Get all info of teams", tags = Constants.TAG_DRIVER)
+    @GetMapping("/allInfoTeam")
+    public List<TeamInfoDTO> getAllInfoTeam(@RequestParam(value = "season", required = false) Integer season) {
+        Log.info("START - getAllInfoTeam - START");
+        List<TeamInfoDTO> teamsInfoDTO = new ArrayList<>();
+
+        List<Team> teams = new ArrayList<>();
+
+        if (season == null) {
+            teams = teamRepository.findAll();
+        } else {
+            teams = teamRepository.findBySeason(season);
+        }
+        
+        for(Team team : teams) {
+            List<Team> teamToFind = new ArrayList<>();
+            teamToFind.add(team);
+            teamsInfoDTO.add(this.teamService.getAllInfoTeam(teamToFind));
+        }
+
+        teamsInfoDTO = this.teamService.sumDuplicates(teamsInfoDTO);
+        
+        Log.info("END - getAllInfoTeam - END");
+        return teamsInfoDTO;
+    }
 }

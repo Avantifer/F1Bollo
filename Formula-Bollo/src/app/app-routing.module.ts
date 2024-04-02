@@ -24,6 +24,7 @@ import { RecoverPasswordGuard } from "src/shared/guards/RecoverPasswordGuard";
 import { DriversInfoComponent } from "./components/drivers/drivers-info/drivers-info.component";
 import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.component";
 import { AdminSprintsComponent } from "./components/admin/admin-sprints/admin-sprints.component";
+import { StatisticsComponent } from "./components/statistics/statistics.component";
 
 const routes: Routes = [
   {
@@ -81,6 +82,10 @@ const routes: Routes = [
         component: AdminSprintsComponent,
       },
     ],
+  },
+  {
+    path: "stats",
+    component: StatisticsComponent
   },
   {
     path: "login",
