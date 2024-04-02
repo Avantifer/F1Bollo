@@ -91,12 +91,38 @@ public class DriverController {
         Log.info("RequestParam getinfoDriverByName (teamId) -> " + teamId);
 
         List<DriverDTO> driverDTOs = new ArrayList<>();
-        List<Driver> drivers = this.driverRepository.findByTeam( (long) teamId);
+        List<Driver> drivers = this.driverRepository.findByTeam((long) teamId);
 
         if (drivers.isEmpty()) return driverDTOs;
         driverDTOs = driverMapper.convertDriversToDriverDTO(drivers);
 
         Log.info("END - getinfoDriverByName - END");
         return driverDTOs;
+    }
+
+    @Operation(summary = "Get all info of drivers", tags = Constants.TAG_TEAM)
+    @GetMapping("/allInfoDriver")
+    public List<DriverInfoDTO> getAllInfoDriver(@RequestParam(value = "season", required = false) Integer season) {
+        Log.info("START - getAllInfoDriver - START");
+        List<DriverInfoDTO> driversInfoDTO = new ArrayList<>();
+
+        List<Driver> drivers = new ArrayList<>();
+
+        if (season == null) {
+            drivers = driverRepository.findAll();
+        } else {
+            drivers = driverRepository.findBySeason(season);
+        }
+        
+        for(Driver driver : drivers) {
+            List<Driver> driverToFind = new ArrayList<>();
+            driverToFind.add(driver);
+            driversInfoDTO.add(this.driverService.getAllInfoDriver(driverToFind));
+        }
+
+        driversInfoDTO = this.driverService.sumDuplicates(driversInfoDTO);
+        
+        Log.info("END - getAllInfoDriver - END");
+        return driversInfoDTO;
     }
 }
