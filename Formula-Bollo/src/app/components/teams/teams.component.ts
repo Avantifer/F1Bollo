@@ -103,6 +103,12 @@ export class TeamsComponent {
       });
   }
 
+  /**
+   * Convert team name space to underscore.
+   *
+   * @param teamName - The input team name to be converted.
+   * @returns The team name with spaces replaced by underscores.
+   */
   public teamNameSpaceToUnderScore(teamName: string): string {
     return teamName.replaceAll(" ", "_");
   }
