@@ -1,27 +1,25 @@
 <div class="statistics surface-200 p-2 sm:p-5">
-  @if (seasons.length > 0) {
-    <div class="statistics-topSide surface-100 grid grid-nogutter justify-content-evenly px-4 py-3 border-round">
-      <form [formGroup]="optionStatisticsForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
-        <p-dropdown
-          formControlName="option"
-          [options]="optionStatistics"
-          [(ngModel)]="optionStatisticsSelected"
-          class="align-self-center md:align-self-baseline"
-        ></p-dropdown>
-      </form>
-      <form [formGroup]="seasonsForm" class="col-12 md:col-6 flex justify-content-center md:justify-content-start lg:justify-content-center mt-2 md:mt-0">
-        <p-dropdown
-          formControlName="season"
-          [options]="seasons"
-          [(ngModel)]="seasonSelected"
-          optionLabel="name"
-        ></p-dropdown>
-      </form>
-    </div>
-  }
-  <div class="statistics-main mt-2 sm:mt-5 surface-100 border-round">
-    <div class="grid grid-nogutter">
+  <div class="statistics-topSide surface-100 grid grid-nogutter justify-content-evenly px-4 py-3 border-round">
+    <form [formGroup]="optionStatisticsForm" class="col-12 sm:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
+      <p-dropdown
+        formControlName="option"
+        [options]="optionStatistics"
+        [(ngModel)]="optionStatisticsSelected"
+        class="align-self-center md:align-self-baseline"
+      ></p-dropdown>
+    </form>
+    <form [formGroup]="seasonsForm" class="col-12 sm:col-6 flex justify-content-center md:justify-content-start lg:justify-content-center mt-2 sm:mt-0">
+      <p-dropdown
+        formControlName="season"
+        [options]="seasons"
+        [(ngModel)]="seasonSelected"
+        optionLabel="name"
+      ></p-dropdown>
+    </form>
+  </div>
   @if (driversInfo.length > 0 && optionStatisticsSelected === "Pilotos") {
+    <div class="statistics-main mt-2 sm:mt-5 surface-100 border-round">
+      <div class="grid grid-nogutter">
         <div class="flex flex-column col-12 xl:col-6 my-4 px-3">
           <h1 class="text-center mb-0">Poles</h1>
           <p-chart type="bar" [data]="dataDriversPoles" [options]="barChartOptions" class="hidden lg:block"></p-chart>
@@ -62,8 +60,11 @@
           <p-chart type="bar" [data]="dataDriversAveragePoints" [options]="barChartOptions" class="hidden lg:block"></p-chart>
           <p-chart type="bar" [data]="dataDriversAveragePoints" [options]="reverseBarChartOptions" class="block lg:hidden"></p-chart>
         </div>
-
-      } @else if (teamsInfo.length > 0 && optionStatisticsSelected === "Escuderías") {
+      </div>
+    </div>
+  } @else if (teamsInfo.length > 0 && optionStatisticsSelected === "Escuderías") {
+    <div class="statistics-main mt-2 sm:mt-5 surface-100 border-round">
+      <div class="grid grid-nogutter">
         <div class="flex flex-column col-12 xl:col-6 my-4 px-3">
           <h1 class="text-center mb-0">Poles</h1>
           <p-chart type="bar" [data]="dataTeamsPoles" [options]="barChartOptions" class="hidden lg:block"></p-chart>
@@ -104,7 +105,9 @@
           <p-chart type="bar" [data]="dataTeamsAveragePoints" [options]="barChartOptions" class="hidden lg:block"></p-chart>
           <p-chart type="bar" [data]="dataTeamsAveragePoints" [options]="reverseBarChartOptions" class="block lg:hidden"></p-chart>
         </div>
-      }
+      </div>
     </div>
-  </div>
+  } @else if (driversInfo.length === 0 && teamsInfo.length === 0) {
+    <p-skeleton height="100vh" styleClass="mt-3 w-full"></p-skeleton>
+  }
 </div>

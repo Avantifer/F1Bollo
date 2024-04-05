@@ -867,7 +867,7 @@ export class FantasyTeamComponent {
    */
   private calculateDriversValue(): void {
     if (this.fantasyElection.driverOne) {
-      const driverOne: FantasyPriceDriver = this.driversList.filter(
+      const driverOne: FantasyPriceDriver = this.drivers.filter(
         (driver: FantasyPriceDriver) =>
           this.fantasyElection.driverOne!.id === driver.driver.id
       )[0];
@@ -875,7 +875,7 @@ export class FantasyTeamComponent {
     }
 
     if (this.fantasyElection.driverTwo) {
-      const driverTwo: FantasyPriceDriver = this.driversList.filter(
+      const driverTwo: FantasyPriceDriver = this.drivers.filter(
         (driver: FantasyPriceDriver) =>
           this.fantasyElection.driverTwo!.id === driver.driver.id,
       )[0];
@@ -883,7 +883,7 @@ export class FantasyTeamComponent {
     }
 
     if (this.fantasyElection.driverThree) {
-      const driverThree: FantasyPriceDriver = this.driversList.filter(
+      const driverThree: FantasyPriceDriver = this.drivers.filter(
         (driver: FantasyPriceDriver) =>
           this.fantasyElection.driverThree!.id === driver.driver.id,
       )[0];
@@ -896,7 +896,7 @@ export class FantasyTeamComponent {
    */
   private calculateTeamsValue(): void {
     if (this.fantasyElection.teamOne) {
-      const teamOne: FantasyPriceTeam = this.teamsList.filter(
+      const teamOne: FantasyPriceTeam = this.teams.filter(
         (team: FantasyPriceTeam) =>
           this.fantasyElection.teamOne!.id === team.team.id,
       )[0];
@@ -904,7 +904,7 @@ export class FantasyTeamComponent {
     }
 
     if (this.fantasyElection.teamTwo) {
-      const teamTwo: FantasyPriceTeam = this.teamsList.filter(
+      const teamTwo: FantasyPriceTeam = this.teams.filter(
         (team: FantasyPriceTeam) =>
           this.fantasyElection.teamTwo!.id === team.team.id,
       )[0];
