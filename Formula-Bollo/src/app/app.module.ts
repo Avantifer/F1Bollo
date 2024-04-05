@@ -23,6 +23,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 import { DialogModule } from "primeng/dialog";
 import { DialogService, DynamicDialogModule } from "primeng/dynamicdialog";
 import { ChartModule } from "primeng/chart";
+import { SidebarModule } from "primeng/sidebar";
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "src/shared/components/header/header.component";
@@ -134,7 +135,8 @@ import { StatisticsComponent } from "./components/statistics/statistics.componen
     InputTextareaModule,
     DialogModule,
     DynamicDialogModule,
-    ChartModule
+    ChartModule,
+    SidebarModule
   ],
   providers: [
     AdminGuard,

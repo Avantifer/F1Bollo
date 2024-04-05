@@ -154,6 +154,9 @@ export class FantasyClasificationComponent {
       });
   }
 
+  /**
+   * Listens to changes in the seasonForm and triggers the retrieval of information by driver name accordingly.
+   */
   changeSeason(): void {
     this.seasonForm.valueChanges
       .pipe(takeUntil(this._unsubscribe))

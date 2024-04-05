@@ -1,5 +1,5 @@
-<div class="penalty surface-200 pt-5">
-  <div class="container h-full">
+<div class="penalty surface-200 py-5">
+  <div class="container">
     <div class="penalty-topSide grid justify-content-evenly mx-auto w-full xl:w-9">
       <form [formGroup]="raceForm" class="col-12 lg:col-4 flex justify-content-center">
         <div class="flex flex-column align-items-start lg:align-items-center w-max">
@@ -10,6 +10,7 @@
             [(ngModel)]="raceSelected"
             optionLabel="circuit.name"
             class="align-self-center"
+            emptyMessage="No se han encontrado resultados"
           ></p-dropdown>
         </div>
       </form>

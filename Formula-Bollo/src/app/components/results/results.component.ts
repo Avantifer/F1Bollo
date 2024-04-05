@@ -9,7 +9,11 @@ import { ResultApiService } from "src/shared/services/api/result-api.service";
 import { SeasonApiService } from "src/shared/services/api/season-api.service";
 import { Season } from "src/shared/models/season";
 import { environment } from "src/enviroments/enviroment";
-import { ERROR_CIRCUIT_FETCH, ERROR_RESULT_FETCH, ERROR_SEASON_FETCH } from "src/app/constants";
+import { ERROR_CIRCUIT_FETCH, ERROR_PENALTIES_FETCH, ERROR_RESULT_FETCH, ERROR_SEASON_FETCH } from "src/app/constants";
+import { PenaltyApiService } from "src/shared/services/api/penalty-api.service";
+import { DriverPenalties } from "src/shared/models/driverPenalty";
+import { RacePenalties } from "src/shared/models/racePenalty";
+import { Message } from "primeng/api";
 
 @Component({
   selector: "app-results",
@@ -20,6 +24,9 @@ export class ResultsComponent {
   circuits: Circuit[] = [];
   results: Result[] = [];
   seasons: Season[] = [];
+  penalties: DriverPenalties[] = [];
+  messagePenalties: Message[] = [];
+
   displayedColumns: string[] = ["position", "driverName", "teamName", "points"];
 
   circuitsForm: FormGroup = new FormGroup({
@@ -32,13 +39,28 @@ export class ResultsComponent {
   circuitSelected: Circuit | undefined;
   seasonSelected: Season | undefined;
 
+  sidebarVisible: boolean = false;
+
+  severityMappings: { [key: string]: string } = {
+    "Aviso": "info",
+    "Leve": "warn",
+    "Grave": "error",
+  };
+
+  severityIconsMappings: { [key: string]: string } = {
+    "Aviso": "pi pi-comment",
+    "Leve": "pi pi-exclamation-circle",
+    "Grave": "pi pi-exclamation-triangle",
+  };
+
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private circuitApiService: CircuitApiService,
     private resultApiService: ResultApiService,
-    private messagueInfoService: MessageInfoService,
+    private messageInfoService: MessageInfoService,
     private seasonApiService: SeasonApiService,
+    private penaltyApiService: PenaltyApiService
   ) {}
 
   ngOnInit(): void {
@@ -70,7 +92,7 @@ export class ResultsComponent {
           );
         },
         error: (error) => {
-          this.messagueInfoService.showError(ERROR_CIRCUIT_FETCH);
+          this.messageInfoService.showError(ERROR_CIRCUIT_FETCH);
           console.log(error);
           throw error;
         },
@@ -114,7 +136,7 @@ export class ResultsComponent {
           this.results = results;
         },
         error: (error) => {
-          this.messagueInfoService.showError(ERROR_RESULT_FETCH);
+          this.messageInfoService.showError(ERROR_RESULT_FETCH);
           console.log(error);
           throw error;
         },
@@ -141,7 +163,7 @@ export class ResultsComponent {
           this.getAllCircuits(this.seasonSelected.number);
         },
         error: (error) => {
-          this.messagueInfoService.showError(ERROR_SEASON_FETCH);
+          this.messageInfoService.showError(ERROR_SEASON_FETCH);
           console.log(error);
           throw error;
         },
@@ -159,6 +181,44 @@ export class ResultsComponent {
           this.seasonSelected = data.season;
           this.getAllCircuits(this.seasonSelected!.number);
         }
+      });
+  }
+
+  /**
+   * Fetch penalties for a specific circuit and update the component's penalties property.
+   *
+   * @param circuitId - The ID of the circuit for which to fetch penalties.
+   */
+  getAllPenaltiesDriver(): void {
+    this.penaltyApiService
+      .getAllPenaltiesPerDriver()
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe({
+        next: (penalties: DriverPenalties[]) => {
+          this.penalties = penalties.filter((driverPenalty: DriverPenalties) => {
+            return driverPenalty.racePenalties.some((racePenalty: RacePenalties) => {
+              return racePenalty.race.circuit.id === this.circuitSelected?.id;
+            });
+          });
+
+          this.messagePenalties = [];
+          for (const penaltyDriver of this.penalties) {
+            for (const racePenalties of penaltyDriver.racePenalties) {
+              for (const penalty of racePenalties.penalties) {
+                this.messagePenalties.push({
+                  severity: this.severityMappings[penalty.severity.severity], summary: penalty.driver.name, detail: penalty.reason
+                });
+              }
+            }
+          }
+
+          this.sidebarVisible = true;
+        },
+        error: (error) => {
+          this.messageInfoService.showError(ERROR_PENALTIES_FETCH);
+          console.log(error);
+          throw error;
+        },
       });
   }
 }

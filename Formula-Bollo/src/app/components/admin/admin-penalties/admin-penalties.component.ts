@@ -115,6 +115,8 @@ export class AdminPenaltiesComponent {
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (data) => {
+          this.raceSelected = data.race;
+
           if (this.driverSelected && this.penaltySeveritySelected) {
             // Fetch penalties based on the selected driver, race, and severity.
             this.getPenaltyPerDriverAndRaceAndSeverity(
@@ -150,19 +152,21 @@ export class AdminPenaltiesComponent {
    * Subscribes to changes in the driverForm, updates the selected driver, and fetches penalties based on selected driver, circuit, and severity.
    */
   getDriverSelected(): void {
-    this.driverForm.valueChanges.pipe(takeUntil(this._unsubscribe)).subscribe({
-      next: (data) => {
-        this.driverSelected = data.driver;
+    this.driverForm.valueChanges
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe({
+        next: (data) => {
+          this.driverSelected = data.driver;
 
-        if (this.raceSelected && this.penaltySeveritySelected) {
-          this.getPenaltyPerDriverAndRaceAndSeverity(
-            data.driver,
-            this.raceSelected,
-            this.penaltySeveritySelected,
-          );
-        }
-      },
-    });
+          if (this.raceSelected && this.penaltySeveritySelected) {
+            this.getPenaltyPerDriverAndRaceAndSeverity(
+              data.driver,
+              this.raceSelected,
+              this.penaltySeveritySelected,
+            );
+          }
+        },
+      });
   }
 
   /**

@@ -17,4 +17,32 @@
   ::ng-deep .p-dropdown {
     width: 11.2rem;
   }
+
+  &-button {
+    ::ng-deep .p-button {
+      color: white !important;
+      background-color: $red !important;
+      border: none;
+      font-weight: bold;
+
+      &:hover {
+        transform: translate(-1px, -1px);
+      }
+    }
+  }
+}
+
+
+::ng-deep .p-sidebar-right {
+  width: 25rem;
+}
+
+::ng-deep .p-message-wrapper {
+  padding: 1.25rem 0.95rem;
+}
+
+@media (max-width: 425px) {
+  ::ng-deep .p-sidebar-right {
+    width: 20rem;
+  }
 }

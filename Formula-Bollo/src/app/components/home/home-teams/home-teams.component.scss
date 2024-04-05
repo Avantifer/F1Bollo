@@ -8,6 +8,12 @@
   &-schema-container {
     transition: 0.25s cubic-bezier(0.35, 0.15, 0.6, 1);
   }
+
+  p-skeleton {
+    flex: 0 0 auto;
+    padding: .5rem;
+    width: 16.6667%;
+  }
 }
 
 .dark-theme {
@@ -16,3 +22,8 @@
   }
 }
 
+@include media-breakpoint-down(lg) {
+  p-skeleton {
+    width: 41.6667% !important;
+  }
+}
