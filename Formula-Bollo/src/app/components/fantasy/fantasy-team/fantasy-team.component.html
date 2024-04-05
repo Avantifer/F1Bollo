@@ -286,153 +286,165 @@
           </div>
           @if (optionSelected === 'Pilotos') {
             <div class="fantasySelection-mid-table-bottom border-round-md overflow-y-scroll">
-              @for (driver of driversList; track $index) {
-                <div class="fantasySelection-mid-table-bottom-drivers flex mb-2 mr-1 border-round-md overflow-hidden surface-0">
-                  <img
-                    [src]="'data:image/jpg;base64,' + driver.driver.driverImage"
-                    [alt]="'Foto de ' + driver.driver.name"
-                    class="fantasySelection-mid-table-bottom-drivers-image h-3rem sm:h-5rem surface-400 overflow-hidden"
-                  />
-                  <div class="fantasySelection-mid-table-bottom-drivers-info flex py-0 sm:py-2 flex-1">
-                    <div class="fantasySelection-mid-table-bottom-drivers-info-driver flex flex-column justify-content-evenly sm:justify-content-between ml-1 sm:ml-2 w-7 md:w-5 xl:max-w-13rem">
-                      <div class="fantasySelection-mid-table-bottom-drivers-info-driver-visual flex align-items-center">
-                        <div
-                          class="fantasySelection-mid-table-bottom-drivers-info-driver-visual-team flex justify-content-center align-items-center w-3rem sm:w-4rem border-round-sm"
-                          [class]="'bg-' + (driver.driver.team.name | SpaceToUnderscore)"
-                        >
-                          <img
-                            [src]="'data:image/jpg;base64,' + driver.driver.team.logoImage"
-                            [alt]="'Foto de l equipo ' + driver.driver.team.name"
-                            class="w-full h-full"
-                          />
+              @if (driversList.length > 0 ) {
+                @for (driver of driversList; track $index) {
+                  <div class="fantasySelection-mid-table-bottom-drivers flex mb-2 mr-1 border-round-md overflow-hidden surface-0">
+                    <img
+                      [src]="'data:image/jpg;base64,' + driver.driver.driverImage"
+                      [alt]="'Foto de ' + driver.driver.name"
+                      class="fantasySelection-mid-table-bottom-drivers-image h-3rem sm:h-5rem surface-400 overflow-hidden"
+                    />
+                    <div class="fantasySelection-mid-table-bottom-drivers-info flex py-0 sm:py-2 flex-1">
+                      <div class="fantasySelection-mid-table-bottom-drivers-info-driver flex flex-column justify-content-evenly sm:justify-content-between ml-1 sm:ml-2 w-7 md:w-5 xl:max-w-13rem">
+                        <div class="fantasySelection-mid-table-bottom-drivers-info-driver-visual flex align-items-center">
+                          <div
+                            class="fantasySelection-mid-table-bottom-drivers-info-driver-visual-team flex justify-content-center align-items-center w-3rem sm:w-4rem border-round-sm"
+                            [class]="'bg-' + (driver.driver.team.name | SpaceToUnderscore)"
+                          >
+                            <img
+                              [src]="'data:image/jpg;base64,' + driver.driver.team.logoImage"
+                              [alt]="'Foto de l equipo ' + driver.driver.team.name"
+                              class="w-full h-full"
+                            />
+                          </div>
+                          <span class="ml-2 text-xs sm:text-lg xl:text-xl Fantasy_Regular font-bold">{{ driver.driver.name }}</span>
                         </div>
-                        <span class="ml-2 text-xs sm:text-lg xl:text-xl Fantasy_Regular font-bold">{{ driver.driver.name }}</span>
+                        <div
+                          class="fantasySelection-mid-table-bottom-drivers-info-driver-price flex align-items-center h-auto sm:h-2rem cursor-pointer"
+                          (click)="openDriverPriceDialog(driver.driver.id)"
+                        >
+                          <i class="pi pi-dollar text-green-500 text-xs sm:text-base md:text-lg"></i>
+                          <span class="mr-0 sm:mr-1 Fantasy_Regular font-bold text-xs sm:text-base md:text-lg">{{ driver.price | pricePipe }}</span>
+                            @if (driver.differencePrice! > 0) {
+                              <span class="flex align-items-center">
+                                <i class="pi pi-angle-up text-green-600 text-xs sm:text-base md:text-lg"></i>
+                                <p class="m-0 text-green-600 text-xs sm:text-base"> {{ driver.differencePrice! | number: "0.0-2" }}%</p>
+                              </span>
+                            } @else if (driver.differencePrice! < 0) {
+                              <span class="flex align-items-center">
+                                <i class="pi pi-angle-down text-red-600 text-xs sm:text-base md:text-lg"></i>
+                                <p class="m-0 text-red-600 text-xs sm:text-base"> {{ driver.differencePrice! | number: "0.0-2" }}%</p>
+                              </span>
+                            } @else if (driver.differencePrice === 0 ) {
+                              <span class="flex align-items-center">
+                                <p class="m-0 text-orange-500 text-md sm:text-2xl mb-1">
+                                  =
+                                </p>
+                                <p class="m-0 text-orange-500 text-xs sm:text-base"> {{ driver.differencePrice! | number: "0.0-2" }}%</p>
+                              </span>
+                            }
+                        </div>
                       </div>
+                      <div class="fantasySelection-mid-table-bottom-drivers-info-points grid grid-nogutter align-items-center flex-1">
+                        <span
+                          class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-3 md:px-2 cursor-pointer"
+                          (click)="openDriverPointDialog(driver.driver.id)"
+                        >Total {{ driver.totalPoints }}</span>
+                        <span class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-3 md:px-2">Media {{ parseAveragePoints(driver.averagePoints) }}</span>
+                      </div>
+                    </div>
+                    @if (comprobateIfDriverIsElected(driver)) {
                       <div
-                        class="fantasySelection-mid-table-bottom-drivers-info-driver-price flex align-items-center h-auto sm:h-2rem cursor-pointer"
-                        (click)="openDriverPriceDialog(driver.driver.id)"
+                        class="fantasySelection-mid-table-bottom-drivers-button flex flex-column justify-content-between ml-auto"
+                        (click)="addDriverToSelection(driver)"
                       >
-                        <i class="pi pi-dollar text-green-500 text-xs sm:text-base md:text-lg"></i>
-                        <span class="mr-0 sm:mr-1 Fantasy_Regular font-bold text-xs sm:text-base md:text-lg">{{ driver.price | pricePipe }}</span>
-                          @if (driver.differencePrice! > 0) {
-                            <span class="flex align-items-center">
-                              <i class="pi pi-angle-up text-green-600 text-xs sm:text-base md:text-lg"></i>
-                              <p class="m-0 text-green-600 text-xs sm:text-base"> {{ driver.differencePrice! | number: "0.0-2" }}%</p>
-                            </span>
-                          } @else if (driver.differencePrice! < 0) {
-                            <span class="flex align-items-center">
-                              <i class="pi pi-angle-down text-red-600 text-xs sm:text-base md:text-lg"></i>
-                              <p class="m-0 text-red-600 text-xs sm:text-base"> {{ driver.differencePrice! | number: "0.0-2" }}%</p>
-                            </span>
-                          } @else if (driver.differencePrice === 0 ) {
-                            <span class="flex align-items-center">
-                              <p class="m-0 text-orange-500 text-md sm:text-2xl mb-1">
-                                =
-                              </p>
-                              <p class="m-0 text-orange-500 text-xs sm:text-base"> {{ driver.differencePrice! | number: "0.0-2" }}%</p>
-                            </span>
-                          }
+                        <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none cursor-pointer surface-400">
+                          <i class="pi pi-plus text-base sm:text-xl font-bold"></i>
+                        </button>
                       </div>
-                    </div>
-                    <div class="fantasySelection-mid-table-bottom-drivers-info-points grid grid-nogutter align-items-center flex-1">
-                      <span
-                        class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-3 md:px-2 cursor-pointer"
-                        (click)="openDriverPointDialog(driver.driver.id)"
-                      >Total {{ driver.totalPoints }}</span>
-                      <span class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-3 md:px-2">Media {{ parseAveragePoints(driver.averagePoints) }}</span>
-                    </div>
-                  </div>
-                  @if (comprobateIfDriverIsElected(driver)) {
-                    <div
-                      class="fantasySelection-mid-table-bottom-drivers-button flex flex-column justify-content-between ml-auto"
-                      (click)="addDriverToSelection(driver)"
-                    >
-                      <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none cursor-pointer surface-400">
-                        <i class="pi pi-plus text-base sm:text-xl font-bold"></i>
+                    } @else {
+                      <div
+                        class="flex flex-column justify-content-between ml-auto"
+                      >
+                      <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none surface-200" disabled>
+                        <i class="pi pi-check text-base sm:text-xl font-bold"></i>
                       </button>
-                    </div>
-                  } @else {
-                    <div
-                      class="flex flex-column justify-content-between ml-auto"
-                    >
-                    <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none surface-200" disabled>
-                      <i class="pi pi-check text-base sm:text-xl font-bold"></i>
-                    </button>
-                    </div>
-                  }
-                </div>
+                      </div>
+                    }
+                  </div>
+                }
+              } @else {
+                @for (item of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]; track $index) {
+                  <p-skeleton styleClass="h-4rem w-full border-round my-2 mr-2"></p-skeleton>
+                }
               }
             </div>
           } @else if (optionSelected === 'Equipos') {
             <div class="fantasySelection-mid-table-bottom border-round-md overflow-y-scroll">
-              @for (team of teamsList; track $index) {
-                <div class="fantasySelection-mid-table-bottom-teams flex mb-2 mr-1 border-round-md overflow-hidden surface-0">
-                  <div class="fantasySelection-mid-table-bottom-teams-image relative h-3rem sm:h-5rem w-3rem sm:w-7rem" [class]="'bg-' + (team.team.name | SpaceToUnderscore)">
-                    <img
-                      [src]="team.team.carImage"
-                      [alt]="'Foto de ' + team.team.name"
-                      class="fantasySelection-mid-table-bottom-teams-image-car h-3rem sm:h-5rem overflow-hidden"
-                    />
-                    <img
-                      [src]="'data:image/jpg;base64,' + team.team.logoImage"
-                      [alt]="'Logo de ' + team.team.name"
-                      class="absolute w-1rem sm:w-2rem top-0 right-0 mt-1 mr-1"
-                    />
-                  </div>
-                  <div class="fantasySelection-mid-table-bottom-teams-info flex py-0 sm:py-2 flex-1">
-                    <div class="fantasySelection-mid-table-bottom-teams-info-team flex flex-column justify-content-evenly sm:justify-content-between ml-1 sm:ml-2 w-6 md:w-5 xl:w-7 xl:max-w-11rem">
-                      <span class="ml-2 text-xs sm:text-lg xl:text-xl Fantasy_Regular font-bold">{{ team.team.name }}</span>
-                      <div
-                        class="fantasySelection-mid-table-bottom-teams-info-driver-price flex align-items-center h-auto sm:h-2rem cursor-pointer"
-                        (click)="openTeamPriceDialog(team.team.id)"
-                      >
-                        <i class="pi pi-dollar text-green-500 text-xs sm:text-base md:text-lg"></i>
-                        <span class="mr-0 sm:mr-1 Fantasy_Regular font-bold text-xs sm:text-base md:text-lg">{{ team.price | pricePipe }}</span>
-                          @if (team.differencePrice! > 0) {
-                            <span class="flex align-items-center">
-                              <i class="pi pi-angle-up text-green-600 text-xs sm:text-base md:text-lg"></i>
-                              <p class="m-0 text-green-600 text-xs sm:text-base"> {{ team.differencePrice! | number: "0.0-2" }}%</p>
-                            </span>
-                          } @else if (team.differencePrice! < 0) {
-                            <span class="flex align-items-center">
-                              <i class="pi pi-angle-down text-red-600 text-xs sm:text-base md:text-lg"></i>
-                              <p class="m-0 text-red-600 text-xs sm:text-base"> {{ team.differencePrice! | number: "0.0-2" }}%</p>
-                            </span>
-                          } @else if (team.differencePrice === 0 ) {
-                            <span class="flex align-items-center">
-                              <p class="m-0 text-orange-500 text-md sm:text-2xl mb-1">
-                                =
-                              </p>
-                              <p class="m-0 text-orange-500 text-xs sm:text-base"> {{ team.differencePrice! | number: "0.0-2" }}%</p>
-                            </span>
-                          }
+              @if (teamsList.length > 0) {
+                @for (team of teamsList; track $index) {
+                  <div class="fantasySelection-mid-table-bottom-teams flex mb-2 mr-1 border-round-md overflow-hidden surface-0">
+                    <div class="fantasySelection-mid-table-bottom-teams-image relative h-3rem sm:h-5rem w-3rem sm:w-7rem" [class]="'bg-' + (team.team.name | SpaceToUnderscore)">
+                      <img
+                        [src]="team.team.carImage"
+                        [alt]="'Foto de ' + team.team.name"
+                        class="fantasySelection-mid-table-bottom-teams-image-car h-3rem sm:h-5rem overflow-hidden"
+                      />
+                      <img
+                        [src]="'data:image/jpg;base64,' + team.team.logoImage"
+                        [alt]="'Logo de ' + team.team.name"
+                        class="absolute w-1rem sm:w-2rem top-0 right-0 mt-1 mr-1"
+                      />
+                    </div>
+                    <div class="fantasySelection-mid-table-bottom-teams-info flex py-0 sm:py-2 flex-1">
+                      <div class="fantasySelection-mid-table-bottom-teams-info-team flex flex-column justify-content-evenly sm:justify-content-between ml-1 sm:ml-2 w-6 md:w-5 xl:w-7 xl:max-w-11rem">
+                        <span class="ml-2 text-xs sm:text-lg xl:text-xl Fantasy_Regular font-bold">{{ team.team.name }}</span>
+                        <div
+                          class="fantasySelection-mid-table-bottom-teams-info-driver-price flex align-items-center h-auto sm:h-2rem cursor-pointer"
+                          (click)="openTeamPriceDialog(team.team.id)"
+                        >
+                          <i class="pi pi-dollar text-green-500 text-xs sm:text-base md:text-lg"></i>
+                          <span class="mr-0 sm:mr-1 Fantasy_Regular font-bold text-xs sm:text-base md:text-lg">{{ team.price | pricePipe }}</span>
+                            @if (team.differencePrice! > 0) {
+                              <span class="flex align-items-center">
+                                <i class="pi pi-angle-up text-green-600 text-xs sm:text-base md:text-lg"></i>
+                                <p class="m-0 text-green-600 text-xs sm:text-base"> {{ team.differencePrice! | number: "0.0-2" }}%</p>
+                              </span>
+                            } @else if (team.differencePrice! < 0) {
+                              <span class="flex align-items-center">
+                                <i class="pi pi-angle-down text-red-600 text-xs sm:text-base md:text-lg"></i>
+                                <p class="m-0 text-red-600 text-xs sm:text-base"> {{ team.differencePrice! | number: "0.0-2" }}%</p>
+                              </span>
+                            } @else if (team.differencePrice === 0 ) {
+                              <span class="flex align-items-center">
+                                <p class="m-0 text-orange-500 text-md sm:text-2xl mb-1">
+                                  =
+                                </p>
+                                <p class="m-0 text-orange-500 text-xs sm:text-base"> {{ team.differencePrice! | number: "0.0-2" }}%</p>
+                              </span>
+                            }
+                        </div>
+                      </div>
+                      <div class="fantasySelection-mid-table-bottom-teams-info-points grid grid-nogutter align-items-center flex-1">
+                        <span
+                          class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-5 md:px-2 cursor-pointer"
+                          (click)="openTeamPointDialog(team.team.id)"
+                        >Total {{ team.totalPoints }}</span>
+                        <span class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-5 md:px-2">Media {{ parseAveragePoints(team.averagePoints) }}</span>
                       </div>
                     </div>
-                    <div class="fantasySelection-mid-table-bottom-teams-info-points grid grid-nogutter align-items-center flex-1">
-                      <span
-                        class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-5 md:px-2 cursor-pointer"
-                        (click)="openTeamPointDialog(team.team.id)"
-                      >Total {{ team.totalPoints }}</span>
-                      <span class="col-12 md:col-6 text-start md:text-center Fantasy_Regular text-xs sm:text-base md:text-lg lg:text-xl font-bold pl-5 md:px-2">Media {{ parseAveragePoints(team.averagePoints) }}</span>
-                    </div>
+                    @if (comprobateIfTeamIsElected(team)) {
+                      <div
+                        class="fantasySelection-mid-table-bottom-teams-button flex flex-column justify-content-between ml-auto"
+                        (click)="addTeamToSelection(team)"
+                      >
+                        <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none cursor-pointer surface-400">
+                          <i class="pi pi-plus text-base sm:text-xl font-bold"></i>
+                        </button>
+                      </div>
+                    } @else {
+                      <div class="flex flex-column justify-content-between ml-auto">
+                        <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none surface-200" disabled>
+                          <i class="pi pi-check text-base sm:text-xl font-bold"></i>
+                        </button>
+                      </div>
+                    }
                   </div>
-                  @if (comprobateIfTeamIsElected(team)) {
-                    <div
-                      class="fantasySelection-mid-table-bottom-teams-button flex flex-column justify-content-between ml-auto"
-                      (click)="addTeamToSelection(team)"
-                    >
-                      <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none cursor-pointer surface-400">
-                        <i class="pi pi-plus text-base sm:text-xl font-bold"></i>
-                      </button>
-                    </div>
-                  } @else {
-                    <div class="flex flex-column justify-content-between ml-auto">
-                      <button class="h-3rem w-3rem sm:h-5rem sm:w-5rem ml-auto flex align-items-center justify-content-center border-none surface-200" disabled>
-                        <i class="pi pi-check text-base sm:text-xl font-bold"></i>
-                      </button>
-                    </div>
-                  }
-                </div>
+                }
+              } @else {
+                @for (item of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]; track $index) {
+                  <p-skeleton styleClass="h-4rem w-full border-round my-2 mr-2"></p-skeleton>
+                }
               }
             </div>
           }

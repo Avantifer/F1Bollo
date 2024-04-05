@@ -1,17 +1,23 @@
 <div class="teams position-relative surface-200">
-  <div class="teams-title ml-0 ml-7">
+  <div class="teams-title ml-0 md:ml-7">
     <h2 class="uppercase font-bold F1_Regular text-center mt-7 text-4xl">Escuderias</h2>
   </div>
   <div class="teams-schema grid grid-nogutter justify-content-center gap-3 mx-0 md:mx-7 mt-7">
-    @for (team of teams; track $index) {
-      <div
-        class="teams-schema-container shadow-2 flex rounded-4 h-9rem border-round-2xl cursor-pointer surface-0 col-5  lg:col-2"
-        [class]="'hover-bg-' + (team.name | SpaceToUnderscore)"
-        [ngClass]="(team.name | SpaceToUnderscore) === 'Alpine' || (team.name | SpaceToUnderscore) === 'AlphaTauri' ? themeClass : null"
-        (click)="router.navigate(['/teams/' + teamNameSpaceToUnderScore(team.name)])"
-        >
-        <img [src]="'data:image/jpg;base64,' + team.logoImage" [alt]="'Imagen de ' + team.name" class="teams-schema-container-image m-auto w-6rem	">
-      </div>
+    @if (teams.length > 0) {
+      @for (team of teams; track $index) {
+        <div
+          class="teams-schema-container shadow-2 flex rounded-4 h-9rem border-round-2xl cursor-pointer surface-0 col-5 lg:col-2"
+          [class]="'hover-bg-' + (team.name | SpaceToUnderscore)"
+          [ngClass]="(team.name | SpaceToUnderscore) === 'Alpine' || (team.name | SpaceToUnderscore) === 'AlphaTauri' ? themeClass : null"
+          (click)="router.navigate(['/teams/' + teamNameSpaceToUnderScore(team.name)])"
+          >
+          <img [src]="'data:image/jpg;base64,' + team.logoImage" [alt]="'Imagen de ' + team.name" class="teams-schema-container-image m-auto w-6rem	">
+        </div>
+      }
+    } @else {
+      @for (item of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; track $index) {
+        <p-skeleton styleClass="rounded-4 h-10rem border-round-2xl"></p-skeleton>
+      }
     }
   </div>
 </div>

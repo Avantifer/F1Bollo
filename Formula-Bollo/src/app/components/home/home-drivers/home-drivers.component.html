@@ -3,9 +3,14 @@
     <h2 class="drivers-text F1_Wide text-white text-center mt-0 mb-3 pt-6 pb-8 text-xl md:text-2xl relative">Clasificación de pilotos</h2>
     <div class="drivers-cards flex flex-column justify-content-center md:block">
       @if (driverPoints.length === 0 && drivers.length === 0) {
-        <div class="skeleton-template mt-8">
+        <div class="block md:flex justify-content-evenly">
+          <p-skeleton styleClass="mb-2 w-full h-10rem xl:w-22rem lg:w-18rem md:w-13rem md:h-12rem lg:h-15rem"></p-skeleton>
+          <p-skeleton styleClass="mb-2 w-full h-10rem xl:w-22rem lg:w-18rem md:w-13rem md:h-12rem lg:h-15rem hidden md:block"></p-skeleton>
+          <p-skeleton styleClass="mb-2 w-full h-10rem xl:w-22rem lg:w-18rem md:w-13rem md:h-12rem lg:h-15rem hidden md:block"></p-skeleton>
+        </div>
+        <div class="skeleton-template mt-3">
           @for (item of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; track $index) {
-            <p-skeleton width="w-full" height="4.25rem" [styleClass]="$index === 0 ? 'mt-8' : 'mt-3'"></p-skeleton>
+            <p-skeleton width="w-full" height="4.25rem" styleClass="mt-3"></p-skeleton>
           }
         </div>
       } @else if (driverPoints.length > 0) {

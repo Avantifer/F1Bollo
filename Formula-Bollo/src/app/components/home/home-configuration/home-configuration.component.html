@@ -4,20 +4,40 @@
       <h2 class="uppercase font-bold text:3xl md:text-4xl text-center">Configuraciones</h2>
     </div>
     <div class="configurations-schema text:xl sm:text-2xl md:text-3xl lg:text-4xl">
-      @for (conf of configurations; track $index) {
-        @if ($index >= 0 && $index <= 4 ) {
-            <p class="m-0">{{ conf.setting }}: {{ conf.value }}</p>
-            @if ($index === 4 || $index === configurations.length - 1) {
+      @if (configurations.length > 0) {
+        @for (conf of configurations; track $index) {
+          @if ($index >= 0 && $index <= 4 ) {
+              <p class="m-0">{{ conf.setting }}: {{ conf.value }}</p>
+              @if ($index === 4 || $index === configurations.length - 1) {
+                <hr>
+              }
+          } @else if ($index >= 5 && $index <= 10) {
+              <p class="text-right m-0">{{ conf.setting }}: {{ conf.value }}</p>
+            @if ($index === 10 || $index === configurations.length - 1) {
               <hr>
             }
-        } @else if ($index >= 5 && $index <= 10) {
-            <p class="text-right m-0">{{ conf.setting }}: {{ conf.value }}
-          @if ($index === 10 || $index === configurations.length - 1) {
-            <hr>
+          } @else if ($index >= 11) {
+            <p class="m-0">{{ conf.setting }}: {{ conf.value }}</p>
           }
-        } @else if ($index >= 11) {
-          <p class="m-0">{{ conf.setting }}: {{ conf.value }}
         }
+      } @else {
+        <div class="flex flex-column">
+          @for (item of [0, 1, 2, 3, 4]; track $index) {
+            <p-skeleton styleClass="rounded-4 h-2rem w-15rem md:w-20rem border-round-2xl my-2"></p-skeleton>
+          }
+        </div>
+        <hr class="w-full">
+        <div class="flex flex-column align-items-end">
+          @for (item of [0, 1, 2, 3, 4, 5]; track $index) {
+            <p-skeleton styleClass="rounded-4 h-2rem w-15rem md:w-20rem border-round-2xl my-2"></p-skeleton>
+          }
+        </div>
+        <hr class="w-full">
+        <div class="flex flex-column">
+          @for (item of [0, 1, 2, 3, 4, 5]; track $index) {
+            <p-skeleton styleClass="rounded-4 h-2rem w-15rem md:w-20rem border-round-2xl my-2"></p-skeleton>
+          }
+        </div>
       }
     </div>
   </div>
