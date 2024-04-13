@@ -5,6 +5,7 @@ import { ERROR_POINT_FETCH } from "src/app/constants";
 import { FantasyPointsDriver } from "src/shared/models/fantasyPointsDriver";
 import { FantasyPointsTeam } from "src/shared/models/fantasyPointsTeam";
 import { FantasyApiService } from "src/shared/services/api/fantasy-api.service";
+import { FantasyService } from "src/shared/services/fantasy.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 
 @Component({
@@ -16,7 +17,7 @@ export class FantasyTeamDialogPointComponent {
   data: unknown;
   options: unknown;
   labels: string[] = [];
-  prices: number[] = [];
+  points: number[] = [];
 
   ref: DynamicDialogRef | undefined;
   private _unsubscribe: Subject<void> = new Subject<void>();
@@ -24,6 +25,7 @@ export class FantasyTeamDialogPointComponent {
   constructor(
     public config: DynamicDialogConfig,
     private fantasyApiService: FantasyApiService,
+    private fantasyService: FantasyService,
     private messageInfoService: MessageInfoService
   ) { }
 
@@ -53,7 +55,7 @@ export class FantasyTeamDialogPointComponent {
       .subscribe({
         next: (fantasyPricesDriver: FantasyPointsDriver[]) => {
           this.labels = fantasyPricesDriver.map((fantasyPointDriver: FantasyPointsDriver) => fantasyPointDriver.race.circuit.name);
-          this.prices = fantasyPricesDriver.map((fantasyPointDriver: FantasyPointsDriver) => fantasyPointDriver.points);
+          this.points = fantasyPricesDriver.map((fantasyPointDriver: FantasyPointsDriver) => fantasyPointDriver.points);
         },
         error: () => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
@@ -74,7 +76,7 @@ export class FantasyTeamDialogPointComponent {
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam[]) => {
           this.labels = fantasyPointsTeam.map((fantasyPointTeam: FantasyPointsTeam) => fantasyPointTeam.race.circuit.name);
-          this.prices = fantasyPointsTeam.map((fantasyPointTeam: FantasyPointsTeam) => fantasyPointTeam.points);
+          this.points = fantasyPointsTeam.map((fantasyPointTeam: FantasyPointsTeam) => fantasyPointTeam.points);
         },
         error: () => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
@@ -90,57 +92,8 @@ export class FantasyTeamDialogPointComponent {
    * Applies styles to match the theme of the application.
    */
   showChart(): void {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue("--text-color");
-    const textColorSecondary = documentStyle.getPropertyValue("--text-color-secondary");
-    const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
-
-    this.data = {
-      labels: this.labels,
-      datasets: [
-        {
-          label: "Puntos",
-          fill: false,
-          borderColor: documentStyle.getPropertyValue("--blue-500"),
-          yAxisID: "y",
-          tension: 0,
-          data: this.prices
-        }
-      ]
-    };
-
-    this.options = {
-      stacked: false,
-      maintainAspectRatio: false,
-      aspectRatio: 0.6,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder
-          }
-        },
-        y: {
-          type: "linear",
-          display: true,
-          position: "left",
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder
-          }
-        }
-      }
-    };
+    const chartConfig = this.fantasyService.getChartConfig(this.labels, this.points);
+    this.data = chartConfig.data;
+    this.options = chartConfig.options;
   }
 }

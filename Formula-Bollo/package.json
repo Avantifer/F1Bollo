@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "compodoc": "npx compodoc -p tsconfig.doc.json",
-    "htmlhint": "htmlhint \"src/**/*.html\""
+    "sonar": "sonar-scanner"
   },
   "private": true,
   "dependencies": {
@@ -54,6 +54,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "prettier": "^3.2.5",
+    "sonar-scanner": "^3.1.0",
     "typescript": "^5.3.3",
     "webpack": "^5.88.2",
     "webpack-sources": "^3.2.3"

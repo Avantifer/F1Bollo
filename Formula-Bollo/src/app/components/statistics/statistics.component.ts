@@ -148,13 +148,13 @@ export class StatisticsComponent {
       .subscribe((data) => {
         if (data) {
           this.seasonSelected = data.season;
-          if (this.seasonSelected!.number != 0) {
+          if (this.seasonSelected && this.seasonSelected?.number != 0) {
             if (this.optionStatisticsSelected === "Pilotos") {
-              this.getStatisticsOfDrivers(this.seasonSelected!.number);
+              this.getStatisticsOfDrivers(this.seasonSelected.number);
             } else if (this.optionStatisticsSelected === "Escuderías") {
-              this.getStatisticsOfTeams(this.seasonSelected!.number);
+              this.getStatisticsOfTeams(this.seasonSelected.number);
             }
-          } else if (this.seasonSelected!.number == 0) {
+          } else if (this.seasonSelected?.number == 0) {
             if (this.optionStatisticsSelected === "Pilotos") {
               this.getStatisticsOfDrivers();
             } else if (this.optionStatisticsSelected === "Escuderías") {
@@ -225,7 +225,7 @@ export class StatisticsComponent {
 
   getDataDriversPoles(): void {
     const driversInfoWithPoles: DriverInfo[] = this.driversInfo.filter(driverInfo => driverInfo.poles > 0);
-    const driverInfoWithPolesSorted: DriverInfo[] = driversInfoWithPoles.sort((a, b) => b.poles - a.poles);
+    const driverInfoWithPolesSorted: DriverInfo[] = [...driversInfoWithPoles].sort((a, b) => b.poles - a.poles);
 
     this.labels = driverInfoWithPolesSorted.map(driverInfo => driverInfo.driver.name);
     this.colors = driverInfoWithPolesSorted.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
@@ -241,7 +241,7 @@ export class StatisticsComponent {
 
   getDataDriversFastLaps(): void {
     const driversInfoWithFastLaps: DriverInfo[] = this.driversInfo.filter(driverInfo => driverInfo.fastlaps > 0);
-    const driversInfoWithFastLapsSorted: DriverInfo[] = driversInfoWithFastLaps.sort((a, b) => b.fastlaps - a.fastlaps);
+    const driversInfoWithFastLapsSorted: DriverInfo[] = [...driversInfoWithFastLaps].sort((a, b) => b.fastlaps - a.fastlaps);
     this.labels = driversInfoWithFastLapsSorted.map(driverInfo => driverInfo.driver.name);
     this.colors = driversInfoWithFastLapsSorted.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
 
@@ -256,7 +256,7 @@ export class StatisticsComponent {
 
   getDataDriversPodiums(): void {
     const driversInfoWithPodiums: DriverInfo[] = this.driversInfo.filter(driverInfo => driverInfo.podiums > 0);
-    const driversInfoWithPodiumsSorted: DriverInfo[] = driversInfoWithPodiums.sort((a, b) => b.podiums - a.podiums);
+    const driversInfoWithPodiumsSorted: DriverInfo[] = [...driversInfoWithPodiums].sort((a, b) => b.podiums - a.podiums);
     this.labels = driversInfoWithPodiumsSorted.map(driverInfo => driverInfo.driver.name);
     this.colors = driversInfoWithPodiumsSorted.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
 
@@ -271,7 +271,7 @@ export class StatisticsComponent {
 
   getDataDriversVictories(): void {
     const driversInfoWithVictories: DriverInfo[] = this.driversInfo.filter(driverInfo => driverInfo.victories > 0);
-    const driversInfoWithVictoriesSorted: DriverInfo[] = driversInfoWithVictories.sort((a, b) => b.victories - a.victories);
+    const driversInfoWithVictoriesSorted: DriverInfo[] = [...driversInfoWithVictories].sort((a, b) => b.victories - a.victories);
     this.labels = driversInfoWithVictoriesSorted.map(driverInfo => driverInfo.driver.name);
     this.colors = driversInfoWithVictoriesSorted.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
 
@@ -286,7 +286,7 @@ export class StatisticsComponent {
 
   getDataDriversRacesFinished(): void {
     const driversInfoWithRacesFinished: DriverInfo[] = this.driversInfo.filter(driverInfo => driverInfo.racesFinished > 0);
-    const driversInfoWithRacesFinishedSorted: DriverInfo[] = driversInfoWithRacesFinished.sort((a, b) => b.racesFinished - a.racesFinished);
+    const driversInfoWithRacesFinishedSorted: DriverInfo[] = [...driversInfoWithRacesFinished].sort((a, b) => b.racesFinished - a.racesFinished);
     this.labels = driversInfoWithRacesFinishedSorted.map(driverInfo => driverInfo.driver.name);
     this.colors = driversInfoWithRacesFinishedSorted.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
 
@@ -301,7 +301,7 @@ export class StatisticsComponent {
 
   getDataDriversPenalties(): void {
     const driversInfoWithPenalties: DriverInfo[] = this.driversInfo.filter(driverInfo => driverInfo.penalties > 0);
-    const driversInfoWithPenaltiesSorted: DriverInfo[] = driversInfoWithPenalties.sort((a, b) => b.penalties - a.penalties);
+    const driversInfoWithPenaltiesSorted: DriverInfo[] = [...driversInfoWithPenalties].sort((a, b) => b.penalties - a.penalties);
     this.labels = driversInfoWithPenaltiesSorted.map(driverInfo => driverInfo.driver.name);
     this.colors = driversInfoWithPenaltiesSorted.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
 
@@ -315,7 +315,7 @@ export class StatisticsComponent {
   }
 
   getDataDriversTotalPoints(): void {
-    const driverInfoWithTotalPoints: DriverInfo[] = this.driversInfo.sort((a, b) => b.totalPoints - a.totalPoints);
+    const driverInfoWithTotalPoints: DriverInfo[] = [...this.driversInfo].sort((a, b) => b.totalPoints - a.totalPoints);
     this.labels = driverInfoWithTotalPoints.map(driverInfo => driverInfo.driver.name);
     this.colors = driverInfoWithTotalPoints.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
 
@@ -329,7 +329,7 @@ export class StatisticsComponent {
   }
 
   getDataDriversAveragePoints(): void {
-    const driverInfoWithAveragePoints: DriverInfo[] = this.driversInfo.sort((a, b) => parseFloat((b.totalPoints / b.racesFinished).toFixed(2)) - parseFloat((a.totalPoints / a.racesFinished).toFixed(2)));
+    const driverInfoWithAveragePoints: DriverInfo[] = [...this.driversInfo].sort((a, b) => parseFloat((b.totalPoints / b.racesFinished).toFixed(2)) - parseFloat((a.totalPoints / a.racesFinished).toFixed(2)));
     this.labels = driverInfoWithAveragePoints.map(driverInfo => driverInfo.driver.name);
     this.colors = driverInfoWithAveragePoints.map(driverInfo => this.colorsMappings[driverInfo.driver.team.name]);
 
@@ -344,7 +344,7 @@ export class StatisticsComponent {
 
   getDataTeamsPoles(): void {
     const teamsInfoWithPoles: TeamInfo[] = this.teamsInfo.filter(teamInfo => teamInfo.poles > 0);
-    const teamsInfoWithPolesSorted: TeamInfo[] = teamsInfoWithPoles.sort((a, b) => b.poles - a.poles);
+    const teamsInfoWithPolesSorted: TeamInfo[] = [...teamsInfoWithPoles].sort((a, b) => b.poles - a.poles);
     this.labels = teamsInfoWithPolesSorted.map(teamInfo => teamInfo.team.name);
     this.colors = teamsInfoWithPolesSorted.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
 
@@ -359,7 +359,7 @@ export class StatisticsComponent {
 
   getDataTeamsPodiums(): void {
     const teamsInfoWithPodiums: TeamInfo[] = this.teamsInfo.filter(teamInfo => teamInfo.podiums > 0);
-    const teamsInfoWithPodiumsSorted: TeamInfo[] = teamsInfoWithPodiums.sort((a, b) => b.podiums - a.podiums);
+    const teamsInfoWithPodiumsSorted: TeamInfo[] = [...teamsInfoWithPodiums].sort((a, b) => b.podiums - a.podiums);
     this.labels = teamsInfoWithPodiumsSorted.map(teamInfo => teamInfo.team.name);
     this.colors = teamsInfoWithPodiumsSorted.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
 
@@ -374,7 +374,7 @@ export class StatisticsComponent {
 
   getDataTeamsFastLaps(): void {
     const teamsInfoWithFastLaps: TeamInfo[] = this.teamsInfo.filter(teamInfo => teamInfo.fastlaps > 0);
-    const teamsInfoWithFastLapsSorted: TeamInfo[] = teamsInfoWithFastLaps.sort((a, b) => b.fastlaps - a.fastlaps);
+    const teamsInfoWithFastLapsSorted: TeamInfo[] = [...teamsInfoWithFastLaps].sort((a, b) => b.fastlaps - a.fastlaps);
     this.labels = teamsInfoWithFastLapsSorted.map(teamInfo => teamInfo.team.name);
     this.colors = teamsInfoWithFastLapsSorted.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
 
@@ -389,7 +389,7 @@ export class StatisticsComponent {
 
   getDataTeamsPenalties(): void {
     const teamsInfoWithPenalties: TeamInfo[] = this.teamsInfo.filter(teamInfo => teamInfo.penalties > 0);
-    const teamsInfoWithPenaltiesSorted: TeamInfo[] = teamsInfoWithPenalties.sort((a, b) => b.penalties - a.penalties);
+    const teamsInfoWithPenaltiesSorted: TeamInfo[] = [...teamsInfoWithPenalties].sort((a, b) => b.penalties - a.penalties);
     this.labels = teamsInfoWithPenaltiesSorted.map(teamInfo => teamInfo.team.name);
     this.colors = teamsInfoWithPenaltiesSorted.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
 
@@ -404,7 +404,7 @@ export class StatisticsComponent {
 
   getDataTeamsVictories(): void {
     const teamsInfoWithVictories: TeamInfo[] = this.teamsInfo.filter(teamInfo => teamInfo.victories > 0);
-    const teamsInfoWithVictoriesSorted: TeamInfo[] = teamsInfoWithVictories.sort((a, b) => b.victories - a.victories);
+    const teamsInfoWithVictoriesSorted: TeamInfo[] = [...teamsInfoWithVictories].sort((a, b) => b.victories - a.victories);
     this.labels = teamsInfoWithVictoriesSorted.map(teamInfo => teamInfo.team.name);
     this.colors = teamsInfoWithVictoriesSorted.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
 
@@ -419,7 +419,7 @@ export class StatisticsComponent {
 
   getDataTeamsRacesFinished(): void {
     const teamsInfoWithRacesFinished: TeamInfo[] = this.teamsInfo.filter(teamInfo => teamInfo.racesFinished > 0);
-    const teamsInfoWithRacesFinishedSorted: TeamInfo[] = teamsInfoWithRacesFinished.sort((a, b) => b.victories - a.victories);
+    const teamsInfoWithRacesFinishedSorted: TeamInfo[] = [...teamsInfoWithRacesFinished].sort((a, b) => b.victories - a.victories);
     this.labels = teamsInfoWithRacesFinishedSorted.map(teamInfo => teamInfo.team.name);
     this.colors = teamsInfoWithRacesFinishedSorted.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
 
@@ -433,7 +433,7 @@ export class StatisticsComponent {
   }
 
   getDataTeamsTotalPoints(): void {
-    const teamsInfoWithTotalPoints: TeamInfo[] = this.teamsInfo.sort((a, b) => b.totalPoints - a.totalPoints);
+    const teamsInfoWithTotalPoints: TeamInfo[] = [...this.teamsInfo].sort((a, b) => b.totalPoints - a.totalPoints);
     this.labels = teamsInfoWithTotalPoints.map(teamInfo => teamInfo.team.name);
     this.colors =  teamsInfoWithTotalPoints.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
 
@@ -447,7 +447,7 @@ export class StatisticsComponent {
   }
 
   getDataTeamsAveragePoints(): void {
-    const driverInfoWithAveragePoints: TeamInfo[] = this.teamsInfo.sort((a, b) => parseFloat((b.totalPoints / b.racesFinished).toFixed(2)) - parseFloat((a.totalPoints / a.racesFinished).toFixed(2)));
+    const driverInfoWithAveragePoints: TeamInfo[] = [...this.teamsInfo].sort((a, b) => parseFloat((b.totalPoints / b.racesFinished).toFixed(2)) - parseFloat((a.totalPoints / a.racesFinished).toFixed(2)));
     this.labels = driverInfoWithAveragePoints.map(teamInfo => teamInfo.team.name);
     this.colors =  driverInfoWithAveragePoints.map(teamInfo => this.colorsMappings[teamInfo.team.name]);
     this.dataTeamsAveragePoints = {

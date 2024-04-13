@@ -2,13 +2,13 @@ import { Component } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
-import { ERROR_SEASON_FETCH, ERROR_TEAM_FETCH } from "src/app/constants";
+import { ERROR_TEAM_FETCH } from "src/app/constants";
 import { environment } from "src/enviroments/enviroment";
 import { Season } from "src/shared/models/season";
 import { TeamWithDrivers } from "src/shared/models/teamWithDrivers";
-import { SeasonApiService } from "src/shared/services/api/season-api.service";
 import { TeamApiService } from "src/shared/services/api/team-api.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
+import { SeasonService } from "src/shared/services/season.service";
 
 @Component({
   selector: "app-teams",
@@ -23,7 +23,7 @@ export class TeamsComponent {
     season: new FormControl(""),
   });
 
-  seasonSelected: Season | undefined;
+  seasonSelected: Season = environment.seasonActual;
 
   private _unsubscribe: Subject<void> = new Subject<void>();
 
@@ -31,7 +31,8 @@ export class TeamsComponent {
     public router: Router,
     private teamApiService: TeamApiService,
     private messageInfoService: MessageInfoService,
-    private seasonApiService: SeasonApiService,
+    private seasonService: SeasonService,
+
   ) {}
 
   ngOnInit(): void {
@@ -68,26 +69,7 @@ export class TeamsComponent {
    * Fetch all seasons and set a default season in the form.
    */
   obtainAllSeasons(): void {
-    this.seasonApiService
-      .getSeasons()
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: (seasons: Season[]) => {
-          this.seasons = seasons;
-
-          // Put seasonActual on the season Form as default value and update seasonSelected's property
-          this.seasonSelected = this.seasons.filter(
-            (season: Season) =>
-              season.number === environment.seasonActual.number,
-          )[0];
-          this.seasonForm.get("season")?.setValue(this.seasonSelected);
-        },
-        error: (error) => {
-          this.messageInfoService.showError(ERROR_SEASON_FETCH);
-          console.log(error);
-          throw error;
-        },
-      });
+    this.seasonService.obtainAllSeasons(this.seasons, this.seasonSelected, this.seasonForm);
   }
 
   /**
@@ -99,7 +81,7 @@ export class TeamsComponent {
       .subscribe((data) => {
         this.seasonSelected = data.season;
         this.teamWithDrivers = [];
-        this.obtainAllTeamsWithDrivers(this.seasonSelected!.number);
+        this.obtainAllTeamsWithDrivers(this.seasonSelected.number);
       });
   }
 

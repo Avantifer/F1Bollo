@@ -5,6 +5,7 @@ import { ERROR_PRICE_FETCH } from "src/app/constants";
 import { FantasyPriceDriver } from "src/shared/models/fantasyPriceDriver";
 import { FantasyPriceTeam } from "src/shared/models/fantasyPriceTeam";
 import { FantasyApiService } from "src/shared/services/api/fantasy-api.service";
+import { FantasyService } from "src/shared/services/fantasy.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 
 @Component({
@@ -21,7 +22,12 @@ export class FantasyTeamDialogPriceComponent {
   ref: DynamicDialogRef | undefined;
   private _unsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(public config: DynamicDialogConfig, private fantasyApiService: FantasyApiService, private messageInfoService: MessageInfoService) { }
+  constructor(
+    public config: DynamicDialogConfig,
+    private fantasyApiService: FantasyApiService,
+    private fantasyService: FantasyService,
+    private messageInfoService: MessageInfoService
+  ) { }
 
   ngOnInit(): void {
     const id: number = this.config.data.id;
@@ -86,57 +92,8 @@ export class FantasyTeamDialogPriceComponent {
    * Applies styles to match the theme of the application.
    */
   showChart(): void {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue("--text-color");
-    const textColorSecondary = documentStyle.getPropertyValue("--text-color-secondary");
-    const surfaceBorder = documentStyle.getPropertyValue("--surface-border");
-
-    this.data = {
-      labels: this.labels,
-      datasets: [
-        {
-          label: "Precio",
-          fill: false,
-          borderColor: documentStyle.getPropertyValue("--blue-500"),
-          yAxisID: "y",
-          tension: 0,
-          data: this.prices
-        }
-      ]
-    };
-
-    this.options = {
-      stacked: false,
-      maintainAspectRatio: false,
-      aspectRatio: 0.6,
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder
-          }
-        },
-        y: {
-          type: "linear",
-          display: true,
-          position: "left",
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder
-          }
-        }
-      }
-    };
+    const chartConfig = this.fantasyService.getChartConfig(this.labels, this.prices);
+    this.data = chartConfig.data;
+    this.options = chartConfig.options;
   }
 }

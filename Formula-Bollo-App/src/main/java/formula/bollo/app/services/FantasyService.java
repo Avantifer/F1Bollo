@@ -81,54 +81,15 @@ public class FantasyService {
         // Get the fastest lap gives 1 point
         if (result.getFastlap() == 1) points += 1;
 
-        Boolean goodPosition = false;
+        boolean goodPosition = false;
 
         // Depends on the position gives points
-        switch (result.getPosition().getPositionNumber()) {
-            case 1:
-                points += 10;
-                goodPosition = true;
-                break;
-            case 2:
-                points += 9;
-                goodPosition = true;
-                break;
-            case 3:
-                points += 8;
-                goodPosition = true;
-                break;
-            case 4:
-                points += 7;
-                goodPosition = true;
-                break;
-            case 5:
-                points += 6;
-                goodPosition = true;
-                break;
-            case 6:
-                points += 5;
-                goodPosition = true;
-                break;
-            case 7:
-                points += 4;
-                goodPosition = true;
-                break;
-            case 8:
-                points += 3;
-                goodPosition = true;
-                break;
-            case 9:
-                points += 2;
-                goodPosition = true;
-                break;
-            case 10:
-                points += 1;
-                goodPosition = true;
-                break;
-            default:
-                break;
-        }
-        
+        int positionNumber = result.getPosition().getPositionNumber();
+        if (positionNumber >= 1 && positionNumber <= 10) {
+            points += 11 - positionNumber;
+            goodPosition = true;
+        }  
+                
         List<FantasyPriceDriver> fantasyPrices = this.fantasyPriceRepository.findByRaceId(result.getRace().getId());
 
         FantasyPriceDriver fantasyPrice = fantasyPrices.stream()
@@ -161,7 +122,7 @@ public class FantasyService {
     */
     public List<FantasyPointsDriver> createDriversPoints(List<Result> results) {
         List<FantasyPointsDriver> fantasyPoints = new ArrayList<>();
-        int sizeResults = results.stream().filter(result ->  result.getPosition() != null).collect(Collectors.toList()).size();
+        int sizeResults = results.stream().filter(result ->  result.getPosition() != null).toList().size();
         boolean pointsProblem = false;
 
         for (Result result: results) {
@@ -236,30 +197,16 @@ public class FantasyService {
         if (fantasyPoint == null) return -1;
         double points = fantasyPoint.getPoints();
 
-        if (price >= minPrice && price < 4000000) {
-            if (points < 1) {
-                price = adjustPriceForReduction(price);
-            } else if (points >= 2) {
-                price += (points / 10.0) * minPrice;
-            }
-        } else if (price >= 4000000 && price < 6000000) {
-            if (points <= 1) {
-                price = adjustPriceForReduction(price);
-            } else if (points >= 3) {
-                price += (points / 10.0) * minPrice;
-            }
-        } else if (price >= 6000000 && price < 10000000) {
-            if (points <= 2) {
-                price = adjustPriceForReduction(price);
-            } else if (points >= 4) {
-                price += (points / 10.0) * minPrice;
-            }
-        } else if (price >= 10000000) {
-            if (points <= 5) {
-                price = adjustPriceForReduction(price);
-            } else {
-                price += (points / 10.0) * minPrice;
-            }
+        if (price >= 10000000 && points <= 5) {
+            price = adjustPriceForReduction(price);
+        } else if (price >= 6000000 && points <= 2) {
+            price = adjustPriceForReduction(price);
+        } else if (price >= 4000000 && points <= 1) {
+            price = adjustPriceForReduction(price);
+        } else if (price >= minPrice && points < 1) {
+            price = adjustPriceForReduction(price);
+        } else {
+            price += (points / 10.0) * minPrice;
         }
 
         // Si el nuevo precio es menor que 1, el precio es 1; si es mayor que 30, el precio es 30

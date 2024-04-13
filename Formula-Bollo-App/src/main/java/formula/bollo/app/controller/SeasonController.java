@@ -122,9 +122,9 @@ public class SeasonController {
     public List<SeasonDTO> seasonsByTeamName() {
         Log.info("START - seasonsByTeamName - START");
         
-        Set<Season> seasons = new HashSet<>();
+        Set<Season> seasons;
         List<FantasyElection> fantasyElections = this.fantasyElectionRepository.findAll();
-        List<Season> fSeasonDTOs = fantasyElections.stream().map(FantasyElection::getSeason).collect(Collectors.toList());
+        List<Season> fSeasonDTOs = fantasyElections.stream().map(FantasyElection::getSeason).toList();
 
         seasons = new HashSet<>(fSeasonDTOs);
         List<SeasonDTO> seasonsReturn = seasons.stream().map(seasonMapper::seasonToSeasonDTO).collect(Collectors.toList());

@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 
 
@@ -68,8 +69,8 @@ public class DriverController {
         Log.info("START - getinfoDriverByName - START");
         Log.info("RequestParam getinfoDriverByName (season) -> " + season);
         Log.info("RequestParam getinfoDriverByName (driverName) -> " + driverName);
-        List<Driver> drivers = new ArrayList<>();
-        DriverInfoDTO driverInfoDTO = new DriverInfoDTO();
+        List<Driver> drivers;
+        DriverInfoDTO driverInfoDTO;
 
         if (season == null) {
             drivers = driverRepository.findByName(driverName);
@@ -102,11 +103,12 @@ public class DriverController {
 
     @Operation(summary = "Get all info of drivers", tags = Constants.TAG_TEAM)
     @GetMapping("/allInfoDriver")
+    @Cacheable(value = "driversCache", key = "#season")
     public List<DriverInfoDTO> getAllInfoDriver(@RequestParam(value = "season", required = false) Integer season) {
         Log.info("START - getAllInfoDriver - START");
         List<DriverInfoDTO> driversInfoDTO = new ArrayList<>();
 
-        List<Driver> drivers = new ArrayList<>();
+        List<Driver> drivers;
 
         if (season == null) {
             drivers = driverRepository.findAll();
@@ -121,7 +123,7 @@ public class DriverController {
         }
 
         driversInfoDTO = this.driverService.sumDuplicates(driversInfoDTO);
-        
+
         Log.info("END - getAllInfoDriver - END");
         return driversInfoDTO;
     }

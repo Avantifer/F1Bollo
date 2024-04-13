@@ -61,7 +61,7 @@ public class UserController {
         Log.info("RequestBody login -> " + userDTO.toString());
 
         List<User> user = userRepository.findByUsername(userDTO.getUsername());
-        Boolean goodCredentials = this.userService.checkUserCredentials(userDTO, user);
+        boolean goodCredentials = this.userService.checkUserCredentials(userDTO, user);
 
         if (!goodCredentials) return new ResponseEntity<>(Constants.ERROR_INVALID_CREDENTIALS, HttpStatusCode.valueOf(500));
 
@@ -80,10 +80,10 @@ public class UserController {
         Log.info("RequestBody register -> " + userDTO.toString());
 
         List<User> user = userRepository.findByUsername(userDTO.getUsername());
-        Boolean usernameAlreadyExists = this.userService.checkUserAlreadyExists(userDTO, user);
+        boolean usernameAlreadyExists = this.userService.checkUserAlreadyExists(userDTO, user);
 
         user = userRepository.findByEmail(userDTO.getEmail());
-        Boolean emailAlreadyExists = this.userService.checkUserAlreadyExists(userDTO, user);
+        boolean emailAlreadyExists = this.userService.checkUserAlreadyExists(userDTO, user);
 
         if (usernameAlreadyExists) return new ResponseEntity<>(Constants.ERROR_USERNAME_ALREADY_EXISTS, HttpStatusCode.valueOf(500));
         if (emailAlreadyExists) return new ResponseEntity<>(Constants.ERROR_EMAIL_ALREADY_EXISTS, HttpStatusCode.valueOf(500));

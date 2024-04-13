@@ -30,7 +30,7 @@ public class RaceService {
     */
     public void saveRace(RaceDTO raceDTO, int numberSeason) {
         List<Race> existingRace = raceRepository.findByCircuitId(raceDTO.getCircuit().getId(), numberSeason);
-        Race race = new Race();
+        Race race;
 
         if (existingRace.isEmpty()) {
             race = raceMapper.raceDTOToRace(raceDTO);
@@ -77,6 +77,6 @@ public class RaceService {
         List<RaceDTO> raceDTOs = this.raceMapper.convertRacesToRacesDTO(races);
         raceDTOs.sort(Comparator.comparing(RaceDTO::getFinished).reversed());
 
-        return raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).collect(Collectors.toList());
+        return raceDTOs.stream().filter(raceDTO -> raceDTO.getFinished() == 1).toList();
     }
 }
