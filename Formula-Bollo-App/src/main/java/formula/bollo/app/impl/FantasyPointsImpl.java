@@ -82,7 +82,7 @@ public class FantasyPointsImpl implements FantasyPointsMapper {
     public List<FantasyPointsDriverDTO> convertFantasyPointsDriverToFantasyPointsDriverDTO(List<FantasyPointsDriver> fantasyPointsDrivers) {
         return fantasyPointsDrivers.parallelStream()
                 .map(this::fantasyPointsDriverToFantasyPointsDriverDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

@@ -13,7 +13,11 @@ export class PricePipe implements PipeTransform {
       isNegative = true;
     }
 
-    const groups: string[] = price.split(/(?=(?:...)*$)/);
+    const groups: string[] = [];
+    for (let i = price.length; i > 0; i -= 3) {
+      groups.unshift(price.slice(Math.max(0, i - 3), i));
+    }
+
     return isNegative ? "-" + groups.join(".") : groups.join(".");
   }
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,11 +48,11 @@ public class TeamsController {
     public List<TeamDTO> getAllTeams(@RequestParam(value = "season", required = false) Integer season) {
         Log.info("START - getAllTeams - START");
         
-        List<TeamDTO> teamDTOs = new ArrayList<>();
+        List<TeamDTO> teamDTOs;
 
         if (season == null || season == Constants.ACTUAL_SEASON) {
             teamService.putTeamsOnCache(teamCache);
-            teamDTOs = teamCache.values().stream().collect(Collectors.toList());
+            teamDTOs = teamCache.values().stream().toList();
         } else {
             teamDTOs = this.teamService.getTeamsBySeason(season);
         }
@@ -88,8 +87,8 @@ public class TeamsController {
         Log.info("RequestParam getinfoTeamByName (season) -> " + season);
         Log.info("RequestParam getinfoTeamByName (driverName) -> " + teamName);
 
-        List<Team> teams = new ArrayList<>();
-        TeamInfoDTO teamInfoDTO = new TeamInfoDTO();
+        List<Team> teams;
+        TeamInfoDTO teamInfoDTO;
 
         if (season == null) {
             teams = teamRepository.findByName(teamName);
@@ -109,7 +108,7 @@ public class TeamsController {
         Log.info("START - getAllInfoTeam - START");
         List<TeamInfoDTO> teamsInfoDTO = new ArrayList<>();
 
-        List<Team> teams = new ArrayList<>();
+        List<Team> teams;
 
         if (season == null) {
             teams = teamRepository.findAll();

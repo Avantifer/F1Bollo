@@ -102,7 +102,7 @@ public class TeamService {
                 return this.assignTeamWithDrivers(teamDrivers, team, totalPoints);
             })
             .sorted(Comparator.comparingInt(TeamWithDriversDTO::getTotalPoints).reversed())
-            .collect(Collectors.toList());
+            .toList();
     }
 
     /**
@@ -185,7 +185,7 @@ public class TeamService {
 
         return teams.parallelStream()
             .map(teamMapper::teamToTeamDTO)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     /**
@@ -195,10 +195,9 @@ public class TeamService {
     */ 
     public TeamInfoDTO getAllInfoTeam(List<Team> teams) {
         TeamInfoDTO teamInfoDTO = new TeamInfoDTO();
-
-        List<Long> listOfIds = teams.stream().map(Team::getId).collect(Collectors.toList());
+    
         TeamDTO teamDTO = teamMapper.teamToTeamDTO(teams.get(teams.size() - 1));
- 
+    
         int poles = 0;
         int fastlaps = 0;
         int racesFinished = 0;
@@ -209,44 +208,40 @@ public class TeamService {
         int bestPosition = 0;
         int podiums = 0;
         int victories = 0;
-
-        List<Result> results = new ArrayList<>(); 
-        List<Sprint> sprints = new ArrayList<>();
+    
         Map<DriverDTO, Integer> totalPointsByDriver = new HashMap<>();
-
-        for(Long id : listOfIds) {
-            List<Driver> drivers = this.driverRepository.findByTeam(id);
-            List<Long> listOfIdsDrivers = drivers.stream().map(Driver::getId).collect(Collectors.toList());
-            constructors += this.constructorRepository.findByTeamId(id).size();
-
-            for(Long idDriver : listOfIdsDrivers) {
-                poles += this.resultRepository.polesByDriverId(idDriver).size();
-                fastlaps += this.resultRepository.fastlapByDriverId(idDriver).size();
-                racesFinished += this.resultRepository.racesFinishedByDriverId(idDriver).size();
-                championships += this.championshipRepository.findByDriverId(idDriver).size();
-                penalties += this.penaltyRepository.findByDriverId(idDriver).size();
-                podiums += this.resultRepository.podiumsOfDriver(id).size();
-                victories += this.resultRepository.victoriesOfDriver(id).size();
-
-                Optional<Result> bestResult = this.resultRepository.bestResultOfDriver(idDriver);
+    
+        for (Team team : teams) {
+            List<Driver> drivers = this.driverRepository.findByTeam(team.getId());
+            constructors += this.constructorRepository.findByTeamId(team.getId()).size();
+    
+            for (Driver driver : drivers) {
+                poles += this.resultRepository.polesByDriverId(driver.getId()).size();
+                fastlaps += this.resultRepository.fastlapByDriverId(driver.getId()).size();
+                racesFinished += this.resultRepository.racesFinishedByDriverId(driver.getId()).size();
+                championships += this.championshipRepository.findByDriverId(driver.getId()).size();
+                penalties += this.penaltyRepository.findByDriverId(driver.getId()).size();
+                podiums += this.resultRepository.podiumsOfDriver(driver.getId()).size();
+                victories += this.resultRepository.victoriesOfDriver(driver.getId()).size();
+    
+                Optional<Result> bestResult = this.resultRepository.bestResultOfDriver(driver.getId());
                 if (bestResult.isPresent()) {
                     int currentPositionNumber = bestResult.get().getPosition().getPositionNumber();
-                
+    
                     if (bestPosition == 0 || bestPosition > currentPositionNumber) {
                         bestPosition = currentPositionNumber;
                     }
                 }
-                results.addAll(this.resultRepository.findByDriverId(idDriver));
-                sprints.addAll(this.sprintRepository.findByDriverId(idDriver));
+                List<Result> results = this.resultRepository.findByDriverId(driver.getId());
+                List<Sprint> sprints = this.sprintRepository.findByDriverId(driver.getId());
                 resultService.setTotalPointsByDriver(results, sprints, totalPointsByDriver);
-                Optional<Driver> driver = this.driverRepository.findById(idDriver);
-                Integer pointsOfDriver = driver.isPresent() ? totalPointsByDriver.get(this.driverMapper.driverToDriverDTO(driver.get())) : null;
-                if (pointsOfDriver == null) break;
-                totalPoints +=  pointsOfDriver;
-
+                Integer pointsOfDriver = totalPointsByDriver.get(driverMapper.driverToDriverDTO(driver));
+                if (pointsOfDriver != null) {
+                    totalPoints += pointsOfDriver;
+                }
             }
         }
-        
+    
         teamInfoDTO.setTeam(teamDTO);
         teamInfoDTO.setPoles(poles);
         teamInfoDTO.setFastlaps(fastlaps);
@@ -258,7 +253,7 @@ public class TeamService {
         teamInfoDTO.setBestPosition(bestPosition);
         teamInfoDTO.setPodiums(podiums);
         teamInfoDTO.setVictories(victories);
-        
+    
         return teamInfoDTO;
     }
 

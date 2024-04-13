@@ -50,6 +50,6 @@ public class CircuitService {
 
         return circuits.parallelStream()
             .map(circuitMapper::circuitToCircuitDTO)
-            .collect(Collectors.toList());
+            .toList();
     }
 }

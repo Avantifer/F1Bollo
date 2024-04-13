@@ -50,6 +50,6 @@ public class ConfigurationService {
 
         return circuits.parallelStream()
             .map(configurationMapper::configurationToConfigurationDTO)
-            .collect(Collectors.toList());
+            .toList();
     }
 }

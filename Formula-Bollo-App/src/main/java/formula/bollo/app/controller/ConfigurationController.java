@@ -14,11 +14,9 @@ import formula.bollo.app.utils.Log;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import org.springframework.http.MediaType;
 
@@ -41,11 +39,11 @@ public class ConfigurationController {
         Log.info("START - getAllConfigurations - START");
         Log.info("RequestParam getAllConfigurations (season) -> " + season);
         
-        List<ConfigurationDTO> configurationDTOs = new ArrayList<>();
+        List<ConfigurationDTO> configurationDTOs;
 
         if (season == null || season == Constants.ACTUAL_SEASON) {
             this.configurationService.putCircuitsOnCache(configurationsCache);
-            configurationDTOs = configurationsCache.values().stream().collect(Collectors.toList());
+            configurationDTOs = configurationsCache.values().stream().toList();
         } else {
             configurationDTOs = this.configurationService.getConfigurationsBySeason(season);
         }

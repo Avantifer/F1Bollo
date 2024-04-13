@@ -2,11 +2,11 @@ package formula.bollo.app.impl;
 
 import java.sql.Blob;
 import java.sql.SQLException;
+import javax.sql.rowset.serial.SerialBlob;
+
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

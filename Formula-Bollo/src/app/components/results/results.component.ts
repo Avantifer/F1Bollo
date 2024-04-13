@@ -11,9 +11,7 @@ import { Season } from "src/shared/models/season";
 import { environment } from "src/enviroments/enviroment";
 import { ERROR_CIRCUIT_FETCH, ERROR_PENALTIES_FETCH, ERROR_RESULT_FETCH, ERROR_SEASON_FETCH } from "src/app/constants";
 import { PenaltyApiService } from "src/shared/services/api/penalty-api.service";
-import { DriverPenalties } from "src/shared/models/driverPenalty";
-import { RacePenalties } from "src/shared/models/racePenalty";
-import { Message } from "primeng/api";
+import { Penalty } from "src/shared/models/penalty";
 
 @Component({
   selector: "app-results",
@@ -24,8 +22,7 @@ export class ResultsComponent {
   circuits: Circuit[] = [];
   results: Result[] = [];
   seasons: Season[] = [];
-  penalties: DriverPenalties[] = [];
-  messagePenalties: Message[] = [];
+  penalties: Penalty[] = [];
 
   displayedColumns: string[] = ["position", "driverName", "teamName", "points"];
 
@@ -191,27 +188,11 @@ export class ResultsComponent {
    */
   getAllPenaltiesDriver(): void {
     this.penaltyApiService
-      .getAllPenaltiesPerDriver()
+      .getAllPenaltiesPerCircuit(this.circuitSelected!.id)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
-        next: (penalties: DriverPenalties[]) => {
-          this.penalties = penalties.filter((driverPenalty: DriverPenalties) => {
-            return driverPenalty.racePenalties.some((racePenalty: RacePenalties) => {
-              return racePenalty.race.circuit.id === this.circuitSelected?.id;
-            });
-          });
-
-          this.messagePenalties = [];
-          for (const penaltyDriver of this.penalties) {
-            for (const racePenalties of penaltyDriver.racePenalties) {
-              for (const penalty of racePenalties.penalties) {
-                this.messagePenalties.push({
-                  severity: this.severityMappings[penalty.severity.severity], summary: penalty.driver.name, detail: penalty.reason
-                });
-              }
-            }
-          }
-
+        next: (penalties: Penalty[]) => {
+          this.penalties = penalties;
           this.sidebarVisible = true;
         },
         error: (error) => {

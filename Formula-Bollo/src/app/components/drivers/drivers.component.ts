@@ -2,15 +2,15 @@ import { Component } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
-import { ERROR_DRIVER_FETCH, ERROR_RESULT_FETCH, ERROR_SEASON_FETCH } from "src/app/constants";
+import { ERROR_DRIVER_FETCH, ERROR_RESULT_FETCH } from "src/app/constants";
 import { environment } from "src/enviroments/enviroment";
 import { Driver } from "src/shared/models/driver";
 import { DriverPoints } from "src/shared/models/driverPoints";
 import { Season } from "src/shared/models/season";
 import { DriverApiService } from "src/shared/services/api/driver-api.service";
 import { ResultApiService } from "src/shared/services/api/result-api.service";
-import { SeasonApiService } from "src/shared/services/api/season-api.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
+import { SeasonService } from "src/shared/services/season.service";
 
 @Component({
   selector: "app-drivers",
@@ -36,7 +36,7 @@ export class DriversComponent {
     private driversApiService: DriverApiService,
     private resultApiService: ResultApiService,
     private messageInfoService: MessageInfoService,
-    private seasonApiService: SeasonApiService,
+    private seasonService: SeasonService,
   ) {}
 
   ngOnInit(): void {
@@ -97,25 +97,7 @@ export class DriversComponent {
    * Fetch all seasons and set a default season in the form.
    */
   obtainAllSeasons(): void {
-    this.seasonApiService
-      .getSeasons()
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: (seasons: Season[]) => {
-          this.seasons = seasons;
-          // Put seasonActual on the season Form as default value and update seasonSelected's property
-          this.seasonSelected = this.seasons.filter(
-            (season: Season) =>
-              season.number === environment.seasonActual.number,
-          )[0];
-          this.seasonForm.get("season")?.setValue(this.seasonSelected);
-        },
-        error: (error) => {
-          this.messageInfoService.showError(ERROR_SEASON_FETCH);
-          console.log(error);
-          throw error;
-        },
-      });
+    this.seasonService.obtainAllSeasons(this.seasons, this.seasonSelected, this.seasonForm);
   }
 
   /**

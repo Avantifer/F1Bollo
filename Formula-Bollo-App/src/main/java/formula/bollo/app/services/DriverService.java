@@ -2,10 +2,12 @@ package formula.bollo.app.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.OptionalInt;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,8 @@ public class DriverService {
         this.penaltyRepository = penaltyRepository;
     }
 
+    public static final Map<String, DriverInfoDTO> cacheDriverInfoDTO = new ConcurrentHashMap<>();
+
     /**
      * Retrieves all type of info by the driver name
      *
@@ -58,44 +62,35 @@ public class DriverService {
     public DriverInfoDTO getAllInfoDriver(List<Driver> drivers) {
         DriverInfoDTO driverInfoDTO = new DriverInfoDTO();
 
-        List<Long> listOfIds = drivers.stream().map(Driver::getId).collect(Collectors.toList());
+        List<Long> listOfIds = drivers.stream().map(Driver::getId).toList();
         DriverDTO driverDTO = driverMapper.driverToDriverDTO(drivers.get(drivers.size() - 1));
-        
-        int poles = 0;
-        int fastlaps = 0;
-        int racesFinished = 0;
-        int totalPoints = 0;
-        int championships = 0;
-        int penalties = 0;
-        int bestPosition = 0;
-        int podiums = 0;
-        int victories = 0;
 
-        List<Result> results = new ArrayList<>(); 
-        List<Sprint> sprints = new ArrayList<>();
+        int poles = listOfIds.stream().mapToInt(id -> this.resultRepository.polesByDriverId(id).size()).sum();
+        int fastlaps = listOfIds.stream().mapToInt(id -> this.resultRepository.fastlapByDriverId(id).size()).sum();
+        int racesFinished = listOfIds.stream().mapToInt(id -> this.resultRepository.racesFinishedByDriverId(id).size()).sum();
+        int championships = listOfIds.stream().mapToInt(id -> this.championshipRepository.findByDriverId(id).size()).sum();
+        int penalties = listOfIds.stream().mapToInt(id -> this.penaltyRepository.findByDriverId(id).size()).sum();
+        int podiums = listOfIds.stream().mapToInt(id -> this.resultRepository.podiumsOfDriver(id).size()).sum();
+        int victories = listOfIds.stream().mapToInt(id -> this.resultRepository.victoriesOfDriver(id).size()).sum();
+
+        OptionalInt bestPositionOptional = listOfIds.stream()
+                .mapToInt(id -> this.resultRepository.bestResultOfDriver(id).map(result -> result.getPosition().getPositionNumber()).orElse(0))
+                .min();
+        int bestPosition = bestPositionOptional.orElse(0);
+
+        List<Result> results = listOfIds.stream().flatMap(id -> this.resultRepository.findByDriverId(id).stream()).toList();
+        List<Sprint> sprints = listOfIds.stream().flatMap(id -> this.sprintRepository.findByDriverId(id).stream()).toList();
+
         Map<DriverDTO, Integer> totalPointsByDriver = new HashMap<>();
-        for(Long id : listOfIds) {
-            poles += this.resultRepository.polesByDriverId(id).size();
-            fastlaps += this.resultRepository.fastlapByDriverId(id).size();
-            racesFinished += this.resultRepository.racesFinishedByDriverId(id).size();
-            championships += this.championshipRepository.findByDriverId(id).size();
-            penalties += this.penaltyRepository.findByDriverId(id).size();
-            podiums += this.resultRepository.podiumsOfDriver(id).size();
-            victories += this.resultRepository.victoriesOfDriver(id).size();
+        resultService.setTotalPointsByDriver(results, sprints, totalPointsByDriver);
 
-            Optional<Result> bestResult = this.resultRepository.bestResultOfDriver(id);
-            int bestPositionActual = bestResult.isPresent() ? bestResult.get().getPosition().getPositionNumber() : 0;
-            bestPosition = (bestPosition == 0) ? bestPositionActual : Math.min(bestPosition, bestPositionActual);
+        int totalPoints = listOfIds.stream()
+                .mapToInt(id -> {
+                    Optional<Driver> driver = this.driverRepository.findById(id);
+                    return driver.isPresent() ? totalPointsByDriver.getOrDefault(this.driverMapper.driverToDriverDTO(driver.get()), 0) : 0;
+                })
+                .sum();
 
-            results.addAll(this.resultRepository.findByDriverId(id));
-            sprints.addAll(this.sprintRepository.findByDriverId(id));
-            resultService.setTotalPointsByDriver(results, sprints, totalPointsByDriver);
-            Optional<Driver> driver = this.driverRepository.findById(id);
-            Integer pointsOfDriver = driver.isPresent() ? totalPointsByDriver.get(this.driverMapper.driverToDriverDTO(driver.get())) : null;
-            if (pointsOfDriver == null) break;
-            totalPoints +=  pointsOfDriver;
-        }
-        
         driverInfoDTO.setDriver(driverDTO);
         driverInfoDTO.setPoles(poles);
         driverInfoDTO.setFastlaps(fastlaps);
@@ -106,33 +101,33 @@ public class DriverService {
         driverInfoDTO.setBestPosition(bestPosition);
         driverInfoDTO.setPodiums(podiums);
         driverInfoDTO.setVictories(victories);
-        
+
         return driverInfoDTO;
     }
 
     public List<DriverInfoDTO> sumDuplicates(List<DriverInfoDTO> driversInfoDTO) {
-        Map<String, DriverInfoDTO> resultMap = new HashMap<>();
-        
+        // Using LinkedHashMap to maintain insertion order
+        Map<String, DriverInfoDTO> resultMap = new LinkedHashMap<>();
+
         for (DriverInfoDTO driverInfo : driversInfoDTO) {
             String driverName = driverInfo.getDriver().getName();
-            
-            if (resultMap.containsKey(driverName)) {
-                DriverInfoDTO existingDriverInfo = resultMap.get(driverName);
-                existingDriverInfo.setDriver(driverInfo.getDriver());
-                existingDriverInfo.setPoles(existingDriverInfo.getPoles() + driverInfo.getPoles());
-                existingDriverInfo.setFastlaps(existingDriverInfo.getFastlaps() + driverInfo.getFastlaps());
-                existingDriverInfo.setRacesFinished(existingDriverInfo.getRacesFinished() + driverInfo.getRacesFinished());
-                existingDriverInfo.setTotalPoints(existingDriverInfo.getTotalPoints() + driverInfo.getTotalPoints());
-                existingDriverInfo.setChampionships(existingDriverInfo.getChampionships() + driverInfo.getChampionships());
-                existingDriverInfo.setPenalties(existingDriverInfo.getPenalties() + driverInfo.getPenalties());
-                existingDriverInfo.setBestPosition(Math.max(existingDriverInfo.getBestPosition(), driverInfo.getBestPosition()));
-                existingDriverInfo.setVictories(existingDriverInfo.getVictories() + driverInfo.getVictories());
-                existingDriverInfo.setPodiums(existingDriverInfo.getPodiums() + driverInfo.getPodiums());
-            } else {
-                resultMap.put(driverName, driverInfo);
-            }
+
+            // Merge data for duplicate drivers
+            resultMap.merge(driverName, driverInfo, (existingDriverInfo, newDriverInfo) -> {
+                existingDriverInfo.setDriver(newDriverInfo.getDriver());
+                existingDriverInfo.setPoles(existingDriverInfo.getPoles() + newDriverInfo.getPoles());
+                existingDriverInfo.setFastlaps(existingDriverInfo.getFastlaps() + newDriverInfo.getFastlaps());
+                existingDriverInfo.setRacesFinished(existingDriverInfo.getRacesFinished() + newDriverInfo.getRacesFinished());
+                existingDriverInfo.setTotalPoints(existingDriverInfo.getTotalPoints() + newDriverInfo.getTotalPoints());
+                existingDriverInfo.setChampionships(existingDriverInfo.getChampionships() + newDriverInfo.getChampionships());
+                existingDriverInfo.setPenalties(existingDriverInfo.getPenalties() + newDriverInfo.getPenalties());
+                existingDriverInfo.setBestPosition(Math.max(existingDriverInfo.getBestPosition(), newDriverInfo.getBestPosition()));
+                existingDriverInfo.setVictories(existingDriverInfo.getVictories() + newDriverInfo.getVictories());
+                existingDriverInfo.setPodiums(existingDriverInfo.getPodiums() + newDriverInfo.getPodiums());
+                return existingDriverInfo;
+            });
         }
-        
+
         return new ArrayList<>(resultMap.values());
     }
 }
