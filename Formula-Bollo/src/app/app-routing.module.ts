@@ -13,7 +13,6 @@ import { ResultsComponent } from "./components/results/results.component";
 import { AdminStatuteComponent } from "./components/admin/admin-statute/admin-statute.component";
 import { PageNotFoundComponent } from "src/shared/components/page-not-found/page-not-found.component";
 import { FantasyHomeComponent } from "./components/fantasy/fantasy-home/fantasy-home.component";
-import { FantasyLoginComponent } from "./components/fantasy/fantasy-login/fantasy-login.component";
 import { FantasyRegisterComponent } from "./components/fantasy/fantasy-register/fantasy-register.component";
 import { LoginGuard } from "src/shared/guards/LoginGuard";
 import { FantasyTeamComponent } from "./components/fantasy/fantasy-team/fantasy-team.component";
@@ -23,7 +22,6 @@ import { FantasyRecoverPasswordComponent } from "./components/fantasy/fantasy-re
 import { RecoverPasswordGuard } from "src/shared/guards/RecoverPasswordGuard";
 import { DriversInfoComponent } from "./components/drivers/drivers-info/drivers-info.component";
 import { TeamsInfoComponent } from "./components/teams/teams-info/teams-info.component";
-import { AdminSprintsComponent } from "./components/admin/admin-sprints/admin-sprints.component";
 import { StatisticsComponent } from "./components/statistics/statistics.component";
 
 const routes: Routes = [
@@ -79,7 +77,7 @@ const routes: Routes = [
       },
       {
         path: "sprints",
-        component: AdminSprintsComponent,
+        component: AdminResultsComponent,
       },
     ],
   },
@@ -98,7 +96,7 @@ const routes: Routes = [
   },
   {
     path: "fantasy/login",
-    component: FantasyLoginComponent,
+    component: LoginComponent,
     canActivate: [LoginGuard],
   },
   {

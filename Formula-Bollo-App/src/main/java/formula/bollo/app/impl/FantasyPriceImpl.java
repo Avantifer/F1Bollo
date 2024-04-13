@@ -83,7 +83,7 @@ public class FantasyPriceImpl implements FantasyPriceMapper {
     public List<FantasyPriceDriverDTO> convertFantasyPriceDriverToFantasyPriceDriverDTO(List<FantasyPriceDriver> fantasyPriceDrivers) {
         return fantasyPriceDrivers.parallelStream()
                 .map(this::fantasyPriceDriverToFantasyPriceDriverDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

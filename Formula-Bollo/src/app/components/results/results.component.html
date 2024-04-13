@@ -39,7 +39,7 @@
         <p-button class="results-button m-0 cursor-pointer font-bold text-lg underline F1_Regular p-button-raised" (click)="getAllPenaltiesDriver()">Penalizaciones</p-button>
       </div>
     </div>
-    <div class="flex md:hidden justify-content-start align-items-center">
+    <div class="flex md:hidden justify-content-start align-items-center mb-4">
       <p-button class="results-button mt-0 cursor-pointer font-bold text-base underline F1_Regular p-button-raised" (click)="getAllPenaltiesDriver()">Penalizaciones</p-button>
     </div>
     @if (results.length > 0) {
@@ -54,20 +54,16 @@
 </div>
 
 <p-sidebar [(visible)]="sidebarVisible" position="right">
-  @if (messagePenalties.length > 0) {
-    @for (penaltyDriver of penalties; track $index) {
-      @for (racePenalties of penaltyDriver.racePenalties; track $index) {
-        @for (penalty of racePenalties.penalties; track $index) {
-          <div class="card">
-            <p-messages [severity]="this.severityMappings[penalty.severity.severity]">
-                <ng-template pTemplate>
-                    <i [class]="this.severityIconsMappings[penalty.severity.severity]" class="text-2xl"></i>
-                    <div class="ml-3"> <span class="font-bold">{{ penalty.driver.name }}:</span> {{ penalty.reason }}</div>
-                </ng-template>
-            </p-messages>
-        </div>
-        }
-      }
+  @if (penalties.length > 0) {
+    @for (penalty of penalties; track $index) {
+      <div class="card">
+        <p-messages [severity]="this.severityMappings[penalty.severity.severity]">
+            <ng-template pTemplate>
+                <i [class]="this.severityIconsMappings[penalty.severity.severity]" class="text-2xl"></i>
+                <div class="ml-3"> <span class="font-bold">{{ penalty.driver.name }}:</span> {{ penalty.reason }}</div>
+            </ng-template>
+        </p-messages>
+      </div>
     }
   } @else {
     <h2>No hay penalizaciones</h2>

@@ -27,108 +27,164 @@
             ></p-calendar>
           </div>
         </form>
-        @if (results.length > 0) {
-          <form [formGroup]="fastLapForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
-            <div class="flex flex-column align-items-start lg:align-items-center w-max">
-              <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-baseline">Seleccione Vuelta Rápida:</span>
-              <p-dropdown
-                formControlName="fastlap"
-                [options]="results"
-                [showClear]="true"
-                optionLabel="driver.name"
-                class="align-self-center md:align-self-baseline"
-              ></p-dropdown>
-            </div>
-          </form>
-          <form [formGroup]="poleForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
-            <div class="flex flex-column align-items-start lg:align-items-center w-max">
-              <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-center md:align-self-baseline">Seleccione la Pole:</span>
-              <p-dropdown
-                formControlName="pole"
-                [options]="results"
-                [showClear]="true"
-                optionLabel="driver.name"
-                class="align-self-center md:align-self-baseline"
-              ></p-dropdown>
-            </div>
-          </form>
-          <h2 class="w-full text-center F1_Regular mt-6">Resultados</h2>
-          <form [formGroup]="resultsForm" class="resultsForm m-auto grid w-full xl:w-5">
-            @for (result of results; track $index) {
-              @if (result.position) {
+        @if (!isSprint) {
+          @if (results.length > 0) {
+              <form [formGroup]="fastLapForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
+                <div class="flex flex-column align-items-start lg:align-items-center w-max">
+                  <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-baseline">Seleccione Vuelta Rápida:</span>
+                  <p-dropdown
+                    formControlName="fastlap"
+                    [options]="results"
+                    [showClear]="true"
+                    optionLabel="driver.name"
+                    class="align-self-center md:align-self-baseline"
+                  ></p-dropdown>
+                </div>
+              </form>
+              <form [formGroup]="poleForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
+                <div class="flex flex-column align-items-start lg:align-items-center w-max">
+                  <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-center md:align-self-baseline">Seleccione la Pole:</span>
+                  <p-dropdown
+                    formControlName="pole"
+                    [options]="results"
+                    [showClear]="true"
+                    optionLabel="driver.name"
+                    class="align-self-center md:align-self-baseline"
+                  ></p-dropdown>
+                </div>
+              </form>
+            <h2 class="w-full text-center F1_Regular mt-6">Resultados</h2>
+            <form [formGroup]="resultsForm" class="resultsForm m-auto grid w-full xl:w-5">
+              @for (result of results; track $index) {
+                @if (result.position) {
+                  <div class="modifyResults-bottomSide-resultsGood col-12 lg:col-6 flex flex-column align-items-center">
+                    <p class="F1_Bold">Posición {{ $index + 1 }}</p>
+                    <p-dropdown
+                      [formControlName]="'result' + $index"
+                      [options]="results"
+                      [showClear]="true"
+                      optionLabel="driver.name"
+                      class="align-self-center">
+                    </p-dropdown>
+                  </div>
+                } @else {
+                  @if ($index === findFirstDisqualifiedIndex()) {
+                    <h2 class="w-full text-center F1_Regular mt-6"> Pilotos descalificados</h2>
+                  }
+                  <div class="modifyResults-bottomSide-resultsBad col-12 lg:col-6 flex flex-column align-items-center">
+                    <p-dropdown
+                      [formControlName]="'result' + $index"
+                      [options]="results"
+                      [showClear]="true"
+                      optionLabel="driver.name"
+                      class="align-self-center">
+                    </p-dropdown>
+                  </div>
+                }
+              }
+            </form>
+          } @else if (results.length === 0) {
+            <form [formGroup]="fastLapForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
+              <div class="flex flex-column align-items-start lg:align-items-center w-max">
+                <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-baseline">Seleccione Vuelta Rápida:</span>
+                <p-dropdown
+                  formControlName="fastlap"
+                  [options]="drivers"
+                  [showClear]="true"
+                  optionLabel="name"
+                  class="align-self-center md:align-self-baseline"
+                ></p-dropdown>
+              </div>
+            </form>
+            <form [formGroup]="poleForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
+              <div class="flex flex-column align-items-start lg:align-items-center w-max">
+                <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-center md:align-self-baseline">Seleccione la Pole:</span>
+                <p-dropdown
+                  formControlName="pole"
+                  [options]="drivers"
+                  [showClear]="true"
+                  optionLabel="name"
+                  class="align-self-center md:align-self-baseline"
+                ></p-dropdown>
+              </div>
+            </form>
+            <form [formGroup]="resultsForm" class="resultsForm m-auto grid w-full xl:w-5">
+              @for (position of positions; track $index) {
                 <div class="modifyResults-bottomSide-resultsGood col-12 lg:col-6 flex flex-column align-items-center">
                   <p class="F1_Bold">Posición {{ $index + 1 }}</p>
                   <p-dropdown
                     [formControlName]="'result' + $index"
-                    [options]="results"
+                    [options]="drivers"
                     [showClear]="true"
-                    optionLabel="driver.name"
-                    class="align-self-center">
-                  </p-dropdown>
-                </div>
-              } @else {
-                @if ($index === findFirstDisqualifiedIndex()) {
-                  <h2 class="w-full text-center F1_Regular mt-6"> Pilotos descalificados</h2>
-                }
-                <div class="modifyResults-bottomSide-resultsBad col-12 lg:col-6 flex flex-column align-items-center">
-                  <p-dropdown
-                    [formControlName]="'result' + $index"
-                    [options]="results"
-                    [showClear]="true"
-                    optionLabel="driver.name"
+                    optionLabel="name"
                     class="align-self-center">
                   </p-dropdown>
                 </div>
               }
-            }
-          </form>
-        } @else if (results.length === 0) {
-          <form [formGroup]="fastLapForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
-            <div class="flex flex-column align-items-start lg:align-items-center w-max">
-              <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-baseline">Seleccione Vuelta Rápida:</span>
-              <p-dropdown
-                formControlName="fastlap"
-                [options]="drivers"
-                [showClear]="true"
-                optionLabel="name"
-                class="align-self-center md:align-self-baseline"
-              ></p-dropdown>
-            </div>
-          </form>
-          <form [formGroup]="poleForm" class="col-12 md:col-6 lg:col-3 flex justify-content-center md:justify-content-start lg:justify-content-center px-0 md:pl-4 lg:px-0">
-            <div class="flex flex-column align-items-start lg:align-items-center w-max">
-              <span class="mb-1 font-bold F1_Regular text-xs xl:text-sm align-self-center md:align-self-center md:align-self-baseline">Seleccione la Pole:</span>
-              <p-dropdown
-                formControlName="pole"
-                [options]="drivers"
-                [showClear]="true"
-                optionLabel="name"
-                class="align-self-center md:align-self-baseline"
-              ></p-dropdown>
-            </div>
-          </form>
-          <form [formGroup]="resultsForm" class="resultsForm m-auto grid w-full xl:w-5">
-            @for (position of positions; track $index) {
-              <div class="modifyResults-bottomSide-resultsGood col-12 lg:col-6 flex flex-column align-items-center">
-                <p class="F1_Bold">Posición {{ $index + 1 }}</p>
-                <p-dropdown
-                  [formControlName]="'result' + $index"
-                  [options]="drivers"
-                  [showClear]="true"
-                  optionLabel="name"
-                  class="align-self-center">
-                </p-dropdown>
-              </div>
-            }
-          </form>
+            </form>
+          }
+        } @else if (isSprint) {
+          <h2 class="w-full text-center F1_Regular mt-6">Resultados</h2>
+          @if (sprints.length > 0) {
+            <form [formGroup]="sprintsForm" class="resultsForm m-auto grid w-full xl:w-5">
+              @for (sprint of sprints; track $index) {
+                @if (sprint.position) {
+                  <div class="modifyResults-bottomSide-resultsGood col-12 lg:col-6 flex flex-column align-items-center">
+                    <p class="F1_Bold">Posición {{ $index + 1 }}</p>
+                    <p-dropdown
+                      [formControlName]="'sprint' + $index"
+                      [options]="sprints"
+                      [showClear]="true"
+                      optionLabel="driver.name"
+                      class="align-self-center">
+                    </p-dropdown>
+                  </div>
+                } @else {
+                  @if ($index === findFirstDisqualifiedIndexSprint()) {
+                    <h2 class="w-full text-center F1_Regular mt-6"> Pilotos descalificados</h2>
+                  }
+                  <div class="modifyResults-bottomSide-resultsBad col-12 lg:col-6 flex flex-column align-items-center">
+                    <p-dropdown
+                      [formControlName]="'sprint' + $index"
+                      [options]="sprints"
+                      [showClear]="true"
+                      optionLabel="driver.name"
+                      class="align-self-center">
+                    </p-dropdown>
+                  </div>
+                }
+              }
+            </form>
+          } @else if (sprints.length === 0) {
+            <form [formGroup]="sprintsForm" class="resultsForm m-auto grid w-full xl:w-5">
+              @for (position of positions; track $index) {
+                <div class="modifyResults-bottomSide-resultsGood col-12 lg:col-6 flex flex-column align-items-center">
+                  <p class="F1_Bold">Posición {{ $index + 1 }}</p>
+                  <p-dropdown
+                    [formControlName]="'sprint' + $index"
+                    [options]="drivers"
+                    [showClear]="true"
+                    optionLabel="name"
+                    class="align-self-center">
+                  </p-dropdown>
+                </div>
+              }
+            </form>
+          }
         }
       }
     </div>
     @if (circuitSelected) {
       <div class="flex align-items-center">
+      @if (!isSprint) {
         <p-button class="mx-auto my-5 modifyResults-button p-2 p-button-raised" (click)="saveRace()">
           Guardar
         </p-button>
+      }@else if (isSprint) {
+        <p-button class="mx-auto my-5 modifyResults-button p-2 p-button-raised" (click)="saveSprint()">
+          Guardar
+        </p-button>
+      }
       </div>
     }
   </div>

@@ -14,11 +14,9 @@ import formula.bollo.app.utils.Log;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import org.springframework.http.MediaType;
 
@@ -41,11 +39,11 @@ public class CircuitController {
         Log.info("START - getAllCircuits - START");
         Log.info("RequestParam getAllCircuits (season) -> " + season);
 
-        List<CircuitDTO> circuitDTOs = new ArrayList<>();
+        List<CircuitDTO> circuitDTOs;
 
         if (season == null || season == Constants.ACTUAL_SEASON) {
             this.circuitService.putCircuitsOnCache(circuitsCache);
-            circuitDTOs = circuitsCache.values().stream().collect(Collectors.toList());
+            circuitDTOs = circuitsCache.values().stream().toList();
         } else {
             circuitDTOs = this.circuitService.getCircuitsSeason(season);
         }

@@ -1,12 +1,8 @@
 import { Component } from "@angular/core";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { Subject, takeUntil } from "rxjs";
-import { ERROR_POINT_FETCH, ERROR_PRICE_FETCH } from "src/app/constants";
+import { Subject } from "rxjs";
 import { FantasyElection } from "src/shared/models/fantasyElection";
-import { FantasyPointsDriver } from "src/shared/models/fantasyPointsDriver";
-import { FantasyPointsTeam } from "src/shared/models/fantasyPointsTeam";
-import { FantasyApiService } from "src/shared/services/api/fantasy-api.service";
-import { MessageInfoService } from "src/shared/services/messageinfo.service";
+import { FantasyService } from "src/shared/services/fantasy.service";
 
 @Component({
   selector: "app-fantasy-dialog-team",
@@ -15,18 +11,16 @@ import { MessageInfoService } from "src/shared/services/messageinfo.service";
 })
 export class FantasyDialogTeamComponent {
   fantasyElection: FantasyElection | undefined;
-  pointsDriverOne: number | undefined;
-  pointsDriverTwo: number | undefined;
-  pointsDriverThree: number | undefined;
-  pointsTeamOne: number | undefined;
-  pointsTeamTwo: number | undefined;
-
+  pointsDriverOne: number = 0;
+  pointsDriverTwo: number = 0;
+  pointsDriverThree: number = 0;
+  pointsTeamOne: number = 0;
+  pointsTeamTwo: number = 0;
   ref: DynamicDialogRef | undefined;
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private fantasyApiService: FantasyApiService,
-    private messageInfoService: MessageInfoService,
+    private fantasyService: FantasyService,
     public config: DynamicDialogConfig
   ) {}
 
@@ -47,45 +41,7 @@ export class FantasyDialogTeamComponent {
    * @param fantasyElection - The fantasy election data containing driver information.
    */
   getSpecificPointsPerDriver(fantasyElection: FantasyElection): void {
-    const raceId: number = fantasyElection.race!.id;
-
-    this.fantasyApiService
-      .getDriverPointsSpecificRace(fantasyElection.driverOne!.id, raceId)
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: (fantasyPointsDriver: FantasyPointsDriver) => {
-          this.pointsDriverOne = fantasyPointsDriver.points;
-        },
-        error: () => {
-          this.messageInfoService.showError(ERROR_POINT_FETCH);
-        },
-      });
-
-    this.fantasyApiService
-      .getDriverPointsSpecificRace(fantasyElection.driverTwo!.id, raceId)
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: (fantasyPointsDriver: FantasyPointsDriver) => {
-          this.pointsDriverTwo = fantasyPointsDriver.points;
-        },
-        error: () => {
-          this.messageInfoService.showError(ERROR_PRICE_FETCH);
-        },
-      });
-
-    this.fantasyApiService
-      .getDriverPointsSpecificRace(fantasyElection.driverThree!.id, raceId)
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: (fantasyPointsDriver: FantasyPointsDriver) => {
-          this.pointsDriverThree = fantasyPointsDriver.points;
-        },
-        error: (error) => {
-          this.messageInfoService.showError(ERROR_POINT_FETCH);
-          console.log(error.error);
-          throw error;
-        },
-      });
+    this.fantasyService.getSpecificPointsPerDriver(fantasyElection, this.pointsDriverOne, this.pointsDriverTwo, this.pointsDriverThree);
   }
 
   /**
@@ -94,30 +50,6 @@ export class FantasyDialogTeamComponent {
    * @param fantasyElection - The fantasy election data containing team information.
    */
   getSpecificPointsPerTeam(fantasyElection: FantasyElection): void {
-    const raceId: number = fantasyElection.race!.id;
-
-    this.fantasyApiService
-      .getTeamsPointsSpecificRace(fantasyElection.teamOne!.id, raceId)
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: (fantasyPointsTeam: FantasyPointsTeam) => {
-          this.pointsTeamOne = fantasyPointsTeam.points;
-        },
-        error: () => {
-          this.messageInfoService.showError(ERROR_POINT_FETCH);
-        },
-      });
-
-    this.fantasyApiService
-      .getTeamsPointsSpecificRace(fantasyElection.teamTwo!.id, raceId)
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        next: (fantasyPointsTeam: FantasyPointsTeam) => {
-          this.pointsTeamTwo = fantasyPointsTeam.points;
-        },
-        error: () => {
-          this.messageInfoService.showError(ERROR_POINT_FETCH);
-        },
-      });
+    this.fantasyService.getSpecificPointsPerTeam(fantasyElection, this.pointsTeamOne, this.pointsTeamTwo);
   }
 }

@@ -95,7 +95,7 @@ public class PenaltyService {
     
         List<RacePenaltiesDTO> racePenaltiesDTOs = driverEntry.getValue().entrySet().stream()
             .map(this::mapRaceToRacePenaltiesDTO)
-            .collect(Collectors.toList());
+            .toList();
     
         DriverPenaltiesDTO driverPenaltiesDTO = new DriverPenaltiesDTO();
         driverPenaltiesDTO.setDriver(driverDTO);
@@ -114,7 +114,7 @@ public class PenaltyService {
         Race race = raceEntry.getKey();
         List<PenaltyDTO> penaltyDTOs = raceEntry.getValue().stream()
             .map(penaltyMapper::penaltyToPenaltyDTO)
-            .collect(Collectors.toList());
+            .toList();
     
         RacePenaltiesDTO racePenaltiesDTO = new RacePenaltiesDTO();
         racePenaltiesDTO.setRace(raceMapper.raceToRaceDTO(race));

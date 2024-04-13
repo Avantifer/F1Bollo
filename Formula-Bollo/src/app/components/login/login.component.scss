@@ -10,16 +10,29 @@
     }
 
     &-form {
-      span {
-        color: #e24c4c;
+
+      a {
+        color: -webkit-link;
+        text-decoration: underline;
       }
 
       ::ng-deep .p-button-label {
         color: white !important;
       }
 
+      .buttonNoFantasy {
+        ::ng-deep .p-button {
+          background-color: $red !important;
+        }
+      }
+
+      .buttonFantasy {
+        ::ng-deep .p-button {
+          background-color: $fantasyblue !important;
+        }
+      }
+
       ::ng-deep .p-button {
-        background-color: $red !important;
         border: none;
         padding: 0.55rem 1.55rem;
         font-size: 1.25rem;
@@ -30,6 +43,10 @@
       }
     }
   }
+}
+
+span {
+  color: #e24c4c;
 }
 
 ::ng-deep .p-password.p-inputwrapper{
@@ -63,4 +80,20 @@ input.ng-invalid.ng-dirty {
 
 ::ng-deep p-password.ng-invalid.ng-dirty>.p-password>.p-inputtext {
   border: 1px solid #e24c4c !important;
+}
+
+::ng-deep .p-dialog-header {
+  background-color: $fantasyblue;
+}
+
+::ng-deep .p-dialog-header-close-icon {
+  color: var(--surface-0);
+}
+
+::ng-deep .p-dialog-content {
+  background-color: var(--surface-0);
+}
+
+::ng-deep .p-dialog-footer {
+  background-color: var(--surface-0);
 }

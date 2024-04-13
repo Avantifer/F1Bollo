@@ -1,6 +1,5 @@
 package formula.bollo.app.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import formula.bollo.app.entity.FantasyElection;
 import formula.bollo.app.entity.FantasyPointsDriver;
 import formula.bollo.app.entity.FantasyPointsTeam;
@@ -122,7 +122,7 @@ public class FantasyController {
         Log.info("START - getAllDriverPoints - START");
         Log.info("RequestParam getAllDriverPoints (raceId) -> " + raceId);
 
-        List<FantasyPointsDriverDTO> fantasyPointsDriverDTOs = new ArrayList<>();
+        List<FantasyPointsDriverDTO> fantasyPointsDriverDTOs;
         List<FantasyPointsDriver> fantasyPriceDrivers = this.fantasyPointsDriverRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
         fantasyPointsDriverDTOs = this.fantasyPointsMapper.convertFantasyPointsDriverToFantasyPointsDriverDTO(fantasyPriceDrivers);
     
@@ -152,7 +152,7 @@ public class FantasyController {
         Log.info("START - getAllTeamPoints - START");
         Log.info("RequestParam getAllTeamPoints (raceId) -> " + raceId);
 
-        List<FantasyPointsTeamDTO> fantasyPointsTeamDTOs = new ArrayList<>();
+        List<FantasyPointsTeamDTO> fantasyPointsTeamDTOs;
         List<FantasyPointsTeam> fantasyPriceTeams = this.fantasyPointsTeamRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
         fantasyPointsTeamDTOs = this.fantasyPointsMapper.convertFantasyPointsTeamToFantasyPointsTeamDTO(fantasyPriceTeams);
     
@@ -216,7 +216,7 @@ public class FantasyController {
         Log.info("START - getAllDriverPrices - START");
         Log.info("RequestParam getAllDriverPrices (raceId) -> " + raceId);
 
-        List<FantasyPriceDriverDTO> fantasyPriceDriverDTOs = new ArrayList<>();
+        List<FantasyPriceDriverDTO> fantasyPriceDriverDTOs;
         List<FantasyPriceDriver> fantasyPriceDrivers = this.fantasyPriceDriverRepository.findByRaceId((long) raceId);
         fantasyPriceDriverDTOs = this.fantasyPriceMapper.convertFantasyPriceDriverToFantasyPriceDriverDTO(fantasyPriceDrivers);
 
@@ -231,7 +231,7 @@ public class FantasyController {
         Log.info("START - getAllTeamPrices - START");
         Log.info("RequestParam getAllTeamPrices (raceId) -> " + raceId);
 
-        List<FantasyPriceTeamDTO> fantasyPriceTeamDTOs = new ArrayList<>();
+        List<FantasyPriceTeamDTO> fantasyPriceTeamDTOs;
         List<FantasyPriceTeam> fantasyPriceTeams = this.fantasyPriceTeamRepository.findByRaceId((long) raceId);
         fantasyPriceTeamDTOs = this.fantasyPriceMapper.convertFantasyPriceTeamToFantasyPriceTeamDTO(fantasyPriceTeams);
         
@@ -350,7 +350,7 @@ public class FantasyController {
         Log.info("RequestParam getFantasyPoints (season) -> " + season);
 
         int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
-        List<FantasyPointsUserDTO> fantasyPointsUserDTOs = new ArrayList<>();
+        List<FantasyPointsUserDTO> fantasyPointsUserDTOs;
 
         if (raceId != 0) {
             fantasyPointsUserDTOs = this.fantasyService.getFantasyPoints(raceId);
@@ -368,9 +368,8 @@ public class FantasyController {
         Log.info("START - getDriverPrices - START");
         Log.info("RequestParam getDriverPrices (driverId) -> " + driverId);
 
-        List<FantasyPriceDriverDTO> fantasyPriceDriverDTOs = new ArrayList<>();
         List<FantasyPriceDriver> fantasyPriceDrivers = this.fantasyPriceDriverRepository.findByDriverId((long) driverId);
-        fantasyPriceDriverDTOs = this.fantasyPriceMapper.convertFantasyPriceDriverToFantasyPriceDriverDTO(fantasyPriceDrivers);
+        List<FantasyPriceDriverDTO> fantasyPriceDriverDTOs = this.fantasyPriceMapper.convertFantasyPriceDriverToFantasyPriceDriverDTO(fantasyPriceDrivers);
 
         Log.info("END - getDriverPrices - END");
         
@@ -383,9 +382,8 @@ public class FantasyController {
         Log.info("START - getTeamPrice - START");
         Log.info("RequestParam getTeamPrice (teamId) -> " + teamId);
 
-        List<FantasyPriceTeamDTO> fantasyPriceTeamDTOs = new ArrayList<>();
         List<FantasyPriceTeam> fantasyPriceTeam = this.fantasyPriceTeamRepository.findByTeamId((long) teamId);
-        fantasyPriceTeamDTOs = this.fantasyPriceMapper.convertFantasyPriceTeamToFantasyPriceTeamDTO(fantasyPriceTeam);
+        List<FantasyPriceTeamDTO> fantasyPriceTeamDTOs = this.fantasyPriceMapper.convertFantasyPriceTeamToFantasyPriceTeamDTO(fantasyPriceTeam);
 
         Log.info("END - getTeamPrice - END");
         
@@ -398,9 +396,8 @@ public class FantasyController {
         Log.info("START - getDriverPoints - START");
         Log.info("RequestParam getDriverPoints (driverId) -> " + driverId);
 
-        List<FantasyPointsDriverDTO> fantasyPointsDriverDTOs = new ArrayList<>();
         List<FantasyPointsDriver> fantasyPointsDriver = this.fantasyPointsDriverRepository.findByDriverId((long) driverId);
-        fantasyPointsDriverDTOs = this.fantasyPointsMapper.convertFantasyPointsDriverToFantasyPointsDriverDTO(fantasyPointsDriver);
+        List<FantasyPointsDriverDTO> fantasyPointsDriverDTOs = this.fantasyPointsMapper.convertFantasyPointsDriverToFantasyPointsDriverDTO(fantasyPointsDriver);
 
         Log.info("END - getDriverPoints - END");
         
@@ -413,9 +410,8 @@ public class FantasyController {
         Log.info("START - getTeamPoints - START");
         Log.info("RequestParam getTeamPoints (teamId) -> " + teamId);
 
-        List<FantasyPointsTeamDTO> fantasyPointsTeamDTOs = new ArrayList<>();
         List<FantasyPointsTeam> fantasyPointsTeam = this.fantasyPointsTeamRepository.findByTeamId((long) teamId);
-        fantasyPointsTeamDTOs = this.fantasyPointsMapper.convertFantasyPointsTeamToFantasyPointsTeamDTO(fantasyPointsTeam);
+        List<FantasyPointsTeamDTO> fantasyPointsTeamDTOs = this.fantasyPointsMapper.convertFantasyPointsTeamToFantasyPointsTeamDTO(fantasyPointsTeam);
 
         Log.info("END - getTeamPoints - END");
         

@@ -7,7 +7,7 @@ import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { UserApiService } from "src/shared/services/api/user-api.service";
 import { AuthJWTService } from "src/shared/services/authJWT.service";
-import { INFO_CREDENTIALS_NEED, WARNING_NO_ADMIN } from "src/app/constants";
+import { ERROR_EMAIL_NOT_VALID, INFO_CREDENTIALS_NEED, SUCCESS_LOGIN, WARNING_NO_ADMIN } from "src/app/constants";
 
 @Component({
   selector: "app-login",
@@ -20,6 +20,12 @@ export class LoginComponent {
     username: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
   });
+  emailForm: FormGroup = new FormGroup({
+    email: new FormControl("", [Validators.required, Validators.email]),
+  });
+
+  isFantasy: boolean = false;
+  showDialog: boolean = false;
 
   private _unsubscribe: Subject<void> = new Subject<void>();
 
@@ -29,6 +35,10 @@ export class LoginComponent {
     private router: Router,
     private authJWTService: AuthJWTService,
   ) {}
+
+  ngOnInit(): void {
+    this.checkIsFantasy();
+  }
 
   ngOnDestroy(): void {
     this._unsubscribe.next();
@@ -66,5 +76,79 @@ export class LoginComponent {
     } else {
       this.messageInfoService.showInfo(INFO_CREDENTIALS_NEED);
     }
+  }
+
+  /**
+   * Handle user fantasy login.
+   */
+  loginFantasy(): void {
+    const username: string = this.loginForm.get("username")!.value;
+    const password: string = this.loginForm.get("password")!.value;
+
+    if (username && password) {
+      const user: User = new User(0, username, password);
+
+      this.userApiService
+        .login(user)
+        .pipe(takeUntil(this._unsubscribe))
+        .subscribe({
+          next: (token: string) => {
+            localStorage.setItem("auth", token);
+            this.authJWTService.isLogged();
+            this.router.navigate(["/fantasy"]);
+            this.messageInfoService.showSuccess(SUCCESS_LOGIN);
+          },
+          error: (error) => {
+            this.messageInfoService.showError(error.error);
+            console.log(error);
+            throw error;
+          },
+        });
+    } else {
+      this.messageInfoService.showWarn(INFO_CREDENTIALS_NEED);
+    }
+  }
+
+  /**
+   * Check the current url to set if its fantasy or not.
+   */
+  checkIsFantasy(): void {
+    if (this.router.url.includes("fantasy")) {
+      this.isFantasy = true;
+    } else {
+      this.isFantasy = false;
+    }
+  }
+
+  /**
+   * Opens the recovery password dialog.
+   */
+  openRecoveryPasswordDialog(): void {
+    this.showDialog = true;
+  }
+
+  /**
+   * Sends a recovery password email using the email form.
+   */
+  sendRecoveryPasswordEmail(): void {
+    if (this.emailForm.invalid)
+      return this.messageInfoService.showError(ERROR_EMAIL_NOT_VALID);
+
+    this.userApiService
+      .recoverPassword(this.emailForm.get("email")!.value)
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe({
+        next: (response: string) => {
+          this.messageInfoService.showSuccess(response);
+        },
+        error: (error) => {
+          this.messageInfoService.showError(error.error);
+          console.log(error);
+          throw error;
+        },
+        complete: () => {
+          this.showDialog = false;
+        }
+      });
   }
 }
