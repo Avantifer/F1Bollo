@@ -43,3 +43,4 @@ Thumbs.db
 
 # SonarQube
 sonar-project.properties
+.scannerwork
