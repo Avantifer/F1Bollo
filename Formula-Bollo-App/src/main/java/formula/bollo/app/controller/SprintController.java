@@ -102,7 +102,7 @@ public class SprintController {
             if (seasons.isEmpty()) return new ResponseEntity<>(Constants.ERROR_SEASON, Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
             SeasonDTO seasonToSave = this.seasonMapper.seasonToSeasonDTO(seasons.get(0));
             sprintDTOs.forEach((SprintDTO sprintDTO) -> sprintDTO.setSeason(seasonToSave));
-
+            
             sprintRepository.deleteAll(existingSprints);
             sprintService.saveSprints(sprintDTOs, numberSeason);
         } catch (DataAccessException e) {

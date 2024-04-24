@@ -54,7 +54,6 @@ public class SprintService {
     */
     public void saveSprints(List<SprintDTO> sprintDTOs, int numberSeason) {
         Race race = raceRepository.findByCircuitId(sprintDTOs.get(0).getRace().getCircuit().getId(), numberSeason).get(0);
-
         sprintDTOs.stream().forEach((SprintDTO sprintDTO) -> {
             List<Sprint> existingSprint = sprintRepository.findByRaceId(sprintDTO.getRace().getId());
             Sprint sprintToUpdate = sprintMapper.sprintDTOToSprint(sprintDTO);
