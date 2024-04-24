@@ -82,15 +82,16 @@ public class ResultService {
         results.stream().forEach((Result result) -> {
             DriverDTO driverDTO = driverMapper.driverToDriverDTO(result.getDriver());
             int points = 0;
+            int fastlap = result.getFastlap();
 
             if (result.getPosition() != null) {
                 points = result.getPosition().getPoints();
+                points += fastlap;
             }
 
-            int fastlap = result.getFastlap();
             int currentPoints = totalPointsByDriver.getOrDefault(driverDTO, 0);
 
-            totalPointsByDriver.put(driverDTO, currentPoints + points + fastlap);
+            totalPointsByDriver.put(driverDTO, currentPoints + points);
         });
     }
 

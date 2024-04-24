@@ -265,7 +265,6 @@ public class FantasyService {
         List<FantasyPriceDriver> fantasydriverPrices = new ArrayList<>();
 
         boolean pricesProblem = false;
-
         for (Result result: results) {
             FantasyPriceDriver fantasyPriceDriver = new FantasyPriceDriver();
             fantasyPriceDriver.setDriver(result.getDriver());

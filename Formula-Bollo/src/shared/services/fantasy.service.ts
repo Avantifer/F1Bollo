@@ -21,20 +21,17 @@ export class FantasyService {
    * Retrieves specific points for each driver in the fantasy election and updates corresponding properties.
    *
    * @param fantasyElection - The fantasy election data containing driver information.
-   * @param pointsDriverOne - The points of driver one.
-   * @param pointsDriverTwo - The points of driver two.
-   * @param pointsDriverThree - The points of driver three.
    */
-  getSpecificPointsPerDriver(fantasyElection: FantasyElection, pointsDriverOne: number, pointsDriverTwo: number, pointsDriverThree: number): void {
+  getSpecificPointsPerDriver(fantasyElection: FantasyElection): number[] {
     const raceId: number = fantasyElection.race!.id;
+    const pointsArray: number[] = [];
 
     this.fantasyApiService
       .getDriverPointsSpecificRace(fantasyElection.driverOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
-          if (pointsDriverOne < 0) return;
-          pointsDriverOne = fantasyPointsDriver.points;
+          pointsArray[0] = (fantasyPointsDriver.points);
         },
         error: () => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
@@ -46,8 +43,7 @@ export class FantasyService {
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
-          if (pointsDriverTwo < 0) return;
-          pointsDriverTwo = fantasyPointsDriver.points;
+          pointsArray[1] = (fantasyPointsDriver.points);
         },
         error: () => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
@@ -59,8 +55,7 @@ export class FantasyService {
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsDriver: FantasyPointsDriver) => {
-          if (pointsDriverThree < 0) return;
-          pointsDriverThree = fantasyPointsDriver.points;
+          pointsArray[2] = (fantasyPointsDriver.points);
         },
         error: (error) => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
@@ -68,6 +63,8 @@ export class FantasyService {
           throw error;
         },
       });
+
+    return pointsArray;
   }
 
   /**
@@ -77,16 +74,16 @@ export class FantasyService {
    * @param pointsTeamOne - The points of team one.
    * @param pointsTeamTwo - The points of team two.
    */
-  getSpecificPointsPerTeam(fantasyElection: FantasyElection, pointsTeamOne: number, pointsTeamTwo: number): void {
+  getSpecificPointsPerTeam(fantasyElection: FantasyElection): number[] {
     const raceId: number = fantasyElection.race!.id;
+    const pointsArray: number[] = [];
 
     this.fantasyApiService
       .getTeamsPointsSpecificRace(fantasyElection.teamOne!.id, raceId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) => {
-          if (pointsTeamOne < 0) return;
-          pointsTeamOne = fantasyPointsTeam.points;
+          pointsArray[0] = fantasyPointsTeam.points;
         },
         error: () => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
@@ -98,13 +95,14 @@ export class FantasyService {
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam) => {
-          if (pointsTeamTwo < 0) return;
-          pointsTeamTwo = fantasyPointsTeam.points;
+          pointsArray[1] = fantasyPointsTeam.points;
         },
         error: () => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
         },
       });
+
+    return pointsArray;
   }
 
   /**

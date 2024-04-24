@@ -33,7 +33,7 @@
     <th mat-header-cell *matHeaderCellDef class="text-center font-bold underline text-900 surface-300 white-space-nowrap">Puntos</th>
     <td mat-cell *matCellDef="let result" class="text-center text-900 white-space-nowrap">
       {{
-        (result.position != null ? result.position.points : 0) + result.fastlap
+        (result.position != null ? result.position.points + result.fastlap : 0)
       }}
     </td>
   </ng-container>

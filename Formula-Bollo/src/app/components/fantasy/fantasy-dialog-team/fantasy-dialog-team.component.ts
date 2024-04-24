@@ -11,11 +11,8 @@ import { FantasyService } from "src/shared/services/fantasy.service";
 })
 export class FantasyDialogTeamComponent {
   fantasyElection: FantasyElection | undefined;
-  pointsDriverOne: number = 0;
-  pointsDriverTwo: number = 0;
-  pointsDriverThree: number = 0;
-  pointsTeamOne: number = 0;
-  pointsTeamTwo: number = 0;
+  pointsDriverArray: number[] = [];
+  pointsTeamArray: number[] = [];
   ref: DynamicDialogRef | undefined;
   private _unsubscribe: Subject<void> = new Subject<void>();
 
@@ -41,7 +38,7 @@ export class FantasyDialogTeamComponent {
    * @param fantasyElection - The fantasy election data containing driver information.
    */
   getSpecificPointsPerDriver(fantasyElection: FantasyElection): void {
-    this.fantasyService.getSpecificPointsPerDriver(fantasyElection, this.pointsDriverOne, this.pointsDriverTwo, this.pointsDriverThree);
+    this.pointsDriverArray = this.fantasyService.getSpecificPointsPerDriver(fantasyElection);
   }
 
   /**
@@ -50,6 +47,6 @@ export class FantasyDialogTeamComponent {
    * @param fantasyElection - The fantasy election data containing team information.
    */
   getSpecificPointsPerTeam(fantasyElection: FantasyElection): void {
-    this.fantasyService.getSpecificPointsPerTeam(fantasyElection, this.pointsTeamOne, this.pointsTeamTwo);
+    this.pointsTeamArray = this.fantasyService.getSpecificPointsPerTeam(fantasyElection);
   }
 }
