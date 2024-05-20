@@ -14,7 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FantasyPointsUserDTO {
-    private UserDTO user;
+    private AccountDTO user;
     private FantasyElectionDTO fantasyElection;
     private int totalPoints;
 }

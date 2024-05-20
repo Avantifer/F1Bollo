@@ -1,13 +1,13 @@
 import { FantasyElection } from "./fantasyElection";
-import { User } from "./user";
+import { Account } from "./account";
 
 export class FantasyPointsUser {
-  user: User;
+  user: Account;
   fantasyElection: FantasyElection;
   totalPoints: number;
 
   constructor(
-    user: User,
+    user: Account,
     fantasyElection: FantasyElection,
     totalPoints: number,
   ) {

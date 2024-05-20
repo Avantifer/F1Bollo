@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { User } from "src/shared/models/user";
+import { Account } from "src/shared/models/account";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 import { takeUntil } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
-import { UserApiService } from "src/shared/services/api/user-api.service";
+import { AccountApiService } from "src/shared/services/api/account-api.service";
 import { AuthJWTService } from "src/shared/services/authJWT.service";
 import { ERROR_EMAIL_NOT_VALID, INFO_CREDENTIALS_NEED, SUCCESS_LOGIN, WARNING_NO_ADMIN } from "src/app/constants";
 
@@ -30,7 +30,7 @@ export class LoginComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private userApiService: UserApiService,
+    private accountApiService: AccountApiService,
     private messageInfoService: MessageInfoService,
     private router: Router,
     private authJWTService: AuthJWTService,
@@ -53,10 +53,10 @@ export class LoginComponent {
     const password: string = this.loginForm.get("password")!.value;
 
     if (username && password) {
-      const user: User = new User(0, username, password);
+      const account: Account = new Account(0, username, password);
 
-      this.userApiService
-        .login(user)
+      this.accountApiService
+        .login(account)
         .pipe(takeUntil(this._unsubscribe))
         .subscribe({
           next: (token: string) => {
@@ -86,10 +86,10 @@ export class LoginComponent {
     const password: string = this.loginForm.get("password")!.value;
 
     if (username && password) {
-      const user: User = new User(0, username, password);
+      const account: Account = new Account(0, username, password);
 
-      this.userApiService
-        .login(user)
+      this.accountApiService
+        .login(account)
         .pipe(takeUntil(this._unsubscribe))
         .subscribe({
           next: (token: string) => {
@@ -134,7 +134,7 @@ export class LoginComponent {
     if (this.emailForm.invalid)
       return this.messageInfoService.showError(ERROR_EMAIL_NOT_VALID);
 
-    this.userApiService
+    this.accountApiService
       .recoverPassword(this.emailForm.get("email")!.value)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({

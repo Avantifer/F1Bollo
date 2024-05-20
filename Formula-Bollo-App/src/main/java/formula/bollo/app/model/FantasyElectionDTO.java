@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class FantasyElectionDTO {
     private Long id;
-    private UserDTO user;
+    private AccountDTO user;
     private DriverDTO driverOne;
     private DriverDTO driverTwo;
     private DriverDTO driverThree;

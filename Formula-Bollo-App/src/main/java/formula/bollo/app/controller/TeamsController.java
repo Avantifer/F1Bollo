@@ -69,11 +69,7 @@ public class TeamsController {
 
         int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
         List<Driver> drivers = driverRepository.findBySeason(numberSeason);
-        List<TeamWithDriversDTO> teamsWithDriversDTOList = new ArrayList<>();
-
-        if(drivers.isEmpty()) return teamsWithDriversDTOList;
-
-        teamsWithDriversDTOList = teamService.getTeamWithDriversDTO(drivers);
+        List<TeamWithDriversDTO> teamsWithDriversDTOList = teamService.getTeamWithDriversDTO(drivers);
 
         Log.info("END - getAllTeamWithDrivers - END");
 
@@ -88,7 +84,6 @@ public class TeamsController {
         Log.info("RequestParam getinfoTeamByName (driverName) -> " + teamName);
 
         List<Team> teams;
-        TeamInfoDTO teamInfoDTO;
 
         if (season == null) {
             teams = teamRepository.findByName(teamName);
@@ -96,7 +91,7 @@ public class TeamsController {
             teams = teamRepository.findByNameAndSeason(season, teamName);
         }
         
-        teamInfoDTO = this.teamService.getAllInfoTeam(teams);
+        TeamInfoDTO teamInfoDTO = this.teamService.getAllInfoTeam(teams);
         Log.info("END - getinfoTeamByName - END");
         
         return teamInfoDTO;

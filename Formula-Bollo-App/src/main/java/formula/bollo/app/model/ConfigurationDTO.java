@@ -16,6 +16,6 @@ import lombok.ToString;
 public class ConfigurationDTO {
     private Long id;
     private String setting;
-    private String value;
+    private String settingValue;
     private SeasonDTO season;
 }

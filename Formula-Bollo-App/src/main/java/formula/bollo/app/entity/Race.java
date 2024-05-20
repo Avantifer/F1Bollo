@@ -13,11 +13,21 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "race")
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Race {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +35,7 @@ public class Race {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "circuit_id")
+    @JoinColumn(name = "circuit_id", referencedColumnName = "id")
     private Circuit circuit;
 
     @Column(name = "date_start", nullable = false)
@@ -36,6 +46,6 @@ public class Race {
     private int finished;
     
     @ManyToOne
-    @JoinColumn(name = "season_id")
+    @JoinColumn(name = "season_id", referencedColumnName = "id")
     private Season season;
 }

@@ -188,7 +188,7 @@ export class ResultsComponent {
    */
   getAllPenaltiesDriver(): void {
     this.penaltyApiService
-      .getAllPenaltiesPerCircuit(this.circuitSelected!.id)
+      .getAllPenaltiesPerCircuit(this.circuitSelected!.id, this.seasonSelected!.number)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (penalties: Penalty[]) => {

@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -139,9 +138,6 @@ public class ResultController {
 
             resultRepository.deleteAll(existingResults);
             resultService.saveResults(resultDTOs, numberSeason);
-        } catch (DataAccessException e) {
-            Log.error(Constants.ERROR_UNEXPECTED, e);
-            return new ResponseEntity<>(Constants.ERROR_BBDD_GENERIC, Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
         } catch (Exception e) {
             Log.error(Constants.ERROR_UNEXPECTED, e);
             return new ResponseEntity<>(Constants.ERROR_GENERIC, Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));

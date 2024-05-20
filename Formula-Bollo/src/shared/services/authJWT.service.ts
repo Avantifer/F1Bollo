@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { User } from "../models/user";
+import { Account } from "../models/account";
 import { Router } from "@angular/router";
 import { MessageInfoService, } from "./messageinfo.service";
 
@@ -23,7 +23,7 @@ export class AuthJWTService {
    */
   checkAdmin(jwt: string): boolean {
     let isAdmin: boolean = false;
-    const token: User | null = this.jwtService.decodeToken(jwt);
+    const token: Account | null = this.jwtService.decodeToken(jwt);
 
     if (token?.admin) isAdmin = true;
 

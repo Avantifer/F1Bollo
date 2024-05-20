@@ -97,6 +97,7 @@ public class FantasyController {
         Log.info("RequestParam saveDriverTeamPoints (raceId) -> " + raceId);
         
         List<Result> results = this.resultRepository.findByRaceId(raceId.longValue());
+        
         List<FantasyPointsDriver> fantasyDriversPrevious = this.fantasyPointsDriverRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
         List<FantasyPointsDriver> fantasyPointsDriver = this.fantasyService.createDriversPoints(results);
         if (fantasyPointsDriver.isEmpty()) return new ResponseEntity<>("Hubo un problema con los puntos. Contacte con el administrador", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
@@ -106,7 +107,6 @@ public class FantasyController {
         
         List<FantasyPointsTeam> fantasyPointsTeams = this.fantasyService.createTeamsPoints(fantasyPointsDriver);
         List<FantasyPointsTeam> fantasyTeamsPrevious = this.fantasyPointsTeamRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
-        if (fantasyPointsTeams.isEmpty()) return new ResponseEntity<>("Hubo un problema con los puntos. Contacte con el administrador", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
         
         fantasyPointsTeamRepository.deleteAll(fantasyTeamsPrevious);
         fantasyPointsTeamRepository.saveAll(fantasyPointsTeams);
@@ -123,8 +123,8 @@ public class FantasyController {
         Log.info("RequestParam getAllDriverPoints (raceId) -> " + raceId);
 
         List<FantasyPointsDriverDTO> fantasyPointsDriverDTOs;
-        List<FantasyPointsDriver> fantasyPriceDrivers = this.fantasyPointsDriverRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
-        fantasyPointsDriverDTOs = this.fantasyPointsMapper.convertFantasyPointsDriverToFantasyPointsDriverDTO(fantasyPriceDrivers);
+        List<FantasyPointsDriver> fantasyPointsDrivers = this.fantasyPointsDriverRepository.findByRaceId(Constants.ACTUAL_SEASON, (long) raceId);
+        fantasyPointsDriverDTOs = this.fantasyPointsMapper.convertFantasyPointsDriverToFantasyPointsDriverDTO(fantasyPointsDrivers);
     
         Log.info("END - getAllDriverPoints - END");
         
@@ -139,7 +139,7 @@ public class FantasyController {
         Log.info("RequestParam getDriverPointsSpecificRace (raceId) -> " + raceId);
 
         Optional<FantasyPointsDriver> fantasyPointsDriver = this.fantasyPointsDriverRepository.findByDriverIdAndRaceId(Constants.ACTUAL_SEASON,(long) driverId,(long) raceId);
-        if (!fantasyPointsDriver.isPresent()) return new FantasyPointsDriverDTO();
+        if (!fantasyPointsDriver.isPresent()) return null;
 
         FantasyPointsDriverDTO fantasyPointsDriverDTO = this.fantasyPointsMapper.fantasyPointsDriverToFantasyPointsDriverDTO(fantasyPointsDriver.get());
         Log.info("END - getDriverPointsSpecificRace - END");
@@ -169,7 +169,7 @@ public class FantasyController {
         Log.info("RequestParam teamsPointsSpecificRace (raceId) -> " + raceId);
 
         Optional<FantasyPointsTeam> fantasyPointsTeam = this.fantasyPointsTeamRepository.findByTeamIdAndRaceId(Constants.ACTUAL_SEASON,(long) teamId,(long) raceId);
-        if (!fantasyPointsTeam.isPresent()) return new FantasyPointsTeamDTO();
+        if (!fantasyPointsTeam.isPresent()) return null;
 
         FantasyPointsTeamDTO fantasyPointsTeamDTO = this.fantasyPointsMapper.fantasyPointsTeamToFantasyPointsTeamDTO(fantasyPointsTeam.get());
         Log.info("END - teamsPointsSpecificRace - END");
@@ -200,7 +200,6 @@ public class FantasyController {
     
         List<FantasyPriceTeam> fantasyTeamPrevious = this.fantasyPriceTeamRepository.findByRaceId(raceId.longValue() + 1);
         List<FantasyPriceTeam> fantasyPricesTeam = this.fantasyService.createTeamsPrices(fantasyPricesDriver, nextRace.get());
-        if (fantasyPricesTeam.isEmpty()) return new ResponseEntity<>("Hubo un problema con los precios. Contacte con el administrador", Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
         
         fantasyPriceTeamRepository.deleteAll(fantasyTeamPrevious);
         fantasyPriceTeamRepository.saveAll(fantasyPricesTeam);
@@ -334,7 +333,7 @@ public class FantasyController {
         Log.info("RequestParam getFantasyElection (userId) -> " + userId);
         
         Optional<FantasyElection> fantasyElection = this.fantasyElectionRepository.findBySeasonUserIdAndRaceId(Constants.ACTUAL_SEASON, (long) userId, (long) raceId);
-        if (fantasyElection.isEmpty()) return new FantasyElectionDTO();
+        if (fantasyElection.isEmpty()) return null;
         
         FantasyElectionDTO fantasyElectionDTO = this.fantasyElectionMapper.fantasyElectionToFantasyElectionDTO(fantasyElection.get());
 

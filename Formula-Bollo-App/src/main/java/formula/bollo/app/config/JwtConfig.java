@@ -9,9 +9,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import formula.bollo.app.model.UserDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import formula.bollo.app.model.AccountDTO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -26,58 +24,21 @@ public class JwtConfig implements Serializable {
     private String secret;
 
     /**
-     * Generate a JWT token for the user.
+     * Generate a JWT token for the account.
      *
-     * @param userDTO UserDTO
-     * @return JWT token generated for the user
+     * @param accountDTO AccountDTO
+     * @return JWT token generated for the account
      */
-    public String generateToken(UserDTO userDTO) {
+    public String generateToken(AccountDTO accountDTO) {
         Date expiration = Date.from(LocalDateTime.now().plusMinutes(JWT_TOKEN_VALIDITY).atZone(ZoneId.systemDefault()).toInstant());
 
         return Jwts.builder()
-                .setSubject(userDTO.getUsername())
-                .claim("userId", userDTO.getId())
-                .claim("admin", userDTO.getAdmin())
+                .setSubject(accountDTO.getUsername())
+                .claim("userId", accountDTO.getId())
+                .claim("admin", accountDTO.getAdmin())
                 .setIssuedAt(new Date())
                 .setExpiration(expiration)
                 .signWith(secretKey)
                 .compact();
-    }
-
-    /**
-     * Obtain the userId from a JWT token.
-     *
-     * @param token JWT token
-     * @return the userId extracted from the JWT or null if it cannot be extracted
-     */
-    public String getUserIdFromToken(String token) {
-        try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
-                    .build()
-                    .parseClaimsJws(token);
-            Claims claims = claimsJws.getBody();
-            return claims.get("userId", String.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * Check if a JWT token is valid.
-     *
-     * @param token JWT token
-     * @return true if the token is valid, false otherwise
-     */
-    public boolean isTokenValid(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

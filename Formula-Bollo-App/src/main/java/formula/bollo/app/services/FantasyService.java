@@ -19,11 +19,11 @@ import formula.bollo.app.entity.Race;
 import formula.bollo.app.entity.Result;
 import formula.bollo.app.entity.Season;
 import formula.bollo.app.mapper.FantasyElectionMapper;
-import formula.bollo.app.mapper.UserMapper;
+import formula.bollo.app.mapper.AccountMapper;
+import formula.bollo.app.model.AccountDTO;
 import formula.bollo.app.model.FantasyElectionDTO;
 import formula.bollo.app.model.FantasyPointsUserDTO;
 import formula.bollo.app.model.RaceDTO;
-import formula.bollo.app.model.UserDTO;
 import formula.bollo.app.repository.FantasyElectionRepository;
 import formula.bollo.app.repository.FantasyPointsDriverRepository;
 import formula.bollo.app.repository.FantasyPointsTeamRepository;
@@ -41,7 +41,7 @@ public class FantasyService {
     private FantasyPointsDriverRepository fantasyPointsDriverRepository;
     private FantasyPointsTeamRepository fantasyPointsTeamRepository;
     private FantasyElectionMapper fantasyElectionMapper;
-    private UserMapper userMapper;
+    private AccountMapper accountMapper;
 
     public FantasyService(
         RaceService raceService,
@@ -51,7 +51,7 @@ public class FantasyService {
         FantasyPointsDriverRepository fantasyPointsDriverRepository,
         FantasyPointsTeamRepository fantasyPointsTeamRepository,
         FantasyElectionMapper fantasyElectionMapper,
-        UserMapper userMapper
+        AccountMapper accountMapper
     ) {
         this.raceService = raceService;
         this.fantasyPriceRepository = fantasyPriceRepository;
@@ -60,7 +60,7 @@ public class FantasyService {
         this.fantasyPointsDriverRepository = fantasyPointsDriverRepository;
         this.fantasyPointsTeamRepository = fantasyPointsTeamRepository;
         this.fantasyElectionMapper = fantasyElectionMapper;
-        this.userMapper = userMapper;
+        this.accountMapper = accountMapper;
     }
 
     /**
@@ -324,7 +324,7 @@ public class FantasyService {
 
         for (FantasyElection fantasyElection : fantasyElections) {
             FantasyPointsUserDTO fantasyPointsUserDTO = new FantasyPointsUserDTO();
-            UserDTO userDTO = this.userMapper.userToUserDTO(fantasyElection.getUser());
+            AccountDTO userDTO = this.accountMapper.accountToAccountDTO(fantasyElection.getUser());
             userDTO.setPassword("");
             FantasyElectionDTO fantasyElectionDTO = this.fantasyElectionMapper.fantasyElectionToFantasyElectionDTO(fantasyElection);
             int points = 0;

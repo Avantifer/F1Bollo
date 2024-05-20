@@ -47,7 +47,7 @@ public class ResultImpl implements ResultMapper {
         result.setRace(raceMapper.raceDTOToRace(resultDTO.getRace()));
         result.setDriver(driverMapper.driverDTOToDriver(resultDTO.getDriver()));
 
-        if (result.getPosition() != null) {
+        if (resultDTO.getPosition() != null) {
             result.setPosition(positionMapper.positionDTOToPosition(resultDTO.getPosition()));
         }
 

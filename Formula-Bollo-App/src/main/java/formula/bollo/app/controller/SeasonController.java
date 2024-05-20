@@ -71,7 +71,7 @@ public class SeasonController {
     public SeasonDTO getActualSeason() {
         Log.info("START - getActualSeason - START");
         
-        SeasonDTO season = new SeasonDTO();
+        SeasonDTO season = null;
         List<Season> seasons = this.seasonRepository.findByNumber(Constants.ACTUAL_SEASON);
 
         if (seasons.isEmpty()) return season;
@@ -119,7 +119,7 @@ public class SeasonController {
 
     @Operation(summary = "Get seasons of fantasy", tags = Constants.TAG_SEASON)
     @GetMapping("/fantasy")
-    public List<SeasonDTO> seasonsByTeamName() {
+    public List<SeasonDTO> seasonsOfFantasy() {
         Log.info("START - seasonsByTeamName - START");
         
         Set<Season> seasons;

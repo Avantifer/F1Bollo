@@ -7,17 +7,17 @@
       @if (configurations.length > 0) {
         @for (conf of configurations; track $index) {
           @if ($index >= 0 && $index <= 4 ) {
-              <p class="m-0">{{ conf.setting }}: {{ conf.value }}</p>
+              <p class="m-0">{{ conf.setting }}: {{ conf.settingValue }}</p>
               @if ($index === 4 || $index === configurations.length - 1) {
                 <hr>
               }
           } @else if ($index >= 5 && $index <= 10) {
-              <p class="text-right m-0">{{ conf.setting }}: {{ conf.value }}</p>
+              <p class="text-right m-0">{{ conf.setting }}: {{ conf.settingValue }}</p>
             @if ($index === 10 || $index === configurations.length - 1) {
               <hr>
             }
           } @else if ($index >= 11) {
-            <p class="m-0">{{ conf.setting }}: {{ conf.value }}</p>
+            <p class="m-0">{{ conf.setting }}: {{ conf.settingValue }}</p>
           }
         }
       } @else {

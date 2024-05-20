@@ -12,7 +12,7 @@ import { FantasyApiService } from "src/shared/services/api/fantasy-api.service";
 import { RaceApiService } from "src/shared/services/api/race-api.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 import { AuthJWTService } from "src/shared/services/authJWT.service";
-import { User } from "src/shared/models/user";
+import { Account } from "src/shared/models/account";
 import { environment } from "src/enviroments/enviroment";
 import { FantasyPointsDriver } from "src/shared/models/fantasyPointsDriver";
 import { FantasyPointsTeam } from "src/shared/models/fantasyPointsTeam";
@@ -942,7 +942,7 @@ export class FantasyTeamComponent {
 
       this.fantasyElection.race = this.raceSelected;
       this.fantasyElection.season = this.raceSelected?.season;
-      this.fantasyElection.user = new User(
+      this.fantasyElection.user = new Account(
         parseInt(
           this.authJWTService.getIdFromToken(localStorage.getItem("auth")!),
         ),

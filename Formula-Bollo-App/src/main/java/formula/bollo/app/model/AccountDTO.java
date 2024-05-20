@@ -13,7 +13,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class AccountDTO {
     private Long id;
     private String username;
     private String password;

@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +79,6 @@ public class RaceController {
         Log.info("START - saveCircuit - START");
         Log.info("RequestBody saveCircuit -> " + raceDTO);
         Log.info("RequestParam saveCircuit (season) -> " + season);
-        
         int numberSeason = season == null ? Constants.ACTUAL_SEASON : season;
 
         try {
@@ -90,8 +88,6 @@ public class RaceController {
             raceDTO.setSeason(seasonToSave);
 
             raceService.saveRace(raceDTO, numberSeason);
-        } catch (DataAccessException e) {
-            return new ResponseEntity<>(Constants.ERROR_BBDD_GENERIC, Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
         } catch (Exception e) {
             return new ResponseEntity<>(Constants.ERROR_GENERIC, Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
         }

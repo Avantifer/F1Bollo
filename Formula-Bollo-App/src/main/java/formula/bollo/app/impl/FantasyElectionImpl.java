@@ -1,8 +1,5 @@
 package formula.bollo.app.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +9,7 @@ import formula.bollo.app.mapper.FantasyElectionMapper;
 import formula.bollo.app.mapper.RaceMapper;
 import formula.bollo.app.mapper.SeasonMapper;
 import formula.bollo.app.mapper.TeamMapper;
-import formula.bollo.app.mapper.UserMapper;
+import formula.bollo.app.mapper.AccountMapper;
 import formula.bollo.app.model.FantasyElectionDTO;
 
 @Component
@@ -22,20 +19,20 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
     private RaceMapper raceMapper;
     private TeamMapper teamMapper;
     private SeasonMapper seasonMapper;
-    private UserMapper userMapper;
+    private AccountMapper accountMapper;
 
     public FantasyElectionImpl(
         DriverMapper driverMapper,
         RaceMapper raceMapper,
         TeamMapper teamMapper,
         SeasonMapper seasonMapper,
-        UserMapper userMapper
+        AccountMapper accountMapper
     ) {
         this.driverMapper = driverMapper;
         this.raceMapper = raceMapper;
         this.teamMapper = teamMapper;
         this.seasonMapper = seasonMapper;
-        this.userMapper = userMapper;
+        this.accountMapper = accountMapper;
     }
 
     /**
@@ -48,7 +45,7 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
     public FantasyElection fantasyElectionDTOToFantasyElection(FantasyElectionDTO fantasyElectionDTO) {
         FantasyElection fantasyElection = new FantasyElection();
         BeanUtils.copyProperties(fantasyElectionDTO, fantasyElection);
-        fantasyElection.setUser(userMapper.userDTOToUser(fantasyElectionDTO.getUser()));
+        fantasyElection.setUser(accountMapper.accountDTOToAccount(fantasyElectionDTO.getUser()));
 
         // Drivers mapping
         fantasyElection.setDriverOne(driverMapper.driverDTOToDriver(fantasyElectionDTO.getDriverOne()));
@@ -76,7 +73,7 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
     public FantasyElectionDTO fantasyElectionToFantasyElectionDTO(FantasyElection fantasyElection) {
         FantasyElectionDTO fantasyElectionDTO = new FantasyElectionDTO();
         BeanUtils.copyProperties(fantasyElection, fantasyElectionDTO);
-        fantasyElectionDTO.setUser(userMapper.userToUserDTO(fantasyElection.getUser()));
+        fantasyElectionDTO.setUser(accountMapper.accountToAccountDTO(fantasyElection.getUser()));
 
         // Drivers mapping
         fantasyElectionDTO.setDriverOne(driverMapper.driverToDriverDTO(fantasyElection.getDriverOne()));
@@ -92,19 +89,5 @@ public class FantasyElectionImpl implements FantasyElectionMapper {
         fantasyElectionDTO.setSeason(seasonMapper.seasonToSeasonDTO(fantasyElection.getSeason()));
 
         return fantasyElectionDTO;
-    }
-
-    /**
-     * Converts a list of FantasyElection objects to a list of FantasyElectionDTO objects.
-     *
-     * @param fantasyElections The list of FantasyElection objects to be converted.
-     * @return        A list of FantasyElectionDTO objects with properties copied from the FantasyElections.
-    */
-    @Override
-    public List<FantasyElectionDTO> convertFantasyElectionToFantasyElectionDTO(List<FantasyElection> fantasyElections) {
-        return fantasyElections.parallelStream()
-                .map(this::fantasyElectionToFantasyElectionDTO)
-                .collect(Collectors.toList());
-    }
-    
+    }    
 }

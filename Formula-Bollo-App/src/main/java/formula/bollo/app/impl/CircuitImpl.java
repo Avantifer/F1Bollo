@@ -35,15 +35,19 @@ public class CircuitImpl implements CircuitMapper {
         Circuit circuit = new Circuit();
 
         try {
-            byte[] decodedByteFlagImage = Base64.getDecoder().decode(circuitDTO.getFlagImage());
-            Blob flagImage = new SerialBlob(decodedByteFlagImage);
+            if (circuitDTO.getFlagImage() != null) {
+                byte[] decodedByteFlagImage = Base64.getDecoder().decode(circuitDTO.getFlagImage());
+                Blob flagImage = new SerialBlob(decodedByteFlagImage);
+                circuit.setFlagImage(flagImage);
+            }
 
-            byte[] decodedByteCircuitImage = Base64.getDecoder().decode(circuitDTO.getCircuitImage());
-            Blob circuitImage = new SerialBlob(decodedByteCircuitImage);
+            if (circuitDTO.getCircuitImage() != null) {
+                byte[] decodedByteCircuitImage = Base64.getDecoder().decode(circuitDTO.getCircuitImage());
+                Blob flagCircuit = new SerialBlob(decodedByteCircuitImage);
+                circuit.setCircuitImage(flagCircuit);
+            }
 
             BeanUtils.copyProperties(circuitDTO, circuit);
-            circuit.setFlagImage(flagImage);
-            circuit.setCircuitImage(circuitImage);
         } catch (SQLException | IllegalArgumentException e) {
             Log.error("No se ha podido obtener el blob de base64: ", e);
         }

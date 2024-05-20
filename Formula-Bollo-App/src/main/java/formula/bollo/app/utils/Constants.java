@@ -8,8 +8,8 @@ public class Constants {
     private Constants() { }
     
     // Tags
-    public static final String TAG_USER = "User";
-    public static final String TAG_USER_SUMMARY = "Operations related with users";
+    public static final String TAG_ACCOUNT = "Account";
+    public static final String TAG_ACCOUNT_SUMMARY = "Operations related with accounts";
 
     public static final String TAG_ARCHIVE = "Archives";
     public static final String TAG_ARCHIVE_SUMMARY = "Operations related with files";
@@ -48,7 +48,7 @@ public class Constants {
     public static final String TAG_SPRINT_SUMMARY = "Operations related with sprint section";
 
     // Endpoints
-    public static final String ENDPOINT_USER = "/user";
+    public static final String ENDPOINT_ACCOUNT = "/account";
     public static final String ENDPOINT_ARCHIVES = "/archives";
     public static final String ENDPOINT_CIRCUIT = "/circuits";
     public static final String ENDPOINT_CONFIGURATION = "/configurations";
@@ -70,7 +70,7 @@ public class Constants {
     public static final String ERROR_SEASON = "Hubo un problema con las temporadas";
     public static final String ERROR_USERNAME_ALREADY_EXISTS = "El usuario ya existe con ese nombre";
     public static final String ERROR_EMAIL_ALREADY_EXISTS = "El correo ya ha sido utilizado";
-    public static final String ERROR_USER_NOT_EXISTS = "El usuario no existe";
+    public static final String ERROR_ACCOUNT_NOT_EXISTS = "El usuario no existe";
     
     //Urls
     public static final String PRODUCTION_FRONTEND = "https://formulabollo.es/";
