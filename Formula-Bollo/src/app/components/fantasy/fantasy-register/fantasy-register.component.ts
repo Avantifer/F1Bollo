@@ -10,9 +10,9 @@ import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ERROR_DRIVER_FETCH, ERROR_FORM_NOT_VALID, SUCCESS_REGISTER } from "src/app/constants";
 import { Driver } from "src/shared/models/driver";
-import { User } from "src/shared/models/user";
+import { Account } from "src/shared/models/account";
 import { DriverApiService } from "src/shared/services/api/driver-api.service";
-import { UserApiService } from "src/shared/services/api/user-api.service";
+import { AccountApiService } from "src/shared/services/api/account-api.service";
 import { AuthJWTService } from "src/shared/services/authJWT.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 
@@ -36,7 +36,7 @@ export class FantasyRegisterComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
-    private userApiService: UserApiService,
+    private accountApiService: AccountApiService,
     private messageInfoService: MessageInfoService,
     private authJWTService: AuthJWTService,
     private router: Router,
@@ -69,15 +69,15 @@ export class FantasyRegisterComponent {
    */
   register(): void {
     if (this.registerForm.valid) {
-      const user: User = new User(
+      const account: Account = new Account(
         0,
         this.registerForm.get("username")!.value,
         this.registerForm.get("password")!.value,
         this.registerForm.get("email")!.value,
         0,
       );
-      this.userApiService
-        .register(user)
+      this.accountApiService
+        .register(account)
         .pipe(takeUntil(this._unsubscribe))
         .subscribe({
           next: (token: string) => {
@@ -89,10 +89,6 @@ export class FantasyRegisterComponent {
           error: (error) => {
             this.messageInfoService.showError(error.error);
             console.log(error);
-            throw error;
-          },
-          complete: () => {
-
           }
         });
     } else {
@@ -114,7 +110,6 @@ export class FantasyRegisterComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

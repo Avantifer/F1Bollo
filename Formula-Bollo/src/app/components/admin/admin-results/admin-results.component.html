@@ -177,11 +177,11 @@
     @if (circuitSelected) {
       <div class="flex align-items-center">
       @if (!isSprint) {
-        <p-button class="mx-auto my-5 modifyResults-button p-2 p-button-raised" (click)="saveRace()">
+        <p-button class="mx-auto my-5 modifyResults-button p-2 p-button-raised" (click)="createResults()">
           Guardar
         </p-button>
       }@else if (isSprint) {
-        <p-button class="mx-auto my-5 modifyResults-button p-2 p-button-raised" (click)="saveSprint()">
+        <p-button class="mx-auto my-5 modifyResults-button p-2 p-button-raised" (click)="createSprints()">
           Guardar
         </p-button>
       }

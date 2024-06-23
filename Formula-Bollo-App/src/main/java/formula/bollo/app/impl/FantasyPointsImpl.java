@@ -37,24 +37,6 @@ public class FantasyPointsImpl implements FantasyPointsMapper {
     }
 
     /**
-     * Converts a FantasyPointsDriverDTO object to a fantasyPointsDriver object.
-     *
-     * @param fantasyPointsDriverDTO The fantasyPointsDriverDTO object to be converted.
-     * @return          A fantasyPointsDriver object with properties copied from the fantasyPointsDriverDTO.
-    */
-    @Override
-    public FantasyPointsDriver fantasyPointsDriverDTOToFantasyPointsDriver(FantasyPointsDriverDTO fantasyPointsDriverDTO) {
-        FantasyPointsDriver fantasyPointsDriver = new FantasyPointsDriver();
-        BeanUtils.copyProperties(fantasyPointsDriverDTO, fantasyPointsDriver);
-
-        fantasyPointsDriver.setDriver(driverMapper.driverDTOToDriver(fantasyPointsDriverDTO.getDriver()));
-        fantasyPointsDriver.setRace(raceMapper.raceDTOToRace(fantasyPointsDriverDTO.getRace()));
-        fantasyPointsDriver.setSeason(seasonMapper.seasonDTOToSeason(fantasyPointsDriverDTO.getSeason()));
-
-        return fantasyPointsDriver;
-    }
-
-    /**
      * Converts a FantasyPointsDriver object to a FantasyPointsDriverDTO object.
      *
      * @param fantasyPointsDriver The FantasyPointsDriver object to be converted.
@@ -83,24 +65,6 @@ public class FantasyPointsImpl implements FantasyPointsMapper {
         return fantasyPointsDrivers.parallelStream()
                 .map(this::fantasyPointsDriverToFantasyPointsDriverDTO)
                 .toList();
-    }
-
-    /**
-     * Converts a FantasyPointsTeamDTO object to a FantasyPointsTeam object.
-     *
-     * @param fantasyPointsTeamDTO The fantasyPointsTeamDTO object to be converted.
-     * @return          A fantasyPointsDriver object with properties copied from the fantasyPointsTeamDTO.
-    */
-    @Override
-    public FantasyPointsTeam fantasyPointsTeamDTOToFantasyPointsTeam(FantasyPointsTeamDTO fantasyPointsTeamDTO) {
-        FantasyPointsTeam fantasyPointsTeam = new FantasyPointsTeam();
-        BeanUtils.copyProperties(fantasyPointsTeamDTO, fantasyPointsTeam);
-
-        fantasyPointsTeam.setTeam(teamMapper.teamDTOToTeam(fantasyPointsTeamDTO.getTeam()));
-        fantasyPointsTeam.setRace(raceMapper.raceDTOToRace(fantasyPointsTeamDTO.getRace()));
-        fantasyPointsTeam.setSeason(seasonMapper.seasonDTOToSeason(fantasyPointsTeamDTO.getSeason()));
-
-        return fantasyPointsTeam;
     }
 
     /**

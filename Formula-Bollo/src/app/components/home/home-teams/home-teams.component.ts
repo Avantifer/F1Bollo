@@ -55,7 +55,6 @@ export class HomeTeamsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_TEAM_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

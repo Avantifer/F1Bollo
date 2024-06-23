@@ -53,7 +53,6 @@ export class StatuteComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_STATUTE_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

@@ -82,7 +82,6 @@ export class AdminPenaltiesComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RACE_FETCH);
           console.log(error.error);
-          throw error;
         },
       });
   }
@@ -101,7 +100,6 @@ export class AdminPenaltiesComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_PENALTY_TYPE_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -143,7 +141,6 @@ export class AdminPenaltiesComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -204,7 +201,6 @@ export class AdminPenaltiesComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_PENALTIES_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -248,7 +244,6 @@ export class AdminPenaltiesComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_PENALTIES_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -268,7 +263,7 @@ export class AdminPenaltiesComponent {
    *
    * @returns An array of penalties to be saved.
    */
-  private createPenaltiesToSave(): Penalty[] {
+  createPenaltiesToSave(): Penalty[] {
     const penaltiesToSave: Penalty[] = [];
 
     // Check if the reason selected is empty
@@ -309,7 +304,7 @@ export class AdminPenaltiesComponent {
    *
    * @param penaltiesToSave - An array of penalties to be saved.
    */
-  private savePenaltiesArray(penaltiesToSave: Penalty[]): void {
+  savePenaltiesArray(penaltiesToSave: Penalty[]): void {
     this.penaltyApiService
       .savePenalties(penaltiesToSave)
       .pipe(takeUntil(this._unsubscribe))
@@ -322,7 +317,6 @@ export class AdminPenaltiesComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_SAVE);
           console.log(error);
-          throw error;
         },
         complete: () => {
           this.getAllPenaltiesPerDriver();
@@ -333,7 +327,7 @@ export class AdminPenaltiesComponent {
   /**
    * Reset selected values and form fields.
    */
-  private resetFormAndValues(): void {
+  resetFormAndValues(): void {
     this.driverSelected = undefined;
     this.driverForm.get("driver")?.setValue("");
     this.penaltySeveritySelected = undefined;

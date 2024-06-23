@@ -14,22 +14,32 @@ import jakarta.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "driver")
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 25)
+    @Column(name = "name", nullable = false, length = 25)
     @NotBlank(message = "El nombre del piloto es obligatorio")
     private String name;
 
-    @Column(name = "number", nullable = false, unique = true, length = 4)
+    @Column(name = "number", nullable = false, length = 4)
     @NotBlank(message = "El número de piloto es obligatorio")
     private int number;
 

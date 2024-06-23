@@ -12,7 +12,7 @@ import { FantasyApiService } from "src/shared/services/api/fantasy-api.service";
 import { RaceApiService } from "src/shared/services/api/race-api.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 import { AuthJWTService } from "src/shared/services/authJWT.service";
-import { User } from "src/shared/models/user";
+import { Account } from "src/shared/models/account";
 import { environment } from "src/enviroments/enviroment";
 import { FantasyPointsDriver } from "src/shared/models/fantasyPointsDriver";
 import { FantasyPointsTeam } from "src/shared/models/fantasyPointsTeam";
@@ -119,7 +119,6 @@ export class FantasyTeamComponent {
         error: (error) => {
           console.log(error);
           this.messageInfoService.showError(ERROR_RACE_FETCH);
-          throw error;
         },
         complete: () => {
           this.getFantasyElection();
@@ -153,7 +152,6 @@ export class FantasyTeamComponent {
         error: (error) => {
           console.log(error);
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
-          throw error;
         },
         complete: () => {
           this.getAllTeams(this.raceSelected!.id);
@@ -170,7 +168,7 @@ export class FantasyTeamComponent {
    * @param driver - the driver to get the info.
    * @param index - the position of the team in the teams list.
    */
-  private getInfoDriver(driver: FantasyPriceDriver, index: number): void {
+  getInfoDriver(driver: FantasyPriceDriver, index: number): void {
     this.fantasyApiService
       .getInfoByDriver(driver.driver.id)
       .pipe(takeUntil(this._unsubscribe))
@@ -187,7 +185,6 @@ export class FantasyTeamComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -218,7 +215,6 @@ export class FantasyTeamComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_TEAM_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           this.teams.forEach((team: FantasyPriceTeam, index: number) => {
@@ -236,7 +232,7 @@ export class FantasyTeamComponent {
    * @param team - the team to get the info.
    * @param index - the position of the team in the teams list.
    */
-  private getInfoTeam(team: FantasyPriceTeam, index: number): void {
+  getInfoTeam(team: FantasyPriceTeam, index: number): void {
     this.fantasyApiService
       .getInfoByTeam(team.team.id)
       .pipe(takeUntil(this._unsubscribe))
@@ -252,8 +248,7 @@ export class FantasyTeamComponent {
         },
         error: (error) => {
           console.log(error);
-          this.messageInfoService.showError(ERROR_DRIVER_FETCH);
-          throw error;
+          this.messageInfoService.showError(ERROR_TEAM_FETCH);
         },
       });
   }
@@ -307,7 +302,7 @@ export class FantasyTeamComponent {
   /**
    * Change the option form selected depends of the option.
    */
-  private changeOptionFormSelected() {
+  changeOptionFormSelected() {
     const elementPreviousSelected: Element | null = document.querySelector(
       ".fantasySelection-optionForm.selected",
     );
@@ -527,7 +522,7 @@ export class FantasyTeamComponent {
   /**
    * Change the option of drivers or teams depends of the optionForm selected
    */
-  private comprobateOptionFantasySelection(): void {
+  comprobateOptionFantasySelection(): void {
     const optionFormSelected: Element | null = document.querySelector(
       ".fantasySelection-optionForm.selected",
     );
@@ -560,7 +555,7 @@ export class FantasyTeamComponent {
    * @param driver - The driver that the user wants to add.
    * @param element - The optionForm wich the user selected and driver appears.
    */
-  private setOrderDriver(driver: FantasyPriceDriver, element: Element): void {
+  setOrderDriver(driver: FantasyPriceDriver, element: Element): void {
     if (element.classList[1].includes("team")) {
       this.messageInfoService.showError(ERROR_FANTASY_DRIVER_IN_TEAM);
       return;
@@ -585,7 +580,7 @@ export class FantasyTeamComponent {
    *
    * @param element - The optionForm wich the user selected and driver appears.
    */
-  private putDriverSelected(element: Element): void {
+  putDriverSelected(element: Element): void {
     let firstContainerNotPreviousSelected: Element | null = null;
 
     if (!this.fantasyElection.driverOne) {
@@ -611,14 +606,7 @@ export class FantasyTeamComponent {
       firstContainerNotPreviousSelected?.classList.add("selected");
       this.optionSelected = "Equipos";
       this.changeOptionSelected(null);
-      const optionSelected: NodeListOf<Element> | null =
-        document.querySelectorAll(".fantasySelection-mid-table-top-option");
-
-      optionSelected.forEach((element: Element) => {
-        if (element.children[0].innerHTML === this.optionSelected) {
-          element.classList.add("selected");
-        }
-      });
+      this.setOptionSelected();
       this.changeOptionFormSelected();
     }
   }
@@ -646,7 +634,7 @@ export class FantasyTeamComponent {
    * @param driver - The team that the user wants to add.
    * @param element - The optionForm wich the user selected and team appears.
    */
-  private setOrderTeam(team: FantasyPriceTeam, element: Element): void {
+  setOrderTeam(team: FantasyPriceTeam, element: Element): void {
     if (element.classList[1].includes("driver")) {
       this.messageInfoService.showError(ERROR_FANTASY_TEAM_IN_DRIVER);
       return;
@@ -666,7 +654,7 @@ export class FantasyTeamComponent {
    *
    * @param element - The optionForm wich the user selected and driver appears.
    */
-  private putTeamSelected(element: Element): void {
+  putTeamSelected(element: Element): void {
     let firstContainerNotPreviousSelected: Element | null = null;
 
     if (!this.fantasyElection.teamOne) {
@@ -747,15 +735,7 @@ export class FantasyTeamComponent {
       this.optionSelected = "Pilotos";
 
       this.changeOptionSelected(null);
-
-      const optionSelected: NodeListOf<Element> | null =
-        document.querySelectorAll(".fantasySelection-mid-table-top-option");
-
-      optionSelected.forEach((element: Element) => {
-        if (element.children[0].innerHTML === this.optionSelected) {
-          element.classList.add("selected");
-        }
-      });
+      this.setOptionSelected();
     }
   }
 
@@ -764,7 +744,7 @@ export class FantasyTeamComponent {
    *
    * @param element - the element that needs to remove the image.
    */
-  private deleteDriverOfTheSelection(element: Element) {
+  deleteDriverOfTheSelection(element: Element) {
     const driverNumberClass: string | null | undefined =
       element.parentElement?.nextElementSibling?.classList.item(1);
     if (driverNumberClass === null || driverNumberClass === undefined) return;
@@ -788,7 +768,7 @@ export class FantasyTeamComponent {
    *
    * @param element - the element that needs to remove the background.
    */
-  private deleteDriverTeamBackground(element: Element) {
+  deleteDriverTeamBackground(element: Element) {
     const elementPhoto: NullableElement =
       element.parentElement?.nextElementSibling?.nextElementSibling;
     if (elementPhoto === null || elementPhoto === undefined) return;
@@ -823,14 +803,7 @@ export class FantasyTeamComponent {
       this.optionSelected = "Equipos";
 
       this.changeOptionSelected(null);
-      const optionSelected: NodeListOf<Element> | null =
-        document.querySelectorAll(".fantasySelection-mid-table-top-option");
-
-      optionSelected.forEach((element: Element) => {
-        if (element.children[0].innerHTML === this.optionSelected) {
-          element.classList.add("selected");
-        }
-      });
+      this.setOptionSelected();
     }
   }
 
@@ -839,7 +812,7 @@ export class FantasyTeamComponent {
    *
    * @param element - the element that needs to remove the image.
    */
-  private deleteTeamOfTheSelection(element: Element) {
+  deleteTeamOfTheSelection(element: Element) {
     const driverNumberClass: string | null | undefined =
       element.parentElement?.nextElementSibling?.classList.item(1);
     if (driverNumberClass === null || driverNumberClass === undefined) return;
@@ -854,9 +827,23 @@ export class FantasyTeamComponent {
   }
 
   /**
+   * Set selected to the correct option
+   */
+  setOptionSelected(): void {
+    const optionSelected: NodeListOf<Element> | null =
+    document.querySelectorAll(".fantasySelection-mid-table-top-option");
+
+    optionSelected.forEach((element: Element) => {
+      if (element.children[0].innerHTML === this.optionSelected) {
+        element.classList.add("selected");
+      }
+    });
+  }
+
+  /**
    * Calculate the total price
    */
-  private calculateTotalPrice(): void {
+  calculateTotalPrice(): void {
     this.price = 70000000;
     this.calculateDriversValue();
     this.calculateTeamsValue();
@@ -916,7 +903,6 @@ export class FantasyTeamComponent {
    * Save the fantasy selection selected to the db.
    */
   saveFantasyElection(): void {
-
     if (this.raceSelected?.dateStart) {
       const today: Date = new Date();
       const dateStart: Date = new Date(this.raceSelected?.dateStart);
@@ -942,7 +928,7 @@ export class FantasyTeamComponent {
 
       this.fantasyElection.race = this.raceSelected;
       this.fantasyElection.season = this.raceSelected?.season;
-      this.fantasyElection.user = new User(
+      this.fantasyElection.user = new Account(
         parseInt(
           this.authJWTService.getIdFromToken(localStorage.getItem("auth")!),
         ),
@@ -958,7 +944,6 @@ export class FantasyTeamComponent {
           error: (error) => {
             this.messageInfoService.showError(ERROR_FANTASY_ELECTION_SAVE);
             console.log(error);
-            throw error;
           },
         });
     } else {
@@ -1164,7 +1149,7 @@ export class FantasyTeamComponent {
    * @param points The average points to be parsed.
    * @returns A string representation of the parsed average points.
   */
-  parseAveragePoints(points: number): string {
+  parseAveragePoints(points: number | undefined): string {
     return points === undefined ? "0" : points.toFixed(1).replace(".0", "");
   }
 }

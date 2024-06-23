@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -60,18 +59,14 @@ public class ArchiveController {
     public ResponseEntity<String> saveStatute(@RequestBody ArchiveDTO archiveDTO) {
         Log.info("START - saveStatute - START");
 
-        try {
-            List<Archive> statuteOld = archiveRepository.findByDefinition("Statute");
-            Archive statuteNew = archiveMapper.archiveDTOToArchive(archiveDTO);
+        List<Archive> statuteOld = archiveRepository.findByDefinition("Statute");
+        Archive statuteNew = archiveMapper.archiveDTOToArchive(archiveDTO);
 
-            if (!statuteOld.isEmpty()) {
-                statuteNew.setId(statuteOld.get(0).getId());
-                archiveRepository.save(statuteNew);
-            }
-        } catch (DataAccessException e) {
-            Log.error(Constants.ERROR_UNEXPECTED, e);
-            return new ResponseEntity<>(Constants.ERROR_BBDD_GENERIC, Constants.HEADERS_TEXT_PLAIN, HttpStatusCode.valueOf(500));
+        if (!statuteOld.isEmpty()) {
+            statuteNew.setId(statuteOld.get(0).getId());
         }
+        
+        archiveRepository.save(statuteNew);
 
         Log.info("END - saveStatute - END");
 

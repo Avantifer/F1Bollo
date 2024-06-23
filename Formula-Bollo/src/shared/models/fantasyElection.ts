@@ -2,11 +2,11 @@ import { Driver } from "./driver";
 import { Race } from "./race";
 import { Season } from "./season";
 import { Team } from "./team";
-import { User } from "./user";
+import { Account } from "./account";
 
 export class FantasyElection {
   id: number | undefined;
-  user: User | undefined;
+  user: Account | undefined;
   driverOne: Driver | undefined;
   driverTwo: Driver | undefined;
   driverThree: Driver | undefined;
@@ -17,7 +17,7 @@ export class FantasyElection {
 
   constructor(
     id?: number | undefined,
-    user?: User | undefined,
+    user?: Account | undefined,
     driverOne?: Driver | undefined,
     driverTwo?: Driver | undefined,
     driverThree?: Driver | undefined,

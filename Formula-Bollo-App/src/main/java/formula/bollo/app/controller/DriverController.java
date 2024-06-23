@@ -101,7 +101,7 @@ public class DriverController {
         return driverDTOs;
     }
 
-    @Operation(summary = "Get all info of drivers", tags = Constants.TAG_TEAM)
+    @Operation(summary = "Get all info of drivers", tags = Constants.TAG_DRIVER)
     @GetMapping("/allInfoDriver")
     @Cacheable(value = "driversCache", key = "#season")
     public List<DriverInfoDTO> getAllInfoDriver(@RequestParam(value = "season", required = false) Integer season) {

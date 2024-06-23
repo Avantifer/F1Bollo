@@ -18,21 +18,6 @@ public class ConfigurationImpl implements ConfigurationMapper {
     }
 
     /**
-     * Converts a ConfigurationDTO object to a Configuration object.
-     *
-     * @param configurationDTO The ConfigurationDTO object to be converted.
-     * @return                 A Configuration object with properties copied from the ConfigurationDTO.
-    */
-    @Override
-    public Configuration configurationDTOToconfiguration(ConfigurationDTO configurationDTO) {
-        Configuration conf = new Configuration();
-        BeanUtils.copyProperties(configurationDTO, conf);
-        conf.setSeason(this.seasonMapper.seasonDTOToSeason(configurationDTO.getSeason()));
-        
-        return conf;
-    }
-
-    /**
      * Converts a Configuration object to a ConfigurationDTO object.
      *
      * @param configuration The Configuration object to be converted.

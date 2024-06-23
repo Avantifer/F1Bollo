@@ -37,25 +37,6 @@ public class FantasyPriceImpl implements FantasyPriceMapper {
     }
 
     /**
-     * Converts a FantasyPriceDriverDTO object to a FantasyPriceDriver object.
-     *
-     * @param fantasyPriceDriverDTO The FantasyPriceDriverDTO object to be converted.
-     * @return          A FantasyPriceDriver object with properties copied from the FantasyPriceDriverDTO.
-    */
-    @Override
-    public FantasyPriceDriver fantasyPriceDriverDTOToFantasyPriceDriver(FantasyPriceDriverDTO fantasyPriceDriverDTO) {
-        FantasyPriceDriver fantasyPriceDriver = new FantasyPriceDriver();
-        BeanUtils.copyProperties(fantasyPriceDriverDTO, fantasyPriceDriver);
-
-        fantasyPriceDriver.setPrice(fantasyPriceDriverDTO.getPrice());
-        fantasyPriceDriver.setDriver(driverMapper.driverDTOToDriver(fantasyPriceDriverDTO.getDriver()));
-        fantasyPriceDriver.setRace(raceMapper.raceDTOToRace(fantasyPriceDriverDTO.getRace()));
-        fantasyPriceDriver.setSeason(seasonMapper.seasonDTOToSeason(fantasyPriceDriverDTO.getSeason()));
-
-        return fantasyPriceDriver;
-    }
-
-    /**
      * Converts a FantasyPriceDriver object to a FantasyPriceDriverDTO object.
      *
      * @param fantasyPriceDriver The FantasyPriceDriver object to be converted.
@@ -84,25 +65,6 @@ public class FantasyPriceImpl implements FantasyPriceMapper {
         return fantasyPriceDrivers.parallelStream()
                 .map(this::fantasyPriceDriverToFantasyPriceDriverDTO)
                 .toList();
-    }
-
-    /**
-     * Converts a FantasyPriceTeamDTO object to a FantasyPriceTeam object.
-     *
-     * @param fantasyPriceTeamDTO The FantasyPriceTeamDTO object to be converted.
-     * @return          A FantasyPriceTeam object with properties copied from the FantasyPriceTeamDTO.
-    */
-    @Override
-    public FantasyPriceTeam fantasyPriceTeamDTOToFantasyPriceTeam(FantasyPriceTeamDTO fantasyPriceTeamDTO) {
-        FantasyPriceTeam fantasyPriceTeam = new FantasyPriceTeam();
-        BeanUtils.copyProperties(fantasyPriceTeamDTO, fantasyPriceTeam);
-
-        fantasyPriceTeam.setPrice(fantasyPriceTeamDTO.getPrice());
-        fantasyPriceTeam.setTeam(teamMapper.teamDTOToTeam(fantasyPriceTeamDTO.getTeam()));
-        fantasyPriceTeam.setRace(raceMapper.raceDTOToRace(fantasyPriceTeamDTO.getRace()));
-        fantasyPriceTeam.setSeason(seasonMapper.seasonDTOToSeason(fantasyPriceTeamDTO.getSeason()));
-
-        return fantasyPriceTeam;
     }
 
     /**

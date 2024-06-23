@@ -10,11 +10,21 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "configuration")
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Configuration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +35,9 @@ public class Configuration {
     @NotBlank(message = "El nombre de configuración es obligatorio")
     private String setting;
 
-    @Column(name = "value", nullable = false, length = 250)
+    @Column(name = "setting_value", nullable = false, length = 250)
     @NotBlank(message = "El valor de configuración es obligatorio")
-    private String value;
+    private String settingValue;
 
     @ManyToOne
     @JoinColumn(name = "season_id", referencedColumnName = "id")

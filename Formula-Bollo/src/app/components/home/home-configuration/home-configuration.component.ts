@@ -45,7 +45,6 @@ export class HomeConfigurationComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_CONFIGURATION_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

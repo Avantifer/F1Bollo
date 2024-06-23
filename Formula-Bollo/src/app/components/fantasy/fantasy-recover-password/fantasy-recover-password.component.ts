@@ -9,7 +9,7 @@ import {
 import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ERROR_FORM_NOT_VALID } from "src/app/constants";
-import { UserApiService } from "src/shared/services/api/user-api.service";
+import { AccountApiService } from "src/shared/services/api/account-api.service";
 import { AuthJWTService } from "src/shared/services/authJWT.service";
 import { MessageInfoService } from "src/shared/services/messageinfo.service";
 
@@ -37,7 +37,7 @@ export class FantasyRecoverPasswordComponent {
   constructor(
     private router: Router,
     private messageInfoService: MessageInfoService,
-    private userApiService: UserApiService,
+    private accountApiService: AccountApiService,
     private authJWTService: AuthJWTService,
   ) {}
 
@@ -66,7 +66,7 @@ export class FantasyRecoverPasswordComponent {
         this.token,
       );
       const password: string = this.recoverPasswordForm.get("password")?.value;
-      this.userApiService
+      this.accountApiService
         .changePassword(password, username)
         .pipe(takeUntil(this._unsuscribe))
         .subscribe({
@@ -77,7 +77,6 @@ export class FantasyRecoverPasswordComponent {
           error: (error) => {
             this.messageInfoService.showError(error.error);
             console.log(error);
-            throw error;
           }
         });
     } else {

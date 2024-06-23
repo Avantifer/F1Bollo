@@ -60,8 +60,7 @@ export class TeamsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_TEAM_FETCH);
           console.log(error);
-          throw error;
-        },
+        }
       });
   }
 

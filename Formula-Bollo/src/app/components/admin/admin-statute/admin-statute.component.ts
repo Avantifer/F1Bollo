@@ -61,7 +61,6 @@ export class AdminStatuteComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_SAVE);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -78,8 +77,8 @@ export class AdminStatuteComponent {
     const reader = new FileReader();
 
     reader.onload = (e: ProgressEvent<FileReader>) => {
-      try {
-        if (e.target?.result) {
+      if (e.target?.result) {
+        try {
           const fileContent: Uint8Array = new Uint8Array(
             e.target.result as ArrayBuffer,
           );
@@ -91,11 +90,11 @@ export class AdminStatuteComponent {
             "Statute",
           );
           this.saveFile(archive);
-        } else {
+        } catch (error) {
+          console.error(error);
           this.messageInfoService.showError(ERROR_ARCHIVE_NOT_VALID);
         }
-      } catch (error) {
-        console.error(error);
+      } else {
         this.messageInfoService.showError(ERROR_ARCHIVE_NOT_VALID);
       }
     };

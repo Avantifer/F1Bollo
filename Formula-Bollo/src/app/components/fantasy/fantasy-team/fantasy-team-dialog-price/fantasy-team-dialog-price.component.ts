@@ -50,7 +50,8 @@ export class FantasyTeamDialogPriceComponent {
    * @param driverId The ID of the driver for which price data will be retrieved.
    */
   getDriverPrice(driverId: number) {
-    this.fantasyApiService.getDriverPrice(driverId)
+    this.fantasyApiService
+      .getDriverPrice(driverId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPricesDriver: FantasyPriceDriver[]) => {
@@ -71,7 +72,8 @@ export class FantasyTeamDialogPriceComponent {
    * @param teamId The ID of the team for which price data will be retrieved.
   */
   getTeamPrice(teamId: number) {
-    this.fantasyApiService.getTeamPrice(teamId)
+    this.fantasyApiService
+      .getTeamPrice(teamId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPricesDriver: FantasyPriceTeam[]) => {

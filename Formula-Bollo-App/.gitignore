@@ -5,6 +5,9 @@ target/
 !**/src/test/**/target/
 .env
 **/src/main/resources/formulabollo.p12
+test.properties
+testsData/
+data.sql
 
 ### STS ###
 .apt_generated

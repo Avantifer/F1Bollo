@@ -104,19 +104,6 @@ public class DriverImpl implements DriverMapper {
     }
 
     /**
-     * Converts a list of Driver objects to a list of DriverDTO objects without including driver images.
-     *
-     * @param drivers The list of Driver objects to be converted.
-     * @return        A list of DriverDTO objects with properties copied from the Drivers (excluding driver images).
-    */
-    @Override
-    public List<DriverDTO> convertDriversToDriverDTONoImage(List<Driver> drivers) {
-        return drivers.parallelStream()
-                .map(this::driverToDriverDTONoImage)
-                .collect(Collectors.toList());
-    }
-
-    /**
      * Converts a list of Driver objects to a list of DriverDTO objects.
      *
      * @param drivers The list of Driver objects to be converted.

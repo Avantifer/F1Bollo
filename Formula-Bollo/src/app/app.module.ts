@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -36,7 +36,6 @@ import { DriversComponent } from "./components/drivers/drivers.component";
 import { AdminComponent } from "./components/admin/admin.component";
 import { AdminResultsComponent } from "./components/admin/admin-results/admin-results.component";
 import { LoginComponent } from "./components/login/login.component";
-import { LoaderComponent } from "src/shared/components/loader/loader.component";
 import { AdminPenaltiesComponent } from "./components/admin/admin-penalties/admin-penalties.component";
 import { StatuteComponent } from "./components/statute/statute.component";
 import { ResultsComponent } from "./components/results/results.component";
@@ -58,8 +57,6 @@ import { FantasyTeamGuard } from "src/shared/guards/FantasyTeamGuard";
 import { RecoverPasswordGuard } from "src/shared/guards/RecoverPasswordGuard";
 
 import { JwtHelperService, JWT_OPTIONS } from "@auth0/angular-jwt";
-import { LoaderService } from "./../shared/services/loader.service";
-import { LoaderInterceptor } from "./../shared/interceptors/loader.interceptor";
 import { PricePipe } from "src/shared/pipes/price.pipe";
 import { IsNanPipe } from "src/shared/pipes/isNan.pipe";
 import { SpaceToUnderscorePipe } from "src/shared/pipes/spaceToUnderscore.pipe";
@@ -84,7 +81,6 @@ import { SeasonService } from "src/shared/services/season.service";
     AdminComponent,
     AdminResultsComponent,
     LoginComponent,
-    LoaderComponent,
     AdminPenaltiesComponent,
     StatuteComponent,
     ResultsComponent,
@@ -146,8 +142,6 @@ import { SeasonService } from "src/shared/services/season.service";
     DialogService,
     SeasonService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    LoaderService,
-    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

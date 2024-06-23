@@ -7,7 +7,7 @@
       <div
         class="admin-leftSide-item flex w-4rem sm:w-11rem mx-auto sm:mx-0 pl-0 sm:pl-2 py-2 mt-1 mb-1 align-items-center justify-content-center sm:justify-content-start border-round-md cursor-pointer"
         [class.active]="activeNavItem === sideItem.text"
-        (click)="navigateByUrl(sideItem.url); selectNavItem($event.target)">
+        (click)="router.navigateByUrl(sideItem.url); selectNavItem($event.target)">
         <i class="m-0 sm:mr-1 pr-none" [class]="sideItem.icon"></i>
         <p class="m-0 hidden sm:block pr-none font-bold">{{ sideItem.text }}</p>
       </div>

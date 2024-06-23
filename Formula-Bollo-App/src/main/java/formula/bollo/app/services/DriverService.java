@@ -62,6 +62,8 @@ public class DriverService {
     public DriverInfoDTO getAllInfoDriver(List<Driver> drivers) {
         DriverInfoDTO driverInfoDTO = new DriverInfoDTO();
 
+        if (drivers.isEmpty()) return null;
+        
         List<Long> listOfIds = drivers.stream().map(Driver::getId).toList();
         DriverDTO driverDTO = driverMapper.driverToDriverDTO(drivers.get(drivers.size() - 1));
 

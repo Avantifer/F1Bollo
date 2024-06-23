@@ -1,8 +1,5 @@
 package formula.bollo.app.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -39,18 +36,5 @@ public class SprintPositionImpl implements SprintPositionMapper{
         SprintPositionDTO sprintPositionDTO = new SprintPositionDTO();
         BeanUtils.copyProperties(sprint, sprintPositionDTO);
         return sprintPositionDTO;
-    }
-
-    /**
-     * Converts a list of SprintPosition objects to a list of SprintPositionDTO objects.
-     *
-     * @param sprintPositions The list of SprintPositions objects to be converted.
-     * @return      A list of SprintPositionDTO objects with properties copied from the Sprints.
-    */
-    @Override
-    public List<SprintPositionDTO> convertSprintPositionsToSprintPositionsDTO(List<SprintPosition> sprints) {
-        return sprints.parallelStream()
-                .map(this::sprintPositionToSprintPositionDTO)
-                .collect(Collectors.toList());
     }
 }

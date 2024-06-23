@@ -64,7 +64,6 @@ export class DriversComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RESULT_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           if (this.driverPoints.length === 0) {
@@ -88,7 +87,6 @@ export class DriversComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

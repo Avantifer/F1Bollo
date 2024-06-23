@@ -62,7 +62,6 @@ export class HomeDriversComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           if (this.driverPoints.length === 0) {
@@ -75,7 +74,7 @@ export class HomeDriversComponent {
   /**
    * Fetch all drivers data and update the component"s drivers property.
    */
-  private obtainAllDrivers(): void {
+  obtainAllDrivers(): void {
     this.driversApiService
       .getAllDrivers(environment.seasonActual.number)
       .pipe(takeUntil(this._unsubscribe))
@@ -91,7 +90,6 @@ export class HomeDriversComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

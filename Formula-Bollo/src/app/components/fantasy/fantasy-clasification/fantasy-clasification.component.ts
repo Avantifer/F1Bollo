@@ -87,7 +87,6 @@ export class FantasyClasificationComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RACE_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           if (this.raceSelected) {
@@ -111,7 +110,6 @@ export class FantasyClasificationComponent {
         }, error: (error) => {
           this.messageInfoService.showError(ERROR_SEASON_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           this.getAllRaces();
@@ -133,7 +131,6 @@ export class FantasyClasificationComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_POINT_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

@@ -60,7 +60,11 @@ public class TeamImpl implements TeamMapper{
         TeamDTO teamDTO = new TeamDTO();
 
         try {
-            String logoImage = Base64.getEncoder().encodeToString(team.getLogoImage().getBytes(1, (int) team.getLogoImage().length()));
+            String logoImage = "";
+
+            if (team.getLogoImage() != null) {
+                logoImage = Base64.getEncoder().encodeToString(team.getLogoImage().getBytes(1, (int) team.getLogoImage().length()));
+            }
 
             BeanUtils.copyProperties(team, teamDTO);
             teamDTO.setLogoImage(logoImage);
@@ -70,22 +74,6 @@ public class TeamImpl implements TeamMapper{
         
         teamDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(team.getSeason()));
         
-        return teamDTO;
-    }
-
-    /**
-     * Converts a Team object to a TeamDTO object excluding the team image.
-     *
-     * @param team The Team object to be converted.
-     * @return     A TeamDTO object with properties copied from the Team excluding the team image.
-    */
-    @Override
-    public TeamDTO teamToTeamDTOnoTeamImage(Team team) {
-        TeamDTO teamDTO = new TeamDTO();
-        BeanUtils.copyProperties(team, teamDTO, "carImage");
-        teamDTO.setCarImage(team.getCarImage());
-        teamDTO.setSeason(this.seasonMapper.seasonToSeasonDTO(team.getSeason()));
-
         return teamDTO;
     }
 }
