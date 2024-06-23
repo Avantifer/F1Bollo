@@ -1,10 +1,9 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, of, switchMap, tap } from "rxjs";
+import { Observable } from "rxjs";
 import { environment } from "src/enviroments/enviroment";
 import { Driver } from "../../models/driver";
 import { DriverInfo } from "src/shared/models/driverInfo";
-import { CacheService } from "../cache.service";
 
 @Injectable({
   providedIn: "root",
@@ -12,7 +11,7 @@ import { CacheService } from "../cache.service";
 export class DriverApiService {
   private endpoint: string = "/drivers";
 
-  constructor(private httpClient: HttpClient, private cacheService: CacheService) {}
+  constructor(private httpClient: HttpClient) {}
 
   getAllDrivers(seasonNumber?: number): Observable<Driver[]> {
     const params = seasonNumber
@@ -44,23 +43,10 @@ export class DriverApiService {
   }
 
   getAllInfoDrivers(seasonNumber?: number): Observable<DriverInfo[]> {
-    const cacheKey = `drivers-${seasonNumber ?? "all"}`;
-    const cachedData$ = this.cacheService.getDataFromCache<DriverInfo[]>(cacheKey);
+    const params = seasonNumber
+      ? new HttpParams().set("season", seasonNumber)
+      : undefined;
 
-    return cachedData$.pipe(
-      switchMap(cachedData => {
-        if (cachedData === null || cachedData === undefined) {
-          const params = seasonNumber
-            ? new HttpParams().set("season", seasonNumber)
-            : undefined;
-
-          return this.httpClient.get<DriverInfo[]>(`${environment.apiUrl}${this.endpoint}/allInfoDriver`,{ params }).pipe(
-            tap(data => this.cacheService.setDataInCache(cacheKey, data))
-          );
-        } else {
-          return of(cachedData);
-        }
-      })
-    );
+    return this.httpClient.get<DriverInfo[]>(`${environment.apiUrl}${this.endpoint}/allInfoDriver`,{ params });
   }
 }

@@ -57,16 +57,16 @@ export class DriversInfoComponent {
         error: (error) => {
           this.messageInfoService.showError(error);
           console.log(error);
-          throw error;
         },
         complete: () => {
           if (this.seasons.length === 0) {
             this.router.navigate(["/drivers"]);
             this.messageInfoService.showError(ERROR_DRIVER_NAME_NOT_FOUND);
+          } else {
+            this.seasons.push(this.firstSeasonSelected);
+            this.seasons.sort((a: Season, b: Season) => a.id - b.id);
+            this.getInfoByDriverName(this.name!);
           }
-          this.seasons.push(this.firstSeasonSelected);
-          this.seasons.sort((a: Season, b: Season) => a.id - b.id);
-          this.getInfoByDriverName(this.name!);
         }
       });
   }
@@ -88,7 +88,6 @@ export class DriversInfoComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_INFO_FETCH);
           console.log(error);
-          throw error;
         }
       });
   }

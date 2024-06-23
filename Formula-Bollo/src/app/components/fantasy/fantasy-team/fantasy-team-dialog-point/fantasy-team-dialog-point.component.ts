@@ -50,7 +50,8 @@ export class FantasyTeamDialogPointComponent {
    * @param driverId The ID of the driver for which points data will be retrieved.
    */
   getDriverPoint(driverId: number) {
-    this.fantasyApiService.getDriverPoints(driverId)
+    this.fantasyApiService
+      .getDriverPoints(driverId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPricesDriver: FantasyPointsDriver[]) => {
@@ -71,7 +72,8 @@ export class FantasyTeamDialogPointComponent {
    * @param teamId The ID of the team for which points data will be retrieved.
   */
   getTeamPoint(teamId: number) {
-    this.fantasyApiService.getTeamPoints(teamId)
+    this.fantasyApiService
+      .getTeamPoints(teamId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (fantasyPointsTeam: FantasyPointsTeam[]) => {

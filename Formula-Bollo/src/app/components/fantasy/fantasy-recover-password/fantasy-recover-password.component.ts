@@ -77,7 +77,6 @@ export class FantasyRecoverPasswordComponent {
           error: (error) => {
             this.messageInfoService.showError(error.error);
             console.log(error);
-            throw error;
           }
         });
     } else {

@@ -70,7 +70,6 @@ export class LoginComponent {
           error: (error) => {
             this.messageInfoService.showError(error.error);
             console.log(error);
-            throw error;
           },
         });
     } else {
@@ -101,7 +100,6 @@ export class LoginComponent {
           error: (error) => {
             this.messageInfoService.showError(error.error);
             console.log(error);
-            throw error;
           },
         });
     } else {
@@ -144,7 +142,6 @@ export class LoginComponent {
         error: (error) => {
           this.messageInfoService.showError(error.error);
           console.log(error);
-          throw error;
         },
         complete: () => {
           this.showDialog = false;

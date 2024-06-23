@@ -12,7 +12,7 @@ import { MessageInfoService } from "src/shared/services/messageinfo.service";
 import { RaceApiService } from "src/shared/services/api/race-api.service";
 import { ResultApiService } from "src/shared/services/api/result-api.service";
 import { FantasyApiService } from "src/shared/services/api/fantasy-api.service";
-import { ERROR_CIRCUIT_FETCH, ERROR_DRIVER_FETCH, ERROR_RACE_FETCH, ERROR_RESULT_FETCH, WARNING_DATE_RACE_NOT_SELECTED, WARNING_DRIVER_DUPLICATED } from "src/app/constants";
+import { ERROR_CIRCUIT_FETCH, ERROR_DRIVER_FETCH, ERROR_RACE_FETCH, ERROR_RESULT_FETCH, WARNING_DRIVER_DUPLICATED } from "src/app/constants";
 import { Router } from "@angular/router";
 import { Sprint } from "src/shared/models/sprint";
 import { SprintApiService } from "src/shared/services/api/sprint-api.service";
@@ -121,9 +121,8 @@ export class AdminResultsComponent {
    * @returns The index of the first disqualified result or the length of the array if no disqualifications are found.
    */
   findFirstDisqualifiedIndex(): number {
-    return (
-      this.results.findIndex((result) => !result.position) || this.results.length
-    );
+    const index = this.results.findIndex((result) => !result.position);
+    return index === -1 ? this.results.length : index;
   }
 
   /**
@@ -132,9 +131,8 @@ export class AdminResultsComponent {
    * @returns The index of the first disqualified sprint or the length of the array if no disqualifications are found.
    */
   findFirstDisqualifiedIndexSprint(): number {
-    return (
-      this.sprints.findIndex((sprint) => !sprint.position) || this.sprints.length
-    );
+    const index = this.sprints.findIndex((sprint) => !sprint.position);
+    return index === -1 ? this.sprints.length : index;
   }
 
   /**
@@ -173,7 +171,6 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_CIRCUIT_FETCH);
           console.error("Error al obtener circuitos:", error);
-          throw error;
         },
       });
   }
@@ -189,7 +186,7 @@ export class AdminResultsComponent {
           this.circuitSelected = data.circuit;
 
           if (this.circuitSelected) {
-            this.fetchDriversResultsAndRace(this.circuitSelected.id);
+            this.getAllResultsPerCircuit(this.circuitSelected.id);
           }
         },
       });
@@ -230,7 +227,6 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RESULT_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -241,18 +237,9 @@ export class AdminResultsComponent {
    * @param results - An array of results data.
    * @param circuitId - The ID of the selected circuit.
    */
-  private processSprints(sprints: Sprint[], circuitId: number): void {
+  processSprints(sprints: Sprint[], circuitId: number): void {
     this.getRacePerCircuit(circuitId);
     this.putResultsInSprintForm(sprints);
-  }
-
-  /**
-   * Fetch drivers, results, and race data for the selected circuit.
-   *
-   * @param circuitId - The ID of the selected circuit.
-   */
-  private fetchDriversResultsAndRace(circuitId: number): void {
-    this.getAllResultsPerCircuit(circuitId);
   }
 
   /**
@@ -278,7 +265,6 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RESULT_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -289,7 +275,7 @@ export class AdminResultsComponent {
    * @param results - An array of results data.
    * @param circuitId - The ID of the selected circuit.
    */
-  private processResults(results: Result[], circuitId: number): void {
+  processResults(results: Result[], circuitId: number): void {
     this.getFastLapDriver(results);
     this.getPoleDriver(results);
     this.getRacePerCircuit(circuitId);
@@ -334,7 +320,6 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -361,58 +346,7 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RACE_FETCH);
           console.log(error);
-          throw error;
         },
-      });
-  }
-
-  /**
-   * Save race data based on selected race or create a new race if necessary.
-   */
-  saveRace(): void {
-    const race: Race | undefined = this.raceSelected ?? this.createRace();
-
-    // Check if a race is available
-    if (!race) return;
-    // Set finished race
-    race.finished = 1;
-    this.raceApiService
-      .saveRace(race)
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        error: (error) => {
-          this.messageInfoService.showError(error.error);
-          console.log(error);
-          throw error;
-        },
-        complete: () => {
-          this.createResults();
-        }
-      });
-  }
-
-  /**
-   * Save race data based on selected race or create a new race if necessary.
-   */
-  saveSprint(): void {
-    const race: Race | undefined = this.raceSelected ?? this.createRace();
-
-    // Check if a race is available
-    if (!race) return;
-    // Set finished race
-    race.finished = 1;
-    this.raceApiService
-      .saveRace(race)
-      .pipe(takeUntil(this._unsubscribe))
-      .subscribe({
-        error: (error) => {
-          this.messageInfoService.showError(error.error);
-          console.log(error);
-          throw error;
-        },
-        complete: () => {
-          this.createSprints();
-        }
       });
   }
 
@@ -440,33 +374,12 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RACE_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           if (!everythingOK) return;
           this.saveAllSprints(sprintsToSave);
         }
       });
-  }
-
-  /**
-   * Create a new race with circuit and race date.
-   *
-   * @returns The newly created race.
-   */
-  private createRace(): Race | undefined {
-    if (!this.circuitSelected) {
-      return undefined;
-    }
-
-    if (!this.raceDate) {
-      this.messageInfoService.showWarn(WARNING_DATE_RACE_NOT_SELECTED);
-      return undefined;
-    }
-
-    const newRace = new Race(0, this.circuitSelected, this.raceDate, 1);
-    this.raceSelected = newRace;
-    return newRace;
   }
 
   /**
@@ -495,7 +408,6 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RACE_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           if (!everythingOK) return;
@@ -507,7 +419,7 @@ export class AdminResultsComponent {
   /**
    * Save all results.
    */
-  private saveAllSprints(sprints: Sprint[]): void {
+  saveAllSprints(sprints: Sprint[]): void {
     this.sprintApiService
       .saveSprints(sprints)
       .pipe(takeUntil(this._unsubscribe))
@@ -520,7 +432,6 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(error.error);
           console.log(error);
-          throw error;
         }
       });
   }
@@ -528,7 +439,7 @@ export class AdminResultsComponent {
   /**
    * Save all results.
    */
-  private saveAllResults(results: Result[]): void {
+  saveAllResults(results: Result[]): void {
     this.resultApiService
       .saveResults(results)
       .pipe(takeUntil(this._unsubscribe))
@@ -541,7 +452,6 @@ export class AdminResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(error.error);
           console.log(error);
-          throw error;
         },
         complete: () => {
           this.saveAllFantasy(this.raceSelected!.id);
@@ -555,7 +465,7 @@ export class AdminResultsComponent {
    * @param resultsToSave - Array of sprints to be saved.
    * @param race - The race for which sprints are being prepared.
    */
-  private comprobateDriversToBeDisqualifiedSprint(
+  comprobateDriversToBeDisqualifiedSprint(
     sprintsToSave: Sprint[],
     race: Race,
   ): void {
@@ -585,7 +495,7 @@ export class AdminResultsComponent {
    * @param resultsToSave - Array of results to be saved.
    * @param race - The race for which results are being prepared.
    */
-  private comprobateDriversToBeDisqualified(
+  comprobateDriversToBeDisqualified(
     resultsToSave: Result[],
     race: Race,
   ): void {
@@ -627,7 +537,7 @@ export class AdminResultsComponent {
    * @param resultsToSave - Array of results to be saved.
    * @param race - The race for which results are being prepared.
    */
-  private createEverySprint(resultsToSave: Sprint[], race: Race): void {
+  createEverySprint(resultsToSave: Sprint[], race: Race): void {
     let positionActual: number = 1;
 
     for (const controlName of Object.keys(this.sprintsForm.controls)) {
@@ -641,9 +551,6 @@ export class AdminResultsComponent {
         this.createActionSprint(resultsToSave, race, controlValue, positionActual);
       }
 
-      console.log(resultsToSave);
-
-
       positionActual++;
     }
   }
@@ -654,7 +561,7 @@ export class AdminResultsComponent {
    * @param resultsToSave - Array of results to be saved.
    * @param race - The race for which results are being prepared.
    */
-  private createEveryResult(resultsToSave: Result[], race: Race): void {
+  createEveryResult(resultsToSave: Result[], race: Race): void {
     let positionActual: number = 1;
 
     for (const controlName of Object.keys(this.resultsForm.controls)) {
@@ -680,7 +587,7 @@ export class AdminResultsComponent {
    * @param controlValue - The information about the Sprint.
    * @param positionActual - The position that driver will have.
    */
-  private updateActionSprint(sprints: Sprint[], race: Race, controlValue: Sprint, positionActual: number): void {
+  updateActionSprint(sprints: Sprint[], race: Race, controlValue: Sprint, positionActual: number): void {
     let position: Position | null = null;
 
     if (positionActual <= this.findFirstDisqualifiedIndexSprint()) {
@@ -704,7 +611,7 @@ export class AdminResultsComponent {
    * @param controlValue - The information about the result.
    * @param positionActual - The position that driver will have.
    */
-  private updateActionResult(results: Result[], race: Race, controlValue: Result, positionActual: number): void {
+  updateActionResult(results: Result[], race: Race, controlValue: Result, positionActual: number): void {
     const fastLapValue: Result | undefined = this.fastLapForm.get("fastlap")?.value;
     const poleValue: Result | undefined = this.poleForm.get("pole")?.value;
 
@@ -735,7 +642,7 @@ export class AdminResultsComponent {
    * @param controlValue - The information about the result.
    * @param positionActual - The position that driver will have.
    */
-  private createActionSprint(sprints: Sprint[], race: Race, controlValue: Driver, positionActual: number): void {
+  createActionSprint(sprints: Sprint[], race: Race, controlValue: Driver, positionActual: number): void {
     const position: Position = new Position(0, positionActual, 0);
     const sprint: Sprint = new Sprint(
       0,
@@ -754,7 +661,7 @@ export class AdminResultsComponent {
    * @param controlValue - The information about the result.
    * @param positionActual - The position that driver will have.
    */
-  private createActionResult(results: Result[], race: Race, controlValue: Driver, positionActual: number): void {
+  createActionResult(results: Result[], race: Race, controlValue: Driver, positionActual: number): void {
     const fastLapValue: Driver | undefined = this.fastLapForm.get("fastlap")?.value;
     const poleValue: Driver | undefined = this.poleForm.get("pole")?.value;
     const fastlap: number = fastLapValue?.name === controlValue.name ? 1 : 0;
@@ -777,7 +684,7 @@ export class AdminResultsComponent {
    * @param results - Array of results to check for duplicates.
    * @returns true if duplicates exist, false otherwise.
    */
-  private comprobateIfDuplicatedDriverSprint(sprints: Sprint[]): boolean {
+  comprobateIfDuplicatedDriverSprint(sprints: Sprint[]): boolean {
     const driverNames = new Set<string>();
     let duplicated = false;
 
@@ -801,7 +708,7 @@ export class AdminResultsComponent {
    * @param results - Array of results to check for duplicates.
    * @returns true if duplicates exist, false otherwise.
    */
-  private comprobateIfDuplicatedDriver(results: Result[]): boolean {
+  comprobateIfDuplicatedDriver(results: Result[]): boolean {
     const driverNames = new Set<string>();
     let duplicated = false;
 

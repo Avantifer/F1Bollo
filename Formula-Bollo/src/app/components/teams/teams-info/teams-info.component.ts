@@ -61,16 +61,16 @@ export class TeamsInfoComponent {
         error: (error) => {
           this.messageInfoService.showError(error);
           console.log(error);
-          throw error;
         },
         complete: () => {
           if (this.seasons.length === 0) {
             this.router.navigate(["/teams"]);
             this.messageInfoService.showError(ERROR_TEAM_NAME_NOT_FOUND);
+          } else {
+            this.seasons.push(this.firstSeasonSelected);
+            this.seasons.sort((a: Season, b: Season) => a.id - b.id);
+            this.getInfoByTeamName(this.name!);
           }
-          this.seasons.push(this.firstSeasonSelected);
-          this.seasons.sort((a: Season, b: Season) => a.id - b.id);
-          this.getInfoByTeamName(this.name!);
         }
       });
   }
@@ -93,7 +93,6 @@ export class TeamsInfoComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_TEAM_INFO_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           this.getDriversbyTeam(this.teamInfo!.team.id);
@@ -125,7 +124,8 @@ export class TeamsInfoComponent {
    * @param teamId - The ID of the team for which drivers are to be retrieved.
    */
   getDriversbyTeam(teamId: number): void {
-    this.driverApiService.getDriversByTeam(teamId)
+    this.driverApiService
+      .getDriversByTeam(teamId)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (drivers: Driver[]) => {
@@ -133,7 +133,6 @@ export class TeamsInfoComponent {
         }, error: (error) => {
           this.messageInfoService.showError(error);
           console.log(error);
-          throw error;
         }, complete: () => {
           if (this.drivers.length === 0) {
             this.messageInfoService.showError(ERROR_DRIVER_TEAM_FETCH);

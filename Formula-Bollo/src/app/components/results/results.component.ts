@@ -84,14 +84,13 @@ export class ResultsComponent {
           this.circuitSelected = this.circuits[0];
           this.circuitsForm.get("circuit")?.setValue(this.circuitSelected);
           this.getAllResultsPerCircuit(
-            this.circuitSelected.id,
+            this.circuitSelected?.id,
             this.seasonSelected?.number,
           );
         },
         error: (error) => {
           this.messageInfoService.showError(ERROR_CIRCUIT_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -135,7 +134,6 @@ export class ResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_RESULT_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -162,7 +160,6 @@ export class ResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_SEASON_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -198,7 +195,6 @@ export class ResultsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_PENALTIES_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

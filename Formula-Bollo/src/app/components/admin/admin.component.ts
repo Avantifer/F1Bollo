@@ -20,19 +20,10 @@ export class AdminComponent {
   private _unsubscribe: Subject<void> = new Subject<void>();
 
 
-  constructor(private router: Router) { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void {
     this.searchNavItemSelected();
-  }
-
-  /**
-   * Navigate to the specified URL using the Angular router.
-   *
-   * @param url - The URL to navigate to.
-   */
-  navigateByUrl(url: string): void {
-    this.router.navigate([url]);
   }
 
   /**

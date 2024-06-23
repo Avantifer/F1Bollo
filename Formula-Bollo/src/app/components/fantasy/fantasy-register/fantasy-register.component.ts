@@ -89,10 +89,6 @@ export class FantasyRegisterComponent {
           error: (error) => {
             this.messageInfoService.showError(error.error);
             console.log(error);
-            throw error;
-          },
-          complete: () => {
-
           }
         });
     } else {
@@ -114,7 +110,6 @@ export class FantasyRegisterComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }

@@ -115,7 +115,6 @@ export class StatisticsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_SEASON_FETCH);
           console.log(error);
-          throw error;
         },
       });
   }
@@ -148,7 +147,7 @@ export class StatisticsComponent {
       .subscribe((data) => {
         if (data) {
           this.seasonSelected = data.season;
-          if (this.seasonSelected && this.seasonSelected?.number != 0) {
+          if (this.seasonSelected && this.seasonSelected.number != 0) {
             if (this.optionStatisticsSelected === "Pilotos") {
               this.getStatisticsOfDrivers(this.seasonSelected.number);
             } else if (this.optionStatisticsSelected === "Escuderías") {
@@ -161,13 +160,13 @@ export class StatisticsComponent {
               this.getStatisticsOfTeams();
             }
           }
-
         }
       });
   }
 
   getStatisticsOfDrivers(seasonNumber?: number): void {
-    this.driverApiService.getAllInfoDrivers(seasonNumber)
+    this.driverApiService
+      .getAllInfoDrivers(seasonNumber)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (driversInfo: DriverInfo[]) => {
@@ -176,7 +175,6 @@ export class StatisticsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_DRIVER_INFO_FETCH);
           console.log(error);
-          throw error;
         },
         complete: () => {
           this.loadDataCharts();
@@ -185,7 +183,8 @@ export class StatisticsComponent {
   }
 
   getStatisticsOfTeams(seasonNumber?: number): void {
-    this.teamApiService.getAllInfoTeam(seasonNumber)
+    this.teamApiService
+      .getAllInfoTeam(seasonNumber)
       .pipe(takeUntil(this._unsubscribe))
       .subscribe({
         next: (teamsInfo: TeamInfo[]) => {
@@ -194,7 +193,6 @@ export class StatisticsComponent {
         error: (error) => {
           this.messageInfoService.showError(ERROR_TEAM_INFO_FETCH);
           console.log(error);
-          throw error;
         }, complete: () => {
           this.loadDataCharts();
         }
